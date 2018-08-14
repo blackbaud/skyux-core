@@ -6,11 +6,7 @@ import {
 
 import {
   SkyAppConfig
-} from '@blackbaud/skyux-builder/runtime';
-
-import {
-  SkyAppTestModule
-} from '@blackbaud/skyux-builder/runtime/testing/browser';
+} from '@skyux/builder-utils';
 
 import { expect } from './matchers';
 
@@ -138,8 +134,15 @@ describe('Jasmine matchers', () => {
     describe('configuration', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [
-            SkyAppTestModule
+          providers: [
+            {
+              provide: SkyAppConfig,
+              useValue: {
+                skyux: {
+                  a11y: {}
+                }
+              }
+            }
           ]
         });
       });
