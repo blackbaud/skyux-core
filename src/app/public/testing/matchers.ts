@@ -110,9 +110,6 @@ const matchers: jasmine.CustomMatcherFactories = {
           const actualStyle = styles[styleName];
           const expectedStyle = expectedStyles[styleName];
 
-          // tslint:disable-next-line
-          console.log('styles?', actualStyle, typeof actualStyle, expectedStyle, typeof expectedStyle);
-
           if (actualStyle !== expectedStyle) {
             if (!hasFailure) {
               hasFailure = true;
