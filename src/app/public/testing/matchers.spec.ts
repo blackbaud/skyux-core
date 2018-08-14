@@ -78,7 +78,7 @@ describe('Jasmine matchers', () => {
     // Two successes, two failures
     expect(elem).not.toHaveStyle({
       'font-size': '10px',
-      'font-weight': '700',
+      'font-weight': 'normal',
       'font-family': 'sans-serif',
       'color': 'white'
     });
@@ -105,7 +105,7 @@ describe('Jasmine matchers', () => {
     function createFailingElement(): any {
       // Make every DIV have the same ID:
       const element = createPassingElement();
-      element.querySelectorAll('div').forEach((elem: any) => {
+      [].slice.call(element.querySelectorAll('div')).forEach((elem: any) => {
         elem.setAttribute('id', 'same-id');
       });
       return element;
