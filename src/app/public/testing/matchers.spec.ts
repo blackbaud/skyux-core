@@ -50,7 +50,7 @@ describe('Jasmine matchers', () => {
   it('should check element for specific styles', () => {
     const elem = document.createElement('div');
     elem.style.fontSize = '10px';
-    elem.style.fontWeight = 'bold';
+    elem.style.fontWeight = '700';
     document.body.appendChild(elem);
 
     // One success
