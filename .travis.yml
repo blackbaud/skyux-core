@@ -24,6 +24,7 @@ install:
 
 script:
   - npm run test:ci
+  - npm run test:visual:ci
 
 after_script:
   - bash <(curl -s https://blackbaud.github.io/skyux-travis/library-after-script.sh)
