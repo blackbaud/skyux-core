@@ -28,6 +28,7 @@ dist
 # SKY UX visual directory
 screenshots-baseline-local
 screenshots-diff-local
+BrowserStackLocal
 
 # OS specific files
 .DS_Store
