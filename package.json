@@ -10,8 +10,8 @@
   "scripts": {
     "skyux": "skyux",
     "test": "skyux test --coverage library",
-    "test:visual": "skyux e2e",
-    "test:visual:ci": "skyux e2e --platform travis",
+    "test:visual": "skyux e2e --logFormat none",
+    "test:visual:ci": "skyux e2e --platform travis --logFormat none",
     "test:ci": "skyux test --coverage library --platform travis && npm run build",
     "build": "skyux build-public-library",
     "start": "skyux serve"
@@ -44,7 +44,7 @@
     "@angular/platform-browser": "4.3.6",
     "@angular/platform-browser-dynamic": "4.3.6",
     "@angular/router": "4.3.6",
-    "@blackbaud/skyux": "2.19.0",
+    "@blackbaud/skyux": "2.21.0",
     "@blackbaud/skyux-builder": "1.19.3",
     "@skyux-sdk/e2e": "3.0.0-alpha.0",
     "core-js": "2.4.1",
