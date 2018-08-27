@@ -17,7 +17,9 @@ cache:
 before_install:
   - chmod +x ./scripts/travis-visual-baselines.sh
   - npm i -g npm@6.0.1
-  - npm install -g @blackbaud/skyux-cli
+  - export CHROME_BIN=/usr/bin/google-chrome
+  - export DISPLAY=:99.0
+  - bash <(curl -s https://blackbaud.github.io/skyux-travis/library-before-install.sh)
 
 install:
   - npm install
