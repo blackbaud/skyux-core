@@ -5,5 +5,5 @@ if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then
   echo "Checking new visual baseline images..."
   node ./node_modules/@blackbaud/skyux-builder-config/scripts/visual-baselines.js
 else
-  echo "Visual baseline images are not saved during a pull request. Aborting script."
+  echo "Visual baseline images are not checked during a pull request. Aborting script."
 fi

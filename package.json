@@ -9,7 +9,7 @@
   },
   "scripts": {
     "skyux": "skyux",
-    "test": "skyux test --coverage library",
+    "test": "skyux test --coverage library --logFormat none",
     "test:visual": "skyux e2e --logFormat none",
     "test:visual:ci": "skyux e2e --platform travis --logFormat none",
     "test:ci": "skyux test --coverage library --platform travis && npm run build",
