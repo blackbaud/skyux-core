@@ -15,22 +15,19 @@ cache:
     - node_modules
 
 before_install:
-  - npm i -g npm@6.0.1
-  - npm install -g @blackbaud/skyux-cli
+  - bash <(curl -s https://blackbaud-stevebrush.github.io/skyux-travis/library-before-install-v3.sh)
 
 install:
-  - npm install
-  - npm install --no-save blackbaud/skyux-builder-config#visual-scripts
+  - bash <(curl -s https://blackbaud-stevebrush.github.io/skyux-travis/library-install-v3.sh)
 
 script:
-  - npm run test:ci
-  - npm run test:visual:ci
+  - bash <(curl -s https://blackbaud-stevebrush.github.io/skyux-travis/library-script-v3.sh)
 
 after_script:
-  - bash <(curl -s https://blackbaud.github.io/skyux-travis/library-after-script.sh)
+  - bash <(curl -s https://blackbaud-stevebrush.github.io/skyux-travis/library-after-script-v3.sh)
 
 after_success:
-  - bash <(curl -s https://blackbaud.github.io/skyux-travis/library-after-success.sh)
+  - bash <(curl -s https://blackbaud-stevebrush.github.io/skyux-travis/library-after-success-v3.sh)
   - node ./node_modules/@blackbaud/skyux-builder-config/scripts/visual-baselines.js
 
 after_failure:
