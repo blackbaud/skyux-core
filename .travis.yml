@@ -28,7 +28,6 @@ after_script:
 
 after_success:
   - bash <(curl -s https://blackbaud-stevebrush.github.io/skyux-travis/library-after-success-v3.sh)
-  - node ./node_modules/@blackbaud/skyux-builder-config/scripts/visual-baselines.js
 
 after_failure:
-  - node ./node_modules/@blackbaud/skyux-builder-config/scripts/visual-failures.js
+  - bash <(curl -s https://blackbaud-stevebrush.github.io/skyux-travis/library-after-failure-v3.sh)
