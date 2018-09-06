@@ -8,13 +8,13 @@
     "node": ">=8.11.1"
   },
   "scripts": {
-    "skyux": "skyux",
-    "test": "skyux test --coverage library --logFormat none",
-    "test:visual": "skyux e2e --logFormat none",
-    "test:visual:ci": "skyux e2e --platform travis --logFormat none",
-    "test:ci": "skyux test --coverage library --platform travis && npm run build",
     "build": "skyux build-public-library",
-    "start": "skyux serve"
+    "skyux": "skyux",
+    "start": "skyux serve",
+    "test": "skyux test --coverage library --logFormat none",
+    "test:ci": "skyux test --coverage library --platform travis && npm run build && npm run test:visual:ci",
+    "test:visual": "skyux e2e --logFormat none",
+    "test:visual:ci": "skyux e2e --platform travis --logFormat none"
   },
   "keywords": [],
   "author": "Blackbaud",
