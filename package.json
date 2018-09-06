@@ -12,9 +12,7 @@
     "skyux": "skyux",
     "start": "skyux serve --hmr",
     "test": "skyux test --coverage library --logFormat none",
-    "test:ci": "skyux test --coverage library --logFormat none --platform travis && npm run build && npm run test:visual:ci",
-    "test:visual": "skyux e2e --logFormat none",
-    "test:visual:ci": "skyux e2e --platform travis --logFormat none"
+    "test:visual": "skyux e2e --logFormat none"
   },
   "keywords": [],
   "author": "Blackbaud",
