@@ -1,6 +1,12 @@
 const glob = require('glob');
 const fs = require('fs-extra');
 
+console.warn([
+  '[WARNING] @skyux/core/utils/node-js/compat.js',
+  'The contents of this file are deprecated',
+  'and will be removed in the next major release.'
+].join(' '));
+
 /**
  * During the `skyux build-public-library` step, this function injects
  * the contents of the locales resources file when referenced via
