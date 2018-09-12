@@ -11,7 +11,8 @@ const fs = require('fs-extra');
  * this file should no longer be used.
  */
 function injectLocaleResourcesContents() {
-  const resourceFileExists = fs.pathExistsSync('./src/assets/locales/resources_en_US.json');
+  const resourceFilePath = './src/assets/locales/resources_en_US.json';
+  const resourceFileExists = fs.pathExistsSync(resourceFilePath);
 
   if (!resourceFileExists) {
     console.log('Aborting script. Locale resource file not found.');
@@ -19,7 +20,7 @@ function injectLocaleResourcesContents() {
   }
 
   const resourceFileContents = fs.readFileSync(
-    './src/assets/locales/resources_en_US.json',
+    resourceFilePath,
     { encoding: 'utf8' }
   );
 
