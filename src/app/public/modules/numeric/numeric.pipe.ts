@@ -53,6 +53,11 @@ export class SkyNumericPipe implements PipeTransform {
       config.digits = 0;
     }
 
+    // If the minimum digits is less than the set maximum digits then prefer the minimum digits
+    if (config && config.minDigits && (!config.digits || config.minDigits > config.digits)) {
+      config.digits = config.minDigits;
+    }
+
     Object.assign(options, config);
 
     return this.skyNumeric.formatNumber(value, options);
