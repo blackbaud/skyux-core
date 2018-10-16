@@ -53,8 +53,11 @@ export class SkyNumericPipe implements PipeTransform {
       config.digits = 0;
     }
 
-    // If the minimum digits is less than the set maximum digits then prefer the minimum digits
-    if (config && config.minDigits && (!config.digits || config.minDigits > config.digits)) {
+    // If the minimum digits is less than the set maximum digits then throw an error
+    if (config && config.minDigits && config.minDigits > config.digits) {
+      throw new Error('The `digits` property must be greater than or equal to the `minDigits` property');
+    // If there is a minimum digits given but not a maximum then default the maximum to the minimum
+    } else if (config && config.minDigits && !config.digits) {
       config.digits = config.minDigits;
     }
 
