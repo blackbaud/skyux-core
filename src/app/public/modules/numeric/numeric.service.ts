@@ -156,13 +156,6 @@ export class SkyNumericService {
     return output;
   }
 
-  /**
-   * This method is a stand-in for the old SkyResources service from skyux2.
-   * TODO: We should consider using Builder's resources service instead, but it will
-   * require a breaking change since the `formatNumber` method is currently synchronous,
-   * and Builder's service is asynchronous.
-   * @param key
-   */
   private getSymbol(key: string): string {
     // TODO: Need to implement the async `getString` method in a breaking change.
     return this.resourcesService.getStringForLocale(
