@@ -6,6 +6,8 @@ import {
   Observable
 } from 'rxjs/Observable';
 
+import 'rxjs/add/observable/of';
+
 import {
   SkyUIConfigService
 } from '../modules/ui-config/ui-config.service';

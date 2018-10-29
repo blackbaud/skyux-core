@@ -6,6 +6,8 @@ import {
   Observable
 } from 'rxjs/Observable';
 
+import 'rxjs/add/observable/of';
+
 @Injectable()
 export class SkyUIConfigService {
 
