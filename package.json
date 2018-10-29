@@ -4,9 +4,6 @@
   "description": "SKY UX Core",
   "main": "bundles/bundle.umd.js",
   "module": "index.ts",
-  "engines": {
-    "node": ">=8.11.1"
-  },
   "scripts": {
     "build": "skyux build-public-library",
     "skyux": "skyux",
@@ -42,10 +39,10 @@
     "@angular/platform-browser": "4.3.6",
     "@angular/platform-browser-dynamic": "4.3.6",
     "@angular/router": "4.3.6",
-    "@blackbaud/skyux": "2.25.0",
-    "@blackbaud/skyux-builder": "1.22.0",
-    "@skyux-sdk/builder-plugin-skyux": "1.0.0-alpha.0",
-    "@skyux-sdk/e2e": "3.0.0-alpha.0",
+    "@blackbaud/skyux": "2.27.2",
+    "@blackbaud/skyux-builder": "1.26.0",
+    "@skyux-sdk/builder-plugin-skyux": "1.0.0-rc.3",
+    "@skyux-sdk/e2e": "3.0.0",
     "core-js": "2.4.1",
     "rxjs": "5.4.3",
     "ts-node": "3.0.4",
