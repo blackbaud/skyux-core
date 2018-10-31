@@ -1,3 +1,4 @@
+// #region imports
 import {
   Injectable,
   NgZone
@@ -18,6 +19,7 @@ import {
 import {
   SkyMediaQueryListener
 } from './media-query-listener';
+// #endregion
 
 @Injectable()
 export class SkyMediaQueryService {
@@ -30,7 +32,7 @@ export class SkyMediaQueryService {
     return this._current;
   }
 
-  private _current: SkyMediaBreakpoints = SkyMediaBreakpoints.md;
+  private currentSubject = new BehaviorSubject<SkyMediaBreakpoints>(this.current);
 
   private xsMql: MediaQueryList;
   private smMql: MediaQueryList;
@@ -42,7 +44,7 @@ export class SkyMediaQueryService {
   private mdListener: MediaQueryListListener;
   private lgListener: MediaQueryListListener;
 
-  private currentSubject = new BehaviorSubject<SkyMediaBreakpoints>(this.current);
+  private _current = SkyMediaBreakpoints.md;
 
   constructor(
     private zone: NgZone
@@ -82,13 +84,11 @@ export class SkyMediaQueryService {
   }
 
   public subscribe(listener: SkyMediaQueryListener): Subscription {
-    return this.currentSubject.subscribe(
-      {
-        next: (breakpoints: SkyMediaBreakpoints) => {
-          listener(breakpoints);
-        }
+    return this.currentSubject.subscribe({
+      next: (breakpoints: SkyMediaBreakpoints) => {
+        listener(breakpoints);
       }
-    );
+    });
   }
 
   public destroy(): void {

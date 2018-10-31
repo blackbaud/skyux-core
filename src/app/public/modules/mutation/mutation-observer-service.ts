@@ -1,4 +1,8 @@
-import { Injectable } from '@angular/core';
+// #region imports
+import {
+  Injectable
+} from '@angular/core';
+// #endregion
 
 @Injectable()
 export class MutationObserverService {

@@ -1,6 +1,8 @@
+// #region imports
 import {
   SkyUIConfigService
 } from './ui-config.service';
+// #endregion
 
 describe('UI config service', () => {
 
@@ -11,10 +13,10 @@ describe('UI config service', () => {
       foo: 'bar'
     };
 
-    uiConfigSvc.getConfig('test-key', defaultConfig).subscribe((config) => {
-      expect(config).toBe(defaultConfig);
-      done();
-    });
+    uiConfigSvc.getConfig('test-key', defaultConfig)
+      .subscribe((config) => {
+        expect(config).toBe(defaultConfig);
+        done();
+      });
   });
-
 });

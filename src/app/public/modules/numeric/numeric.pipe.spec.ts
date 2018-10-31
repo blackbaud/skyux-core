@@ -1,3 +1,4 @@
+// #region imports
 import {
   CurrencyPipe,
   DecimalPipe
@@ -26,6 +27,7 @@ import {
 import {
   NumericOptions
 } from './numeric.options';
+// #endregion
 
 describe('Numeric pipe', () => {
   let pipe: any;
@@ -93,6 +95,8 @@ describe('Numeric pipe', () => {
       minDigits: 3,
       digits: 2
     };
-    expect(() => { pipe.transform(42.87549, options); }).toThrowError();
+    expect(() => {
+      pipe.transform(42.87549, options);
+    }).toThrowError();
   });
 });

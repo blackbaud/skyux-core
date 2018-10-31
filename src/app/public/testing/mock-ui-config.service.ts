@@ -1,3 +1,4 @@
+// #region imports
 import {
   Injectable
 } from '@angular/core';
@@ -11,10 +12,15 @@ import 'rxjs/add/observable/of';
 import {
   SkyUIConfigService
 } from '../modules/ui-config/ui-config.service';
+// #endregion
 
 @Injectable()
 export class MockSkyUIConfigService extends SkyUIConfigService {
-  public getConfig(key: string, defaultConfig?: any): any {
+
+  public getConfig(
+    key: string,
+    defaultConfig?: any
+  ): any {
     switch (key) {
       case 'defaultSettings':
         return Observable.of(defaultConfig);
@@ -24,36 +30,36 @@ export class MockSkyUIConfigService extends SkyUIConfigService {
         return Observable.of({
           settings: {
             userSettings: {
-                singleColumn: {
+              singleColumn: {
+                tiles: [
+                  {
+                    id: 'tile-1',
+                    isCollapsed: true
+                  },
+                  {
+                    id: 'tile-2',
+                    isCollapsed: true
+                  }
+                ]
+              },
+              multiColumn: [
+                {
                   tiles: [
-                    {
-                      id: 'tile-1',
-                      isCollapsed: true
-                    },
                     {
                       id: 'tile-2',
                       isCollapsed: true
                     }
                   ]
                 },
-                multiColumn: [
-                  {
-                    tiles: [
-                      {
-                        id: 'tile-2',
-                        isCollapsed: true
-                      }
-                    ]
-                  },
-                  {
-                    tiles: [
-                      {
-                        id: 'tile-1',
-                        isCollapsed: true
-                      }
-                    ]
-                  }
-                ]
+                {
+                  tiles: [
+                    {
+                      id: 'tile-1',
+                      isCollapsed: true
+                    }
+                  ]
+                }
+              ]
             },
             defaultSettings: [
               'tile-1',

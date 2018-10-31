@@ -1,3 +1,4 @@
+// #region imports
 import {
   NgModule
 } from '@angular/core';
@@ -9,6 +10,7 @@ import {
 import {
   SkyCoreResourcesProvider
 } from '../../plugin-resources/core-resources-provider';
+// #endregion
 
 @NgModule({
   providers: [{

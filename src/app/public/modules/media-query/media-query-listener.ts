@@ -1,7 +1,7 @@
+// #region imports
 import {
   SkyMediaBreakpoints
 } from './media-breakpoints';
+// #endregion
 
-export interface SkyMediaQueryListener {
-  (args: SkyMediaBreakpoints): void;
-}
+export type SkyMediaQueryListener = (args: SkyMediaBreakpoints) => void;

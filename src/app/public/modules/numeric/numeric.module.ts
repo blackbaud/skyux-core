@@ -1,3 +1,4 @@
+// #region imports
 import {
   NgModule
 } from '@angular/core';
@@ -18,15 +19,16 @@ import {
 import {
   SkyNumericService
 } from './numeric.service';
+// #endregion
 
 @NgModule({
   declarations: [
     SkyNumericPipe
   ],
   providers: [
-    SkyNumericService,
     CurrencyPipe,
-    DecimalPipe
+    DecimalPipe,
+    SkyNumericService
   ],
   imports: [
     SkyCoreResourcesModule
