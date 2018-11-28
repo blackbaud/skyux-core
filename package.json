@@ -29,6 +29,7 @@
   },
   "dependencies": {},
   "devDependencies": {
+    "@angular/platform-browser-dynamic": "4.3.6",
     "@blackbaud/skyux": "2.30.0",
     "@blackbaud/skyux-builder": "1.29.0",
     "@skyux-sdk/builder-plugin-skyux": "1.0.0-rc.5"
