@@ -85,4 +85,20 @@ export class SkyDynamicComponentService {
     return cmpRef;
   }
 
+  /**
+   * Removes a component ref from the page
+   * @param cmpRef Component ref for the component being removed
+   */
+  public removeComponent<T>(
+    cmpRef: ComponentRef<T>
+  ): void {
+    const bodyEl = this.windowRef.getWindow().document.body;
+
+    // Technique for retrieving the component's root node taken from here:
+    // https://malcoded.com/posts/angular-dynamic-components
+    const el = (cmpRef.hostView as EmbeddedViewRef<any>).rootNodes[0];
+
+    this.renderer.removeChild(bodyEl, el);
+  }
+
 }
