@@ -240,12 +240,12 @@ describe('Numeric service', () => {
   it('should allow truncate options to be optional', () => {
     const value = 1450.45;
     const options: NumericOptions = {
-      digits: 1,
+      digits: 2,
       format: 'currency',
       iso: 'USD'
     };
 
-    expect(skyNumeric.formatNumber(value, options)).toBe('$1,450.50');
+    expect(skyNumeric.formatNumber(value, options)).toBe('$1,450.45');
   });
 
   it('formats 1.00010 with 3 minDigits as 1.000', () => {
