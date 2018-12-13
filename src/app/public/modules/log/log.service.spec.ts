@@ -1,4 +1,3 @@
-// #region imports
 import {
   inject,
   TestBed
@@ -7,7 +6,6 @@ import {
 import {
   SkyLogService
 } from './log.service';
-// #endregion
 
 describe('Log service', () => {
   beforeEach(() => {

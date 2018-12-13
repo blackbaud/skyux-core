@@ -1,4 +1,3 @@
-// #region imports
 import {
   Injectable,
   NgZone
@@ -17,7 +16,6 @@ import {
 import {
  Subscription
 } from 'rxjs/Subscription';
-// #endregion
 
 @Injectable()
 export class MockSkyMediaQueryService extends SkyMediaQueryService {

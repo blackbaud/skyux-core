@@ -1,8 +1,6 @@
-// #region imports
 import {
   SkyFormat
 } from './format';
-// #endregion
 
 describe('Format class', () => {
   it('should return the expected strings', () => {

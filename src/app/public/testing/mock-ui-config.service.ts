@@ -1,4 +1,3 @@
-// #region imports
 import {
   Injectable
 } from '@angular/core';
@@ -12,7 +11,6 @@ import 'rxjs/add/observable/of';
 import {
   SkyUIConfigService
 } from '../modules/ui-config/ui-config.service';
-// #endregion
 
 @Injectable()
 export class MockSkyUIConfigService extends SkyUIConfigService {

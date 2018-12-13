@@ -1,4 +1,3 @@
-// #region imports
 import {
   NgModule
 } from '@angular/core';
@@ -10,7 +9,6 @@ import {
 import {
   SkyMediaQueryService
 } from './media-query.service';
-// #endregion
 
 @NgModule({
   providers: [

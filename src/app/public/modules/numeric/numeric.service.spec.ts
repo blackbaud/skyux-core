@@ -1,4 +1,3 @@
-// #region imports
 import {
   CurrencyPipe,
   DecimalPipe
@@ -15,7 +14,6 @@ import {
 import {
   SkyNumericService
 } from './numeric.service';
-// #endregion
 
 const skyNumeric = new SkyNumericService(
   new CurrencyPipe('en-US'),

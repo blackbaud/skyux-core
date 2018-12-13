@@ -1,4 +1,3 @@
-// #region imports
 import {
   CurrencyPipe,
   DecimalPipe
@@ -27,7 +26,6 @@ import {
 import {
   NumericOptions
 } from './numeric.options';
-// #endregion
 
 describe('Numeric pipe', () => {
   let pipe: any;

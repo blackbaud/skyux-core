@@ -1,4 +1,3 @@
-// #region imports
 import {
   inject,
   TestBed
@@ -15,7 +14,6 @@ import {
 import {
   SkyMediaQueryService
 } from './media-query.service';
-// #endregion
 
 describe('Media query service', () => {
   let mediaQueryListPrototype: any;

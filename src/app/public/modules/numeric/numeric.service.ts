@@ -1,4 +1,3 @@
-// #region imports
 import {
   Injectable
 } from '@angular/core';
@@ -19,7 +18,6 @@ import {
 import {
   SkyNumericSymbol
 } from './numeric-symbol';
-// #endregion
 
 @Injectable()
 export class SkyNumericService {

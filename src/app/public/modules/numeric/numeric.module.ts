@@ -1,4 +1,3 @@
-// #region imports
 import {
   NgModule
 } from '@angular/core';
@@ -19,7 +18,6 @@ import {
 import {
   SkyNumericService
 } from './numeric.service';
-// #endregion
 
 @NgModule({
   declarations: [

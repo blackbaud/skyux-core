@@ -1,4 +1,3 @@
-// #region imports
 import {
   Injectable,
   NgZone
@@ -19,7 +18,6 @@ import {
 import {
   SkyMediaQueryListener
 } from './media-query-listener';
-// #endregion
 
 @Injectable()
 export class SkyMediaQueryService {

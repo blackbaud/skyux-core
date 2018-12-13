@@ -1,4 +1,3 @@
-// #region imports
 import {
   NgModule
 } from '@angular/core';
@@ -10,7 +9,6 @@ import {
 import {
   SkyLogService
 } from './log.service';
-// #endregion
 
 @NgModule({
   imports: [

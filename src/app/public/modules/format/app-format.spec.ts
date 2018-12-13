@@ -1,8 +1,6 @@
-// #region imports
 import {
   SkyAppFormat
 } from './app-format';
-// #endregion
 
 describe('SkyAppFormat', () => {
   it('should replace the templated string with the correct parameters', () => {

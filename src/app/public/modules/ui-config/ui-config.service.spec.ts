@@ -1,8 +1,6 @@
-// #region imports
 import {
   SkyUIConfigService
 } from './ui-config.service';
-// #endregion
 
 describe('UI config service', () => {
 

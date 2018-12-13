@@ -1,4 +1,3 @@
-// #region imports
 import {
   Pipe,
   PipeTransform
@@ -11,7 +10,6 @@ import {
 import {
   NumericOptions
 } from './numeric.options';
-// #endregion
 
 /**
  * Shortens numbers to 1K, 1M, 1B, 1T and can format for currency.
