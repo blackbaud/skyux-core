@@ -13,7 +13,7 @@
       "browserSet": "speedy"
     },
     "unit": {
-      "browserSet": "paranoid"
+      "browserSet": "speedy"
     }
   }
 }

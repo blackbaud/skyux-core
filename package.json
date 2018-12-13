@@ -1,6 +1,6 @@
 {
   "name": "@skyux/core",
-  "version": "3.2.3",
+  "version": "3.5.0",
   "description": "SKY UX Core",
   "main": "bundles/bundle.umd.js",
   "module": "index.ts",
@@ -9,7 +9,8 @@
     "skyux": "skyux",
     "start": "skyux serve --hmr",
     "test": "skyux test --coverage library --logFormat none",
-    "test:visual": "skyux e2e --logFormat none"
+    "test:visual": "skyux e2e --logFormat none",
+    "test:ci": "npm run test && npm run test:visual"
   },
   "keywords": [],
   "author": "Blackbaud",
@@ -23,14 +24,14 @@
   },
   "homepage": "https://github.com/blackbaud/skyux-core#readme",
   "peerDependencies": {
-    "@angular/common": "^4.3.6",
-    "@angular/core": "^4.3.6",
+    "@angular/common": ">=4.3.6",
+    "@angular/core": ">=4.3.6",
     "@skyux/i18n": "^3.3.0"
   },
   "dependencies": {},
   "devDependencies": {
-    "@blackbaud/skyux": "2.28.1",
-    "@blackbaud/skyux-builder": "1.28.0",
+    "@blackbaud/skyux": "2.32.0",
+    "@blackbaud/skyux-builder": "1.30.0",
     "@skyux-sdk/builder-plugin-skyux": "1.0.0-rc.5"
   }
 }
