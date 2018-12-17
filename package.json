@@ -9,8 +9,7 @@
     "skyux": "skyux",
     "start": "skyux serve --hmr",
     "test": "skyux test --coverage library --logFormat none",
-    "test:visual": "skyux e2e --logFormat none",
-    "test:ci": "npm run test && npm run test:visual"
+    "test:visual": "skyux e2e --logFormat none"
   },
   "keywords": [],
   "author": "Blackbaud",
