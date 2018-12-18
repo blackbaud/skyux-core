@@ -90,6 +90,9 @@ export class SkyDynamicComponentService {
 
     const el = this.getRootNode(cmpRef);
 
+    // Call the destroy method to ensure that any ngOnDestroy methods are called
+    cmpRef.destroy();
+
     this.renderer.removeChild(bodyEl, el);
   }
 
