@@ -86,6 +86,10 @@ export class SkyDynamicComponentService {
   public removeComponent<T>(
     cmpRef: ComponentRef<T>
   ): void {
+    if (!cmpRef) {
+      return;
+    }
+
     this.appRef.detachView(cmpRef.hostView);
     cmpRef.destroy();
   }
