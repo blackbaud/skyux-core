@@ -5,7 +5,8 @@ import {
 } from '@angular/core';
 
 import {
-  TestBed
+  TestBed,
+  inject
 } from '@angular/core/testing';
 
 import {
@@ -89,6 +90,19 @@ describe('Dynamic component service', () => {
       }
     });
   });
+
+  beforeEach(
+    inject(
+      [
+        ApplicationRef
+      ],
+      (
+        _applicationRef: ApplicationRef
+      ) => {
+        applicationRef = _applicationRef;
+      }
+    )
+  );
 
   afterEach(() => {
     if (cmpRef) {
