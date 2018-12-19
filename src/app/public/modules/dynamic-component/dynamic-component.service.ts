@@ -86,15 +86,8 @@ export class SkyDynamicComponentService {
   public removeComponent<T>(
     cmpRef: ComponentRef<T>
   ): void {
-    const bodyEl = this.windowRef.getWindow().document.body;
-
-    const el = this.getRootNode(cmpRef);
-
     this.appRef.detachView(cmpRef.hostView);
-    // Call the destroy method to ensure that any ngOnDestroy methods are called
     cmpRef.destroy();
-
-    this.renderer.removeChild(bodyEl, el);
   }
 
   private getRootNode<T>(componentRef: ComponentRef<T>): any {

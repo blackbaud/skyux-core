@@ -35,6 +35,7 @@ import {
 describe('Dynamic component service', () => {
 
   let cmpRef: ComponentRef<DynamicComponentTestComponent>;
+  let applicationRef: ApplicationRef;
 
   function createTestComponent(
     location?: SkyDynamicComponentLocation
@@ -49,6 +50,7 @@ describe('Dynamic component service', () => {
     );
 
     cmpRef.changeDetectorRef.detectChanges();
+    applicationRef.tick();
 
     return cmpRef;
   }
@@ -60,7 +62,7 @@ describe('Dynamic component service', () => {
 
     svc.removeComponent(refToRemove);
 
-    cmpRef.changeDetectorRef.detectChanges();
+    applicationRef.tick();
 
     return cmpRef;
   }
@@ -90,11 +92,7 @@ describe('Dynamic component service', () => {
 
   afterEach(() => {
     if (cmpRef) {
-      const appRef: ApplicationRef = TestBed.get(ApplicationRef);
-
-      appRef.detachView(cmpRef.hostView);
-
-      cmpRef.destroy();
+      removeTestComponent(cmpRef);
     }
   });
 
