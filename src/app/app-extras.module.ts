@@ -3,6 +3,10 @@ import {
 } from '@angular/core';
 
 import {
+  SkyAppLinkModule
+} from '@skyux/router';
+
+import {
   DynamicComponentDemoExampleComponent
 } from './demos/dynamic-component/dynamic-component-example.component';
 
@@ -14,6 +18,7 @@ import {
 
 @NgModule({
   exports: [
+    SkyAppLinkModule,
     SkyDynamicComponentModule,
     SkyMediaQueryModule,
     SkyNumericModule
