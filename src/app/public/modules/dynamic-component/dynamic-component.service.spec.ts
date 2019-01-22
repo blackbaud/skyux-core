@@ -22,8 +22,8 @@ import {
 } from './fixtures/dynamic-component-test.component';
 
 import {
-  SkyDynamicComponentModule
-} from './dynamic-component.module';
+  DynamicComponentTestModule
+} from './fixtures/dynamic-component.fixture.module';
 
 import {
   SkyDynamicComponentService
@@ -74,10 +74,7 @@ describe('Dynamic component service', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        SkyDynamicComponentModule
-      ],
-      declarations: [
-        DynamicComponentTestComponent
+        DynamicComponentTestModule
       ]
     });
 
