@@ -10,7 +10,7 @@
     "start": "skyux serve --hmr",
     "test": "skyux test --coverage library --logFormat none",
     "test:visual": "skyux e2e --logFormat none",
-    "postinstall": "npm i --no-save --force @skyux/core"
+    "postinstall": "npm i --save-dev --force @skyux/core"
   },
   "keywords": [],
   "author": "Blackbaud",
@@ -48,6 +48,7 @@
     "@skyux-sdk/testing": "3.1.0",
     "@skyux/assets": "3.0.0",
     "@skyux/config": "3.2.0",
+    "@skyux/core": "^3.5.1",
     "@skyux/http": "3.2.0",
     "@skyux/i18n": "3.5.0",
     "@skyux/omnibar-interop": "3.1.0",
