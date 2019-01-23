@@ -178,6 +178,20 @@ describe('Media query service', () => {
       }
     ));
 
+    it('should stop listening for media query breakpoints on ngOnDestroy', inject(
+      [SkyMediaQueryService],
+      (mediaQueryService: SkyMediaQueryService) => {
+        const removeListenerSpy = spyOn(mediaQueryListPrototype, 'removeListener');
+        const subscription = mediaQueryService.subscribe(() => {});
+
+        // This method is called automatically when provided by a component.
+        mediaQueryService.ngOnDestroy();
+
+        expect(removeListenerSpy.calls.count()).toBe(4);
+        expect(subscription.closed).toBe(true);
+      }
+    ));
+
     it('should fire the listener when the specified breakpoint is hit', inject(
       [SkyMediaQueryService],
       (mediaQueryService: SkyMediaQueryService) => {
