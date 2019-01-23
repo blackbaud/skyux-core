@@ -59,7 +59,7 @@ export class SkyMediaQueryService implements OnDestroy {
 
   private mediaQueries: {
     mediaQueryList: MediaQueryList,
-    listener: ((event: MediaQueryListEvent) => void)
+    listener: ((event: any) => void)
   }[] = [];
 
   constructor(
@@ -90,7 +90,7 @@ export class SkyMediaQueryService implements OnDestroy {
     this.mediaQueries = this.breakpoints.map((breakpoint: any) => {
       const mq = matchMedia(breakpoint.mediaQueryString);
 
-      const listener = (event: MediaQueryListEvent) => {
+      const listener = (event: any) => {
         // Run the check outside of Angular's change detection since Angular
         // does not wrap matchMedia listeners in NgZone.
         // See: https://blog.assaf.co/angular-2-change-detection-zones-and-an-example/
