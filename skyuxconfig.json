@@ -8,9 +8,6 @@
   "plugins": [
     "@skyux-sdk/builder-plugin-skyux"
   ],
-  "moduleAliases": {
-    "@skyux/core": "./src/app/public"
-  },
   "testSettings": {
     "e2e": {
       "browserSet": "speedy"
