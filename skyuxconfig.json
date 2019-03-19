@@ -1,13 +1,11 @@
 {
+  "$schema": "./node_modules/@skyux/config/skyuxconfig-schema.json",
   "name": "skyux-core",
   "mode": "easy",
   "compileMode": "aot",
   "skyuxModules": [
     "SkyErrorModule"
   ],
-  "moduleAliases": {
-    "@skyux/core": "./src/app/public"
-  },
   "plugins": [
     "@skyux-sdk/builder-plugin-skyux"
   ],
