@@ -7,12 +7,12 @@ import {
   SkyNumberFormatUtility
 } from './number-format-utility';
 
-function formatCurrency(value: any): string {
+function formatCurrency(value: any, digits: string): string {
   return SkyNumberFormatUtility.formatNumber(
     'en-US',
     value,
     SkyIntlNumberFormatStyle.Currency,
-    '',
+    digits,
     'USD',
     true
   );
@@ -21,14 +21,14 @@ function formatCurrency(value: any): string {
 describe('Number format utility', function () {
 
   it('should format currency from number strings', function () {
-    const result = formatCurrency('50.00');
+    const result = formatCurrency('50.00', '');
 
     expect(result).toEqual('$50.00');
   });
 
   it('should throw error for invalid types', function () {
     try {
-      formatCurrency({});
+      formatCurrency({}, '');
       fail('It should fail!');
     } catch (err) {
       expect(err.message).toEqual('SkyInvalidPipeArgument: \'[object Object]\'');
@@ -36,7 +36,7 @@ describe('Number format utility', function () {
   });
 
   it('should return null for null values', function () {
-    const result = formatCurrency(null);
+    const result = formatCurrency(null, '');
 
     expect(result).toBeNull();
   });
@@ -45,14 +45,7 @@ describe('Number format utility', function () {
     const digits = 'abcd-foobar';
 
     try {
-      SkyNumberFormatUtility.formatNumber(
-        'en-US',
-        50,
-        SkyIntlNumberFormatStyle.Currency,
-        digits,
-        'USD',
-        true
-      );
+      formatCurrency(50, digits);
       fail('It should fail!');
     } catch (err) {
       expect(err.message).toEqual(`${digits} is not a valid digit info for number pipes`);
@@ -63,14 +56,7 @@ describe('Number format utility', function () {
     const digits = '0.9-0';
 
     try {
-      SkyNumberFormatUtility.formatNumber(
-        'en-US',
-        50,
-        SkyIntlNumberFormatStyle.Currency,
-        digits,
-        'USD',
-        true
-      );
+      formatCurrency(50, digits);
       fail('It should fail!');
     } catch (err) {
       expect(err.message).toEqual('minimumIntegerDigits value is out of range.');
