@@ -1,3 +1,7 @@
+# 3.5.3 (2019-05-06)
+
+- Fixed `CurrencyPipe` and `DecimalPipe` to be backwards compatible with Angular 4. [#74](https://github.com/blackbaud/skyux-core/pull/74)
+
 # 3.5.2 (2019-03-20)
 
 - Fixed `SkyNumericModule` to properly import `SkyI18nModule` and to provide `SkyNumericPipe`. [#72](https://github.com/blackbaud/skyux-core/pull/72)
