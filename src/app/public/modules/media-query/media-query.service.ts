@@ -16,11 +16,15 @@ import {
 } from './media-breakpoints';
 
 import {
+  SkyMediaQueryDetector
+} from './media-query-detector';
+
+import {
   SkyMediaQueryListener
 } from './media-query-listener';
 
 @Injectable()
-export class SkyMediaQueryService {
+export class SkyMediaQueryService implements SkyMediaQueryDetector {
   public static xs = '(max-width: 767px)';
   public static sm = '(min-width: 768px) and (max-width: 991px)';
   public static md = '(min-width: 992px) and (max-width: 1199px)';
