@@ -4,7 +4,8 @@
  */
 
 import {
-  Injectable
+  Injectable,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -12,8 +13,14 @@ import {
 } from 'rxjs/BehaviorSubject';
 
 import {
+  Subject
+} from 'rxjs/Subject';
+
+import {
   Subscription
 } from 'rxjs/Subscription';
+
+import 'rxjs/add/operator/takeUntil';
 
 import {
   SkyMediaBreakpoints
@@ -24,7 +31,7 @@ import {
 } from './media-query-listener';
 
 @Injectable()
-export abstract class SkyMediaQueryDetector {
+export abstract class SkyMediaQueryDetector implements OnDestroy {
 
   public get current(): SkyMediaBreakpoints {
     if (this._current === undefined) {
@@ -38,11 +45,20 @@ export abstract class SkyMediaQueryDetector {
 
   protected _current: SkyMediaBreakpoints;
 
+  private ngUnsubscribe = new Subject<void>();
+
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   public subscribe(listener: SkyMediaQueryListener): Subscription {
-    return this.currentSubject.subscribe({
-      next: (breakpoints: SkyMediaBreakpoints) => {
-        listener(breakpoints);
-      }
-    });
+    return this.currentSubject
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe({
+        next: (breakpoints: SkyMediaBreakpoints) => {
+          listener(breakpoints);
+        }
+      });
   }
 }
