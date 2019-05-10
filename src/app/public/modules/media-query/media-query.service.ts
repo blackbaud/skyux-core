@@ -1,6 +1,7 @@
 import {
   Injectable,
-  NgZone
+  NgZone,
+  OnDestroy
 } from '@angular/core';
 
 import {
@@ -8,8 +9,14 @@ import {
 } from 'rxjs/BehaviorSubject';
 
 import {
+  Subject
+} from 'rxjs/Subject';
+
+import {
   Subscription
 } from 'rxjs/Subscription';
+
+import 'rxjs/add/operator/takeUntil';
 
 import {
   SkyMediaBreakpoints
@@ -20,7 +27,7 @@ import {
 } from './media-query-listener';
 
 @Injectable()
-export class SkyMediaQueryService {
+export class SkyMediaQueryService implements OnDestroy {
   public static xs = '(max-width: 767px)';
   public static sm = '(min-width: 768px) and (max-width: 991px)';
   public static md = '(min-width: 992px) and (max-width: 1199px)';
@@ -41,6 +48,8 @@ export class SkyMediaQueryService {
   private smListener: MediaQueryListListener;
   private mdListener: MediaQueryListListener;
   private lgListener: MediaQueryListListener;
+
+  private ngUnsubscribe = new Subject<void>();
 
   private _current = SkyMediaBreakpoints.md;
 
@@ -81,12 +90,20 @@ export class SkyMediaQueryService {
     this.setupListener(this.lgMql, SkyMediaBreakpoints.lg);
   }
 
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+    this.destroy();
+  }
+
   public subscribe(listener: SkyMediaQueryListener): Subscription {
-    return this.currentSubject.subscribe({
-      next: (breakpoints: SkyMediaBreakpoints) => {
-        listener(breakpoints);
-      }
-    });
+    return this.currentSubject
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe({
+        next: (breakpoints: SkyMediaBreakpoints) => {
+          listener(breakpoints);
+        }
+      });
   }
 
   public destroy(): void {
