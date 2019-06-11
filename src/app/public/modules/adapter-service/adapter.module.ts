@@ -11,4 +11,4 @@ import {
     SkyCoreAdapterService
   ]
 })
-export class SkyAdapterModule { }
+export class SkyCoreAdapterModule { }
