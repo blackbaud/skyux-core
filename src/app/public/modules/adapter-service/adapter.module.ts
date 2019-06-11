@@ -3,12 +3,12 @@ import {
 } from '@angular/core';
 
 import {
-  SkyAdapterService
+  SkyCoreAdapterService
 } from './adapter.service';
 
 @NgModule({
   providers: [
-    SkyAdapterService
+    SkyCoreAdapterService
   ]
 })
 export class SkyAdapterModule { }

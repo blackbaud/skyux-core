@@ -24,7 +24,7 @@ const SKY_TABBABLE_SELECTOR = [
 ].join(', ');
 
 @Injectable()
-export class SkyAdapterService {
+export class SkyCoreAdapterService {
 
   private renderer: Renderer2;
 
