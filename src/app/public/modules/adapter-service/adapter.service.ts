@@ -41,7 +41,7 @@ export class SkyAdapterService {
    * @param {ElementRef} elementRef - The element that will recieve the new CSS class.
    * @param {SkyMediaBreakpoints} breakpoint - The SkyMediaBreakpoint will determine which class
    * gets set. For example a SkyMediaBreakpoint of `xs` will set a CSS class of `sky-responsive-container-xs`.
-   * @return {void}
+   * @return {Void}
    */
   public setResponsiveContainerClass(elementRef: ElementRef, breakpoint: SkyMediaBreakpoints): void {
     const nativeEl: HTMLElement = elementRef.nativeElement;
@@ -80,7 +80,7 @@ export class SkyAdapterService {
    * This is helpful to prevent iFrames from interfering with drag events.
    *
    * @param {boolean} enable - Set to `true` to enable pointer events. Set to `false` to disable.
-   * @return {void}
+   * @return {Void}
    */
   public toggleIframePointerEvents(enable: boolean): void {
     const iframes = document.querySelectorAll('iframe');
@@ -90,6 +90,12 @@ export class SkyAdapterService {
     }
   }
 
+  /**
+   * Focuses on the first element found with an `autofocus` attribute inside the supplied `elementRef`.
+   *
+   * @param {ElementRef} elementRef - The element to search within.
+   * @return {boolean} Returns `true` if a child element with autofocus is found.
+   */
   public applyAutoFocus(elementRef: ElementRef): boolean {
     const elementWithAutoFocus = elementRef.nativeElement.querySelector('[autofocus]');
 
@@ -112,7 +118,7 @@ export class SkyAdapterService {
    * @param {string} containerSelector - A CSS selector indicating the container that should
    * recieve focus if no focusable children are found.
    * @param {boolean} focusOnContainerIfNoChildrenFound - A string param
-   * @return {void}
+   * @return {Void}
    */
   public getFocusableChildrenAndApplyFocus(
     elementRef: ElementRef,
