@@ -115,7 +115,8 @@ export class SkyAdapterService {
    * @param {ElementRef} elementRef - The element to search within.
    * @param {string} containerSelector - A CSS selector indicating the container that should
    * recieve focus if no focusable children are found.
-   * @param {boolean} focusOnContainerIfNoChildrenFound - A string param
+   * @param {boolean} focusOnContainerIfNoChildrenFound - It set to `true`, the container will
+   * recieve focus if no focusable children are found.
    */
   public getFocusableChildrenAndApplyFocus(
     elementRef: ElementRef,
