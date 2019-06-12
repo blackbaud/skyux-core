@@ -1,4 +1,4 @@
-# 3.6.0 (2019-06-11)
+# 3.6.0 (2019-06-12)
 
 - Added `SkyCoreAdapterService` to provide helper functions for applying focus and setting CSS classes for responsive containers. [#81](https://github.com/blackbaud/skyux-core/pull/81)
 
