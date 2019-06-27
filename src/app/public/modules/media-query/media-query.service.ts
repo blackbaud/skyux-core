@@ -44,10 +44,10 @@ export class SkyMediaQueryService implements OnDestroy {
   private mdMql: MediaQueryList;
   private lgMql: MediaQueryList;
 
-  private xsListener: MediaQueryListListener;
-  private smListener: MediaQueryListListener;
-  private mdListener: MediaQueryListListener;
-  private lgListener: MediaQueryListListener;
+  private xsListener: any;
+  private smListener: any;
+  private mdListener: any;
+  private lgListener: any;
 
   private ngUnsubscribe = new Subject<void>();
 

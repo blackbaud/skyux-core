@@ -16,5 +16,10 @@
     "unit": {
       "browserSet": "speedy"
     }
+  },
+  "app": {
+    "styles": [
+      "@skyux/theme/css/sky.css"
+    ]
   }
 }
