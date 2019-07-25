@@ -4,18 +4,15 @@ import {
 } from '@angular/core';
 
 import {
+  BehaviorSubject,
+  Subscription
+} from 'rxjs';
+
+import {
   SkyMediaBreakpoints,
   SkyMediaQueryListener,
   SkyMediaQueryService
 } from '../modules';
-
-import {
-  BehaviorSubject
-} from 'rxjs/BehaviorSubject';
-
-import {
- Subscription
-} from 'rxjs/Subscription';
 
 @Injectable()
 export class MockSkyMediaQueryService extends SkyMediaQueryService {

@@ -3,10 +3,9 @@ import {
 } from '@angular/core';
 
 import {
+  of as observableOf,
   Observable
-} from 'rxjs/Observable';
-
-import 'rxjs/add/observable/of';
+} from 'rxjs';
 
 @Injectable()
 export class SkyUIConfigService {
@@ -15,7 +14,7 @@ export class SkyUIConfigService {
     key: string,
     defaultConfig?: any
   ): Observable<any> {
-    return Observable.of(defaultConfig);
+    return observableOf(defaultConfig);
   }
 
   /* istanbul ignore next */
@@ -23,6 +22,6 @@ export class SkyUIConfigService {
     key: string,
     value: any
   ): Observable<any> {
-    return Observable.of({});
+    return observableOf({});
   }
 }
