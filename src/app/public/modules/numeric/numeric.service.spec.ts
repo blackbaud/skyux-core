@@ -256,4 +256,70 @@ describe('Numeric service', () => {
     options.digits = 4;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.0001');
   });
+​
+  describe('roundNumber', () => {
+    it('returns 0 if the value is not a number', function() {
+      // tslint:disable-next-line:no-null-keyword
+      expect(skyNumeric.roundNumber(null, 2)).toBe(0);
+      expect(skyNumeric.roundNumber(undefined, 2)).toBe(0);
+    });
+    it('throws an error if precision is less than 0', function() {
+      try {
+        skyNumeric.roundNumber(1.003, -5);
+        fail('It should fail!');
+      } catch (err) {
+        expect(err.message).toEqual('SkyInvalidArgument: precision must be >= 0');
+      }
+    });
+    it('rounds with a default precision of 0', () => {
+        expect(skyNumeric.roundNumber(123)).toBe(123);
+        expect(skyNumeric.roundNumber(0.75)).toBe(1);
+        expect(skyNumeric.roundNumber(1.005)).toBe(1);
+        expect(skyNumeric.roundNumber(1.3555)).toBe(1);
+        expect(skyNumeric.roundNumber(1.001)).toBe(1);
+        expect(skyNumeric.roundNumber(1.77777)).toBe(2);
+        expect(skyNumeric.roundNumber(9.1)).toBe(9);
+        expect(skyNumeric.roundNumber(1234.5678)).toBe(1235);
+        expect(skyNumeric.roundNumber(1.5383)).toBe(2);
+        expect(skyNumeric.roundNumber(-1.5383)).toBe(-2);
+        expect(skyNumeric.roundNumber(1.5e3)).toBe(1500);
+        expect(skyNumeric.roundNumber(-1.5e3)).toBe(-1500);
+    });
+    it('rounds correctly when passed a custom precision', () => {
+        expect(skyNumeric.roundNumber(123, 0)).toBe(123);
+        expect(skyNumeric.roundNumber(123.34, 0)).toBe(123);
+        expect(skyNumeric.roundNumber(0.75, 1)).toBe(0.8);
+        expect(skyNumeric.roundNumber(1.005, 1)).toBe(1.0);
+        expect(skyNumeric.roundNumber(0.75, 2)).toBe(0.75);
+        expect(skyNumeric.roundNumber(1.005, 2)).toBe(1.01);
+        expect(skyNumeric.roundNumber(1.3555, 2)).toBe(1.36);
+        expect(skyNumeric.roundNumber(1.001, 2)).toBe(1.00);
+        expect(skyNumeric.roundNumber(1.77777, 2)).toBe(1.78);
+        expect(skyNumeric.roundNumber(9.1, 2)).toBe(9.1);
+        expect(skyNumeric.roundNumber(1234.5678, 2)).toBe(1234.57);
+        expect(skyNumeric.roundNumber(1.5383, 1)).toBe(1.5);
+        expect(skyNumeric.roundNumber(1.5383, 2)).toBe(1.54);
+        expect(skyNumeric.roundNumber(1.5383, 3)).toBe(1.538);
+        expect(skyNumeric.roundNumber(-1.5383, 1)).toBe(-1.5);
+        expect(skyNumeric.roundNumber(-1.5383, 2)).toBe(-1.54);
+        expect(skyNumeric.roundNumber(-1.5383, 3)).toBe(-1.538);
+        expect(skyNumeric.roundNumber(-0.75, 2)).toBe(-0.75);
+        expect(skyNumeric.roundNumber(-0.75, 3)).toBe(-0.75);
+        expect(skyNumeric.roundNumber(1.5e3, 2)).toBe(1500);
+        expect(skyNumeric.roundNumber(-1.5e3, 2)).toBe(-1500);
+    });
+    it('rounds really small numbers', () => {
+        expect(skyNumeric.roundNumber(0.000000000000007, 4)).toBe(0.0000);
+        expect(skyNumeric.roundNumber(-0.000000000000007, 4)).toBe(0.0000);
+        expect(skyNumeric.roundNumber(7e-15, 4)).toBe(0.0000);
+        expect(skyNumeric.roundNumber(-7e-15, 4)).toBe(0.0000);
+    });
+    it('rounds really big numbers', function () {
+      expect(skyNumeric.roundNumber(700000000000000000000.324, 2)).toBe(700000000000000000000.32);
+      expect(skyNumeric.roundNumber(700000000000000000000.324, 3)).toBe(700000000000000000000.324);
+      expect(skyNumeric.roundNumber(3518437208882.663, 2)).toBe(3518437208882.66);
+      expect(skyNumeric.roundNumber(2.5368e15, 1)).toBe(2536800000000000);
+      expect(skyNumeric.roundNumber(2536800000000000.119, 2)).toBe(2536800000000000.12);
+    });
+  });
 });
