@@ -11,7 +11,7 @@ import {
 } from '@skyux/i18n';
 
 import {
-  NumericOptions
+  SkyNumericOptions
 } from './numeric.options';
 
 import {
@@ -46,7 +46,7 @@ export class SkyNumericService {
    */
   public formatNumber(
     value: number,
-    options: NumericOptions
+    options: SkyNumericOptions
   ): string {
 
     /* tslint:disable-next-line:no-null-keyword */

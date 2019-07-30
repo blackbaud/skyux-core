@@ -1,4 +1,4 @@
-export class NumericOptions {
+export class SkyNumericOptions {
   public digits = 1;
   public format = 'number';
   public iso = 'USD';

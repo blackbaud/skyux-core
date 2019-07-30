@@ -7,7 +7,7 @@ import {
 } from './numeric.module';
 
 import {
-  NumericOptions
+  SkyNumericOptions
 } from './numeric.options';
 
 import {
@@ -21,10 +21,10 @@ import {
 describe('Numeric pipe', () => {
   let pipe: any;
   let numericService: any;
-  let expectedConfig: NumericOptions;
+  let expectedConfig: SkyNumericOptions;
 
   beforeEach(() => {
-    expectedConfig = new NumericOptions();
+    expectedConfig = new SkyNumericOptions();
     expectedConfig.digits = 1;
     expectedConfig.format = 'number';
     expectedConfig.iso = 'USD';

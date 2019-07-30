@@ -8,7 +8,7 @@ import {
 } from './numeric.service';
 
 import {
-  NumericOptions
+  SkyNumericOptions
 } from './numeric.options';
 
 /**
@@ -26,7 +26,7 @@ export class SkyNumericPipe implements PipeTransform {
   ) { }
 
   public transform(value: number, config: any): string {
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
 
     // The default number of digits is `1`. When truncate is disabled, set digits
     // to `0` to avoid the unnecessary addition of `.0` at the end of the formatted number.

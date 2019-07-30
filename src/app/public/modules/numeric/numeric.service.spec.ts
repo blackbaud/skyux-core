@@ -3,7 +3,7 @@ import {
 } from '@skyux/i18n/testing/lib-resources-test.service';
 
 import {
-  NumericOptions
+  SkyNumericOptions
 } from './numeric.options';
 
 import {
@@ -17,7 +17,7 @@ const skyNumeric = new SkyNumericService(
 describe('Numeric service', () => {
   it('formats 0 with 0 digits as 0', () => {
     const value = 0;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
 
     expect(skyNumeric.formatNumber(value, options)).toBe('0');
@@ -25,7 +25,7 @@ describe('Numeric service', () => {
 
   it('formats undefined as blank', () => {
     const value: any = undefined;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
 
     expect(skyNumeric.formatNumber(value, options)).toBe('');
@@ -33,7 +33,7 @@ describe('Numeric service', () => {
 
   it('formats 100 with 0 digits as 100', () => {
     const value = 100;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
 
     expect(skyNumeric.formatNumber(value, options)).toBe('100');
@@ -41,14 +41,14 @@ describe('Numeric service', () => {
 
   it('formats 1000 with 0 digits as 1K', () => {
     const value = 1000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
     expect(skyNumeric.formatNumber(value, options)).toBe('1K');
   });
 
   it('does not truncate 1000 with 2 digits as 1K when truncate is false', () => {
     const value = 1000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     options.truncate = false;
     expect(skyNumeric.formatNumber(value, options)).toBe('1,000.00');
@@ -56,14 +56,14 @@ describe('Numeric service', () => {
 
   it('formats 1000000 with 0 digits as 1M', () => {
     const value = 1000000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
     expect(skyNumeric.formatNumber(value, options)).toBe('1M');
   });
 
   it('does not truncate 1000000 with 2 digits as 1M when truncate is false', () => {
     const value = 1000000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     options.truncate = false;
     expect(skyNumeric.formatNumber(value, options)).toBe('1,000,000.00');
@@ -71,14 +71,14 @@ describe('Numeric service', () => {
 
   it('formats 1000000000 with 0 digits as 1B', () => {
     const value = 1000000000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
     expect(skyNumeric.formatNumber(value, options)).toBe('1B');
   });
 
   it('does not truncate 1000000000 with 2 digits as 1B when truncate is false', () => {
     const value = 1000000000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     options.truncate = false;
     expect(skyNumeric.formatNumber(value, options)).toBe('1,000,000,000.00');
@@ -86,14 +86,14 @@ describe('Numeric service', () => {
 
   it('formats 1000000000000 with 0 digits as 1T', () => {
     const value = 1000000000000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
     expect(skyNumeric.formatNumber(value, options)).toBe('1T');
   });
 
   it('does not truncate 1000000000000 with 2 digits as 1T when truncate is false', () => {
     const value = 1000000000000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     options.truncate = false;
     expect(skyNumeric.formatNumber(value, options)).toBe('1,000,000,000,000.00');
@@ -101,35 +101,35 @@ describe('Numeric service', () => {
 
   it('formats 999000000 as 999M', () => {
     const value = 999000000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     expect(skyNumeric.formatNumber(value, options)).toBe('999M');
   });
 
   it('formats 1234000 with 2 digits as 1.23M', () => {
     const value = 1234000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.23M');
   });
 
   it('formats 1235000 with 2 digits as 1.24M', () => {
     const value = 1235000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.24M');
   });
 
   it('formats 1450 with 1 digits as 1.5K', () => {
     const value = 1450;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 1;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.5K');
   });
 
   it('formats 1000 as US dollar with 0 digits as $1K', () => {
     const value = 1000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
     options.iso = 'USD';
     options.format = 'currency';
@@ -138,7 +138,7 @@ describe('Numeric service', () => {
 
   it('formats 1450 as US dollar with 1 digits as $1.5K', () => {
     const value = 1450;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 1;
     options.iso = 'USD';
     options.format = 'currency';
@@ -147,7 +147,7 @@ describe('Numeric service', () => {
 
   it('formats 1450 as US dollar with 2 minDigits as $1.5K', () => {
     const value = 1450;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     options.minDigits = 2;
     options.iso = 'USD';
@@ -157,7 +157,7 @@ describe('Numeric service', () => {
 
   it('formats 1500 as Euro with 1 digits as €1.5K', () => {
     const value = 1500;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 1;
     options.iso = 'EUR';
     options.format = 'currency';
@@ -166,7 +166,7 @@ describe('Numeric service', () => {
 
   it('formats 15.50 as Pounds with 2 digits as £15.50', () => {
     const value = 15.50;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     options.iso = 'GBP';
     options.format = 'currency';
@@ -177,7 +177,7 @@ describe('Numeric service', () => {
   // using the truncateAfter configuration property
   it('does not truncate 5000 to 5K when truncateAfter set to 10000', () => {
     const value = 5000;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
     options.truncateAfter = 10000;
     expect(skyNumeric.formatNumber(value, options)).toBe('5,000');
@@ -185,7 +185,7 @@ describe('Numeric service', () => {
 
   it('formats 10001 to 10K when truncateAfter set to 10000', () => {
     const value = 10001;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 0;
     options.truncateAfter = 10000;
     expect(skyNumeric.formatNumber(value, options)).toBe('10K');
@@ -196,7 +196,7 @@ describe('Numeric service', () => {
   // around the number. All other browsers use a preceeding negative sign (-).
   it('formats -15.50 as US dollar with 2 digits as -$15.50', () => {
     const value = -15.50;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 2;
     options.iso = 'USD';
     options.format = 'currency';
@@ -206,14 +206,14 @@ describe('Numeric service', () => {
 
   it('formats 145.45 with 1 digits as 145.5', () => {
     const value = 145.45;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 1;
     expect(skyNumeric.formatNumber(value, options)).toBe('145.5');
   });
 
   it('formats 1.2345 with 3 digits as 1.235', () => {
     const value = 1.2345;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.digits = 3;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.235');
   });
@@ -221,7 +221,7 @@ describe('Numeric service', () => {
   it('should handle localized shorten symbols', () => {
     const originalValue = skyNumeric['symbolIndex'][3];
     const value = 1450;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
 
     skyNumeric['symbolIndex'][3].label = 'c';
 
@@ -232,7 +232,7 @@ describe('Numeric service', () => {
 
   it('should allow truncate options to be optional', () => {
     const value = 1450;
-    const options: NumericOptions = {
+    const options: SkyNumericOptions = {
       digits: 1,
       format: 'currency',
       iso: 'USD'
@@ -243,7 +243,7 @@ describe('Numeric service', () => {
 
   it('formats 1.00010 with 3 minDigits as 1.000', () => {
     const value = 1.00010;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.minDigits = 3;
     options.digits = 3;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.000');
@@ -251,7 +251,7 @@ describe('Numeric service', () => {
 
   it('formats 1.00010 with 3 minDigits but 4 digits as 1.0001', () => {
     const value = 1.00010;
-    const options = new NumericOptions();
+    const options = new SkyNumericOptions();
     options.minDigits = 3;
     options.digits = 4;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.0001');
