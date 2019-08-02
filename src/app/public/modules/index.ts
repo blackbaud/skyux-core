@@ -5,5 +5,6 @@ export * from './log';
 export * from './media-query';
 export * from './mutation';
 export * from './numeric';
+export * from './page-title';
 export * from './ui-config';
 export * from './window';
