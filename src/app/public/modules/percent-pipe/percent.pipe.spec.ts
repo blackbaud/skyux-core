@@ -24,9 +24,9 @@ import {
   PercentPipeTestModule
 } from './fixtures/percent-pipe.module.fixture';
 
-// import {
-//   SkyPercentPipe
-// } from './percent.pipe';
+import {
+  SkyPercentPipe
+} from './percent.pipe';
 
 describe('Percent pipe', () => {
   let fixture: ComponentFixture<PercentPipeTestComponent>;
@@ -61,10 +61,8 @@ describe('Percent pipe', () => {
   it('should format a string object', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    const expectedValues = [
-      '86.75%'
-    ];
-    expect(expectedValues).toContain(value);
+    const expectedValue = '86.75%';
+    expect(expectedValue).toEqual(value);
   });
 
   it('should ignore empty values', () => {
@@ -90,98 +88,78 @@ describe('Percent pipe', () => {
     fixture.componentInstance.format = '1.5-6';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    const expectedValues = [
-      '86.75309'
-    ];
-    expect(expectedValues).toContain(value);
+    const expectedValue = '86.75309%';
+    expect(expectedValue).toEqual(value);
   });
 
   it('should support Angular digitsInfo formats - testing maxFractionDigits', () => {
     fixture.componentInstance.format = '1.3-5';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    const expectedValues = [
-      '86.75309'
-    ];
-    expect(expectedValues).toContain(value);
+    const expectedValue = '86.75309%';
+    expect(expectedValue).toEqual(value);
   });
 
   it('should default to the 1.0-2 digitsInfo format', () => {
     fixture.componentInstance.format = undefined;
     fixture.detectChanges();
     let value = fixture.nativeElement.textContent.trim();
-    let expectedValues = [
-      '86.75'
-    ];
-    expect(expectedValues).toContain(value);
-    fixture.componentInstance.numberValue = '.867';
-    value = fixture.nativeElement.textContent.trim();
-    expectedValues = [
-      '86.70'
-    ];
-    expect(expectedValues).toContain(value);
+    let expectedValue = '86.75%';
+    expect(expectedValue).toEqual(value);
     fixture.componentInstance.numberValue = '.86';
+    fixture.detectChanges();
     value = fixture.nativeElement.textContent.trim();
-    expectedValues = [
-      '86'
-    ];
-    expect(expectedValues).toContain(value);
+    expectedValue = '86%';
+    expect(expectedValue).toEqual(value);
   });
 
-  // it('should support changing locale inline', () => {
-  //   fixture.componentInstance.locale = 'fr-CA';
-  //   fixture.detectChanges();
-  //   const value = fixture.nativeElement.textContent.trim();
-  //   const expectedValues = [
-  //     '2000-01-01 00 h 00',
-  //     '2000-01-01 00:00' // IE 11
-  //   ];
-  //   expect(expectedValues).toContain(value);
-  // });
+  it('should support changing locale inline', () => {
+    fixture.componentInstance.locale = 'fr-CA';
+    fixture.detectChanges();
+    const value = fixture.nativeElement.textContent.trim();
+    // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
+    // for the space (which is what angular returns in this case).
+    const expectedValue = '86,75 %'.replace(' ', ' ');
+    expect(expectedValue).toEqual(value);
+  });
 
-  // it('should respect locale set by SkyAppLocaleProvider', () => {
-  //   fixture.detectChanges();
+  it('should respect locale set by SkyAppLocaleProvider', () => {
+    fixture.componentInstance.numberValue = '1.235487';
+    fixture.detectChanges();
 
-  //   let value = fixture.nativeElement.textContent.trim();
-  //   let expectedValues = [
-  //     '1/1/2000, 12:00 AM',
-  //     '1/1/2000 12:00 AM' // IE 11
-  //   ];
-  //   expect(expectedValues).toContain(value);
+    let value = fixture.nativeElement.textContent.trim();
+    let expectedValue = '123.55%';
+    expect(expectedValue).toEqual(value);
 
-  //   mockLocaleStream.next({
-  //     locale: 'fr-CA'
-  //   });
+    mockLocaleStream.next({
+      locale: 'fr-CA'
+    });
 
-  //   fixture.detectChanges();
+    fixture.detectChanges();
 
-  //   value = fixture.nativeElement.textContent.trim();
-  //   expectedValues = [
-  //     '2000-01-01 00 h 00',
-  //     '2000-01-01 00:00' // IE 11
-  //   ];
-  //   expect(expectedValues).toContain(value);
-  // });
+    value = fixture.nativeElement.textContent.trim();
 
-  // it('should default to en-US locale', () => {
-  //   const date = new Date('01/01/2000');
-  //   const pipe = new SkyDatePipe(mockLocaleProvider);
-  //   const expectedValues = [
-  //     '1/1/2000, 12:00 AM',
-  //     '1/1/2000 12:00 AM' // IE 11
-  //   ];
+    // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
+    // for the space (which is what angular returns in this case).
+    expectedValue = '123,55 %'.replace(' ', ' ');
+    expect(expectedValue).toEqual(value);
+  });
 
-  //   const value = pipe.transform(date, 'short');
-  //   expect(expectedValues).toContain(value);
-  //   expect(pipe['defaultLocale']).toEqual('en-US');
-  // });
+  it('should default to en-US locale', () => {
+    const pipe = new SkyPercentPipe(mockLocaleProvider);
+    const expectedValue = '123.5487%';
+
+    const value = pipe.transform('1.235487', '1.0-4');
+    expect(expectedValue).toEqual(value);
+    expect(pipe['defaultLocale']).toEqual('en-US');
+  });
 
   it('should work as an injectable', () => {
     fixture.detectChanges();
 
-    const expectedValues = [
-      '100.2355%'
-    ];
+    // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
+    // for the space (which is what angular returns in this case).
+    const expectedValue = '123,5487 %'.replace(' ', ' ');
 
     const result = fixture.componentInstance.getDatePipeResult(
       '1.235487',
@@ -189,6 +167,6 @@ describe('Percent pipe', () => {
       'fr-CA'
     );
 
-    expect(expectedValues).toContain(result);
+    expect(expectedValue).toEqual(result);
   });
 });
