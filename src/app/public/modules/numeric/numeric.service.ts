@@ -35,14 +35,19 @@ export class SkyNumericService {
 
   private defaultLocale = 'en-US';
 ​
-  constructor(private resourcesService: SkyLibResourcesService) { }
+  constructor(
+    private resourcesService: SkyLibResourcesService
+  ) { }
 ​
   /**
    * Shortens with or without symbol (K/M/B/T) depending on value of number.
    * @param value The number to format.
    * @param options Format options.
    */
-  public formatNumber(value: number, options: NumericOptions): string {
+  public formatNumber(
+    value: number,
+    options: NumericOptions
+  ): string {
     /* tslint:disable-next-line:no-null-keyword */
     if (isNaN(value) || value === null) {
       return '';
@@ -145,10 +150,15 @@ export class SkyNumericService {
    * @param value - value to round
    * @param precision - what precision to round with, defaults to 0 decimal places
    */
-  public roundNumber(value: number, precision: number = 0): number {
+  private roundNumber(
+    value: number,
+    precision: number = 0
+  ): number {
     if (precision < 0) { throw new Error('SkyInvalidArgument: precision must be >= 0'); }
 ​
     /* tslint:disable-next-line:no-null-keyword */
+    /* Sanity check - ignoring coverage but should not ignore if we make this method public */
+    /* istanbul ignore next */
     if (isNaN(value) || value === null) { return 0; }
 ​
     const scaledValue: number = this.scaleNumberByPowerOfTen(value, precision, true);
@@ -168,7 +178,11 @@ export class SkyNumericService {
    * @param scalar - 10^scalar
    * @param scaleUp - whether to increase or decrease the value
    */
-  private scaleNumberByPowerOfTen(value: number, scalar: number, scaleUp: boolean): number {
+  private scaleNumberByPowerOfTen(
+    value: number,
+    scalar: number,
+    scaleUp: boolean
+  ): number {
     const valueStr: string = value.toString().toLowerCase();
     const isExponentFormat: boolean = valueStr.includes('e');
 ​

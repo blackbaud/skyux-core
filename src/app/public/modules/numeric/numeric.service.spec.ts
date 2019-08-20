@@ -9,6 +9,8 @@ import {
 import {
   SkyNumericService
 } from './numeric.service';
+import { SkyNumberFormatUtility } from './number-format-utility';
+import { SkyIntlNumberFormatStyle } from '@skyux/i18n/modules/i18n/intl-number-format-style';
 
 const skyNumeric = new SkyNumericService(
   new SkyLibResourcesTestService() as any
@@ -201,7 +203,7 @@ describe('Numeric service', () => {
     options.iso = 'USD';
     options.format = 'currency';
     expect('-$15.50 ($15.50)').toContain(skyNumeric
-    .formatNumber(value, options));
+      .formatNumber(value, options));
   });
 
   it('formats 145.45 with 1 digits as 145.5', () => {
@@ -256,70 +258,199 @@ describe('Numeric service', () => {
     options.digits = 4;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.0001');
   });
-​
+
   describe('roundNumber', () => {
-    it('returns 0 if the value is not a number', function() {
-      // tslint:disable-next-line:no-null-keyword
-      expect(skyNumeric.roundNumber(null, 2)).toBe(0);
-      expect(skyNumeric.roundNumber(undefined, 2)).toBe(0);
+
+    beforeEach(() => {
+      spyOn(SkyNumberFormatUtility, 'formatNumber').and.callFake((
+        locale: string,
+        value: number | string,
+        style: SkyIntlNumberFormatStyle,
+        digits?: string | null,
+        currency: string | null = undefined,
+        currencyAsSymbol: boolean = false) => {
+        return value;
+      });
     });
-    it('throws an error if precision is less than 0', function() {
+
+    it('throws an error if precision is less than 0', function () {
       try {
-        skyNumeric.roundNumber(1.003, -5);
+        skyNumeric.formatNumber(1.003, { digits: -5, truncate: false, format: 'number', iso: undefined });
         fail('It should fail!');
       } catch (err) {
         expect(err.message).toEqual('SkyInvalidArgument: precision must be >= 0');
       }
     });
+
     it('rounds with a default precision of 0', () => {
-        expect(skyNumeric.roundNumber(123)).toBe(123);
-        expect(skyNumeric.roundNumber(0.75)).toBe(1);
-        expect(skyNumeric.roundNumber(1.005)).toBe(1);
-        expect(skyNumeric.roundNumber(1.3555)).toBe(1);
-        expect(skyNumeric.roundNumber(1.001)).toBe(1);
-        expect(skyNumeric.roundNumber(1.77777)).toBe(2);
-        expect(skyNumeric.roundNumber(9.1)).toBe(9);
-        expect(skyNumeric.roundNumber(1234.5678)).toBe(1235);
-        expect(skyNumeric.roundNumber(1.5383)).toBe(2);
-        expect(skyNumeric.roundNumber(-1.5383)).toBe(-2);
-        expect(skyNumeric.roundNumber(1.5e3)).toBe(1500);
-        expect(skyNumeric.roundNumber(-1.5e3)).toBe(-1500);
+      // Note: An 'undefined' value for digits would normally not work but is here to test the
+      // rounding function and the spy for the actual formatting allows this to work
+      expect(skyNumeric.formatNumber(123, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>123);
+      expect(skyNumeric.formatNumber(0.75, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1);
+      expect(skyNumeric.formatNumber(1.005, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1);
+      expect(skyNumeric.formatNumber(1.3555, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1);
+      expect(skyNumeric.formatNumber(1.77777, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>2);
+      expect(skyNumeric.formatNumber(9.1, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>9);
+      expect(skyNumeric.formatNumber(-1.5383, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>-2);
+      expect(skyNumeric.formatNumber(1.5e3, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1500);
+      expect(skyNumeric.formatNumber(-1.5e3, {
+        digits: undefined, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>-1500);
     });
+
     it('rounds correctly when passed a custom precision', () => {
-        expect(skyNumeric.roundNumber(123, 0)).toBe(123);
-        expect(skyNumeric.roundNumber(123.34, 0)).toBe(123);
-        expect(skyNumeric.roundNumber(0.75, 1)).toBe(0.8);
-        expect(skyNumeric.roundNumber(1.005, 1)).toBe(1.0);
-        expect(skyNumeric.roundNumber(0.75, 2)).toBe(0.75);
-        expect(skyNumeric.roundNumber(1.005, 2)).toBe(1.01);
-        expect(skyNumeric.roundNumber(1.3555, 2)).toBe(1.36);
-        expect(skyNumeric.roundNumber(1.001, 2)).toBe(1.00);
-        expect(skyNumeric.roundNumber(1.77777, 2)).toBe(1.78);
-        expect(skyNumeric.roundNumber(9.1, 2)).toBe(9.1);
-        expect(skyNumeric.roundNumber(1234.5678, 2)).toBe(1234.57);
-        expect(skyNumeric.roundNumber(1.5383, 1)).toBe(1.5);
-        expect(skyNumeric.roundNumber(1.5383, 2)).toBe(1.54);
-        expect(skyNumeric.roundNumber(1.5383, 3)).toBe(1.538);
-        expect(skyNumeric.roundNumber(-1.5383, 1)).toBe(-1.5);
-        expect(skyNumeric.roundNumber(-1.5383, 2)).toBe(-1.54);
-        expect(skyNumeric.roundNumber(-1.5383, 3)).toBe(-1.538);
-        expect(skyNumeric.roundNumber(-0.75, 2)).toBe(-0.75);
-        expect(skyNumeric.roundNumber(-0.75, 3)).toBe(-0.75);
-        expect(skyNumeric.roundNumber(1.5e3, 2)).toBe(1500);
-        expect(skyNumeric.roundNumber(-1.5e3, 2)).toBe(-1500);
+      expect(skyNumeric.formatNumber(123, {
+        digits: 0, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>123);
+      expect(skyNumeric.formatNumber(123.34, {
+        digits: 0, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>123);
+      expect(skyNumeric.formatNumber(0.75, {
+        digits: 1, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>0.8);
+      expect(skyNumeric.formatNumber(1.005, {
+        digits: 1, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1.0);
+      expect(skyNumeric.formatNumber(0.75, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>0.75);
+      expect(skyNumeric.formatNumber(1.005, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1.01);
+      expect(skyNumeric.formatNumber(1.3555, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1.36);
+      expect(skyNumeric.formatNumber(1.001, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1.00);
+      expect(skyNumeric.formatNumber(1.7777, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1.78);
+      expect(skyNumeric.formatNumber(9.1, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>9.1);
+      expect(skyNumeric.formatNumber(1234.5678, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1234.57);
+      expect(skyNumeric.formatNumber(1.5383, {
+        digits: 1, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1.5);
+      expect(skyNumeric.formatNumber(1.5383, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1.54);
+      expect(skyNumeric.formatNumber(1.5383, {
+        digits: 3, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1.538);
+      expect(skyNumeric.formatNumber(-1.5383, {
+        digits: 1, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>-1.5);
+      expect(skyNumeric.formatNumber(-1.5383, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>-1.54);
+      expect(skyNumeric.formatNumber(-1.5383, {
+        digits: 3, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>-1.538);
+      expect(skyNumeric.formatNumber(-0.75, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>-0.75);
+      expect(skyNumeric.formatNumber(-0.75, {
+        digits: 3, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>-0.75);
+      expect(skyNumeric.formatNumber(1.5e3, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>1500);
+      expect(skyNumeric.formatNumber(-1.5e3, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any>-1500);
     });
+
     it('rounds really small numbers', () => {
-        expect(skyNumeric.roundNumber(0.000000000000007, 4)).toBe(0.0000);
-        expect(skyNumeric.roundNumber(-0.000000000000007, 4)).toBe(0.0000);
-        expect(skyNumeric.roundNumber(7e-15, 4)).toBe(0.0000);
-        expect(skyNumeric.roundNumber(-7e-15, 4)).toBe(0.0000);
+      expect(skyNumeric.formatNumber(0.000000000000007, {
+        digits: 4, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 0.0000);
+      expect(skyNumeric.formatNumber(-0.000000000000007, {
+        digits: 4, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 0.0000);
+      expect(skyNumeric.formatNumber(7e-15, {
+        digits: 4, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 0.0000);
+      expect(skyNumeric.formatNumber(-7e-15, {
+        digits: 4, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 0.0000);
     });
+
     it('rounds really big numbers', function () {
-      expect(skyNumeric.roundNumber(700000000000000000000.324, 2)).toBe(700000000000000000000.32);
-      expect(skyNumeric.roundNumber(700000000000000000000.324, 3)).toBe(700000000000000000000.324);
-      expect(skyNumeric.roundNumber(3518437208882.663, 2)).toBe(3518437208882.66);
-      expect(skyNumeric.roundNumber(2.5368e15, 1)).toBe(2536800000000000);
-      expect(skyNumeric.roundNumber(2536800000000000.119, 2)).toBe(2536800000000000.12);
+      expect(skyNumeric.formatNumber(700000000000000000000.324, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 700000000000000000000.32);
+      expect(skyNumeric.formatNumber(700000000000000000000.324, {
+        digits: 3, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 700000000000000000000.324);
+      expect(skyNumeric.formatNumber(3518437208882.663, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 3518437208882.66);
+      expect(skyNumeric.formatNumber(2.5368e15, {
+        digits: 1, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 2536800000000000);
+      expect(skyNumeric.formatNumber(2536800000000000.119, {
+        digits: 2, truncate: false,
+        format: 'number', iso: undefined
+      })).toBe(<any> 2536800000000000.12);
     });
+
   });
 });
