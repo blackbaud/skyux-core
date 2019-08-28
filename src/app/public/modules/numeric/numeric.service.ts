@@ -11,16 +11,16 @@ import {
 } from '@skyux/i18n';
 
 import {
+  SkyNumberFormatUtility
+} from '../shared/number-format/number-format-utility';
+
+import {
   NumericOptions
 } from './numeric.options';
 
 import {
   SkyNumericSymbol
 } from './numeric-symbol';
-
-import {
-  SkyNumberFormatUtility
-} from '../shared/number-format/number-format-utility';
 
 @Injectable()
 export class SkyNumericService {
@@ -154,12 +154,16 @@ export class SkyNumericService {
     value: number,
     precision: number = 0
   ): number {
-    if (precision < 0) { throw new Error('SkyInvalidArgument: precision must be >= 0'); }
+    if (precision < 0) {
+      throw new Error('SkyInvalidArgument: precision must be >= 0');
+    }
 ​
     /* tslint:disable-next-line:no-null-keyword */
     /* Sanity check - ignoring coverage but should not ignore if we make this method public */
     /* istanbul ignore next */
-    if (isNaN(value) || value === null) { return 0; }
+    if (isNaN(value) || value === null) {
+      return 0;
+    }
 ​
     const scaledValue: number = this.scaleNumberByPowerOfTen(value, precision, true);
     const scaledRoundedValue: number = Math.round(scaledValue);
@@ -191,7 +195,7 @@ export class SkyNumericService {
       const newExp = scaleUp ? (Number(exp) + scalar) : (Number(exp) - scalar);
       return Number(`${base}e${newExp}`);
     } else {
-      const e = scaleUp ? 'e'  : 'e-';
+      const e = scaleUp ? 'e' : 'e-';
       return Number(`${value}${e}${scalar}`);
     }
   }

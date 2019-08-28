@@ -3,14 +3,20 @@ import {
 } from '@skyux/i18n/testing/lib-resources-test.service';
 
 import {
+  SkyIntlNumberFormatStyle
+} from '@skyux/i18n/modules/i18n/intl-number-format-style';
+
+import {
+  SkyNumberFormatUtility
+} from '../shared/number-format/number-format-utility';
+
+import {
   NumericOptions
 } from './numeric.options';
 
 import {
   SkyNumericService
 } from './numeric.service';
-import { SkyNumberFormatUtility } from './number-format-utility';
-import { SkyIntlNumberFormatStyle } from '@skyux/i18n/modules/i18n/intl-number-format-style';
 
 const skyNumeric = new SkyNumericService(
   new SkyLibResourcesTestService() as any
