@@ -1,3 +1,7 @@
+# 3.7.0 (2019-09-11)
+
+- Added `getFocusableChildren()` method that returns an array of all focusable children for a provided `element`. [#99](https://github.com/blackbaud/skyux-core/pull/99)
+
 # 3.6.1 (2019-07-23)
 
 - Fixed `SkyMediaQueryService` to complete its observables when the consuming component is destroyed. [#86](https://github.com/blackbaud/skyux-core/pull/86)
