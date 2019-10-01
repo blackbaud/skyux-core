@@ -62,7 +62,7 @@ describe('Percent pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValue = '86.75%';
-    expect(expectedValue).toEqual(value);
+    expect(value).toEqual(expectedValue);
   });
 
   it('should ignore empty values', () => {
@@ -89,7 +89,7 @@ describe('Percent pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValue = '86.75309%';
-    expect(expectedValue).toEqual(value);
+    expect(value).toEqual(expectedValue);
   });
 
   it('should support Angular digitsInfo formats - testing maxFractionDigits', () => {
@@ -97,7 +97,7 @@ describe('Percent pipe', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
     const expectedValue = '86.75309%';
-    expect(expectedValue).toEqual(value);
+    expect(value).toEqual(expectedValue);
   });
 
   it('should default to the 1.0-2 digitsInfo format', () => {
@@ -110,7 +110,7 @@ describe('Percent pipe', () => {
     fixture.detectChanges();
     value = fixture.nativeElement.textContent.trim();
     expectedValue = '86%';
-    expect(expectedValue).toEqual(value);
+    expect(value).toEqual(expectedValue);
   });
 
   it('should support changing locale inline', () => {
@@ -120,7 +120,7 @@ describe('Percent pipe', () => {
     // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
     // for the space (which is what angular returns in this case).
     const expectedValue = '86,75 %'.replace(' ', ' ');
-    expect(expectedValue).toEqual(value);
+    expect(value).toEqual(expectedValue);
   });
 
   it('should respect locale set by SkyAppLocaleProvider', () => {
@@ -129,7 +129,7 @@ describe('Percent pipe', () => {
 
     let value = fixture.nativeElement.textContent.trim();
     let expectedValue = '123.55%';
-    expect(expectedValue).toEqual(value);
+    expect(value).toEqual(expectedValue);
 
     mockLocaleStream.next({
       locale: 'fr-CA'
@@ -142,7 +142,7 @@ describe('Percent pipe', () => {
     // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
     // for the space (which is what angular returns in this case).
     expectedValue = '123,55 %'.replace(' ', ' ');
-    expect(expectedValue).toEqual(value);
+    expect(value).toEqual(expectedValue);
   });
 
   it('should default to en-US locale', () => {
@@ -167,6 +167,6 @@ describe('Percent pipe', () => {
       'fr-CA'
     );
 
-    expect(expectedValue).toEqual(result);
+    expect(result).toEqual(expectedValue);
   });
 });
