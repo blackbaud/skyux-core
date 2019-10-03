@@ -9,6 +9,10 @@ import {
   SkyMediaBreakpoints
 } from '../media-query';
 
+import {
+  SkyFocusableChildrenOptions
+} from './focusable-children-options';
+
 const SKY_TABBABLE_SELECTOR = [
   'a[href]',
   'area[href]',
@@ -148,25 +152,18 @@ export class SkyCoreAdapterService {
    * Returns an array of all focusable children of provided `element`.
    *
    * @param element - The HTMLElement to search within.
-   * @param ignoreTabIndex - By default, this function will filter out elements with
-   * a `tabIndex` of `-1`. Setting `ignoreTabIndex = true` will ignore this filter.
-   * @param ignoreVisibility - By default, this function will only return visible elements.
-   * Setting `ignoreVisibility = true` will ignore this filter.
+   * @param options - Options for getting focusable children.
    */
-  public getFocusableChildren(
-    element: HTMLElement,
-    ignoreTabIndex: boolean = false,
-    ignoreVisibility: boolean = false
-  ): HTMLElement[] {
+  public getFocusableChildren(element: HTMLElement, options?: SkyFocusableChildrenOptions): HTMLElement[] {
     let elements: Array<HTMLElement>;
 
-    if (ignoreTabIndex) {
+    if (options && options.ignoreTabIndex) {
       elements = Array.prototype.slice.call(element.querySelectorAll(SKY_TABBABLE_SELECTOR_IGNORE_TABINDEX));
     } else {
       elements = Array.prototype.slice.call(element.querySelectorAll(SKY_TABBABLE_SELECTOR));
     }
 
-    if (ignoreVisibility) {
+    if (options && options.ignoreVisibility) {
       return elements;
     }
 
