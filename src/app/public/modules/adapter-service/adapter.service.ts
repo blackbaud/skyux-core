@@ -23,6 +23,19 @@ const SKY_TABBABLE_SELECTOR = [
   '*[contenteditable=true]'
 ].join(', ');
 
+const SKY_TABBABLE_SELECTOR_IGNORE_TABINDEX = [
+  'a[href]',
+  'area[href]',
+  'input:not([disabled])',
+  'button:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'iframe',
+  'object',
+  'embed',
+  '*[contenteditable=true]'
+].join(', ');
+
 @Injectable()
 export class SkyCoreAdapterService {
 
@@ -135,10 +148,27 @@ export class SkyCoreAdapterService {
    * Returns an array of all focusable children of provided `element`.
    *
    * @param element - The HTMLElement to search within.
+   * @param ignoreTabIndex - By default, this function will filter out elements with
+   * a `tabIndex` of `-1`. Setting `ignoreTabIndex = true` will ignore this filter.
+   * @param ignoreVisibility - By default, this function will only return visible elements.
+   * Setting `ignoreVisibility = true` will ignore this filter.
    */
-  public getFocusableChildren(element: HTMLElement): HTMLElement[] {
-    const elements: Array<HTMLElement>
-      = Array.prototype.slice.call(element.querySelectorAll(SKY_TABBABLE_SELECTOR));
+  public getFocusableChildren(
+    element: HTMLElement,
+    ignoreTabIndex: boolean = false,
+    ignoreVisibility: boolean = false
+  ): HTMLElement[] {
+    let elements: Array<HTMLElement>;
+
+    if (ignoreTabIndex) {
+      elements = Array.prototype.slice.call(element.querySelectorAll(SKY_TABBABLE_SELECTOR_IGNORE_TABINDEX));
+    } else {
+      elements = Array.prototype.slice.call(element.querySelectorAll(SKY_TABBABLE_SELECTOR));
+    }
+
+    if (ignoreVisibility) {
+      return elements;
+    }
 
     return elements.filter((el) => {
       return this.isVisible(el);
