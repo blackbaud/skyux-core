@@ -32,6 +32,7 @@ describe('Percent pipe', () => {
   let fixture: ComponentFixture<PercentPipeTestComponent>;
   let mockLocaleProvider: SkyAppLocaleProvider;
   let mockLocaleStream: BehaviorSubject<SkyAppLocaleInfo>;
+  let isIE = navigator.userAgent.indexOf('.NET CLR') > -1;
 
   beforeEach(() => {
     mockLocaleStream = new BehaviorSubject({
@@ -61,8 +62,13 @@ describe('Percent pipe', () => {
   it('should format a string object', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    const expectedValue = '86.75%';
-    expect(value).toEqual(expectedValue);
+    if (!isIE) {
+      const expectedValue = '86.75%';
+      expect(value).toEqual(expectedValue);
+    } else {
+      const expectedValue = '86.75 %';
+      expect(value).toEqual(expectedValue);
+    }
   });
 
   it('should ignore empty values', () => {
@@ -88,29 +94,53 @@ describe('Percent pipe', () => {
     fixture.componentInstance.format = '1.5-6';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    const expectedValue = '86.75309%';
-    expect(value).toEqual(expectedValue);
+    if (!isIE) {
+      const expectedValue = '86.75309%';
+      expect(value).toEqual(expectedValue);
+    } else {
+      const expectedValue = '86.75309 %';
+      expect(value).toEqual(expectedValue);
+    }
   });
 
   it('should support Angular digitsInfo formats - testing maxFractionDigits', () => {
     fixture.componentInstance.format = '1.3-5';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    const expectedValue = '86.75309%';
-    expect(value).toEqual(expectedValue);
+    if (!isIE) {
+      const expectedValue = '86.75309%';
+      expect(value).toEqual(expectedValue);
+    } else {
+      const expectedValue = '86.75309 %';
+      expect(value).toEqual(expectedValue);
+    }
   });
 
   it('should default to the 1.0-2 digitsInfo format', () => {
     fixture.componentInstance.format = undefined;
     fixture.detectChanges();
     let value = fixture.nativeElement.textContent.trim();
-    let expectedValue = '86.75%';
-    expect(expectedValue).toEqual(value);
+    let expectedValue: string;
+
+    if (!isIE) {
+      expectedValue = '86.75%';
+      expect(value).toEqual(expectedValue);
+    } else {
+      expectedValue = '86.75 %';
+      expect(value).toEqual(expectedValue);
+    }
+
     fixture.componentInstance.numberValue = '.86';
     fixture.detectChanges();
     value = fixture.nativeElement.textContent.trim();
-    expectedValue = '86%';
-    expect(value).toEqual(expectedValue);
+
+    if (!isIE) {
+      expectedValue = '86%';
+      expect(value).toEqual(expectedValue);
+    } else {
+      expectedValue = '86 %';
+      expect(value).toEqual(expectedValue);
+    }
   });
 
   it('should support changing locale inline', () => {
@@ -147,10 +177,15 @@ describe('Percent pipe', () => {
 
   it('should default to en-US locale', () => {
     const pipe = new SkyPercentPipe(mockLocaleProvider);
-    const expectedValue = '123.5487%';
 
     const value = pipe.transform('1.235487', '1.0-4');
-    expect(expectedValue).toEqual(value);
+    if (!isIE) {
+      const expectedValue = '123.5487%';
+      expect(value).toEqual(expectedValue);
+    } else {
+      const expectedValue = '123.5487 %';
+      expect(value).toEqual(expectedValue);
+    }
     expect(pipe['defaultLocale']).toEqual('en-US');
   });
 
