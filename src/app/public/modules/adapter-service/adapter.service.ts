@@ -14,16 +14,15 @@ import {
 } from './focusable-children-options';
 
 const SKY_TABBABLE_SELECTOR = [
-  'a[href]',
-  'area[href]',
+  'a[href]:not([tabindex=\'-1\'])',
+  'area[href]:not([tabindex=\'-1\'])',
   'input:not([disabled]):not([tabindex=\'-1\'])',
   'button:not([disabled]):not([tabindex=\'-1\'])',
   'select:not([disabled]):not([tabindex=\'-1\'])',
   'textarea:not([disabled]):not([tabindex=\'-1\'])',
-  'iframe',
-  'object',
-  'embed',
-  '*[tabindex]:not([tabindex=\'-1\'])',
+  'iframe:not([tabindex=\'-1\'])',
+  'object:not([tabindex=\'-1\'])',
+  'embed:not([tabindex=\'-1\'])',
   '*[contenteditable=true]'
 ].join(', ');
 
