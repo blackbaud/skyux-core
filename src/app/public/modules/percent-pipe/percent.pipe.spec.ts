@@ -158,8 +158,14 @@ describe('Percent pipe', () => {
     fixture.detectChanges();
 
     let value = fixture.nativeElement.textContent.trim();
-    let expectedValue = '123.55%';
-    expect(value).toEqual(expectedValue);
+    let expectedValue: string;
+    if (!isIE) {
+      expectedValue = '123.55%';
+      expect(value).toEqual(expectedValue);
+    } else {
+      expectedValue = '123.55 %';
+      expect(value).toEqual(expectedValue);
+    }
 
     mockLocaleStream.next({
       locale: 'fr-CA'
@@ -169,10 +175,15 @@ describe('Percent pipe', () => {
 
     value = fixture.nativeElement.textContent.trim();
 
-    // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
-    // for the space (which is what angular returns in this case).
-    expectedValue = '123,55 %'.replace(' ', ' ');
-    expect(value).toEqual(expectedValue);
+    if (!isIE) {
+      // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
+      // for the space (which is what angular returns in this case).
+      expectedValue = '123,55 %'.replace(' ', ' ');
+      expect(value).toEqual(expectedValue);
+    } else {
+      expectedValue = '123,55 %';
+      expect(value).toEqual(expectedValue);
+    }
   });
 
   it('should default to en-US locale', () => {
