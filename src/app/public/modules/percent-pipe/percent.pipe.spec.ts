@@ -147,10 +147,16 @@ describe('Percent pipe', () => {
     fixture.componentInstance.locale = 'fr-CA';
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();
-    // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
-    // for the space (which is what angular returns in this case).
-    const expectedValue = '86,75 %'.replace(' ', ' ');
-    expect(value).toEqual(expectedValue);
+
+    if (!isIE) {
+      // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
+      // for the space (which is what angular returns in this case).
+      const expectedValue = '86,75 %'.replace(' ', ' ');
+      expect(value).toEqual(expectedValue);
+    } else {
+      const expectedValue = '86,75 %';
+      expect(value).toEqual(expectedValue);
+    }
   });
 
   it('should respect locale set by SkyAppLocaleProvider', () => {
@@ -203,16 +209,20 @@ describe('Percent pipe', () => {
   it('should work as an injectable', () => {
     fixture.detectChanges();
 
-    // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
-    // for the space (which is what angular returns in this case).
-    const expectedValue = '123,5487 %'.replace(' ', ' ');
-
     const result = fixture.componentInstance.getDatePipeResult(
       '1.235487',
       '1.0-4',
       'fr-CA'
     );
 
-    expect(result).toEqual(expectedValue);
+    if (!isIE) {
+      // NOTE: The replacement here is to ensure that we have unicode character #160 instead of #32
+      // for the space (which is what angular returns in this case).
+      const expectedValue = '123,5487 %'.replace(' ', ' ');
+      expect(result).toEqual(expectedValue);
+    } else {
+      const expectedValue = '123,5487 %';
+      expect(result).toEqual(expectedValue);
+    }
   });
 });
