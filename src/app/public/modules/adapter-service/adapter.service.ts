@@ -14,19 +14,6 @@ import {
 } from './focusable-children-options';
 
 const SKY_TABBABLE_SELECTOR = [
-  'a[href]:not([tabindex=\'-1\'])',
-  'area[href]:not([tabindex=\'-1\'])',
-  'input:not([disabled]):not([tabindex=\'-1\'])',
-  'button:not([disabled]):not([tabindex=\'-1\'])',
-  'select:not([disabled]):not([tabindex=\'-1\'])',
-  'textarea:not([disabled]):not([tabindex=\'-1\'])',
-  'iframe:not([tabindex=\'-1\'])',
-  'object:not([tabindex=\'-1\'])',
-  'embed:not([tabindex=\'-1\'])',
-  '*[contenteditable=true]'
-].join(', ');
-
-const SKY_TABBABLE_SELECTOR_IGNORE_TABINDEX = [
   'a[href]',
   'area[href]',
   'input:not([disabled])',
@@ -154,21 +141,23 @@ export class SkyCoreAdapterService {
    * @param options - Options for getting focusable children.
    */
   public getFocusableChildren(element: HTMLElement, options?: SkyFocusableChildrenOptions): HTMLElement[] {
-    let elements: Array<HTMLElement>;
+    let elements = Array.prototype.slice.call(element.querySelectorAll(SKY_TABBABLE_SELECTOR));
 
-    if (options && options.ignoreTabIndex) {
-      elements = Array.prototype.slice.call(element.querySelectorAll(SKY_TABBABLE_SELECTOR_IGNORE_TABINDEX));
-    } else {
-      elements = Array.prototype.slice.call(element.querySelectorAll(SKY_TABBABLE_SELECTOR));
+    // Unless ignoreTabIndex = true, filter out elements with tabindex = -1.
+    if (!options || !options.ignoreTabIndex) {
+      elements = elements.filter((el: HTMLElement) => {
+        return el.tabIndex !== -1;
+      });
     }
 
-    if (options && options.ignoreVisibility) {
-      return elements;
+    // Unless ignoreVisibility = true, filter out elements that are not visible.
+    if (!options || !options.ignoreVisibility) {
+      elements = elements.filter((el: HTMLElement) => {
+        return this.isVisible(el);
+      });
     }
 
-    return elements.filter((el) => {
-      return this.isVisible(el);
-    });
+    return elements;
   }
 
   private focusFirstElement(list: Array<HTMLElement>): boolean {
