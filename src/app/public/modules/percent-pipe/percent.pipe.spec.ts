@@ -32,7 +32,7 @@ describe('Percent pipe', () => {
   let fixture: ComponentFixture<PercentPipeTestComponent>;
   let mockLocaleProvider: SkyAppLocaleProvider;
   let mockLocaleStream: BehaviorSubject<SkyAppLocaleInfo>;
-  let isIE = navigator.userAgent.indexOf('.NET CLR') > -1;
+  const isIE = navigator.userAgent.indexOf('.NET CLR') > -1;
 
   beforeEach(() => {
     mockLocaleStream = new BehaviorSubject({
