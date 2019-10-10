@@ -1,4 +1,4 @@
-# 3.7.1 (2019-10-10)
+# 3.8.0 (2019-10-10)
 
 - Updated `getFocusableChildren()` method to make filtering optional for tab index and visibility. [#104](https://github.com/blackbaud/skyux-core/pull/104)
 
