@@ -119,7 +119,7 @@ describe('Core adapter service', () => {
       expect(document.activeElement).toEqual(nonAutoFocusInput);
 
       // Remove the autofocus element from DOM. Run applyAutoFocus.
-      autoFocusElement.remove();
+      autoFocusElement.parentNode.removeChild(autoFocusElement);
       const actual = component.applyAutoFocus(fixture);
 
       // Expect focus to have not been moved.
