@@ -11,10 +11,15 @@ import {
 } from './demos/dynamic-component/dynamic-component-example.component';
 
 import {
+  OverlayDemoExampleComponent
+} from './demos/overlay/overlay-demo-example.component';
+
+import {
   SkyCoreAdapterModule,
   SkyDynamicComponentModule,
   SkyMediaQueryModule,
-  SkyNumericModule
+  SkyNumericModule,
+  SkyOverlayModule
 } from './public';
 
 @NgModule({
@@ -23,10 +28,12 @@ import {
     SkyCoreAdapterModule,
     SkyDynamicComponentModule,
     SkyMediaQueryModule,
-    SkyNumericModule
+    SkyNumericModule,
+    SkyOverlayModule
   ],
   entryComponents: [
-    DynamicComponentDemoExampleComponent
+    DynamicComponentDemoExampleComponent,
+    OverlayDemoExampleComponent
   ]
 })
 export class AppExtrasModule { }
