@@ -13,8 +13,13 @@ import {
   Subject
 } from 'rxjs';
 
-import { SkyOverlayConfig } from './overlay-config';
-import { SkyOverlayInstance } from './overlay-instance';
+import {
+  SkyOverlayConfig
+} from './overlay-config';
+
+import {
+  SkyOverlayInstance
+} from './overlay-instance';
 
 import {
   SkyOverlayComponent
@@ -38,13 +43,10 @@ export class SkyOverlayHostComponent implements OnDestroy {
     private resolver: ComponentFactoryResolver
   ) { }
 
-  public attach<T>(
-    component: Type<T>,
-    config: SkyOverlayConfig
-  ): SkyOverlayInstance<T> {
+  public attach<T>(component: Type<T>, config: SkyOverlayConfig): SkyOverlayInstance<T> {
 
     const injector = Injector.create({
-      providers: [],
+      providers: config.providers,
       parent: this.injector
     });
 

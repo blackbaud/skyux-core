@@ -12,71 +12,49 @@ import { SkyOverlayDomAdapterService } from './overlay-dom-adapter.service';
 import { SkyOverlayHostComponent } from './overlay-host.component';
 import { SkyOverlayInstance } from './overlay-instance';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyOverlayService implements OnDestroy {
 
   private host: ComponentRef<SkyOverlayHostComponent>;
 
-  private instances: SkyOverlayInstance<any>[] = [];
-
   constructor(
     private dynamicComponentService: SkyDynamicComponentService,
     private adapter: SkyOverlayDomAdapterService
-  ) { }
+  ) {
+    this.createHostComponent();
+  }
 
   public ngOnDestroy(): void {
+    this.adapter.releaseBodyScroll();
     this.removeHostComponent();
   }
 
-  public attach<T>(
-    component: Type<T>,
-    config?: SkyOverlayConfig
-  ): SkyOverlayInstance<T> {
-
+  public attach<T>(component: Type<T>, config?: SkyOverlayConfig): SkyOverlayInstance<T> {
     const defaults: SkyOverlayConfig = {
-      destroyOnOverlayClick: true,
+      destroyOnBackdropClick: false,
       keepAfterNavigationChange: false,
       preventBodyScroll: false,
       showBackdrop: false
     };
 
-    const settings = Object.assign(defaults, config || {});
-
-    this.ensureHostExists();
+    const settings = Object.assign({}, defaults, config || {});
 
     if (settings.preventBodyScroll) {
       this.adapter.restrictBodyScroll();
     }
 
-    const instance = this.host.instance.attach(component, settings);
-
-    instance.destroyed.subscribe(() => {
-      this.instances.splice(this.instances.indexOf(instance), 1);
-      if (this.instances.length === 0) {
-        this.removeHostComponent();
-      }
-    });
-
-    this.instances.push(instance);
-
-    return instance;
+    return this.host.instance.attach(component, settings);
   }
 
-  private createHostComponent(): ComponentRef<SkyOverlayHostComponent> {
-    return this.dynamicComponentService.createComponent(SkyOverlayHostComponent);
-  }
-
-  private ensureHostExists(): ComponentRef<SkyOverlayHostComponent> {
-    if (!this.host) {
-      this.host = this.createHostComponent();
-    }
-
-    return this.host;
+  private createHostComponent(): void {
+    this.host = this.dynamicComponentService.createComponent(SkyOverlayHostComponent);
   }
 
   private removeHostComponent(): void {
     this.dynamicComponentService.removeComponent(this.host);
     this.host = undefined;
-    this.adapter.releaseBodyScroll();
   }
+
 }

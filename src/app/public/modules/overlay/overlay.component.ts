@@ -9,7 +9,8 @@ import {
   OnInit,
   Type,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  ComponentRef
 } from '@angular/core';
 
 import {
@@ -27,8 +28,13 @@ import {
   takeUntil
 } from 'rxjs/operators';
 
-import { SkyOverlayConfig } from './overlay-config';
-import { SkyOverlayInstance } from './overlay-instance';
+import {
+  SkyOverlayConfig
+} from './overlay-config';
+
+import {
+  SkyOverlayInstance
+} from './overlay-instance';
 
 @Component({
   selector: 'sky-overlay',
@@ -38,6 +44,9 @@ import { SkyOverlayInstance } from './overlay-instance';
 })
 export class SkyOverlayComponent implements OnInit, OnDestroy {
 
+  /**
+   * @internal
+   */
   public get destroyed(): Observable<void> {
     return this._destroyed;
   }
@@ -49,8 +58,10 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   @ViewChild('target', { read: ViewContainerRef })
   private targetRef: ViewContainerRef;
 
-  private destroyOnOverlayClick = true;
+  private destroyOnBackdropClick = true;
+
   private instance: SkyOverlayInstance<any>;
+
   private ngUnsubscribe = new Subject<void>();
 
   private _destroyed = new Subject<void>();
@@ -64,15 +75,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   ) { }
 
   public ngOnInit(): void {
-    fromEvent(this.elementRef.nativeElement, 'click')
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(() => {
-        if (this.destroyOnOverlayClick) {
-          this.instance.destroy();
-        }
-      });
+    this.addEventListeners();
   }
 
   public ngOnDestroy(): void {
@@ -82,18 +85,9 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   }
 
   public attach<T>(component: Type<T>, config: SkyOverlayConfig): SkyOverlayInstance<T> {
-    const overlayInstance = new SkyOverlayInstance<T>();
+    const instance = new SkyOverlayInstance<T>();
 
-    const defaultProviders: any[] = [];
-    config.providers = defaultProviders.concat(config && config.providers || []);
-
-    const injector = Injector.create({
-      providers: config.providers,
-      parent: this.injector
-    });
-
-    const factory = this.resolver.resolveComponentFactory(component);
-    const componentRef = this.targetRef.createComponent(factory, undefined, injector);
+    const componentRef = this.createComponent(component, config);
 
     this.router.events
       .pipe(
@@ -104,23 +98,47 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
           if (config.keepAfterNavigationChange) {
             config.keepAfterNavigationChange = false;
           } else {
-            overlayInstance.destroy();
+            instance.destroy();
           }
         }
       });
 
-    overlayInstance.componentInstance = componentRef.instance;
-    overlayInstance.destroyed.subscribe(() => {
+    instance.componentInstance = componentRef.instance;
+
+    instance.destroyed.subscribe(() => {
       componentRef.destroy();
       this._destroyed.next();
     });
 
-    this.instance = overlayInstance;
-    this.allowClickThrough = (!config.showBackdrop && !config.destroyOnOverlayClick);
+    this.instance = instance;
+    this.allowClickThrough = (!config.showBackdrop && !config.destroyOnBackdropClick);
     this.showBackdrop = config.showBackdrop;
-    this.destroyOnOverlayClick = config.destroyOnOverlayClick;
+    this.destroyOnBackdropClick = config.destroyOnBackdropClick;
+
     this.changeDetector.markForCheck();
 
-    return overlayInstance;
+    return instance;
+  }
+
+  private createComponent<T>(component: Type<T>, config: SkyOverlayConfig): ComponentRef<T> {
+    const factory = this.resolver.resolveComponentFactory(component);
+    const injector = Injector.create({
+      providers: config.providers || [],
+      parent: this.injector
+    });
+
+    return this.targetRef.createComponent(factory, undefined, injector);
+  }
+
+  private addEventListeners(): void {
+    fromEvent(this.elementRef.nativeElement, 'click')
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => {
+        if (this.destroyOnBackdropClick) {
+          this.instance.destroy();
+        }
+      });
   }
 }

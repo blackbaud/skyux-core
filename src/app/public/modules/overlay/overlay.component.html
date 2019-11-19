@@ -8,9 +8,12 @@
     class="sky-overlay-content"
     (click)="$event.stopPropagation();"
   >
-    <ng-template #target>
+    <ng-template
+      #target
+    >
     </ng-template>
   </div>
-  <div *ngIf="showBackdrop" class="sky-overlay-backdrop">
-  </div>
+  <div *ngIf="showBackdrop"
+    class="sky-overlay-backdrop"
+  ></div>
 </div>

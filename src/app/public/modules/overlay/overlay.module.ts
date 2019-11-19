@@ -1,21 +1,30 @@
 import {
-  NgModule
-} from '@angular/core';
-
-import {
   CommonModule
 } from '@angular/common';
+
+import {
+  NgModule
+} from '@angular/core';
 
 import {
   RouterModule
 } from '@angular/router';
 
-import { SkyAppWindowRef } from '../window';
+import {
+  SkyAppWindowRef
+} from '../window/window-ref';
 
-import { SkyOverlayDomAdapterService } from './overlay-dom-adapter.service';
-import { SkyOverlayHostComponent } from './overlay-host.component';
-import { SkyOverlayComponent } from './overlay.component';
-import { SkyOverlayService } from './overlay.service';
+import {
+  SkyOverlayDomAdapterService
+} from './overlay-dom-adapter.service';
+
+import {
+  SkyOverlayHostComponent
+} from './overlay-host.component';
+
+import {
+  SkyOverlayComponent
+} from './overlay.component';
 
 @NgModule({
   imports: [
@@ -32,7 +41,6 @@ import { SkyOverlayService } from './overlay.service';
   ],
   providers: [
     SkyOverlayDomAdapterService,
-    SkyOverlayService,
     SkyAppWindowRef
   ]
 })

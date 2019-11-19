@@ -5,7 +5,9 @@ import {
   RendererFactory2
 } from '@angular/core';
 
-import { SkyAppWindowRef } from '../window';
+import {
+  SkyAppWindowRef
+} from '../window/window-ref';
 
 @Injectable()
 export class SkyOverlayDomAdapterService {

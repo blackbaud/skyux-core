@@ -4,13 +4,13 @@ import {
 
 export interface SkyOverlayConfig {
 
-  destroyOnOverlayClick?: boolean;
+  destroyOnBackdropClick?: boolean;
 
   keepAfterNavigationChange?: boolean;
 
-  providers?: StaticProvider[];
-
   preventBodyScroll?: boolean;
+
+  providers?: StaticProvider[];
 
   showBackdrop?: boolean;
 
