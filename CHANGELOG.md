@@ -1,3 +1,17 @@
+# 3.9.0 (2019-11-22)
+
+- Added deprecation messages to the `SkyFormat` and `SkyWindowRefService` utilities. We will remove `SkyFormat` and `SkyWindowRefService` in the next major version release. We recommend replacing them with `SkyAppFormat` and `SkyAppWindowRef`. [#110](https://github.com/blackbaud/skyux-core/pull/110)
+
+# 3.8.0 (2019-10-10)
+
+- Updated the `getFocusableChildren()` method on `SkyCoreAdapterService` to make filtering optional for tab index and visibility. [#104](https://github.com/blackbaud/skyux-core/pull/104)
+
+# 3.7.0 (2019-09-11)
+
+- Added the `getFocusableChildren()` method to return an array of all focusable children for a provided `element`. [#99](https://github.com/blackbaud/skyux-core/pull/99)
+- Added the `SkyPercentPipe` to allow for easy conversion of numbers to their percent form. [#95](https://github.com/blackbaud/skyux-core/pull/95)
+- Fixed the numeric service to properly round numbers with high signficant digits. [#98](https://github.com/blackbaud/skyux-core/pull/98) (Thanks [@Blackbaud-ThomasOrtiz](https://github.com/Blackbaud-ThomasOrtiz)!)
+
 # 3.6.1 (2019-07-23)
 
 - Fixed `SkyMediaQueryService` to complete its observables when the consuming component is destroyed. [#86](https://github.com/blackbaud/skyux-core/pull/86)
@@ -25,7 +39,7 @@
 
 # 3.4.0 (2018-11-29)
 
-- Added `SkyDynamicComponentService` which provides the ability to inject entry components onto the page dynamically. [#44](https://github.com/blackbaud/skyux-core/pull/44)
+- Added `SkyDynamicComponentService` to provide the ability to inject entry components onto the page dynamically. [#44](https://github.com/blackbaud/skyux-core/pull/44)
 
 # 3.3.0 (2018-11-15)
 
