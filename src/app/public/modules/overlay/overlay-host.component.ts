@@ -11,7 +11,7 @@ import {
 
 import {
   Subject
-} from 'rxjs';
+} from 'rxjs/Subject';
 
 import {
   SkyOverlayConfig
@@ -39,24 +39,25 @@ export class SkyOverlayHostComponent implements OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private injector: Injector,
-    private resolver: ComponentFactoryResolver
+    private resolver: ComponentFactoryResolver,
+    private injector: Injector
   ) { }
 
   public attach<T>(component: Type<T>, config: SkyOverlayConfig): SkyOverlayInstance<T> {
+    const factory = this.resolver.resolveComponentFactory(SkyOverlayComponent);
 
     const injector = Injector.create({
       providers: config.providers,
       parent: this.injector
     });
 
-    const factory = this.resolver.resolveComponentFactory(SkyOverlayComponent);
     const componentRef = this.targetRef.createComponent(factory, undefined, injector);
     const instance = componentRef.instance.attach(component, config);
 
-    componentRef.instance.destroyed.subscribe(() => {
-      componentRef.destroy();
-    });
+    componentRef.instance.destroyed
+      .subscribe(() => {
+        componentRef.destroy();
+      });
 
     return instance;
   }

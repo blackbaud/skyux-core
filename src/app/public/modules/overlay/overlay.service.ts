@@ -5,12 +5,25 @@ import {
   Type
 } from '@angular/core';
 
-import { SkyDynamicComponentService } from '../dynamic-component';
+import {
+  SkyDynamicComponentService
+} from '../dynamic-component';
 
-import { SkyOverlayConfig } from './overlay-config';
-import { SkyOverlayDomAdapterService } from './overlay-dom-adapter.service';
-import { SkyOverlayHostComponent } from './overlay-host.component';
-import { SkyOverlayInstance } from './overlay-instance';
+import {
+  SkyOverlayConfig
+} from './overlay-config';
+
+import {
+  SkyOverlayDomAdapterService
+} from './overlay-dom-adapter.service';
+
+import {
+  SkyOverlayHostComponent
+} from './overlay-host.component';
+
+import {
+  SkyOverlayInstance
+} from './overlay-instance';
 
 @Injectable({
   providedIn: 'root'

@@ -26,20 +26,16 @@ export class OverlayDemoComponent implements OnInit {
   public ngOnInit(): void {
   }
 
-  public launchOverlay1(): void {
-    this.launchOverlay({
-      destroyOnBackdropClick: true,
-      showBackdrop: true,
-      preventBodyScroll: true
-    });
+  public launchDefaultOverlay(): void {
+    this.launchOverlay({});
   }
 
-  public launchOverlay2(): void {
+  public launchCustomOverlay(): void {
     this.launchOverlay({
-      destroyOnBackdropClick: false,
-      showBackdrop: false,
-      preventBodyScroll: false,
-      keepAfterNavigationChange: true
+      destroyOnBackdropClick: true,
+      keepAfterNavigationChange: true,
+      preventBodyScroll: true,
+      showBackdrop: true
     });
   }
 

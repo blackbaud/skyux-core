@@ -122,6 +122,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private createComponent<T>(component: Type<T>, config: SkyOverlayConfig): ComponentRef<T> {
     const factory = this.resolver.resolveComponentFactory(component);
+
     const injector = Injector.create({
       providers: config.providers || [],
       parent: this.injector

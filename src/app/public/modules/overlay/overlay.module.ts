@@ -40,8 +40,8 @@ import {
     SkyOverlayHostComponent
   ],
   providers: [
-    SkyOverlayDomAdapterService,
-    SkyAppWindowRef
+    SkyAppWindowRef,
+    SkyOverlayDomAdapterService
   ]
 })
 export class SkyOverlayModule { }

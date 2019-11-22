@@ -4,7 +4,7 @@ import {
 
 import {
   Observable
-} from 'rxjs';
+} from 'rxjs/Observable';
 
 export class SkyOverlayInstance<T> {
   public componentInstance: T;
