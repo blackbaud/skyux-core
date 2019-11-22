@@ -1,3 +1,7 @@
+# 3.9.0 (2019-11-22)
+
+- Added deprecation messages to `SkyFormat` and `SkyWindowRefService` utilities. We recommend replacing these with `SkyAppFormat` and `SkyAppWindowRef`, respectively, as they will be removed in the next major version release. [#110](https://github.com/blackbaud/skyux-core/pull/110)
+
 # 3.8.0 (2019-10-10)
 
 - Updated the `getFocusableChildren()` method on `SkyCoreAdapterService` to make filtering optional for tab index and visibility. [#104](https://github.com/blackbaud/skyux-core/pull/104)
