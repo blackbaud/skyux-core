@@ -4,7 +4,7 @@ export {
 } from './app-format';
 
 /**
- * @deprecated Please use `SkyAppFormat` instead.
+ * @deprecated Use `SkyAppFormat` instead.
  */
 export class SkyFormat {
 

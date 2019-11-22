@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 /**
- * @deprecated Please use `SkyAppWindowRef` instead.
+ * @deprecated Use `SkyAppWindowRef` instead.
  */
 @Injectable()
 export class SkyWindowRefService {
