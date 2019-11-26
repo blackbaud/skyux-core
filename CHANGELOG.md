@@ -1,6 +1,6 @@
 # 3.10.0 (2019-11-26)
 
-- Added `SkyAppTitleService` that implements basic logic for setting the window's title. SKY UX Builder will replace this service with an alternate implementation when the omnibar is present, so that additional information like the selected service name and number of unread notifications can be added to the title. [#113](https://github.com/blackbaud/skyux-core/pull/113)
+- Added `SkyAppTitleService` to implement basic logic for setting the window's title. SKY UX Builder replaces this service with an alternate implementation when the omnibar is present so that additional information such as the name of the selected service and the number of unread notifications can be added to the title. [#113](https://github.com/blackbaud/skyux-core/pull/113)
 
 # 3.9.0 (2019-11-22)
 
