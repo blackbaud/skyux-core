@@ -97,6 +97,14 @@ export class SkyAffixService {
     const subjectRect = subject.nativeElement.getBoundingClientRect();
     const targetRect = target.nativeElement.getBoundingClientRect();
 
+    const { top, left } = this.getPreferredCoordinates(subjectRect, targetRect, settings);
+    const { top: adjustedTop, left: adjustedLeft } = this.getCoordinatesAdjustedToViewport(top, left, targetRect);
+
+    this.renderer.setStyle(subject.nativeElement, 'top', `${adjustedTop}px`);
+    this.renderer.setStyle(subject.nativeElement, 'left', `${adjustedLeft}px`);
+  }
+
+  private getPreferredCoordinates(subjectRect: ClientRect, targetRect: ClientRect, settings: SkyAffixConfig): { top: number, left: number} {
     let top: number;
     switch (settings.verticalAlignment) {
 
@@ -131,6 +139,13 @@ export class SkyAffixService {
         break;
     }
 
+    return {
+      top,
+      left
+    };
+  }
+
+  private getCoordinatesAdjustedToViewport(top: number, left: number, targetRect: ClientRect): { top: number, left: number } {
     if (top < 0) {
       top = 0;
       if (targetRect.top < 0) {
@@ -145,7 +160,9 @@ export class SkyAffixService {
       }
     }
 
-    this.renderer.setStyle(subject.nativeElement, 'top', `${top}px`);
-    this.renderer.setStyle(subject.nativeElement, 'left', `${left}px`);
+    return {
+      top,
+      left
+    };
   }
 }
