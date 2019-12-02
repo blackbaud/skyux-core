@@ -53,12 +53,19 @@ export class SkyOverlayService implements OnDestroy {
     };
 
     const settings = Object.assign({}, defaults, config || {});
-
     if (settings.preventBodyScroll) {
       this.adapter.restrictBodyScroll();
     }
 
-    return this.host.instance.attach(component, settings);
+    const instance = this.host.instance.attach(component, settings);
+
+    instance.destroyed.subscribe(() => {
+      if (settings.preventBodyScroll) {
+        this.adapter.releaseBodyScroll();
+      }
+    });
+
+    return instance;
   }
 
   private createHostComponent(): void {

@@ -1,9 +1,1 @@
-export enum SkyAffixVerticalAlignment {
-
-  Top = 'top',
-
-  Bottom = 'bottom',
-
-  Middle = 'middle'
-
-}
+export type SkyAffixVerticalAlignment = 'top' | 'middle' | 'bottom';

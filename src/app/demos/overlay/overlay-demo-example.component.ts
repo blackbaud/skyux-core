@@ -1,5 +1,6 @@
 import {
-  Component
+  Component,
+  ElementRef
 } from '@angular/core';
 
 import {
@@ -13,6 +14,10 @@ import {
 export class OverlayDemoExampleComponent {
 
   public closeClicked = new Subject<void>();
+
+  constructor(
+    public elementRef: ElementRef
+  ) { }
 
   public close(): void {
     this.closeClicked.next();

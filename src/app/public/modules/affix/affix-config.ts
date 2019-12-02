@@ -12,4 +12,8 @@ export interface SkyAffixConfig {
 
   verticalAlignment?: SkyAffixVerticalAlignment;
 
+  isSticky?: boolean;
+
+  // keepWithinViewport?: boolean;
+
 }
