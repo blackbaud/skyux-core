@@ -1,6 +1,7 @@
 import {
   Component,
-  ElementRef
+  ElementRef,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import {
@@ -15,7 +16,19 @@ export class OverlayDemoExampleComponent {
 
   public closeClicked = new Subject<void>();
 
+  public set isVisible(value: boolean) {
+    this._isVisible = value;
+    this.changeDetector.markForCheck();
+  }
+
+  public get isVisible(): boolean {
+    return this._isVisible || false;
+  }
+
+  private _isVisible: boolean = true;
+
   constructor(
+    private changeDetector: ChangeDetectorRef,
     public elementRef: ElementRef
   ) { }
 

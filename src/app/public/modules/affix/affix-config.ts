@@ -1,19 +1,12 @@
-import {
-  SkyAffixHorizontalAlignment
-} from './affix-horizontal-alignment';
-
-import {
-  SkyAffixVerticalAlignment
-} from './affix-vertical-alignment';
+import { SkyAffixPlacement } from './affix-placement';
+import { SkyAffixHorizontalAlignment } from './affix-horizontal-alignment';
 
 export interface SkyAffixConfig {
 
-  horizontalAlignment?: SkyAffixHorizontalAlignment;
-
-  verticalAlignment?: SkyAffixVerticalAlignment;
-
   isSticky?: boolean;
 
-  // keepWithinViewport?: boolean;
+  placement?: SkyAffixPlacement;
+
+  horizontalAlignment?: SkyAffixHorizontalAlignment;
 
 }

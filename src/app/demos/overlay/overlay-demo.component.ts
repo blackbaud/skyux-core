@@ -6,11 +6,11 @@ import {
 } from '@angular/core';
 
 import {
-  SkyAffixConfig,
   SkyAffixService,
   SkyOverlayConfig,
   SkyOverlayInstance,
-  SkyOverlayService
+  SkyOverlayService,
+  SkyAffixConfig
 } from '../../public';
 
 import {
@@ -20,13 +20,14 @@ import {
 @Component({
   selector: 'sky-overlay-demo',
   templateUrl: './overlay-demo.component.html',
+  styleUrls: ['./overlay-demo.component.scss'],
   providers: [
     SkyAffixService
   ]
 })
 export class OverlayDemoComponent implements OnInit {
 
-  public affixOptions: SkyAffixConfig = {};
+  public affixOptions: SkyAffixConfig = { };
 
   public choices: {
     label: string;
@@ -37,72 +38,65 @@ export class OverlayDemoComponent implements OnInit {
       config: {}
     },
     {
-      label: 'Left, Top',
+      label: 'Above, left',
       config: {
         horizontalAlignment: 'left',
-        verticalAlignment: 'top'
+        placement: 'above'
       }
     },
     {
-      label: 'Left, Middle',
+      label: 'Above, center',
+      config: {
+        horizontalAlignment: 'center',
+        placement: 'above'
+      }
+    },
+    {
+      label: 'Above, right',
+      config: {
+        horizontalAlignment: 'right',
+        placement: 'above'
+      }
+    },
+    {
+      label: 'Below, left',
       config: {
         horizontalAlignment: 'left',
-        verticalAlignment: 'middle'
+        placement: 'below'
       }
     },
     {
-      label: 'Left, Bottom',
-      config: {
-        horizontalAlignment: 'left',
-        verticalAlignment: 'bottom'
-      }
-    },
-    {
-      label: 'Center, Top',
+      label: 'Below, center',
       config: {
         horizontalAlignment: 'center',
-        verticalAlignment: 'top'
+        placement: 'below'
       }
     },
     {
-      label: 'Center, Middle',
-      config: {
-        horizontalAlignment: 'center',
-        verticalAlignment: 'middle'
-      }
-    },
-    {
-      label: 'Center, Bottom',
-      config: {
-        horizontalAlignment: 'center',
-        verticalAlignment: 'bottom'
-      }
-    },
-    {
-      label: 'Right, Top',
+      label: 'Below, right',
       config: {
         horizontalAlignment: 'right',
-        verticalAlignment: 'top'
+        placement: 'below'
       }
     },
     {
-      label: 'Right, Middle',
+      label: 'Left',
       config: {
-        horizontalAlignment: 'right',
-        verticalAlignment: 'middle'
+        placement: 'left'
       }
     },
     {
-      label: 'Right, Bottom',
+      label: 'Right',
       config: {
-        horizontalAlignment: 'right',
-        verticalAlignment: 'bottom'
+        placement: 'right'
       }
     }
   ];
 
   @ViewChild('target')
   private target: ElementRef;
+
+  private instance: SkyOverlayInstance<OverlayDemoExampleComponent>;
 
   constructor(
     private affixService: SkyAffixService,
@@ -116,16 +110,16 @@ export class OverlayDemoComponent implements OnInit {
       c1 &&
       c2 &&
       c1.horizontalAlignment === c2.horizontalAlignment &&
-      c1.verticalAlignment === c2.verticalAlignment
+      c1.placement === c2.placement
     );
   }
 
   public launchDefaultOverlay(): void {
-    this.launchOverlay({});
+    this.instance = this.launchOverlay({});
   }
 
   public launchCustomOverlay(): void {
-    this.launchOverlay({
+    this.instance = this.launchOverlay({
       destroyOnBackdropClick: true,
       keepAfterNavigationChange: true,
       preventBodyScroll: true,
@@ -134,6 +128,10 @@ export class OverlayDemoComponent implements OnInit {
   }
 
   private launchOverlay(config: SkyOverlayConfig): SkyOverlayInstance<OverlayDemoExampleComponent> {
+    if (this.instance) {
+      this.instance.destroy();
+    }
+
     const instance = this.overlayService.attach(OverlayDemoExampleComponent, config);
 
     instance.destroyed.subscribe(() => {
@@ -145,17 +143,15 @@ export class OverlayDemoComponent implements OnInit {
       instance.destroy();
     });
 
-    this.affixService.affixTo(
-      instance.componentInstance.elementRef,
-      this.target,
-      Object.assign(
-        {},
-        {
-          isSticky: true
-        },
-        this.affixOptions
-      )
+    const affixer = this.affixService.createAffixer(
+      instance.componentInstance.elementRef
     );
+
+    affixer.targetVisibility.subscribe((args) => {
+      instance.componentInstance.isVisible = args.isVisible;
+    });
+
+    affixer.affixTo(this.target, this.affixOptions);
 
     return instance;
   }
