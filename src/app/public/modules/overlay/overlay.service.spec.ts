@@ -1,5 +1,10 @@
 import {
-  TestBed, ComponentFixture, async
+  ApplicationRef
+} from '@angular/core';
+
+import {
+  async,
+  TestBed
 } from '@angular/core/testing';
 
 import {
@@ -7,41 +12,61 @@ import {
 } from '@angular/router';
 
 import {
+  SkyAppTestUtility
+} from '@skyux-sdk/testing';
+
+import {
   OverlayFixtureComponent,
+  OverlayFixtureContext,
   OverlayFixturesModule
 } from './fixtures';
 
 import {
+  SkyOverlayConfig
+} from './overlay-config';
+
+import {
   SkyOverlayDomAdapterService
 } from './overlay-dom-adapter.service';
-import { SkyAppTestUtility } from '@skyux-sdk/testing';
 
-describe('Overlay component', function () {
+import {
+  SkyOverlayInstance
+} from './overlay-instance';
 
-  let fixture: ComponentFixture<OverlayFixtureComponent>;
+import {
+  SkyOverlayService
+} from './overlay.service';
+
+describe('Overlay service', () => {
+
+  let service: SkyOverlayService;
+  let app: ApplicationRef;
+  let uniqueId: number;
 
   function getAllOverlays(): NodeListOf<Element> {
     return document.querySelectorAll('.sky-overlay');
   }
 
-  beforeEach(function () {
+  function launchOverlay(config?: SkyOverlayConfig): SkyOverlayInstance<OverlayFixtureComponent> {
+    return service.launch(OverlayFixtureComponent, config);
+  }
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         OverlayFixturesModule
       ]
     });
 
-    fixture = TestBed.createComponent(OverlayFixtureComponent);
-  });
-
-  afterEach(function () {
-    fixture.destroy();
+    uniqueId = 0;
+    service = TestBed.get(SkyOverlayService);
+    app = TestBed.get(ApplicationRef);
   });
 
   it('should launch an overlay', function () {
-    const overlay = fixture.componentInstance.launchOverlay();
+    const overlay = launchOverlay();
 
-    fixture.detectChanges();
+    app.tick();
 
     expect(getAllOverlays().length).toEqual(1);
 
@@ -52,9 +77,9 @@ describe('Overlay component', function () {
     const adapter = TestBed.get(SkyOverlayDomAdapterService);
     const adapterSpy = spyOn(adapter, 'restrictBodyScroll').and.callThrough();
 
-    let overlay = fixture.componentInstance.launchOverlay();
+    let overlay = launchOverlay();
 
-    fixture.detectChanges();
+    app.tick();
 
     expect(adapterSpy).not.toHaveBeenCalled();
     expect(document.body.style.overflow).toEqual('');
@@ -62,11 +87,11 @@ describe('Overlay component', function () {
     adapterSpy.calls.reset();
 
     overlay.closed.subscribe(() => {
-      overlay = fixture.componentInstance.launchOverlay({
+      overlay = launchOverlay({
         disableScroll: true
       });
 
-      fixture.detectChanges();
+      app.tick();
 
       expect(adapterSpy).toHaveBeenCalled();
       expect(document.body.style.overflow).toEqual('hidden');
@@ -78,22 +103,22 @@ describe('Overlay component', function () {
   }));
 
   it('should optionally allow closing overlay when clicking outside', async(() => {
-    let overlay = fixture.componentInstance.launchOverlay();
+    let overlay = launchOverlay();
 
-    SkyAppTestUtility.fireDomEvent(document.querySelector('.sky-overlay'), 'click');
-    fixture.detectChanges();
+    SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
+    app.tick();
 
-    expect(document.querySelector('.sky-overlay')).not.toBeNull();
+    expect(getAllOverlays().item(0)).not.toBeNull();
 
     overlay.closed.subscribe(() => {
-      overlay = fixture.componentInstance.launchOverlay({
+      overlay = launchOverlay({
         disableClose: false
       });
 
-      SkyAppTestUtility.fireDomEvent(document.querySelector('.sky-overlay'), 'click');
-      fixture.detectChanges();
+      SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
+      app.tick();
 
-      expect(document.querySelector('.sky-overlay')).toBeNull();
+      expect(getAllOverlays().item(0)).toBeNull();
 
       overlay.close();
     });
@@ -105,15 +130,15 @@ describe('Overlay component', function () {
     const adapter = TestBed.get(SkyOverlayDomAdapterService);
     const adapterSpy = spyOn(adapter, 'releaseBodyScroll').and.callThrough();
 
-    const overlay1 = fixture.componentInstance.launchOverlay({
+    const overlay1 = launchOverlay({
       disableScroll: true
     });
 
-    const overlay2 = fixture.componentInstance.launchOverlay({
+    const overlay2 = launchOverlay({
       disableScroll: true
     });
 
-    fixture.detectChanges();
+    app.tick();
 
     overlay2.closed.subscribe(() => {
       expect(adapterSpy).not.toHaveBeenCalled();
@@ -130,20 +155,20 @@ describe('Overlay component', function () {
   }));
 
   it('should optionally show a backdrop', async(() => {
-    let overlay = fixture.componentInstance.launchOverlay();
+    let overlay = launchOverlay();
 
-    fixture.detectChanges();
+    app.tick();
 
     let backdropElement = document.querySelector('.sky-overlay-backdrop');
 
     expect(backdropElement).toBeNull();
 
     overlay.closed.subscribe(() => {
-      overlay = fixture.componentInstance.launchOverlay({
+      overlay = launchOverlay({
         showBackdrop: true
       });
 
-      fixture.detectChanges();
+      app.tick();
 
       backdropElement = document.querySelector('.sky-overlay-backdrop');
 
@@ -157,40 +182,54 @@ describe('Overlay component', function () {
 
   it('should close on navigation change', async(() => {
     const router = TestBed.get(Router);
-    let overlay = fixture.componentInstance.launchOverlay();
+    let overlay = launchOverlay();
 
-    fixture.detectChanges();
+    app.tick();
 
-    let overlayElement = document.querySelector('.sky-overlay');
-    expect(overlayElement).not.toBeNull();
+    expect(getAllOverlays().item(0)).not.toBeNull();
 
     router.navigate(['/']);
-    fixture.detectChanges();
+    app.tick();
 
-    overlayElement = document.querySelector('.sky-overlay');
-    expect(overlayElement).toBeNull();
+    expect(getAllOverlays().item(0)).toBeNull();
 
     overlay.close();
   }));
 
   it('should optionally remain open on navigation change', async(() => {
     const router = TestBed.get(Router);
-    let overlay = fixture.componentInstance.launchOverlay({
+    let overlay = launchOverlay({
       closeOnNavigation: false
     });
 
-    fixture.detectChanges();
+    app.tick();
 
-    let overlayElement = document.querySelector('.sky-overlay');
-    expect(overlayElement).not.toBeNull();
+    expect(getAllOverlays().item(0)).not.toBeNull();
 
     router.navigate(['/']);
-    fixture.detectChanges();
+    app.tick();
 
-    overlayElement = document.querySelector('.sky-overlay');
-    expect(overlayElement).not.toBeNull();
+    expect(getAllOverlays().item(0)).not.toBeNull();
 
     overlay.close();
+  }));
+
+  it('should pass providers to the overlay content', async(() => {
+    const config: SkyOverlayConfig = {
+      providers: [{
+        provide: OverlayFixtureContext,
+        useValue: new OverlayFixtureContext(++uniqueId)
+      }]
+    };
+
+    const overlay = launchOverlay(config);
+
+    app.tick();
+
+    expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: 1');
+
+    overlay.close();
+
   }));
 
 });

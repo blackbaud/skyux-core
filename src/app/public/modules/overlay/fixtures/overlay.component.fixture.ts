@@ -1,13 +1,10 @@
 import {
-  Component
+  Component, Optional
 } from '@angular/core';
 
-import { SkyOverlayService } from '../overlay.service';
-
-import { SkyOverlayInstance } from '../overlay-instance';
-
-import { OverlayContentFixtureComponent } from './overlay-content.component.fixture';
-import { SkyOverlayConfig } from '../overlay-config';
+import {
+  OverlayFixtureContext
+} from './overlay-context.fixture';
 
 @Component({
   selector: 'overlay-fixture',
@@ -16,13 +13,7 @@ import { SkyOverlayConfig } from '../overlay-config';
 export class OverlayFixtureComponent {
 
   constructor(
-    private overlayService: SkyOverlayService
+    @Optional() public readonly context: OverlayFixtureContext
   ) { }
-
-  public launchOverlay(
-    config?: SkyOverlayConfig
-  ): SkyOverlayInstance<OverlayContentFixtureComponent> {
-    return this.overlayService.launch(OverlayContentFixtureComponent, config);
-  }
 
 }

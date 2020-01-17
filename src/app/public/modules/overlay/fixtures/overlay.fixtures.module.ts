@@ -17,7 +17,6 @@ import {
 import {
   OverlayFixtureComponent
 } from './overlay.component.fixture';
-import { OverlayContentFixtureComponent } from './overlay-content.component.fixture';
 
 @NgModule({
   imports: [
@@ -25,15 +24,11 @@ import { OverlayContentFixtureComponent } from './overlay-content.component.fixt
     RouterTestingModule,
     SkyOverlayModule
   ],
-  exports: [
-    OverlayFixtureComponent
-  ],
   declarations: [
-    OverlayContentFixtureComponent,
     OverlayFixtureComponent
   ],
   entryComponents: [
-    OverlayContentFixtureComponent
+    OverlayFixtureComponent
   ]
 })
 export class OverlayFixturesModule { }
