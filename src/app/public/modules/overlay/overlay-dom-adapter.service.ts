@@ -15,10 +15,10 @@ export class SkyOverlayDomAdapterService {
   private renderer: Renderer2;
 
   constructor(
-    private rendererFactory: RendererFactory2,
-    private windowRef: SkyAppWindowRef
+    private windowRef: SkyAppWindowRef,
+    rendererFactory: RendererFactory2
   ) {
-    this.renderer = this.rendererFactory.createRenderer(undefined, undefined);
+    this.renderer = rendererFactory.createRenderer(undefined, undefined);
   }
 
   public restrictBodyScroll(): void {

@@ -4,14 +4,26 @@ import {
 
 export interface SkyOverlayConfig {
 
-  destroyOnBackdropClick?: boolean;
+  /**
+   * Specifies if the overlay closes after a navigation change.
+   */
+  closeOnNavigation?: boolean;
 
-  keepAfterNavigationChange?: boolean;
+  /**
+   * Whether the user can click outside to close the overlay.
+   */
+  disableClose?: boolean;
 
-  preventBodyScroll?: boolean;
+  /**
+   * Specifies if the overlay prevents the user from scrolling the window.
+   */
+  disableScroll?: boolean;
+
+  /**
+   * Specifies if the backdrop should be visible.
+   */
+  showBackdrop?: boolean;
 
   providers?: StaticProvider[];
-
-  showBackdrop?: boolean;
 
 }

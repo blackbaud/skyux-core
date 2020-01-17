@@ -3,14 +3,14 @@ import {
   ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
+  ComponentRef,
   ElementRef,
   Injector,
   OnDestroy,
-  OnInit,
+  StaticProvider,
   Type,
   ViewChild,
-  ViewContainerRef,
-  ComponentRef
+  ViewContainerRef
 } from '@angular/core';
 
 import {
@@ -42,7 +42,7 @@ import {
   styleUrls: ['./overlay.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SkyOverlayComponent implements OnInit, OnDestroy {
+export class SkyOverlayComponent implements OnDestroy {
 
   /**
    * @internal
@@ -60,8 +60,6 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private destroyOnBackdropClick = true;
 
-  private instance: SkyOverlayInstance<any>;
-
   private ngUnsubscribe = new Subject<void>();
 
   private _destroyed = new Subject<void>();
@@ -74,72 +72,80 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     private router: Router
   ) { }
 
-  public ngOnInit(): void {
-    this.addEventListeners();
-  }
-
   public ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this._destroyed.complete();
   }
 
-  public attach<T>(component: Type<T>, config: SkyOverlayConfig): SkyOverlayInstance<T> {
+  public attach<T>(
+    component: Type<T>,
+    config: SkyOverlayConfig
+  ): SkyOverlayInstance<T> {
+    this.showBackdrop = config.showBackdrop;
+    this.destroyOnBackdropClick = !config.disableClose;
+    this.allowClickThrough = (!this.showBackdrop && !this.destroyOnBackdropClick);
+    this.changeDetector.markForCheck();
+
+    return this.createOverlayInstance(component, config);
+  }
+
+  private createOverlayInstance<T>(
+    component: Type<T>,
+    config: SkyOverlayConfig
+  ) {
+    const componentRef = this.createComponent(component, config.providers);
     const instance = new SkyOverlayInstance<T>();
 
-    const componentRef = this.createComponent(component, config);
+    if (!config.disableClose) {
+      this.applyBackdropClickListener(instance);
+    }
 
-    this.router.events
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
-      .subscribe(event => {
-        if (event instanceof NavigationStart) {
-          if (config.keepAfterNavigationChange) {
-            config.keepAfterNavigationChange = false;
-          } else {
-            instance.destroy();
-          }
-        }
-      });
+    if (config.closeOnNavigation) {
+      this.applyRouteListener(instance);
+    }
 
     instance.componentInstance = componentRef.instance;
-
     instance.destroyed.subscribe(() => {
       componentRef.destroy();
       this._destroyed.next();
     });
 
-    this.instance = instance;
-    this.allowClickThrough = (!config.showBackdrop && !config.destroyOnBackdropClick);
-    this.showBackdrop = config.showBackdrop;
-    this.destroyOnBackdropClick = config.destroyOnBackdropClick;
-
-    this.changeDetector.markForCheck();
-
     return instance;
   }
 
-  private createComponent<T>(component: Type<T>, config: SkyOverlayConfig): ComponentRef<T> {
+  private createComponent<T>(
+    component: Type<T>,
+    providers: StaticProvider[] = []
+  ): ComponentRef<T> {
     const factory = this.resolver.resolveComponentFactory(component);
-
     const injector = Injector.create({
-      providers: config.providers || [],
+      providers,
       parent: this.injector
     });
 
     return this.targetRef.createComponent(factory, undefined, injector);
   }
 
-  private addEventListeners(): void {
+  private applyRouteListener<T>(instance: SkyOverlayInstance<T>): void {
+    this.router.events
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(event => {
+        if (event instanceof NavigationStart) {
+          instance.destroy();
+        }
+      });
+  }
+
+  private applyBackdropClickListener<T>(instance: SkyOverlayInstance<T>): void {
     fromEvent(this.elementRef.nativeElement, 'click')
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        if (this.destroyOnBackdropClick) {
-          this.instance.destroy();
-        }
+        instance.destroy();
       });
   }
 }

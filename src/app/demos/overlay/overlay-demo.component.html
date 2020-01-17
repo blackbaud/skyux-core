@@ -1,34 +1,18 @@
-<button
-  class="sky-btn"
-  type="button"
-  (click)="launchDefaultOverlay()"
->
-  Launch default overlay
-</button>
-
-<button
-  class="sky-btn"
-  type="button"
-  (click)="launchCustomOverlay()"
->
-  Launch custom overlay
-</button>
-
-<select
-  [compareWith]="compareFn"
-  [(ngModel)]="affixOptions"
->
-  <option *ngFor="let choice of choices"
-    [ngValue]="choice.config"
+<div style="height:1200px">
+  <button
+    class="sky-btn sky-btn-primary sky-margin-inline-default"
+    type="button"
+    (click)="launchDefaultOverlay()"
   >
-    {{ choice.label }}
-  </option>
-</select>
-<div style="width:15000px;height:1px;"></div>
-<div style="width:350px;height:350px;overflow:auto;">
-  <div
-    style="text-align:center;padding:500px;width:1500px;height:1500px;background:red;"
+    Launch default overlay
+  </button>
+
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="launchCustomOverlay()"
   >
-    <span style="display:block;width:25px;height:25px;background-color:black;" #target></span>
-  </div>
+    Launch custom overlay
+  </button>
+
 </div>

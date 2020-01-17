@@ -1,16 +1,11 @@
 import {
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild
+  Component
 } from '@angular/core';
 
 import {
-  SkyAffixService,
   SkyOverlayConfig,
   SkyOverlayInstance,
-  SkyOverlayService,
-  SkyAffixConfig
+  SkyOverlayService
 } from '../../public';
 
 import {
@@ -19,141 +14,50 @@ import {
 
 @Component({
   selector: 'sky-overlay-demo',
-  templateUrl: './overlay-demo.component.html',
-  styleUrls: ['./overlay-demo.component.scss'],
-  providers: [
-    SkyAffixService
-  ]
+  templateUrl: './overlay-demo.component.html'
 })
-export class OverlayDemoComponent implements OnInit {
+export class OverlayDemoComponent {
 
-  public affixOptions: SkyAffixConfig = { };
-
-  public choices: {
-    label: string;
-    config: SkyAffixConfig
-  }[] = [
-    {
-      label: 'Default',
-      config: {}
-    },
-    {
-      label: 'Above, left',
-      config: {
-        horizontalAlignment: 'left',
-        placement: 'above'
-      }
-    },
-    {
-      label: 'Above, center',
-      config: {
-        horizontalAlignment: 'center',
-        placement: 'above'
-      }
-    },
-    {
-      label: 'Above, right',
-      config: {
-        horizontalAlignment: 'right',
-        placement: 'above'
-      }
-    },
-    {
-      label: 'Below, left',
-      config: {
-        horizontalAlignment: 'left',
-        placement: 'below'
-      }
-    },
-    {
-      label: 'Below, center',
-      config: {
-        horizontalAlignment: 'center',
-        placement: 'below'
-      }
-    },
-    {
-      label: 'Below, right',
-      config: {
-        horizontalAlignment: 'right',
-        placement: 'below'
-      }
-    },
-    {
-      label: 'Left',
-      config: {
-        placement: 'left'
-      }
-    },
-    {
-      label: 'Right',
-      config: {
-        placement: 'right'
-      }
-    }
-  ];
-
-  @ViewChild('target')
-  private target: ElementRef;
-
-  private instance: SkyOverlayInstance<OverlayDemoExampleComponent>;
+  private overlayInstance: SkyOverlayInstance<OverlayDemoExampleComponent>;
 
   constructor(
-    private affixService: SkyAffixService,
     private overlayService: SkyOverlayService
   ) { }
 
-  public ngOnInit(): void { }
-
-  public compareFn(c1: SkyAffixConfig, c2: SkyAffixConfig): boolean {
-    return (
-      c1 &&
-      c2 &&
-      c1.horizontalAlignment === c2.horizontalAlignment &&
-      c1.placement === c2.placement
-    );
-  }
-
   public launchDefaultOverlay(): void {
-    this.instance = this.launchOverlay({});
+    this.overlayInstance = this.launchOverlay({});
   }
 
   public launchCustomOverlay(): void {
-    this.instance = this.launchOverlay({
-      destroyOnBackdropClick: true,
-      keepAfterNavigationChange: true,
-      preventBodyScroll: true,
+    this.overlayInstance = this.launchOverlay({
+      closeOnNavigation: false,
+      disableClose: false,
+      disableScroll: true,
       showBackdrop: true
     });
   }
 
-  private launchOverlay(config: SkyOverlayConfig): SkyOverlayInstance<OverlayDemoExampleComponent> {
-    if (this.instance) {
-      this.instance.destroy();
+  private launchOverlay(
+    config: SkyOverlayConfig
+  ): SkyOverlayInstance<OverlayDemoExampleComponent> {
+    if (this.overlayInstance) {
+      this.overlayInstance.destroy();
     }
 
-    const instance = this.overlayService.attach(OverlayDemoExampleComponent, config);
-
-    instance.destroyed.subscribe(() => {
-      console.log('Destroyed!');
-    });
-
-    instance.componentInstance.closeClicked.subscribe(() => {
-      console.log('Close clicked!');
-      instance.destroy();
-    });
-
-    const affixer = this.affixService.createAffixer(
-      instance.componentInstance.elementRef
+    const overlayInstance = this.overlayService.attach(
+      OverlayDemoExampleComponent,
+      config
     );
 
-    // Needs to be renamed.
-    affixer.targetVisibility.subscribe((args) => {
-      instance.componentInstance.isVisible = args.isVisible;
+    overlayInstance.destroyed.subscribe(() => {
+      console.log('The overlay instance was destroyed.');
     });
 
-    affixer.affixTo(this.target, this.affixOptions);
+    // Manually close the overlay instance when a button is clicked in the attached component.
+    overlayInstance.componentInstance.closeClicked.subscribe(() => {
+      overlayInstance.destroy();
+    });
 
-    return instance;
+    return overlayInstance;
   }
 }

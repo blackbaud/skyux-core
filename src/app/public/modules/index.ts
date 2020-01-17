@@ -1,8 +1,5 @@
 export * from './adapter-service';
 
-export * from './affix/affix-config';
-export * from './affix/affix.service';
-
 export * from './dynamic-component';
 export * from './format';
 export * from './log';

@@ -44,23 +44,27 @@ export class SkyOverlayService implements OnDestroy {
     this.removeHostComponent();
   }
 
-  public attach<T>(component: Type<T>, config?: SkyOverlayConfig): SkyOverlayInstance<T> {
+  public attach<T>(
+    component: Type<T>,
+    config?: SkyOverlayConfig
+  ): SkyOverlayInstance<T> {
     const defaults: SkyOverlayConfig = {
-      destroyOnBackdropClick: false,
-      keepAfterNavigationChange: false,
-      preventBodyScroll: false,
+      disableClose: true,
+      disableScroll: false,
+      closeOnNavigation: true,
       showBackdrop: false
     };
 
-    const settings = Object.assign({}, defaults, config || {});
-    if (settings.preventBodyScroll) {
+    const settings = {...defaults, ...config};
+
+    if (settings.disableScroll) {
       this.adapter.restrictBodyScroll();
     }
 
     const instance = this.host.instance.attach(component, settings);
 
     instance.destroyed.subscribe(() => {
-      if (settings.preventBodyScroll) {
+      if (settings.disableScroll) {
         this.adapter.releaseBodyScroll();
       }
     });
@@ -69,7 +73,9 @@ export class SkyOverlayService implements OnDestroy {
   }
 
   private createHostComponent(): void {
-    this.host = this.dynamicComponentService.createComponent(SkyOverlayHostComponent);
+    if (!this.host) {
+      this.host = this.dynamicComponentService.createComponent(SkyOverlayHostComponent);
+    }
   }
 
   private removeHostComponent(): void {

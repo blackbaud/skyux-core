@@ -1,7 +1,6 @@
 import {
   Component,
-  ElementRef,
-  ChangeDetectorRef
+  ElementRef
 } from '@angular/core';
 
 import {
@@ -9,26 +8,15 @@ import {
 } from 'rxjs/Subject';
 
 @Component({
-  selector: 'sky-overlay-child-demo',
-  templateUrl: './overlay-demo-example.component.html'
+  selector: 'app-overlay-demo-example',
+  templateUrl: './overlay-demo-example.component.html',
+  styleUrls: ['./overlay-demo-example.component.scss']
 })
 export class OverlayDemoExampleComponent {
 
   public closeClicked = new Subject<void>();
 
-  public set isVisible(value: boolean) {
-    this._isVisible = value;
-    this.changeDetector.markForCheck();
-  }
-
-  public get isVisible(): boolean {
-    return this._isVisible || false;
-  }
-
-  private _isVisible: boolean = true;
-
   constructor(
-    private changeDetector: ChangeDetectorRef,
     public elementRef: ElementRef
   ) { }
 

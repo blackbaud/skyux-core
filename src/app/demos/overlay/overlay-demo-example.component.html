@@ -1,17 +1,19 @@
-<div style="background-color:white;padding:20px;width:380px;"
-  [hidden]="!isVisible"
+<div
+  class="app-overlay-demo-example sky-padding-even-large"
 >
   <h1>
     This is the overlay content.
   </h1>
 
   <p>
-    <a skyAppLink="demos/numeric">Go to Numeric demo.</a>
+    <a skyAppLink="demos/numeric">Click to test route change behavior...</a>
   </p>
 
   <button
-    class="sky-btn"
+    class="sky-btn sky-btn-primary"
     type="button"
     (click)="close()"
-  >Close</button>
+  >
+    Close
+  </button>
 </div>
