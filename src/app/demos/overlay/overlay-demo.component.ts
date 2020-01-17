@@ -147,6 +147,7 @@ export class OverlayDemoComponent implements OnInit {
       instance.componentInstance.elementRef
     );
 
+    // Needs to be renamed.
     affixer.targetVisibility.subscribe((args) => {
       instance.componentInstance.isVisible = args.isVisible;
     });
