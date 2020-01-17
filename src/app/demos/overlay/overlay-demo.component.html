@@ -1,4 +1,14 @@
-<div style="height:1200px">
+<div style="text-align:right;">
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="onTestClick()"
+  >
+    Can you click me?
+  </button>
+</div>
+
+<div style="height:1200px; padding-top:250px;">
   <button
     class="sky-btn sky-btn-primary sky-margin-inline-default"
     type="button"
@@ -8,11 +18,25 @@
   </button>
 
   <button
-    class="sky-btn"
+    class="sky-btn sky-margin-inline-default"
     type="button"
     (click)="launchCustomOverlay()"
   >
     Launch custom overlay
   </button>
+
+  <button
+    class="sky-btn"
+    type="button"
+    (click)="closeAllOverlays()"
+  >
+    Close all
+  </button>
+
+  <br>
+
+  <p>
+    Number of overlays currently open: {{ overlays.length }}
+  </p>
 
 </div>

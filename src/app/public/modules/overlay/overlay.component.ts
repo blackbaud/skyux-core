@@ -47,8 +47,8 @@ export class SkyOverlayComponent implements OnDestroy {
   /**
    * @internal
    */
-  public get destroyed(): Observable<void> {
-    return this._destroyed;
+  public get closed(): Observable<void> {
+    return this._closed;
   }
 
   public allowClickThrough = false;
@@ -58,11 +58,9 @@ export class SkyOverlayComponent implements OnDestroy {
   @ViewChild('target', { read: ViewContainerRef })
   private targetRef: ViewContainerRef;
 
-  private destroyOnBackdropClick = true;
-
   private ngUnsubscribe = new Subject<void>();
 
-  private _destroyed = new Subject<void>();
+  private _closed = new Subject<void>();
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -75,25 +73,18 @@ export class SkyOverlayComponent implements OnDestroy {
   public ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this._destroyed.complete();
+    this._closed.complete();
   }
 
-  public attach<T>(
-    component: Type<T>,
-    config: SkyOverlayConfig
-  ): SkyOverlayInstance<T> {
+  public attach<T>(component: Type<T>, config: SkyOverlayConfig): SkyOverlayInstance<T> {
     this.showBackdrop = config.showBackdrop;
-    this.destroyOnBackdropClick = !config.disableClose;
-    this.allowClickThrough = (!this.showBackdrop && !this.destroyOnBackdropClick);
+    this.allowClickThrough = (!this.showBackdrop && config.disableClose);
     this.changeDetector.markForCheck();
 
     return this.createOverlayInstance(component, config);
   }
 
-  private createOverlayInstance<T>(
-    component: Type<T>,
-    config: SkyOverlayConfig
-  ) {
+  private createOverlayInstance<T>(component: Type<T>, config: SkyOverlayConfig) {
     const componentRef = this.createComponent(component, config.providers);
     const instance = new SkyOverlayInstance<T>();
 
@@ -106,21 +97,18 @@ export class SkyOverlayComponent implements OnDestroy {
     }
 
     instance.componentInstance = componentRef.instance;
-    instance.destroyed.subscribe(() => {
+    instance.closed.subscribe(() => {
       componentRef.destroy();
-      this._destroyed.next();
+      this._closed.next();
     });
 
     return instance;
   }
 
-  private createComponent<T>(
-    component: Type<T>,
-    providers: StaticProvider[] = []
-  ): ComponentRef<T> {
+  private createComponent<T>(component: Type<T>, providers: StaticProvider[]): ComponentRef<T> {
     const factory = this.resolver.resolveComponentFactory(component);
     const injector = Injector.create({
-      providers,
+      providers: providers || [],
       parent: this.injector
     });
 
@@ -134,7 +122,7 @@ export class SkyOverlayComponent implements OnDestroy {
       )
       .subscribe(event => {
         if (event instanceof NavigationStart) {
-          instance.destroy();
+          instance.close();
         }
       });
   }
@@ -145,7 +133,7 @@ export class SkyOverlayComponent implements OnDestroy {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(() => {
-        instance.destroy();
+        instance.close();
       });
   }
 }

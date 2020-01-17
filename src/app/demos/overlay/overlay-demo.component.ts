@@ -9,8 +9,14 @@ import {
 } from '../../public';
 
 import {
+  OverlayDemoExampleContext
+} from './overlay-demo-example-context';
+
+import {
   OverlayDemoExampleComponent
 } from './overlay-demo-example.component';
+
+let uniqueId = 0;
 
 @Component({
   selector: 'sky-overlay-demo',
@@ -18,18 +24,22 @@ import {
 })
 export class OverlayDemoComponent {
 
-  private overlayInstance: SkyOverlayInstance<OverlayDemoExampleComponent>;
+  private overlays: SkyOverlayInstance<OverlayDemoExampleComponent>[] = [];
 
   constructor(
-    private overlayService: SkyOverlayService
+    public overlayService: SkyOverlayService
   ) { }
 
+  public onTestClick(): void {
+    alert('Clicked! Is that a good thing?');
+  }
+
   public launchDefaultOverlay(): void {
-    this.overlayInstance = this.launchOverlay({});
+    this.launchOverlay({});
   }
 
   public launchCustomOverlay(): void {
-    this.overlayInstance = this.launchOverlay({
+    this.launchOverlay({
       closeOnNavigation: false,
       disableClose: false,
       disableScroll: true,
@@ -37,27 +47,41 @@ export class OverlayDemoComponent {
     });
   }
 
+  public closeAllOverlays(): void {
+    this.overlays.forEach(o => o.close());
+  }
+
   private launchOverlay(
     config: SkyOverlayConfig
   ): SkyOverlayInstance<OverlayDemoExampleComponent> {
-    if (this.overlayInstance) {
-      this.overlayInstance.destroy();
-    }
+
+    config.providers = [{
+      provide: OverlayDemoExampleContext,
+      useValue: new OverlayDemoExampleContext(++uniqueId)
+    }];
 
     const overlayInstance = this.overlayService.attach(
       OverlayDemoExampleComponent,
       config
     );
 
-    overlayInstance.destroyed.subscribe(() => {
-      console.log('The overlay instance was destroyed.');
+    overlayInstance.closed.subscribe(() => {
+      setTimeout(() => {
+        this.removeInstance(overlayInstance);
+      });
     });
 
     // Manually close the overlay instance when a button is clicked in the attached component.
     overlayInstance.componentInstance.closeClicked.subscribe(() => {
-      overlayInstance.destroy();
+      overlayInstance.close();
     });
 
+    this.overlays.push(overlayInstance);
+
     return overlayInstance;
+  }
+
+  private removeInstance(instance: SkyOverlayInstance<OverlayDemoExampleComponent>): void {
+    this.overlays.splice(this.overlays.indexOf(instance), 1);
   }
 }

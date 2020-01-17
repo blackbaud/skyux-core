@@ -54,7 +54,7 @@ export class SkyOverlayHostComponent implements OnDestroy {
     const componentRef = this.targetRef.createComponent(factory, undefined, injector);
     const instance = componentRef.instance.attach(component, config);
 
-    componentRef.instance.destroyed
+    componentRef.instance.closed
       .subscribe(() => {
         componentRef.destroy();
       });

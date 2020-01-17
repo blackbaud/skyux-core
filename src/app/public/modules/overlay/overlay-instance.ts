@@ -9,14 +9,14 @@ import {
 export class SkyOverlayInstance<T> {
   public componentInstance: T;
 
-  public get destroyed(): Observable<void> {
-    return this._destroyed;
+  public get closed(): Observable<void> {
+    return this._closed;
   }
 
-  private _destroyed = new EventEmitter<void>();
+  private _closed = new EventEmitter<void>();
 
-  public destroy(): void {
-    this._destroyed.next();
-    this._destroyed.complete();
+  public close(): void {
+    this._closed.next();
+    this._closed.complete();
   }
 }
