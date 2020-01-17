@@ -24,7 +24,7 @@ let uniqueId = 0;
 })
 export class OverlayDemoComponent {
 
-  private overlays: SkyOverlayInstance<OverlayDemoExampleComponent>[] = [];
+  public overlays: SkyOverlayInstance<OverlayDemoExampleComponent>[] = [];
 
   constructor(
     public overlayService: SkyOverlayService
@@ -60,7 +60,7 @@ export class OverlayDemoComponent {
       useValue: new OverlayDemoExampleContext(++uniqueId)
     }];
 
-    const overlayInstance = this.overlayService.attach(
+    const overlayInstance = this.overlayService.launch(
       OverlayDemoExampleComponent,
       config
     );

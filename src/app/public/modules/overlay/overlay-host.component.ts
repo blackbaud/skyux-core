@@ -3,15 +3,10 @@ import {
   Component,
   ComponentFactoryResolver,
   Injector,
-  OnDestroy,
   Type,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
-
-import {
-  Subject
-} from 'rxjs/Subject';
 
 import {
   SkyOverlayConfig
@@ -31,12 +26,10 @@ import {
   styleUrls: ['./overlay-host.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SkyOverlayHostComponent implements OnDestroy {
+export class SkyOverlayHostComponent {
 
   @ViewChild('target', { read: ViewContainerRef })
   private targetRef: ViewContainerRef;
-
-  private ngUnsubscribe = new Subject<void>();
 
   constructor(
     private resolver: ComponentFactoryResolver,
@@ -60,10 +53,5 @@ export class SkyOverlayHostComponent implements OnDestroy {
       });
 
     return instance;
-  }
-
-  public ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
   }
 }

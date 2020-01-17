@@ -86,7 +86,7 @@ export class SkyOverlayComponent implements OnDestroy {
 
   private createOverlayInstance<T>(component: Type<T>, config: SkyOverlayConfig) {
     const componentRef = this.createComponent(component, config.providers);
-    const instance = new SkyOverlayInstance<T>();
+    const instance = new SkyOverlayInstance<T>(config);
 
     if (!config.disableClose) {
       this.applyBackdropClickListener(instance);
@@ -121,6 +121,7 @@ export class SkyOverlayComponent implements OnDestroy {
         takeUntil(this.ngUnsubscribe)
       )
       .subscribe(event => {
+        /* istanbul ignore else */
         if (event instanceof NavigationStart) {
           instance.close();
         }

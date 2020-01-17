@@ -1,7 +1,6 @@
 import {
   ComponentRef,
   Injectable,
-  OnDestroy,
   Type
 } from '@angular/core';
 
@@ -25,12 +24,12 @@ import {
   SkyOverlayInstance
 } from './overlay-instance';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class SkyOverlayService implements OnDestroy {
+@Injectable()
+export class SkyOverlayService {
 
   private host: ComponentRef<SkyOverlayHostComponent>;
+
+  private instances: SkyOverlayInstance<any>[] = [];
 
   constructor(
     private dynamicComponentService: SkyDynamicComponentService,
@@ -39,12 +38,7 @@ export class SkyOverlayService implements OnDestroy {
     this.createHostComponent();
   }
 
-  public ngOnDestroy(): void {
-    this.adapter.releaseBodyScroll();
-    this.removeHostComponent();
-  }
-
-  public attach<T>(
+  public launch<T>(
     component: Type<T>,
     config?: SkyOverlayConfig
   ): SkyOverlayInstance<T> {
@@ -64,23 +58,23 @@ export class SkyOverlayService implements OnDestroy {
     const instance = this.host.instance.attach(component, settings);
 
     instance.closed.subscribe(() => {
+      this.instances.splice(this.instances.indexOf(instance), 1);
+
       if (settings.disableScroll) {
-        this.adapter.releaseBodyScroll();
+        const anotherInstanceDisablesScroll = this.instances.find(i => i.config.disableScroll);
+        if (!anotherInstanceDisablesScroll) {
+          this.adapter.releaseBodyScroll();
+        }
       }
     });
+
+    this.instances.push(instance);
 
     return instance;
   }
 
   private createHostComponent(): void {
-    if (!this.host) {
-      this.host = this.dynamicComponentService.createComponent(SkyOverlayHostComponent);
-    }
-  }
-
-  private removeHostComponent(): void {
-    this.dynamicComponentService.removeComponent(this.host);
-    this.host = undefined;
+    this.host = this.dynamicComponentService.createComponent(SkyOverlayHostComponent);
   }
 
 }

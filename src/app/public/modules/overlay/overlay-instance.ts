@@ -6,6 +6,10 @@ import {
   Observable
 } from 'rxjs/Observable';
 
+import {
+  SkyOverlayConfig
+} from './overlay-config';
+
 export class SkyOverlayInstance<T> {
   public componentInstance: T;
 
@@ -14,6 +18,10 @@ export class SkyOverlayInstance<T> {
   }
 
   private _closed = new EventEmitter<void>();
+
+  constructor(
+    public readonly config: SkyOverlayConfig
+  ) { }
 
   public close(): void {
     this._closed.next();

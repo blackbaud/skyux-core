@@ -11,6 +11,10 @@ import {
 } from '@angular/router';
 
 import {
+  SkyDynamicComponentModule
+} from '../dynamic-component/dynamic-component.module';
+
+import {
   SkyAppWindowRef
 } from '../window/window-ref';
 
@@ -26,10 +30,15 @@ import {
   SkyOverlayComponent
 } from './overlay.component';
 
+import {
+  SkyOverlayService
+} from './overlay.service';
+
 @NgModule({
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    SkyDynamicComponentModule
   ],
   declarations: [
     SkyOverlayComponent,
@@ -41,7 +50,8 @@ import {
   ],
   providers: [
     SkyAppWindowRef,
-    SkyOverlayDomAdapterService
+    SkyOverlayDomAdapterService,
+    SkyOverlayService
   ]
 })
 export class SkyOverlayModule { }
