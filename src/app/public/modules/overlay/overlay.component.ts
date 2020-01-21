@@ -36,6 +36,9 @@ import {
   SkyOverlayInstance
 } from './overlay-instance';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'sky-overlay',
   templateUrl: './overlay.component.html',
@@ -44,9 +47,6 @@ import {
 })
 export class SkyOverlayComponent implements OnDestroy {
 
-  /**
-   * @internal
-   */
   public get closed(): Observable<void> {
     return this._closed;
   }

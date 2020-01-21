@@ -20,6 +20,9 @@ import {
   SkyOverlayComponent
 } from './overlay.component';
 
+/**
+ * @internal
+ */
 @Component({
   selector: 'sky-overlay-host',
   templateUrl: './overlay-host.component.html',

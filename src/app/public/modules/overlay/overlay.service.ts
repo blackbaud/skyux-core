@@ -24,6 +24,9 @@ import {
   SkyOverlayInstance
 } from './overlay-instance';
 
+/**
+ * This service is used to create new overlays.
+ */
 @Injectable()
 export class SkyOverlayService {
 
@@ -38,10 +41,16 @@ export class SkyOverlayService {
     this.createHostComponent();
   }
 
+  /**
+   * Creates a new overlay and appends an instance of the provided component.
+   * @param component The component to append to the overlay.
+   * @param config The configuration for the overlay.
+   */
   public create<T>(
     component: Type<T>,
     config?: SkyOverlayConfig
   ): SkyOverlayInstance<T> {
+
     const defaults: SkyOverlayConfig = {
       disableClose: true,
       disableScroll: false,

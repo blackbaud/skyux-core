@@ -9,6 +9,9 @@ import {
   SkyAppWindowRef
 } from '../window/window-ref';
 
+/**
+ * @internal
+ */
 @Injectable()
 export class SkyOverlayDomAdapterService {
 
