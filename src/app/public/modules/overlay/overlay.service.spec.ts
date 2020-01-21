@@ -47,8 +47,8 @@ describe('Overlay service', () => {
     return document.querySelectorAll('.sky-overlay');
   }
 
-  function launchOverlay(config?: SkyOverlayConfig): SkyOverlayInstance<OverlayFixtureComponent> {
-    return service.launch(OverlayFixtureComponent, config);
+  function createOverlay(config?: SkyOverlayConfig): SkyOverlayInstance<OverlayFixtureComponent> {
+    return service.create(OverlayFixtureComponent, config);
   }
 
   beforeEach(() => {
@@ -63,8 +63,8 @@ describe('Overlay service', () => {
     app = TestBed.get(ApplicationRef);
   });
 
-  it('should launch an overlay', function () {
-    const overlay = launchOverlay();
+  it('should create an overlay', function () {
+    const overlay = createOverlay();
 
     app.tick();
 
@@ -77,7 +77,7 @@ describe('Overlay service', () => {
     const adapter = TestBed.get(SkyOverlayDomAdapterService);
     const adapterSpy = spyOn(adapter, 'restrictBodyScroll').and.callThrough();
 
-    let overlay = launchOverlay();
+    let overlay = createOverlay();
 
     app.tick();
 
@@ -87,7 +87,7 @@ describe('Overlay service', () => {
     adapterSpy.calls.reset();
 
     overlay.closed.subscribe(() => {
-      overlay = launchOverlay({
+      overlay = createOverlay({
         disableScroll: true
       });
 
@@ -103,7 +103,7 @@ describe('Overlay service', () => {
   }));
 
   it('should optionally allow closing overlay when clicking outside', async(() => {
-    let overlay = launchOverlay();
+    let overlay = createOverlay();
 
     SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
     app.tick();
@@ -111,7 +111,7 @@ describe('Overlay service', () => {
     expect(getAllOverlays().item(0)).not.toBeNull();
 
     overlay.closed.subscribe(() => {
-      overlay = launchOverlay({
+      overlay = createOverlay({
         disableClose: false
       });
 
@@ -130,11 +130,11 @@ describe('Overlay service', () => {
     const adapter = TestBed.get(SkyOverlayDomAdapterService);
     const adapterSpy = spyOn(adapter, 'releaseBodyScroll').and.callThrough();
 
-    const overlay1 = launchOverlay({
+    const overlay1 = createOverlay({
       disableScroll: true
     });
 
-    const overlay2 = launchOverlay({
+    const overlay2 = createOverlay({
       disableScroll: true
     });
 
@@ -155,7 +155,7 @@ describe('Overlay service', () => {
   }));
 
   it('should optionally show a backdrop', async(() => {
-    let overlay = launchOverlay();
+    let overlay = createOverlay();
 
     app.tick();
 
@@ -164,7 +164,7 @@ describe('Overlay service', () => {
     expect(backdropElement).toBeNull();
 
     overlay.closed.subscribe(() => {
-      overlay = launchOverlay({
+      overlay = createOverlay({
         showBackdrop: true
       });
 
@@ -182,7 +182,7 @@ describe('Overlay service', () => {
 
   it('should close on navigation change', async(() => {
     const router = TestBed.get(Router);
-    let overlay = launchOverlay();
+    let overlay = createOverlay();
 
     app.tick();
 
@@ -198,7 +198,7 @@ describe('Overlay service', () => {
 
   it('should optionally remain open on navigation change', async(() => {
     const router = TestBed.get(Router);
-    let overlay = launchOverlay({
+    let overlay = createOverlay({
       closeOnNavigation: false
     });
 
@@ -222,7 +222,7 @@ describe('Overlay service', () => {
       }]
     };
 
-    const overlay = launchOverlay(config);
+    const overlay = createOverlay(config);
 
     app.tick();
 

@@ -35,11 +35,11 @@ export class OverlayDemoComponent {
   }
 
   public launchDefaultOverlay(): void {
-    this.launchOverlay({});
+    this.createOverlay({});
   }
 
   public launchCustomOverlay(): void {
-    this.launchOverlay({
+    this.createOverlay({
       closeOnNavigation: false,
       disableClose: false,
       disableScroll: true,
@@ -51,7 +51,7 @@ export class OverlayDemoComponent {
     this.overlays.forEach(o => o.close());
   }
 
-  private launchOverlay(
+  private createOverlay(
     config: SkyOverlayConfig
   ): SkyOverlayInstance<OverlayDemoExampleComponent> {
 
@@ -60,7 +60,7 @@ export class OverlayDemoComponent {
       useValue: new OverlayDemoExampleContext(++uniqueId)
     }];
 
-    const overlayInstance = this.overlayService.launch(
+    const overlayInstance = this.overlayService.create(
       OverlayDemoExampleComponent,
       config
     );

@@ -38,7 +38,7 @@ export class SkyOverlayService {
     this.createHostComponent();
   }
 
-  public launch<T>(
+  public create<T>(
     component: Type<T>,
     config?: SkyOverlayConfig
   ): SkyOverlayInstance<T> {
