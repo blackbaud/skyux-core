@@ -19,14 +19,18 @@ import {
 } from '@angular/router';
 
 import {
-  fromEvent,
-  Observable,
-  Subject
-} from 'rxjs';
+  Observable
+} from 'rxjs/Observable';
 
 import {
-  takeUntil
-} from 'rxjs/operators';
+  Subject
+} from 'rxjs/Subject';
+
+import 'rxjs/add/observable/fromEvent';
+
+import 'rxjs/add/observable/of';
+
+import 'rxjs/add/operator/takeUntil';
 
 import {
   SkyOverlayConfig
@@ -48,7 +52,7 @@ import {
 export class SkyOverlayComponent implements OnDestroy {
 
   public get closed(): Observable<void> {
-    return this._closed;
+    return this._closed.asObservable();
   }
 
   public allowClickThrough = false;
@@ -84,7 +88,11 @@ export class SkyOverlayComponent implements OnDestroy {
     return this.createOverlayInstance(component, config);
   }
 
-  private createOverlayInstance<T>(component: Type<T>, config: SkyOverlayConfig) {
+  private createOverlayInstance<T>(
+    component: Type<T>,
+    config: SkyOverlayConfig
+  ): SkyOverlayInstance<T> {
+
     const componentRef = this.createComponent(component, config.providers);
     const instance = new SkyOverlayInstance<T>(config);
 
@@ -117,9 +125,7 @@ export class SkyOverlayComponent implements OnDestroy {
 
   private applyRouteListener<T>(instance: SkyOverlayInstance<T>): void {
     this.router.events
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(event => {
         /* istanbul ignore else */
         if (event instanceof NavigationStart) {
@@ -129,10 +135,8 @@ export class SkyOverlayComponent implements OnDestroy {
   }
 
   private applyBackdropClickListener<T>(instance: SkyOverlayInstance<T>): void {
-    fromEvent(this.elementRef.nativeElement, 'click')
-      .pipe(
-        takeUntil(this.ngUnsubscribe)
-      )
+    Observable.fromEvent(this.elementRef.nativeElement, 'click')
+      .takeUntil(this.ngUnsubscribe)
       .subscribe(() => {
         instance.close();
       });

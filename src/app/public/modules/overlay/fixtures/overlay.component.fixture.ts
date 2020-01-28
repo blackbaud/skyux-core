@@ -1,5 +1,6 @@
 import {
-  Component, Optional
+  Component,
+  Optional
 } from '@angular/core';
 
 import {
