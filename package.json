@@ -5,7 +5,7 @@
   "main": "bundles/bundle.umd.js",
   "module": "index.ts",
   "scripts": {
-    "build": "skyux build-public-library --fullTemplateTypeChecking",
+    "build": "skyux build-public-library",
     "skyux": "skyux",
     "start": "skyux serve --hmr",
     "test": "skyux test --coverage library --logFormat none",

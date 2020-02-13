@@ -1,10 +1,10 @@
 import {
   SkyLibResourcesTestService
-} from '@skyux/i18n/testing/lib-resources-test.service';
+} from '@skyux/i18n/testing';
 
 import {
   SkyIntlNumberFormatStyle
-} from '@skyux/i18n/modules/i18n/intl-number-format-style';
+} from '@skyux/i18n';
 
 import {
   SkyNumberFormatUtility
@@ -275,7 +275,7 @@ describe('Numeric service', () => {
         digits?: string | null,
         currency: string | null = undefined,
         currencyAsSymbol: boolean = false) => {
-        return value;
+        return value as (string | null);
       });
     });
 
