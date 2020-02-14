@@ -41,8 +41,8 @@ export class OverlayDemoComponent {
   public launchCustomOverlay(): void {
     this.createOverlay({
       closeOnNavigation: false,
-      disableClose: false,
-      disableScroll: true,
+      enableClose: true,
+      enableScroll: false,
       showBackdrop: true
     });
   }

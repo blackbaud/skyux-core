@@ -12,12 +12,12 @@ export interface SkyOverlayConfig {
   /**
    * Specifies if the overlay should be closed when a user clicks outside the overlay's content.
    */
-  disableClose?: boolean;
+  enableClose?: boolean;
 
   /**
    * Specifies if window scrolling is disabled when the overlay is opened.
    */
-  disableScroll?: boolean;
+  enableScroll?: boolean;
 
   /**
    * Specifies if the overlay's backdrop should be visible.

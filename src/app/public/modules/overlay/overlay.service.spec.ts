@@ -1,9 +1,11 @@
 import {
-  ApplicationRef
+  ApplicationRef,
+  NgZone
 } from '@angular/core';
 
 import {
   async,
+  inject,
   TestBed
 } from '@angular/core/testing';
 
@@ -16,10 +18,16 @@ import {
 } from '@skyux-sdk/testing';
 
 import {
-  OverlayFixtureComponent,
-  OverlayFixtureContext,
+  OverlayFixtureContext
+} from './fixtures/overlay-context.fixture';
+
+import {
+  OverlayFixtureComponent
+} from './fixtures/overlay.component.fixture';
+
+import {
   OverlayFixturesModule
-} from './fixtures';
+} from './fixtures/overlay.fixtures.module';
 
 import {
   SkyOverlayConfig
@@ -88,7 +96,7 @@ describe('Overlay service', () => {
 
     overlay.closed.subscribe(() => {
       overlay = createOverlay({
-        disableScroll: true
+        enableScroll: false
       });
 
       app.tick();
@@ -112,7 +120,7 @@ describe('Overlay service', () => {
 
     overlay.closed.subscribe(() => {
       overlay = createOverlay({
-        disableClose: false
+        enableClose: true
       });
 
       SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
@@ -131,11 +139,11 @@ describe('Overlay service', () => {
     const adapterSpy = spyOn(adapter, 'releaseBodyScroll').and.callThrough();
 
     const overlay1 = createOverlay({
-      disableScroll: true
+      enableScroll: false
     });
 
     const overlay2 = createOverlay({
-      disableScroll: true
+      enableScroll: false
     });
 
     app.tick();
@@ -180,7 +188,7 @@ describe('Overlay service', () => {
     overlay.close();
   }));
 
-  it('should close on navigation change', async(() => {
+  it('should close on navigation change', async(inject([NgZone], (ngZone: NgZone) => {
     const router = TestBed.get(Router);
     let overlay = createOverlay();
 
@@ -188,31 +196,37 @@ describe('Overlay service', () => {
 
     expect(getAllOverlays().item(0)).not.toBeNull();
 
-    router.navigate(['/']);
-    app.tick();
-
-    expect(getAllOverlays().item(0)).toBeNull();
-
-    overlay.close();
-  }));
-
-  it('should optionally remain open on navigation change', async(() => {
-    const router = TestBed.get(Router);
-    let overlay = createOverlay({
-      closeOnNavigation: false
+    // Run navigation through NgZone to avoid warnings in the console.
+    ngZone.run(() => {
+      router.navigate(['/']);
+      app.tick();
+      expect(getAllOverlays().item(0)).toBeNull();
+      overlay.close();
     });
+  })));
 
-    app.tick();
+  it('should optionally remain open on navigation change', async(inject(
+    [NgZone],
+    (ngZone: NgZone) => {
+      const router = TestBed.get(Router);
+      let overlay = createOverlay({
+        closeOnNavigation: false
+      });
 
-    expect(getAllOverlays().item(0)).not.toBeNull();
+      app.tick();
 
-    router.navigate(['/']);
-    app.tick();
+      expect(getAllOverlays().item(0)).not.toBeNull();
 
-    expect(getAllOverlays().item(0)).not.toBeNull();
+      ngZone.run(() => {
+        router.navigate(['/']);
+        app.tick();
 
-    overlay.close();
-  }));
+        expect(getAllOverlays().item(0)).not.toBeNull();
+
+        overlay.close();
+      });
+    }
+  )));
 
   it('should pass providers to the overlay content', async(() => {
     const config: SkyOverlayConfig = {

@@ -48,29 +48,26 @@ export class SkyOverlayService {
    */
   public create<T>(
     component: Type<T>,
-    config?: SkyOverlayConfig
+    config: SkyOverlayConfig = {
+      closeOnNavigation: true,
+      enableClose: false,
+      enableScroll: true,
+      showBackdrop: false
+    }
   ): SkyOverlayInstance<T> {
 
-    const defaults: SkyOverlayConfig = {
-      disableClose: true,
-      disableScroll: false,
-      closeOnNavigation: true,
-      showBackdrop: false
-    };
-
-    const settings = {...defaults, ...config};
-
-    if (settings.disableScroll) {
+    if (config.enableScroll === false) {
       this.adapter.restrictBodyScroll();
     }
 
-    const instance = this.host.instance.attach(component, settings);
+    const instance = this.host.instance.attach(component, config);
 
     instance.closed.subscribe(() => {
       this.instances.splice(this.instances.indexOf(instance), 1);
 
-      if (settings.disableScroll) {
-        const anotherInstanceDisablesScroll = this.instances.find(i => i.config.disableScroll);
+      // Only release the body scroll if no other overlay wishes it to be disabled.
+      if (config.enableScroll === false) {
+        const anotherInstanceDisablesScroll = this.instances.find(i => !i.config.enableScroll);
         if (!anotherInstanceDisablesScroll) {
           this.adapter.releaseBodyScroll();
         }

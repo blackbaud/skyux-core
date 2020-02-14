@@ -68,9 +68,9 @@ export class SkyOverlayComponent implements OnDestroy {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
+    private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private injector: Injector,
-    private resolver: ComponentFactoryResolver,
     private router: Router
   ) { }
 
@@ -82,7 +82,7 @@ export class SkyOverlayComponent implements OnDestroy {
 
   public attach<T>(component: Type<T>, config: SkyOverlayConfig): SkyOverlayInstance<T> {
     this.showBackdrop = config.showBackdrop;
-    this.allowClickThrough = (!this.showBackdrop && config.disableClose);
+    this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
     this.changeDetector.markForCheck();
 
     return this.createOverlayInstance(component, config);
@@ -96,7 +96,7 @@ export class SkyOverlayComponent implements OnDestroy {
     const componentRef = this.createComponent(component, config.providers);
     const instance = new SkyOverlayInstance<T>(config);
 
-    if (!config.disableClose) {
+    if (config.enableClose) {
       this.applyBackdropClickListener(instance);
     }
 
