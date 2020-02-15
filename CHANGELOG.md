@@ -1,3 +1,14 @@
+# 4.0.0-rc.0 (2020-02-15)
+
+### New features
+
+- Updated the pipeline to transpile to the [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview). [#122](https://github.com/blackbaud/skyux-core/pull/122)
+
+### Breaking changes
+
+- Dropped support for `rxjs@5`. Consumers may install `rxjs-compat@^6` to support older versions of `rxjs`. [#122](https://github.com/blackbaud/skyux-core/pull/122)
+- Removed the `SkyWindowRefService` and `SkyFormat` utility. Use `SkyAppWindowRef` and `SkyAppFormat` instead. [#122](https://github.com/blackbaud/skyux-core/pull/122)
+
 # 3.10.1 (2020-02-07)
 
 - Fixed the `getFocusableChildren()` method on `SkyCoreAdapterService` to include elements with the `tabIndex` attribute. [#118](https://github.com/blackbaud/skyux-core/pull/118)
