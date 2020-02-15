@@ -10,12 +10,9 @@ import {
 } from '../modules';
 
 import {
-  BehaviorSubject
-} from 'rxjs/BehaviorSubject';
-
-import {
+  BehaviorSubject,
  Subscription
-} from 'rxjs/Subscription';
+} from 'rxjs';
 
 @Injectable()
 export class MockSkyMediaQueryService extends SkyMediaQueryService {
