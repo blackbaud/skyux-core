@@ -63,7 +63,7 @@ function getOffset(el: HTMLElement): SkyViewkeeperOffset {
 }
 
 function px(value: number | string): string {
-  let pxValue = value ? value.toString() : undefined;
+  let pxValue = value ? value.toString() : '';
 
   if (typeof value === 'number') {
     pxValue = value + 'px';
@@ -163,6 +163,8 @@ export class SkyViewkeeper {
     window.addEventListener('orientationchange', this.windowEventHandler);
 
     ensureStyleEl();
+
+    this.syncElPosition();
   }
 
   public syncElPosition() {
@@ -259,14 +261,7 @@ export class SkyViewkeeper {
 
     if (this.verticalOffsetEl) {
       const verticalOffsetElTopStyle = this.verticalOffsetEl.style.top;
-
-      let verticalOffsetElTop: number;
-
-      /*istanbul ignore else*/
-      /* sanity check */
-      if (verticalOffsetElTopStyle) {
-        verticalOffsetElTop = parseInt(verticalOffsetElTopStyle, 10) || 0;
-      }
+      const verticalOffsetElTop = parseInt(verticalOffsetElTopStyle, 10) || 0;
 
       offset += (this.verticalOffsetEl.offsetHeight + verticalOffsetElTop);
     }

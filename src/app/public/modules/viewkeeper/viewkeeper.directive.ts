@@ -2,6 +2,7 @@ import {
   Directive,
   ElementRef,
   Input,
+  OnDestroy,
   OnInit
 } from '@angular/core';
 
@@ -16,7 +17,7 @@ import {
 @Directive({
   selector: '[skyViewkeeper]'
 })
-export class SkyViewkeeperDirective implements OnInit {
+export class SkyViewkeeperDirective implements OnInit, OnDestroy {
 
   @Input()
   public set skyViewkeeper(value: Array<string | ElementRef | HTMLElement>) {
@@ -35,6 +36,8 @@ export class SkyViewkeeperDirective implements OnInit {
 
   private observer: MutationObserver;
 
+  private currentViewkeeperEls: HTMLElement[];
+
   constructor(
     private el: ElementRef,
     private viewkeeperSvc: SkyViewkeeperService
@@ -46,9 +49,26 @@ export class SkyViewkeeperDirective implements OnInit {
     this.observer.observe(
       this.el.nativeElement,
       {
+        childList: true,
         subtree: true
       }
     );
+  }
+
+  public ngOnDestroy() {
+    this.observer.disconnect();
+
+    for (const viewkeeper of this.viewkeepers) {
+      viewkeeper.destroy();
+    }
+  }
+
+  private arrayFromNodeList(nodes: NodeList): HTMLElement[] {
+    const elArray: HTMLElement[] = [];
+
+    nodes.forEach((node) => elArray.push(node as HTMLElement));
+
+    return elArray;
   }
 
   private getViewkeeperEls(): HTMLElement[] {
@@ -56,61 +76,75 @@ export class SkyViewkeeperDirective implements OnInit {
 
     if (this.skyViewkeeper) {
       for (const item of this.skyViewkeeper) {
-        let viewkeeperEl: HTMLElement;
+        let matchingEls: HTMLElement[];
 
         if (typeof item === 'string') {
-          viewkeeperEl = this.el.nativeElement.querySelector(item);
+          matchingEls = this.arrayFromNodeList(
+            (this.el.nativeElement as HTMLElement).querySelectorAll(item)
+          );
         } else if (item instanceof ElementRef) {
-          viewkeeperEl = item.nativeElement;
+          matchingEls = [item.nativeElement];
         } else {
-          viewkeeperEl = item;
+          matchingEls = [item];
         }
 
-        if (viewkeeperEl) {
-          viewkeeperEls.push(viewkeeperEl);
+        if (matchingEls) {
+          viewkeeperEls = [...viewkeeperEls, ...matchingEls];
         }
       }
     }
 
-    return undefined;
+    return viewkeeperEls;
+  }
+
+  private viewkeeperElsChanged(viewkeeperEls: HTMLElement[]): boolean {
+    if (!viewkeeperEls !== !this.currentViewkeeperEls) {
+      return true;
+    }
+
+    if (viewkeeperEls && this.currentViewkeeperEls) {
+      if (viewkeeperEls.length !== this.currentViewkeeperEls.length) {
+        return true;
+      }
+
+      for (let i = 0, n = viewkeeperEls.length; i < n; i++) {
+        if (viewkeeperEls[i] !== this.currentViewkeeperEls[i]) {
+          return true;
+        }
+      }
+    }
+
+    return false;
   }
 
   private detectElements(): void {
-    for (const viewkeeper of this.viewkeepers) {
-      viewkeeper.destroy();
-    }
+    let viewkeeperEls = this.getViewkeeperEls();
 
-    this.viewkeepers = [];
+    if (this.viewkeeperElsChanged(viewkeeperEls)) {
+      for (const viewkeeper of this.viewkeepers) {
+        this.viewkeeperSvc.destroy(viewkeeper);
+      }
 
-    if (this.skyViewkeeper) {
+      this.viewkeepers = [];
+
       let previousViewkeeperEl: HTMLElement;
 
-      for (const item of this.skyViewkeeper) {
-        let viewkeeperEl: HTMLElement;
+      for (const viewkeeperEl of viewkeeperEls) {
+        this.viewkeepers.push(
+          this.viewkeeperSvc.create(
+            {
+              boundaryEl: this.el.nativeElement,
+              el: viewkeeperEl,
+              setWidth: true,
+              verticalOffsetEl: previousViewkeeperEl
+            }
+          )
+        );
 
-        if (typeof item === 'string') {
-          viewkeeperEl = this.el.nativeElement.querySelector(item);
-        } else if (item instanceof ElementRef) {
-          viewkeeperEl = item.nativeElement;
-        } else {
-          viewkeeperEl = item;
-        }
-
-        if (viewkeeperEl) {
-          this.viewkeepers.push(
-            this.viewkeeperSvc.create(
-              {
-                boundaryEl: this.el.nativeElement,
-                el: viewkeeperEl,
-                setWidth: true,
-                verticalOffsetEl: previousViewkeeperEl
-              }
-            )
-          );
-
-          previousViewkeeperEl = viewkeeperEl;
-        }
+        previousViewkeeperEl = viewkeeperEl;
       }
+
+      this.currentViewkeeperEls = viewkeeperEls;
     }
   }
 }
