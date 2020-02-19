@@ -6,7 +6,7 @@ import {
 describe('Dock', function () {
 
   beforeEach(function () {
-    SkyHostBrowser.get('visual/dock');
+    SkyHostBrowser.get('demos/dock');
     SkyHostBrowser.setWindowBreakpoint('md');
     SkyHostBrowser.scrollTo('.scroll-bottom-label');
   });
