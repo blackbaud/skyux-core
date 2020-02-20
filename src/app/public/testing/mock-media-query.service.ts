@@ -4,10 +4,16 @@ import {
 } from '@angular/core';
 
 import {
-  SkyMediaBreakpoints,
-  SkyMediaQueryListener,
+  SkyMediaBreakpoints
+} from '../modules/media-query/media-breakpoints';
+
+import {
+  SkyMediaQueryListener
+} from '../modules/media-query/media-query-listener';
+
+import {
   SkyMediaQueryService
-} from '../modules';
+} from '../modules/media-query/media-query.service';
 
 import {
   BehaviorSubject,
