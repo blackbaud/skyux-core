@@ -51,7 +51,7 @@
     "@skyux/config": "4.0.0-rc.0",
     "@skyux/http": "4.0.0-rc.2",
     "@skyux/i18n": "4.0.0-rc.1",
-    "@skyux/indicators": "4.0.0-rc.0",
+    "@skyux/indicators": "4.0.0-rc.1",
     "@skyux/modals": "4.0.0-rc.1",
     "@skyux/omnibar-interop": "4.0.0-rc.0",
     "@skyux/router": "4.0.0-rc.0",
