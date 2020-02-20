@@ -1,3 +1,9 @@
+# 4.0.0-rc.1 (2020-02-20)
+
+### Bug fixes
+
+- Added missing components and directives to the exports API. [#127](https://github.com/blackbaud/skyux-core/pull/127)
+
 # 4.0.0-rc.0 (2020-02-15)
 
 ### New features
