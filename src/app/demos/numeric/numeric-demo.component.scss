@@ -1,6 +1,10 @@
 .sky-numeric-demo {
   height: 1000px;
 
+  // Set the line-height deliberately so that any changes to the global
+  // line-height don't effect the visual test.
+  line-height: 1;
+
   td,
   th {
     padding: 4px 8px;
