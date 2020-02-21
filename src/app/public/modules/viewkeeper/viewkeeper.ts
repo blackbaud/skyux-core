@@ -51,8 +51,8 @@ function getOffset(el: HTMLElement): SkyViewkeeperOffset {
   const rect = el.getBoundingClientRect();
 
   return {
-    top: rect.top + window.scrollY,
-    left: rect.left + window.scrollX
+    top: rect.top + document.documentElement.scrollTop,
+    left: rect.left + document.documentElement.scrollLeft
   };
 }
 
@@ -215,7 +215,7 @@ export class SkyViewkeeper {
     const spacerEl = document.getElementById(this.getSpacerId());
 
     if (spacerEl) {
-      spacerEl.remove();
+      spacerEl.parentElement.removeChild(spacerEl);
     }
 
     this.el.classList.remove(CLS_VIEWKEEPER_FIXED);

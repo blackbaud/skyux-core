@@ -74,14 +74,6 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
     this.viewkeepers = [];
   }
 
-  private arrayFromNodeList(nodes: NodeList): HTMLElement[] {
-    const elArray: HTMLElement[] = [];
-
-    nodes.forEach((node) => elArray.push(node as HTMLElement));
-
-    return elArray;
-  }
-
   private getViewkeeperEls(): HTMLElement[] {
     let viewkeeperEls: HTMLElement[];
 
@@ -89,9 +81,9 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
       viewkeeperEls = [];
 
       for (const item of this.skyViewkeeper) {
-        let matchingEls = this.arrayFromNodeList(
+        let matchingEls = Array.from(
           (this.el.nativeElement as HTMLElement).querySelectorAll(item)
-        );
+        ) as HTMLElement[];
 
         viewkeeperEls = [...viewkeeperEls, ...matchingEls];
       }
