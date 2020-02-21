@@ -14,6 +14,7 @@ import {
 } from '@angular/router';
 
 import {
+  expect,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
 
@@ -244,6 +245,16 @@ describe('Overlay service', () => {
 
     overlay.close();
 
+  }));
+
+  it('should be accessible', async(function () {
+    const overlay = createOverlay();
+
+    app.tick();
+
+    expect(getAllOverlays()[0]).toBeAccessible();
+
+    overlay.close();
   }));
 
 });
