@@ -184,5 +184,4 @@ describe('Viewkeeper', () => {
     expect(removeEventListenerSpy).not.toHaveBeenCalled();
   });
 
-
 });
