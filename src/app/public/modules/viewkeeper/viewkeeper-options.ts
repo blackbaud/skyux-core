@@ -11,11 +11,9 @@ export interface SkyViewkeeperOptions {
 
   verticalOffset?: number;
 
-  setPlaceholderHeight?: boolean;
-
-  onStateChanged?: any;
-
   isFixed?: boolean;
 
   verticalOffsetEl?: HTMLElement;
+
+  viewportMarginTop?: number;
 }

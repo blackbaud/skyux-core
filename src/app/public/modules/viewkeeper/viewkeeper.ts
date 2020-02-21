@@ -15,25 +15,19 @@ import {
 } from './viewkeeper-fixed-styles';
 
 const CLS_VIEWKEEPER_FIXED = 'sky-viewkeeper-fixed';
-const marginBottomOverrides: any[] = [];
-const marginTopOverrides: any[] = [];
-const config = {
-  viewportMarginTop: 0,
-  hasOmnibar: true
-};
+const EVT_AFTER_VIEWKEEPER_SYNC = 'afterViewkeeperSync';
 
 let styleEl: HTMLStyleElement;
-
 let nextIdIndex: number;
 
-function ensureStyleEl() {
+function ensureStyleEl(): void {
   if (!styleEl) {
     styleEl = document.createElement('style');
 
     let css = document.createTextNode(`
 .${CLS_VIEWKEEPER_FIXED} {
   position: fixed !important;
-  z-index: 10000;
+  z-index: 999;
   opacity: 0.95;
   filter: alpha(opacity=95);
   overflow: hidden;
@@ -76,12 +70,12 @@ function setElPosition(
   el: HTMLElement,
   left: number | string,
   top: number | string,
-  bottom: number | string,
-  width: number | string
+  width: number | string,
+  marginTop: number | string
 ): void {
   el.style.top = px(top);
-  el.style.bottom = px(bottom);
   el.style.left = px(left);
+  el.style.marginTop = px(marginTop);
 
   /*istanbul ignore else*/
   /* sanity check */
@@ -90,27 +84,26 @@ function setElPosition(
   }
 }
 
-function getViewportMarginTop() {
-  return marginTopOverrides.length > 0 ?
-    marginTopOverrides[marginTopOverrides.length - 1].margin :
-    config.viewportMarginTop;
-}
-
-function getViewportMarginBottom() {
-  return marginBottomOverrides.length > 0 ?
-    marginBottomOverrides[marginBottomOverrides.length - 1].margin :
-    0;
-}
-
 function getHeightWithMargin(el: HTMLElement): number {
   const computedStyle = getComputedStyle(el);
 
   return el.offsetHeight + parseInt(computedStyle.marginTop, 10) + parseInt(computedStyle.marginBottom, 10);
 }
 
-export class SkyViewkeeper {
+function createCustomEvent(name: any): CustomEvent<any> {
+  const evt = document.createEvent('CustomEvent');
 
-  private fixToBottom: boolean;
+  evt.initCustomEvent(
+    name,
+    false,
+    false,
+    undefined
+  );
+
+  return evt;
+}
+
+export class SkyViewkeeper {
 
   private setWidth: boolean;
 
@@ -122,54 +115,50 @@ export class SkyViewkeeper {
 
   private verticalOffset: number;
 
-  private setPlaceholderHeight: boolean;
-
-  private onStateChanged: () => any;
-
-  private isFixed: boolean;
-
   private verticalOffsetEl: HTMLElement;
+
+  private viewportMarginTop: number;
 
   private isDestroyed: boolean;
 
   private currentElFixedTop: number;
 
-  private currentElFixedBottom: number;
-
   private currentElFixedLeft: number;
 
   private currentElFixedWidth: number;
 
-  private windowEventHandler: () => void;
+  private syncElPositionHandler: () => void;
 
   constructor(options: SkyViewkeeperOptions) {
     options = options || /* istanbul ignore next */ {};
 
-    this.fixToBottom = options.fixToBottom;
     this.setWidth = options.setWidth;
     this.id = nextId();
     this.el = options.el;
     this.boundaryEl = options.boundaryEl;
     this.verticalOffset = options.verticalOffset || 0;
-    this.setPlaceholderHeight = (options.setPlaceholderHeight !== false);
-    this.onStateChanged = options.onStateChanged;
-    this.isFixed = false;
     this.verticalOffsetEl = options.verticalOffsetEl;
+    this.viewportMarginTop = options.viewportMarginTop || 0;
 
-    this.windowEventHandler = () => this.syncElPosition();
+    this.syncElPositionHandler = () => this.syncElPosition();
 
-    window.addEventListener('scroll', this.windowEventHandler);
-    window.addEventListener('resize', this.windowEventHandler);
-    window.addEventListener('orientationchange', this.windowEventHandler);
+    if (this.verticalOffsetEl) {
+      this.verticalOffsetEl.addEventListener(
+        EVT_AFTER_VIEWKEEPER_SYNC,
+        this.syncElPositionHandler
+      );
+    }
+
+    window.addEventListener('scroll', this.syncElPositionHandler);
+    window.addEventListener('resize', this.syncElPositionHandler);
+    window.addEventListener('orientationchange', this.syncElPositionHandler);
 
     ensureStyleEl();
 
     this.syncElPosition();
   }
 
-  public syncElPosition() {
-    const isCurrentlyFixed = this.isFixed;
-
+  public syncElPosition(): void {
     const verticalOffset = this.calculateVerticalOffset();
 
     // When the element isn't visible, its size can't be calculated, so don't attempt syncing position in this case.
@@ -184,42 +173,31 @@ export class SkyViewkeeper {
 
     if (this.needsUpdating(doFixEl, fixedStyles)) {
       if (doFixEl) {
-        this.isFixed = true;
         this.fixEl(boundaryInfo, fixedStyles);
       } else {
-        this.isFixed = false;
         this.unfixEl();
-      }
-
-      // If we changed if the item is fixed, fire the callback
-      if (this.onStateChanged && isCurrentlyFixed !== this.isFixed) {
-        this.onStateChanged();
       }
     }
 
-    // vk.windowEventHandler();
+    const evt = createCustomEvent(EVT_AFTER_VIEWKEEPER_SYNC);
+
+    this.el.dispatchEvent(evt);
   }
 
-  public scrollToTop() {
-    const verticalOffset = this.calculateVerticalOffset();
-
-    const spacerId = this.getSpacerId();
-    const spacerEl = document.getElementById(spacerId);
-
-    let anchorTop = getOffset(spacerEl || this.el).top;
-
-    document.documentElement.scrollTo({
-      top: anchorTop - verticalOffset - getViewportMarginTop()
-    });
-  }
-
-  public destroy() {
+  public destroy(): void {
     if (!this.isDestroyed) {
-      window.removeEventListener('scroll', this.windowEventHandler);
-      window.removeEventListener('resize', this.windowEventHandler);
-      window.removeEventListener('orientationchange', this.windowEventHandler);
+      window.removeEventListener('scroll', this.syncElPositionHandler);
+      window.removeEventListener('resize', this.syncElPositionHandler);
+      window.removeEventListener('orientationchange', this.syncElPositionHandler);
 
       this.unfixEl();
+
+      if (this.verticalOffsetEl) {
+        this.verticalOffsetEl.removeEventListener(
+          EVT_AFTER_VIEWKEEPER_SYNC,
+          this.syncElPositionHandler
+        );
+      }
 
       this.el =
         this.boundaryEl =
@@ -244,7 +222,6 @@ export class SkyViewkeeper {
 
     this.currentElFixedLeft =
       this.currentElFixedTop =
-      this.currentElFixedBottom =
       this.currentElFixedWidth = undefined;
 
     let width: string;
@@ -253,7 +230,7 @@ export class SkyViewkeeper {
       width = 'auto';
     }
 
-    setElPosition(this.el, '', '', '', width);
+    setElPosition(this.el, '', '', width, '');
   }
 
   private calculateVerticalOffset(): number {
@@ -270,52 +247,39 @@ export class SkyViewkeeper {
   }
 
   private shouldFixEl(boundaryInfo: SkyViewkeeperBoundaryInfo, verticalOffset: number): boolean {
-    let anchorHeight: number;
     let anchorTop: number;
     let doFixEl: boolean;
 
     if (boundaryInfo.spacerEl) {
       anchorTop = getOffset(boundaryInfo.spacerEl).top;
-      anchorHeight = getHeightWithMargin(boundaryInfo.spacerEl);
     } else {
       anchorTop = getOffset(this.el).top;
-      anchorHeight = boundaryInfo.elHeight;
     }
 
-    if (this.fixToBottom) {
-      // Fix el if the natural bottom of the element would not be on the screen
-      doFixEl =
-        anchorTop + anchorHeight >
-        boundaryInfo.scrollTop + (window.innerHeight - getViewportMarginBottom());
-    } else {
-      doFixEl = boundaryInfo.scrollTop + verticalOffset + getViewportMarginTop() > anchorTop;
-    }
+    doFixEl = boundaryInfo.scrollTop + verticalOffset + this.viewportMarginTop > anchorTop;
 
     return doFixEl;
   }
 
-  private getFixedStyles(boundaryInfo: SkyViewkeeperBoundaryInfo, verticalOffset: any): SkyViewkeeperFixedStyles {
-    let elFixedBottom: number;
+  private getFixedStyles(
+    boundaryInfo: SkyViewkeeperBoundaryInfo,
+    verticalOffset: number
+  ): SkyViewkeeperFixedStyles {
     let elFixedTop: number;
 
-    if (this.fixToBottom) {
-      elFixedBottom = getViewportMarginBottom();
-    } else {
-      // If the element needs to be fixed, this will calculate its position.  The position
-      // will be 0 (fully visible) unless the user is scrolling the boundary out of view.
-      // In that case, the element should begin to scroll out of view with the
-      // rest of the boundary by setting its top position to a negative value.
-      elFixedTop = Math.min(
-        (boundaryInfo.boundaryBottom - boundaryInfo.elHeight) - boundaryInfo.scrollTop,
-        verticalOffset
-      );
-    }
+    // If the element needs to be fixed, this will calculate its position.  The position
+    // will be 0 (fully visible) unless the user is scrolling the boundary out of view.
+    // In that case, the element should begin to scroll out of view with the
+    // rest of the boundary by setting its top position to a negative value.
+    elFixedTop = Math.min(
+      (boundaryInfo.boundaryBottom - boundaryInfo.elHeight) - boundaryInfo.scrollTop,
+      verticalOffset
+    );
 
     const elFixedWidth = boundaryInfo.boundaryEl.getBoundingClientRect().width;
     const elFixedLeft = boundaryInfo.boundaryOffset.left - boundaryInfo.scrollLeft;
 
     return {
-      elFixedBottom,
       elFixedLeft,
       elFixedTop,
       elFixedWidth
@@ -328,7 +292,6 @@ export class SkyViewkeeper {
         doFixEl &&
         this.currentElFixedLeft === fixedStyles.elFixedLeft &&
         this.currentElFixedTop === fixedStyles.elFixedTop &&
-        this.currentElFixedBottom === fixedStyles.elFixedBottom &&
         this.currentElFixedWidth === fixedStyles.elFixedWidth
       ) ||
       (
@@ -351,8 +314,10 @@ export class SkyViewkeeper {
   ): void {
     const el = this.el;
 
-    if (!boundaryInfo.spacerEl) {
-      const spacerHeight = this.setPlaceholderHeight ? boundaryInfo.elHeight : 0;
+  /*istanbul ignore else*/
+  /* sanity check */
+  if (!boundaryInfo.spacerEl) {
+      const spacerHeight = boundaryInfo.elHeight;
 
       const spacerEl = document.createElement('div');
       spacerEl.id = boundaryInfo.spacerId;
@@ -364,7 +329,6 @@ export class SkyViewkeeper {
     el.classList.add(CLS_VIEWKEEPER_FIXED);
 
     this.currentElFixedTop = fixedStyles.elFixedTop;
-    this.currentElFixedBottom = fixedStyles.elFixedBottom;
     this.currentElFixedLeft = fixedStyles.elFixedLeft;
     this.currentElFixedWidth = fixedStyles.elFixedWidth;
 
@@ -378,8 +342,8 @@ export class SkyViewkeeper {
       el,
       fixedStyles.elFixedLeft,
       fixedStyles.elFixedTop,
-      fixedStyles.elFixedBottom,
-      width
+      width,
+      this.viewportMarginTop
     );
   }
 

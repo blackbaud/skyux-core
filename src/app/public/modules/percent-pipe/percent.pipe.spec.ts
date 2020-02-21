@@ -59,6 +59,10 @@ describe('Percent pipe', () => {
     fixture = TestBed.createComponent(PercentPipeTestComponent);
   });
 
+  afterEach(() => {
+    fixture.destroy();
+  });
+
   it('should format a string object', () => {
     fixture.detectChanges();
     const value = fixture.nativeElement.textContent.trim();

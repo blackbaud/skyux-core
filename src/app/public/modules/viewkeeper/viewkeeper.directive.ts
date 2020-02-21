@@ -7,6 +7,10 @@ import {
 } from '@angular/core';
 
 import {
+  MutationObserverService
+} from '../mutation/mutation-observer-service';
+
+import {
   SkyViewkeeper
 } from './viewkeeper';
 
@@ -20,17 +24,17 @@ import {
 export class SkyViewkeeperDirective implements OnInit, OnDestroy {
 
   @Input()
-  public set skyViewkeeper(value: Array<string | ElementRef | HTMLElement>) {
+  public set skyViewkeeper(value: string[]) {
     this._skyViewkeeper = value;
 
     this.detectElements();
   }
 
-  public get skyViewkeeper(): Array<string | ElementRef | HTMLElement> {
+  public get skyViewkeeper(): string[] {
     return this._skyViewkeeper;
   }
 
-  private _skyViewkeeper: Array<string | ElementRef | HTMLElement>;
+  private _skyViewkeeper: string[];
 
   private viewkeepers: SkyViewkeeper[] = [];
 
@@ -40,11 +44,12 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
 
   constructor(
     private el: ElementRef,
+    private mutationObserverSvc: MutationObserverService,
     private viewkeeperSvc: SkyViewkeeperService
   ) { }
 
-  public ngOnInit() {
-    this.observer = new MutationObserver(() => this.detectElements());
+  public ngOnInit(): void {
+    this.observer = this.mutationObserverSvc.create(() => this.detectElements());
 
     this.observer.observe(
       this.el.nativeElement,
@@ -55,12 +60,18 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
     );
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.observer.disconnect();
 
+    this.destroyViewkeepers();
+  }
+
+  private destroyViewkeepers(): void {
     for (const viewkeeper of this.viewkeepers) {
-      viewkeeper.destroy();
+      this.viewkeeperSvc.destroy(viewkeeper);
     }
+
+    this.viewkeepers = [];
   }
 
   private arrayFromNodeList(nodes: NodeList): HTMLElement[] {
@@ -72,25 +83,17 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
   }
 
   private getViewkeeperEls(): HTMLElement[] {
-    let viewkeeperEls: HTMLElement[] = [];
+    let viewkeeperEls: HTMLElement[];
 
     if (this.skyViewkeeper) {
+      viewkeeperEls = [];
+
       for (const item of this.skyViewkeeper) {
-        let matchingEls: HTMLElement[];
+        let matchingEls = this.arrayFromNodeList(
+          (this.el.nativeElement as HTMLElement).querySelectorAll(item)
+        );
 
-        if (typeof item === 'string') {
-          matchingEls = this.arrayFromNodeList(
-            (this.el.nativeElement as HTMLElement).querySelectorAll(item)
-          );
-        } else if (item instanceof ElementRef) {
-          matchingEls = [item.nativeElement];
-        } else {
-          matchingEls = [item];
-        }
-
-        if (matchingEls) {
-          viewkeeperEls = [...viewkeeperEls, ...matchingEls];
-        }
+        viewkeeperEls = [...viewkeeperEls, ...matchingEls];
       }
     }
 
@@ -121,11 +124,7 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
     let viewkeeperEls = this.getViewkeeperEls();
 
     if (this.viewkeeperElsChanged(viewkeeperEls)) {
-      for (const viewkeeper of this.viewkeepers) {
-        this.viewkeeperSvc.destroy(viewkeeper);
-      }
-
-      this.viewkeepers = [];
+      this.destroyViewkeepers();
 
       let previousViewkeeperEl: HTMLElement;
 

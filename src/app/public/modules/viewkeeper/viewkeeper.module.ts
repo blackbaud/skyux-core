@@ -10,6 +10,10 @@ import {
   SkyViewkeeperService
 } from './viewkeeper.service';
 
+import {
+  MutationObserverService
+} from '../mutation/mutation-observer-service';
+
 @NgModule({
   declarations: [
     SkyViewkeeperDirective
@@ -18,7 +22,8 @@ import {
     SkyViewkeeperDirective
   ],
   providers: [
-    SkyViewkeeperService
+    SkyViewkeeperService,
+    MutationObserverService
   ]
 })
 export class SkyViewkeeperModule { }

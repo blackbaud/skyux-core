@@ -3,6 +3,9 @@
   "name": "skyux-core",
   "mode": "easy",
   "compileMode": "aot",
+  "omnibar": {
+    "experimental": true
+  },
   "skyuxModules": [
     "SkyErrorModule"
   ],
