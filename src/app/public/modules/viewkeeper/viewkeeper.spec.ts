@@ -3,7 +3,6 @@ import {
 } from './viewkeeper';
 
 describe('Viewkeeper', () => {
-
   let boundaryEl: HTMLElement;
   let el: HTMLElement;
   let vks: SkyViewkeeper[];

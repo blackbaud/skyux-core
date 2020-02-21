@@ -1,4 +1,6 @@
-import { SkyViewkeeperService } from './viewkeeper.service';
+import {
+  SkyViewkeeperService
+} from './viewkeeper.service';
 
 describe('Viewkeeper service', () => {
 

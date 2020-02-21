@@ -18,8 +18,6 @@ import {
   SkyViewkeeperModule
 } from './public';
 
-import { SkyViewkeeperGlobalOptions } from './public/modules/viewkeeper/viewkeeper-global-options';
-
 @NgModule({
   exports: [
     SkyAppLinkModule,
@@ -31,14 +29,6 @@ import { SkyViewkeeperGlobalOptions } from './public/modules/viewkeeper/viewkeep
   ],
   entryComponents: [
     DynamicComponentDemoExampleComponent
-  ],
-  providers: [
-    {
-      provide: SkyViewkeeperGlobalOptions,
-      useValue: {
-        viewportMarginTop: 50
-      }
-    }
   ]
 })
 export class AppExtrasModule { }
