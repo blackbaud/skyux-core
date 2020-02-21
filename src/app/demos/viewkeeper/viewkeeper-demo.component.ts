@@ -2,10 +2,6 @@ import {
   Component
 } from '@angular/core';
 
-// import {
-//   SkyViewkeeperService
-// } from '../../public';
-
 @Component({
   selector: 'app-viewkeeper-demo',
   templateUrl: './viewkeeper-demo.component.html',
