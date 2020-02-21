@@ -1,4 +1,8 @@
 import {
+  SkyAppTestUtility
+} from '@skyux-sdk/testing';
+
+import {
   SkyViewkeeper
 } from './viewkeeper';
 
@@ -9,7 +13,7 @@ describe('Viewkeeper', () => {
 
   function scrollWindowTo(x: number, y: number) {
     window.scrollTo(x, y);
-    window.dispatchEvent(new Event('scroll'));
+    SkyAppTestUtility.fireDomEvent(window, 'scroll');
   }
 
   function validateElStyle(
@@ -58,7 +62,7 @@ describe('Viewkeeper', () => {
       vk.destroy();
     }
 
-    boundaryEl.remove();
+    boundaryEl.parentElement.removeChild(boundaryEl);
 
     window.scrollTo(0, 0);
   });
