@@ -8,8 +8,8 @@ import {
 } from './viewkeeper';
 
 import {
-  SkyViewkeeperGlobalOptions
-} from './viewkeeper-global-options';
+  SkyViewkeeperHostOptions
+} from './viewkeeper-host-options';
 
 import {
   SkyViewkeeperOptions
@@ -18,10 +18,10 @@ import {
 @Injectable()
 export class SkyViewkeeperService {
 
-  constructor(@Optional() private globalOptions?: SkyViewkeeperGlobalOptions) { }
+  constructor(@Optional() private hostOptions?: SkyViewkeeperHostOptions) { }
 
   public create(options: SkyViewkeeperOptions): SkyViewkeeper {
-    options = Object.assign({}, this.globalOptions || {}, options);
+    options = Object.assign({}, this.hostOptions || {}, options);
 
     return new SkyViewkeeper(options);
   }

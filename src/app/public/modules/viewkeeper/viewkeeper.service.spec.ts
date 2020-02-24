@@ -29,7 +29,7 @@ describe('Viewkeeper service', () => {
     expect(destroySpy).toHaveBeenCalled();
   });
 
-  it('should apply global options', () => {
+  it('should apply host options', () => {
     const testEl = document.createElement('div');
     const testBoundaryEl = document.createElement('div');
 
