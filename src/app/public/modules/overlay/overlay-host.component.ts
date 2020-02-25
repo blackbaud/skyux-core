@@ -57,28 +57,4 @@ export class SkyOverlayHostComponent {
 
     return componentRef;
   }
-
-  // public createComponent<T>(
-  //   component: Type<T>,
-  //   providers: StaticProvider[],
-  //   config: SkyOverlayConfig
-  // ): SkyOverlayInstance<T> {
-
-  //   const factory = this.resolver.resolveComponentFactory(SkyOverlayComponent);
-
-  //   const injector = Injector.create({
-  //     parent: this.injector,
-  //     providers: []
-  //   });
-
-  //   const componentRef = this.targetRef.createComponent(factory, undefined, injector);
-  //   const instance = componentRef.instance.createComponent(component, providers, config);
-
-  //   componentRef.instance.closed
-  //     .subscribe(() => {
-  //       componentRef.destroy();
-  //     });
-
-  //   return instance;
-  // }
 }
