@@ -40,6 +40,10 @@ export class SkyOverlayService {
     this.createHostComponent();
   }
 
+  /**
+   * Creates a new overlay.
+   * @param config Configuration for the overlay.
+   */
   public create(config?: SkyOverlayConfig): SkyOverlayInstance {
     const settings = this.prepareConfig(config);
     if (settings.enableScroll === false) {
@@ -47,19 +51,19 @@ export class SkyOverlayService {
     }
 
     const componentRef = this.host.instance.createOverlay(settings);
-    const overlayRef = new SkyOverlayInstance(
+    const instance = new SkyOverlayInstance(
       settings,
       componentRef
     );
 
-    overlayRef.closed.subscribe(() => {
-      this.destroyOverlay(overlayRef);
+    instance.closed.subscribe(() => {
+      this.destroyOverlay(instance);
       componentRef.destroy();
     });
 
-    this.overlays.push(overlayRef);
+    this.overlays.push(instance);
 
-    return overlayRef;
+    return instance;
   }
 
   private createHostComponent(): void {
@@ -77,10 +81,10 @@ export class SkyOverlayService {
     return {...defaults, ...config};
   }
 
-  private destroyOverlay(overlayRef: SkyOverlayInstance): void {
-    this.overlays.splice(this.overlays.indexOf(overlayRef), 1);
+  private destroyOverlay(instance: SkyOverlayInstance): void {
+    this.overlays.splice(this.overlays.indexOf(instance), 1);
 
-    if (overlayRef.config.enableScroll === false) {
+    if (instance.config.enableScroll === false) {
       // Only release the body scroll if no other overlay wishes it to be disabled.
       const anotherOverlayDisablesScroll = this.overlays.some(o => !o.config.enableScroll);
       if (!anotherOverlayDisablesScroll) {
