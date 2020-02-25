@@ -1,18 +1,18 @@
 import {
-  SkyViewkeeperOffset
-} from './viewkeeper-offset';
-
-import {
-  SkyViewkeeperOptions
-} from './viewkeeper-options';
-
-import {
   SkyViewkeeperBoundaryInfo
 } from './viewkeeper-boundary-info';
 
 import {
   SkyViewkeeperFixedStyles
 } from './viewkeeper-fixed-styles';
+
+import {
+  SkyViewkeeperOffset
+} from './viewkeeper-offset';
+
+import {
+  SkyViewkeeperOptions
+} from './viewkeeper-options';
 
 const CLS_VIEWKEEPER_FIXED = 'sky-viewkeeper-fixed';
 const EVT_AFTER_VIEWKEEPER_SYNC = 'afterViewkeeperSync';
@@ -29,7 +29,6 @@ function ensureStyleEl(): void {
   position: fixed !important;
   z-index: 999;
   opacity: 0.95;
-  filter: alpha(opacity=95);
   overflow: hidden;
 }
 `
@@ -314,7 +313,7 @@ export class SkyViewkeeper {
   ): void {
     const el = this.el;
 
-  /*istanbul ignore else*/
+  /* istanbul ignore else */
   /* sanity check */
   if (!boundaryInfo.spacerEl) {
       const spacerHeight = boundaryInfo.elHeight;
