@@ -10,10 +10,10 @@ import {
 } from '../../public';
 
 @Component({
-  selector: 'app-overlay-demo-self',
-  templateUrl: './overlay-demo-self.component.html'
+  selector: 'app-overlay-demo-template-example',
+  templateUrl: './overlay-demo-template-example.component.html'
 })
-export class OverlayDemoSelfComponent {
+export class OverlayDemoTemplateExampleComponent {
 
   @ViewChild('content', {
     read: TemplateRef
