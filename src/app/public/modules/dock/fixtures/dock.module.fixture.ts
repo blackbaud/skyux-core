@@ -7,10 +7,6 @@ import {
 } from '@angular/core';
 
 import {
-  RouterTestingModule
-} from '@angular/router/testing';
-
-import {
   SkyDockModule
 } from '../dock.module';
 
@@ -25,7 +21,6 @@ import {
 @NgModule({
   imports: [
     CommonModule,
-    RouterTestingModule,
     SkyDockModule
   ],
   exports: [

@@ -7,8 +7,8 @@ import {
 } from '../dock-item';
 
 import {
-  SkyDockItemConfig
-} from '../dock-item-config';
+  SkyDockInsertComponentConfig
+} from '../dock-insert-component-config';
 
 import {
   SkyDockService
@@ -17,7 +17,6 @@ import {
 import {
   DockItemFixtureComponent
 } from './dock-item.component.fixture';
-import { DockItemFixtureContext } from './dock-item-context.fixture';
 
 @Component({
   selector: 'dock-test',
@@ -25,11 +24,8 @@ import { DockItemFixtureContext } from './dock-item-context.fixture';
 })
 export class DockFixtureComponent {
 
-  public set itemConfigs(value: {
-    config: SkyDockItemConfig;
-    dockHeight: number;
-  }[]) {
-    value.forEach(c => this.addItem(c.config, c.dockHeight));
+  public set itemConfigs(value: SkyDockInsertComponentConfig[]) {
+    value.forEach(c => this.addItem(c));
   }
 
   public dockItems: SkyDockItem<DockItemFixtureComponent>[] = [];
@@ -38,13 +34,8 @@ export class DockFixtureComponent {
     public dockService: SkyDockService
   ) { }
 
-  public addItem(config: SkyDockItemConfig, dockHeight: number): void {
-    this.dockItems.push(this.dockService.insertComponent(DockItemFixtureComponent, [{
-      provide: DockItemFixtureContext,
-      useValue: new DockItemFixtureContext({
-        height: dockHeight
-      })
-    }], config));
+  public addItem(config: SkyDockInsertComponentConfig): void {
+    this.dockItems.push(this.dockService.insertComponent(DockItemFixtureComponent, config));
   }
 
   public removeAllItems(): void {

@@ -8,9 +8,7 @@ import {
   OnInit,
   Type,
   ViewChild,
-  ViewContainerRef,
-  TemplateRef,
-  StaticProvider
+  ViewContainerRef
 } from '@angular/core';
 
 import {
@@ -18,8 +16,8 @@ import {
 } from './dock-dom-adapter.service';
 
 import {
-  SkyDockItemConfig
-} from './dock-item-config';
+  SkyDockInsertComponentConfig
+} from './dock-insert-component-config';
 
 import {
   SkyDockItemReference
@@ -69,13 +67,12 @@ export class SkyDockComponent implements OnInit {
 
   public insertComponent<T>(
     component: Type<T>,
-    providers: StaticProvider[] = [],
-    config: SkyDockItemConfig = {}
+    config: SkyDockInsertComponentConfig = {}
   ): SkyDockItemReference<T> {
 
     const factory = this.resolver.resolveComponentFactory(component);
     const injector = Injector.create({
-      providers,
+      providers: config.providers || [],
       parent: this.injector
     });
 
@@ -97,10 +94,6 @@ export class SkyDockComponent implements OnInit {
       componentRef,
       stackOrder
     };
-  }
-
-  public insertTemplate<T>(templateRef: TemplateRef<T>, context?: T): void {
-    this.target.createEmbeddedView(templateRef, context);
   }
 
   public removeItem(item: SkyDockItemReference<any>): void {

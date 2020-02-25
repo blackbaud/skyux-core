@@ -1,9 +1,7 @@
 import {
   ComponentRef,
   Injectable,
-  Type,
-  TemplateRef,
-  StaticProvider
+  Type
 } from '@angular/core';
 
 import {
@@ -19,14 +17,12 @@ import {
 } from './dock.component';
 
 import {
-  SkyDockItemConfig
-} from './dock-item-config';
+  SkyDockInsertComponentConfig
+} from './dock-insert-component-config';
 
 import {
   sortByStackOrder
 } from './sort-by-stack-order';
-import { Subscription } from 'rxjs';
-import { Router, NavigationStart } from '@angular/router';
 
 /**
  * This service docks components to specific areas on the page.
@@ -43,12 +39,9 @@ export class SkyDockService {
 
   private dockRef: ComponentRef<SkyDockComponent>;
 
-  private routerSubscription: Subscription;
-
   private _items: SkyDockItem<any>[] = [];
 
   constructor(
-    private router: Router,
     private dynamicComponentService: SkyDynamicComponentService
   ) { }
 
@@ -57,39 +50,26 @@ export class SkyDockService {
    * @param component The component to dock.
    * @param config Options that affect the docking action.
    */
-  public insertComponent<C>(
-    component: Type<C>,
-    providers: StaticProvider[] = [],
-    config?: SkyDockItemConfig
-  ): SkyDockItem<C> {
-
+  public insertComponent<T>(component: Type<T>, config?: SkyDockInsertComponentConfig): SkyDockItem<T> {
     if (!this.dockRef) {
       this.createDock();
     }
 
-    this.applyRouteListener();
-
-    const itemRef = this.dockRef.instance.insertComponent(component, providers, config);
+    const itemRef = this.dockRef.instance.insertComponent(component, config);
     const item = new SkyDockItem(itemRef.componentRef.instance, itemRef.stackOrder);
 
     item.destroyed.subscribe(() => {
       this.dockRef.instance.removeItem(itemRef);
-      setTimeout(() => {
-        this._items.splice(this._items.indexOf(item), 1);
-        if (this._items.length === 0) {
-          this.destroyDock();
-        }
-      });
+      this._items.splice(this._items.indexOf(item), 1);
+      if (this._items.length === 0) {
+        this.destroyDock();
+      }
     });
 
     this._items.push(item);
     this._items.sort(sortByStackOrder);
 
     return item;
-  }
-
-  public insertTemplate<T>(templateRef: TemplateRef<T>, context?: T): void {
-    this.dockRef.instance.insertTemplate(templateRef, context);
   }
 
   private createDock(): void {
@@ -99,19 +79,6 @@ export class SkyDockService {
   private destroyDock(): void {
     this.dynamicComponentService.removeComponent(this.dockRef);
     this.dockRef = undefined;
-  }
-
-  private applyRouteListener(): void {
-    if (this.routerSubscription) {
-      return;
-    }
-
-    this.routerSubscription = this.router.events.subscribe(event => {
-      /* istanbul ignore else */
-      if (event instanceof NavigationStart) {
-        this._items.forEach(i => i.destroy());
-      }
-    });
   }
 
 }
