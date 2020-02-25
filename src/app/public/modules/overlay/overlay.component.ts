@@ -16,11 +16,6 @@ import {
 } from '@angular/core';
 
 import {
-  NavigationStart,
-  Router
-} from '@angular/router';
-
-import {
   Observable
 } from 'rxjs/Observable';
 
@@ -73,19 +68,13 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private injector: Injector,
-    private router: Router,
     private context: SkyOverlayContext
   ) { }
 
   public ngOnInit(): void {
     this.applyConfig(this.context.config);
-
     if (this.context.config.enableClose) {
       this.applyBackdropClickListener();
-    }
-
-    if (this.context.config.closeOnNavigation) {
-      this.applyRouteListener();
     }
   }
 
@@ -107,18 +96,6 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   public attachTemplate<T>(templateRef: TemplateRef<T>, context: T): void {
     this.targetRef.createEmbeddedView(templateRef, context);
-  }
-
-  private applyRouteListener(): void {
-    this.router.events
-      .takeUntil(this.ngUnsubscribe)
-      .subscribe(event => {
-        /* istanbul ignore else */
-        if (event instanceof NavigationStart) {
-          this._closed.next();
-          this._closed.complete();
-        }
-      });
   }
 
   private applyBackdropClickListener(): void {

@@ -4,6 +4,15 @@ import {
 } from '@angular/core';
 
 import {
+  NavigationStart,
+  Router
+} from '@angular/router';
+
+import {
+  Subscription
+} from 'rxjs';
+
+import {
   SkyDynamicComponentService
 } from '../dynamic-component';
 
@@ -33,8 +42,11 @@ export class SkyOverlayService {
 
   private overlays: SkyOverlayInstance[] = [];
 
+  private routerSubscription: Subscription;
+
   constructor(
     private dynamicComponentService: SkyDynamicComponentService,
+    private router: Router,
     private adapter: SkyOverlayAdapterService
   ) {
     this.createHostComponent();
@@ -46,8 +58,13 @@ export class SkyOverlayService {
    */
   public create(config?: SkyOverlayConfig): SkyOverlayInstance {
     const settings = this.prepareConfig(config);
+
     if (settings.enableScroll === false) {
       this.adapter.restrictBodyScroll();
+    }
+
+    if (settings.closeOnNavigation) {
+      this.applyRouteListener();
     }
 
     const componentRef = this.host.instance.createOverlay(settings);
@@ -84,6 +101,11 @@ export class SkyOverlayService {
   private destroyOverlay(instance: SkyOverlayInstance): void {
     this.overlays.splice(this.overlays.indexOf(instance), 1);
 
+    if (this.overlays.length === 0 && this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+      this.routerSubscription = undefined;
+    }
+
     if (instance.config.enableScroll === false) {
       // Only release the body scroll if no other overlay wishes it to be disabled.
       const anotherOverlayDisablesScroll = this.overlays.some(o => !o.config.enableScroll);
@@ -91,6 +113,24 @@ export class SkyOverlayService {
         this.adapter.releaseBodyScroll();
       }
     }
+  }
+
+  private applyRouteListener(): void {
+    if (this.routerSubscription) {
+      return;
+    }
+
+    this.routerSubscription = this.router.events.subscribe(event => {
+      /* istanbul ignore else */
+      if (event instanceof NavigationStart) {
+        this.overlays.forEach(overlay => {
+          /* istanbul ignore else */
+          if (overlay.config.closeOnNavigation) {
+            overlay.close();
+          }
+        });
+      }
+    });
   }
 
 }
