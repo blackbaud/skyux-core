@@ -1,7 +1,9 @@
 import {
   ComponentRef,
   Injectable,
-  Type
+  Type,
+  TemplateRef,
+  StaticProvider
 } from '@angular/core';
 
 import {
@@ -50,12 +52,17 @@ export class SkyDockService {
    * @param component The component to dock.
    * @param config Options that affect the docking action.
    */
-  public insertComponent<T>(component: Type<T>, config?: SkyDockItemConfig): SkyDockItem<T> {
+  public insertComponent<C>(
+    component: Type<C>,
+    providers: StaticProvider[] = [],
+    config?: SkyDockItemConfig
+  ): SkyDockItem<C> {
+
     if (!this.dockRef) {
       this.createDock();
     }
 
-    const itemRef = this.dockRef.instance.insertComponent(component, config);
+    const itemRef = this.dockRef.instance.insertComponent(component, providers, config);
     const item = new SkyDockItem(itemRef.componentRef.instance, itemRef.stackOrder);
 
     item.destroyed.subscribe(() => {
@@ -70,6 +77,10 @@ export class SkyDockService {
     this._items.sort(sortByStackOrder);
 
     return item;
+  }
+
+  public insertTemplate<T>(templateRef: TemplateRef<T>, context?: T): void {
+    this.dockRef.instance.insertTemplate(templateRef, context);
   }
 
   private createDock(): void {
