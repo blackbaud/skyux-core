@@ -62,17 +62,19 @@ export class DockVisualComponent {
   }
 
   private addToDock(config: any): void {
-    const item = this.dockService.insertComponent(DockItemVisualComponent, [
-      {
+    const item = this.dockService.insertComponent(
+      DockItemVisualComponent,
+      [{
         provide: DockItemVisualContext,
         useValue: new DockItemVisualContext(
           config.backgroundColor,
           config.stackOrder
         )
+      }],
+      {
+        stackOrder: config.stackOrder
       }
-    ], {
-      stackOrder: config.stackOrder
-    });
+    );
 
     item.componentInstance.stackOrderForDisplay = item.stackOrder;
 
