@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   TemplateRef,
   ViewChild
@@ -14,7 +13,7 @@ import {
   selector: 'app-overlay-demo-self',
   templateUrl: './overlay-demo-self.component.html'
 })
-export class OverlayDemoSelfComponent implements AfterViewInit {
+export class OverlayDemoSelfComponent {
 
   @ViewChild('content', {
     read: TemplateRef
@@ -26,10 +25,6 @@ export class OverlayDemoSelfComponent implements AfterViewInit {
   constructor(
     private overlayService: SkyOverlayService
   ) { }
-
-  public ngAfterViewInit(): void {
-    this.launchOverlay();
-  }
 
   public onOpenClick(): void {
     this.launchOverlay();

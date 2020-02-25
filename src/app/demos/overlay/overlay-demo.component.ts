@@ -1,7 +1,5 @@
 import {
-  AfterViewInit,
-  Component,
-  ElementRef
+  Component
 } from '@angular/core';
 
 import {
@@ -24,65 +22,61 @@ let uniqueId = 0;
   selector: 'sky-overlay-demo',
   templateUrl: './overlay-demo.component.html'
 })
-export class OverlayDemoComponent implements AfterViewInit {
+export class OverlayDemoComponent {
 
-  public overlays: SkyOverlayInstance<OverlayDemoExampleComponent | ElementRef>[] = [];
-
-  public showComponent = true;
+  public overlays: SkyOverlayInstance[] = [];
 
   constructor(
     public overlayService: SkyOverlayService
   ) { }
 
-  public ngAfterViewInit(): void { }
-
   public onTestClick(): void {
     alert('Clicked! Is that a good thing?');
   }
 
-  // public launchCustomOverlay(): void {
-  //   this.createOverlay({
-  //     closeOnNavigation: false,
-  //     enableClose: true,
-  //     enableScroll: false,
-  //     showBackdrop: true
-  //   });
-  // }
+  public launchDefaultOverlay(): void {
+    this.createOverlay({});
+  }
 
-  // public closeAllOverlays(): void {
-  //   this.overlays.forEach(o => o.close());
-  // }
+  public launchCustomOverlay(): void {
+    this.createOverlay({
+      closeOnNavigation: false,
+      enableClose: true,
+      enableScroll: false,
+      showBackdrop: true
+    });
+  }
 
-  // private createOverlay(
-  //   config: SkyOverlayConfig
-  // ): SkyOverlayInstance<OverlayDemoExampleComponent> {
+  public closeAllOverlays(): void {
+    this.overlays.forEach(o => o.close());
+  }
 
-  //   const overlayInstance = this.overlayService.createComponent(
-  //     OverlayDemoExampleComponent,
-  //     [{
-  //       provide: OverlayDemoExampleContext,
-  //       useValue: new OverlayDemoExampleContext(++uniqueId)
-  //     }],
-  //     config
-  //   );
+  private createOverlay(config: SkyOverlayConfig): SkyOverlayInstance {
+    const overlayInstance = this.overlayService.create(config);
 
-  //   overlayInstance.closed.subscribe(() => {
-  //     setTimeout(() => {
-  //       this.removeInstance(overlayInstance);
-  //     });
-  //   });
+    const componentInstance = overlayInstance.attachComponent(
+      OverlayDemoExampleComponent,
+      [{
+        provide: OverlayDemoExampleContext,
+        useValue: new OverlayDemoExampleContext(++uniqueId)
+      }]
+    );
 
-  //   // Manually close the overlay instance when a button is clicked in the attached component.
-  //   overlayInstance.contentRef.closeClicked.subscribe(() => {
-  //     overlayInstance.close();
-  //   });
+    overlayInstance.closed.subscribe(() => {
+      this.removeLocalInstance(overlayInstance);
+    });
 
-  //   this.overlays.push(overlayInstance);
+    // Manually close the overlay instance when a button is clicked in the attached component.
+    componentInstance.closeClicked.subscribe(() => {
+      overlayInstance.close();
+    });
 
-  //   return overlayInstance;
-  // }
+    this.overlays.push(overlayInstance);
 
-  // private removeInstance(instance: SkyOverlayInstance<OverlayDemoExampleComponent>): void {
-  //   this.overlays.splice(this.overlays.indexOf(instance), 1);
-  // }
+    return overlayInstance;
+  }
+
+  private removeLocalInstance(instance: SkyOverlayInstance): void {
+    this.overlays.splice(this.overlays.indexOf(instance), 1);
+  }
 }

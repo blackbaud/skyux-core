@@ -2,10 +2,15 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ComponentFactoryResolver,
+  ComponentRef,
   ElementRef,
+  Injector,
   OnDestroy,
   OnInit,
+  StaticProvider,
   TemplateRef,
+  Type,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -65,7 +70,9 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
+    private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
+    private injector: Injector,
     private router: Router,
     private context: SkyOverlayContext
   ) { }
@@ -91,6 +98,16 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   public attachTemplate<T>(templateRef: TemplateRef<T>, context: T): void {
     this.targetRef.createEmbeddedView(templateRef, context);
+  }
+
+  public attachComponent<C>(component: Type<C>, providers: StaticProvider[] = []): ComponentRef<C> {
+    const factory = this.resolver.resolveComponentFactory(component);
+    const injector = Injector.create({
+      providers,
+      parent: this.injector
+    });
+
+    return this.targetRef.createComponent(factory, undefined, injector);
   }
 
   private applyRouteListener(): void {

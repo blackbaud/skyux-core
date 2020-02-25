@@ -34,9 +34,6 @@ export class SkyOverlayInstance {
   private _closed = new Subject<void>();
 
   constructor(
-    /**
-     * The overlay's configuration.
-     */
     public readonly config: SkyOverlayConfig,
     private componentRef: ComponentRef<SkyOverlayComponent>
   ) {
@@ -45,11 +42,30 @@ export class SkyOverlayInstance {
     });
   }
 
-  public attachTemplate<T>(templateRef: TemplateRef<T>, context?: T): void {
+  /**
+   * Attaches a `TemplateRef` to the overlay.
+   * @param templateRef The `TemplateRef` to attach.
+   * @param context The context to provide to the template.
+   */
+  public attachTemplate<T>(
+    templateRef: TemplateRef<T>,
+    context?: T
+  ): void {
     this.componentRef.instance.attachTemplate(templateRef, context);
   }
 
-  public attachComponent<C>(component: Type<C>, providers?: StaticProvider[]): void {}
+  /**
+   * Creates and attaches a component to the overlay.
+   * @param component The component to attach.
+   * @param providers Custom providers to apply to the component.
+   */
+  public attachComponent<C>(
+    component: Type<C>,
+    providers?: StaticProvider[]
+  ): C {
+    const componentRef = this.componentRef.instance.attachComponent(component, providers);
+    return componentRef.instance;
+  }
 
   /**
    * Closes the overlay.

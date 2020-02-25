@@ -1,10 +1,3 @@
-<app-overlay-demo-self>
-  This is content that should get added to an overlay on page load.
-  <p>
-    <a skyAppLink="demos/numeric">Click to test route change behavior...</a>
-  </p>
-</app-overlay-demo-self>
-
 <div style="text-align:right;">
   <button
     class="sky-btn"
@@ -21,7 +14,7 @@
     type="button"
     (click)="launchDefaultOverlay()"
   >
-    Launch default overlay
+    Launch default overlay using component
   </button>
 
   <button
@@ -29,29 +22,27 @@
     type="button"
     (click)="launchCustomOverlay()"
   >
-    Launch custom overlay
+    Launch custom overlay using component
   </button>
 
   <button
-    class="sky-btn"
+    class="sky-btn sky-margin-inline-default"
     type="button"
     (click)="closeAllOverlays()"
   >
-    Close all
+    Close all component overlays
   </button>
 
+  <app-overlay-demo-self>
+    <p>
+      This is content that should get added to an overlay on page load.
+    </p>
+    <p>
+      <a skyAppLink="demos/numeric">Click to test route change behavior...</a>
+    </p>
+  </app-overlay-demo-self>
+
   <p>
-    Number of overlays currently open: {{ overlays.length }}
+    Number of component overlays currently open: {{ overlays.length }}
   </p>
 </div>
-
-<!--
-<app-overlay-demo-example *ngIf="showComponent"
-  (closeClicked)="onCloseClicked()"
-  #myOverlayContent
-></app-overlay-demo-example>
-
-<button
-  type="button"
-  (click)="onOpenElementRef()"
->Open element ref</button> -->
