@@ -13,7 +13,7 @@ import {
  * @internal
  */
 @Injectable()
-export class SkyOverlayDomAdapterService {
+export class SkyOverlayAdapterService {
 
   private renderer: Renderer2;
 

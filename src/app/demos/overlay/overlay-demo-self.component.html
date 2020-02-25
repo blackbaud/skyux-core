@@ -6,13 +6,19 @@
   Launch overlay using TemplateRef
 </button>
 
-<ng-template #content let-item>
-  <div style="background-color:white;border:1px solid red;padding:10px;">
+<ng-template
+  let-item
+  #content
+>
+  <div
+    style="background-color:white;border:1px solid red;padding:10px;"
+  >
     <ng-content></ng-content>
     <strong>Template context:</strong>
     <pre>{{ item | json }}</pre>
     <p>
       <button
+        class="sky-btn"
         type="button"
         (click)="onCloseClick()"
       >Close</button>

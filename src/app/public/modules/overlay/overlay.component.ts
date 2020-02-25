@@ -90,7 +90,6 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    console.log('[SkyOverlayComponent] ngOnDestroy()');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this._closed.complete();

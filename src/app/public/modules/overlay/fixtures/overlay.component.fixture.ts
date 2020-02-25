@@ -1,6 +1,8 @@
 import {
   Component,
-  Optional
+  Optional,
+  TemplateRef,
+  ViewChild
 } from '@angular/core';
 
 import {
@@ -12,6 +14,11 @@ import {
   templateUrl: './overlay.component.fixture.html'
 })
 export class OverlayFixtureComponent {
+
+  @ViewChild('myTemplate', {
+    read: TemplateRef
+  })
+  public myTemplate: TemplateRef<any>;
 
   constructor(
     @Optional() public readonly context: OverlayFixtureContext

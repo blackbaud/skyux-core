@@ -19,8 +19,8 @@ import {
 } from '../window/window-ref';
 
 import {
-  SkyOverlayDomAdapterService
-} from './overlay-dom-adapter.service';
+  SkyOverlayAdapterService
+} from './overlay-adapter.service';
 
 import {
   SkyOverlayHostComponent
@@ -50,7 +50,7 @@ import {
   ],
   providers: [
     SkyAppWindowRef,
-    SkyOverlayDomAdapterService,
+    SkyOverlayAdapterService,
     SkyOverlayService
   ]
 })

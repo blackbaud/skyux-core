@@ -35,8 +35,8 @@ import {
 } from './overlay-config';
 
 import {
-  SkyOverlayDomAdapterService
-} from './overlay-dom-adapter.service';
+  SkyOverlayAdapterService
+} from './overlay-adapter.service';
 
 import {
   SkyOverlayInstance
@@ -50,14 +50,13 @@ describe('Overlay service', () => {
 
   let service: SkyOverlayService;
   let app: ApplicationRef;
-  let uniqueId: number;
 
   function getAllOverlays(): NodeListOf<Element> {
     return document.querySelectorAll('.sky-overlay');
   }
 
-  function createOverlay(config?: SkyOverlayConfig): SkyOverlayInstance<OverlayFixtureComponent> {
-    return service.create(OverlayFixtureComponent, config);
+  function createOverlay(config?: SkyOverlayConfig): SkyOverlayInstance {
+    return service.create(config);
   }
 
   beforeEach(() => {
@@ -67,7 +66,6 @@ describe('Overlay service', () => {
       ]
     });
 
-    uniqueId = 0;
     service = TestBed.get(SkyOverlayService);
     app = TestBed.get(ApplicationRef);
   });
@@ -83,7 +81,7 @@ describe('Overlay service', () => {
   });
 
   it('should optionally prevent body scroll', async(() => {
-    const adapter = TestBed.get(SkyOverlayDomAdapterService);
+    const adapter = TestBed.get(SkyOverlayAdapterService);
     const adapterSpy = spyOn(adapter, 'restrictBodyScroll').and.callThrough();
 
     let overlay = createOverlay();
@@ -112,32 +110,36 @@ describe('Overlay service', () => {
   }));
 
   it('should optionally allow closing overlay when clicking outside', async(() => {
-    let overlay = createOverlay();
+    const overlay1 = createOverlay({
+      enableClose: false
+    });
 
     SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
     app.tick();
 
     expect(getAllOverlays().item(0)).not.toBeNull();
 
-    overlay.closed.subscribe(() => {
-      overlay = createOverlay({
+    overlay1.closed.subscribe(() => {
+      const overlay2 = createOverlay({
         enableClose: true
       });
+      app.tick();
 
       SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
       app.tick();
 
       expect(getAllOverlays().item(0)).toBeNull();
 
-      overlay.close();
+      overlay2.close();
     });
 
-    overlay.close();
+    overlay1.close();
   }));
 
   it('should prevent body scroll after another overlay is closed', async(() => {
-    const adapter = TestBed.get(SkyOverlayDomAdapterService);
-    const adapterSpy = spyOn(adapter, 'releaseBodyScroll').and.callThrough();
+    const adapter = TestBed.get(SkyOverlayAdapterService);
+    const restrictScrollSpy = spyOn(adapter, 'restrictBodyScroll').and.callThrough();
+    const releaseScrollSpy = spyOn(adapter, 'releaseBodyScroll').and.callThrough();
 
     const overlay1 = createOverlay({
       enableScroll: false
@@ -150,11 +152,12 @@ describe('Overlay service', () => {
     app.tick();
 
     overlay2.closed.subscribe(() => {
-      expect(adapterSpy).not.toHaveBeenCalled();
-      adapterSpy.calls.reset();
+      expect(restrictScrollSpy).toHaveBeenCalled();
+      expect(releaseScrollSpy).not.toHaveBeenCalled();
+      releaseScrollSpy.calls.reset();
 
       overlay1.closed.subscribe(() => {
-        expect(adapterSpy).toHaveBeenCalled();
+        expect(releaseScrollSpy).toHaveBeenCalled();
       });
 
       overlay1.close();
@@ -229,22 +232,45 @@ describe('Overlay service', () => {
     }
   )));
 
-  it('should pass providers to the overlay content', async(() => {
-    const config: SkyOverlayConfig = {
-      providers: [{
-        provide: OverlayFixtureContext,
-        useValue: new OverlayFixtureContext(++uniqueId)
-      }]
-    };
+  it('should attach a component', async(() => {
+    const overlay = createOverlay();
 
-    const overlay = createOverlay(config);
+    overlay.attachComponent(OverlayFixtureComponent);
+    app.tick();
 
+    expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: none');
+
+    overlay.close();
+  }));
+
+  it('should attach a component with providers', async(() => {
+    const overlay = createOverlay();
+
+    overlay.attachComponent(OverlayFixtureComponent, [{
+      provide: OverlayFixtureContext,
+      useValue: new OverlayFixtureContext(1)
+    }]);
     app.tick();
 
     expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: 1');
 
     overlay.close();
+  }));
 
+  it('should attach a template', async(() => {
+    const fixture = TestBed.createComponent(OverlayFixtureComponent);
+    const overlay = createOverlay();
+    overlay.attachTemplate(fixture.componentInstance.myTemplate, {
+      $implicit: {
+        id: 5
+      }
+    });
+
+    app.tick();
+
+    expect(getAllOverlays().item(0).textContent).toContain('Templated content ID: 5');
+
+    overlay.close();
   }));
 
   it('should be accessible', async(function () {

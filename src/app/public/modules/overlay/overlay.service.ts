@@ -8,12 +8,12 @@ import {
 } from '../dynamic-component';
 
 import {
-  SkyOverlayConfig
-} from './overlay-config';
+  SkyOverlayAdapterService
+} from './overlay-adapter.service';
 
 import {
-  SkyOverlayDomAdapterService
-} from './overlay-dom-adapter.service';
+  SkyOverlayConfig
+} from './overlay-config';
 
 import {
   SkyOverlayHostComponent
@@ -35,7 +35,7 @@ export class SkyOverlayService {
 
   constructor(
     private dynamicComponentService: SkyDynamicComponentService,
-    private adapter: SkyOverlayDomAdapterService
+    private adapter: SkyOverlayAdapterService
   ) {
     this.createHostComponent();
   }
@@ -78,6 +78,8 @@ export class SkyOverlayService {
   }
 
   private destroyOverlay(overlayRef: SkyOverlayInstance): void {
+    this.overlays.splice(this.overlays.indexOf(overlayRef), 1);
+
     if (overlayRef.config.enableScroll === false) {
       // Only release the body scroll if no other overlay wishes it to be disabled.
       const anotherOverlayDisablesScroll = this.overlays.some(o => !o.config.enableScroll);
@@ -85,8 +87,6 @@ export class SkyOverlayService {
         this.adapter.releaseBodyScroll();
       }
     }
-
-    this.overlays.splice(this.overlays.indexOf(overlayRef), 1);
   }
 
 }
