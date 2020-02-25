@@ -17,6 +17,7 @@ import {
 import {
   DockItemFixtureComponent
 } from './dock-item.component.fixture';
+import { DockItemFixtureContext } from './dock-item-context.fixture';
 
 @Component({
   selector: 'dock-test',
@@ -24,8 +25,11 @@ import {
 })
 export class DockFixtureComponent {
 
-  public set itemConfigs(value: SkyDockItemConfig[]) {
-    value.forEach(c => this.addItem(c));
+  public set itemConfigs(value: {
+    config: SkyDockItemConfig;
+    dockHeight: number;
+  }[]) {
+    value.forEach(c => this.addItem(c.config, c.dockHeight));
   }
 
   public dockItems: SkyDockItem<DockItemFixtureComponent>[] = [];
@@ -34,8 +38,13 @@ export class DockFixtureComponent {
     public dockService: SkyDockService
   ) { }
 
-  public addItem(config: SkyDockItemConfig): void {
-    this.dockItems.push(this.dockService.insertComponent(DockItemFixtureComponent, config));
+  public addItem(config: SkyDockItemConfig, dockHeight: number): void {
+    this.dockItems.push(this.dockService.insertComponent(DockItemFixtureComponent, [{
+      provide: DockItemFixtureContext,
+      useValue: new DockItemFixtureContext({
+        height: dockHeight
+      })
+    }], config));
   }
 
   public removeAllItems(): void {

@@ -25,6 +25,8 @@ import {
 import {
   sortByStackOrder
 } from './sort-by-stack-order';
+import { Subscription } from 'rxjs';
+import { Router, NavigationStart } from '@angular/router';
 
 /**
  * This service docks components to specific areas on the page.
@@ -41,9 +43,12 @@ export class SkyDockService {
 
   private dockRef: ComponentRef<SkyDockComponent>;
 
+  private routerSubscription: Subscription;
+
   private _items: SkyDockItem<any>[] = [];
 
   constructor(
+    private router: Router,
     private dynamicComponentService: SkyDynamicComponentService
   ) { }
 
@@ -62,15 +67,19 @@ export class SkyDockService {
       this.createDock();
     }
 
+    this.applyRouteListener();
+
     const itemRef = this.dockRef.instance.insertComponent(component, providers, config);
     const item = new SkyDockItem(itemRef.componentRef.instance, itemRef.stackOrder);
 
     item.destroyed.subscribe(() => {
       this.dockRef.instance.removeItem(itemRef);
-      this._items.splice(this._items.indexOf(item), 1);
-      if (this._items.length === 0) {
-        this.destroyDock();
-      }
+      setTimeout(() => {
+        this._items.splice(this._items.indexOf(item), 1);
+        if (this._items.length === 0) {
+          this.destroyDock();
+        }
+      });
     });
 
     this._items.push(item);
@@ -90,6 +99,19 @@ export class SkyDockService {
   private destroyDock(): void {
     this.dynamicComponentService.removeComponent(this.dockRef);
     this.dockRef = undefined;
+  }
+
+  private applyRouteListener(): void {
+    if (this.routerSubscription) {
+      return;
+    }
+
+    this.routerSubscription = this.router.events.subscribe(event => {
+      /* istanbul ignore else */
+      if (event instanceof NavigationStart) {
+        this._items.forEach(i => i.destroy());
+      }
+    });
   }
 
 }
