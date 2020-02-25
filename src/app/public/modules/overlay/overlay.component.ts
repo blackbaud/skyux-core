@@ -2,13 +2,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
-  ComponentRef,
   ElementRef,
-  Injector,
   OnDestroy,
-  StaticProvider,
-  Type,
+  OnInit,
+  TemplateRef,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -37,8 +34,8 @@ import {
 } from './overlay-config';
 
 import {
-  SkyOverlayInstance
-} from './overlay-instance';
+  SkyOverlayContext
+} from './overlay-context';
 
 /**
  * @internal
@@ -49,7 +46,7 @@ import {
   styleUrls: ['./overlay.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SkyOverlayComponent implements OnDestroy {
+export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   public get closed(): Observable<void> {
     return this._closed.asObservable();
@@ -68,77 +65,58 @@ export class SkyOverlayComponent implements OnDestroy {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
-    private injector: Injector,
-    private router: Router
+    private router: Router,
+    private context: SkyOverlayContext
   ) { }
 
+  public ngOnInit(): void {
+    this.applyConfig(this.context.config);
+
+    if (this.context.config.enableClose) {
+      this.applyBackdropClickListener();
+    }
+
+    if (this.context.config.closeOnNavigation) {
+      this.applyRouteListener();
+    }
+  }
+
   public ngOnDestroy(): void {
+    console.log('[SkyOverlayComponent] ngOnDestroy()');
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this._closed.complete();
   }
 
-  public attach<T>(component: Type<T>, config: SkyOverlayConfig): SkyOverlayInstance<T> {
-    this.showBackdrop = config.showBackdrop;
-    this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
-    this.changeDetector.markForCheck();
-
-    return this.createOverlayInstance(component, config);
+  public attachTemplate<T>(templateRef: TemplateRef<T>, context: T): void {
+    this.targetRef.createEmbeddedView(templateRef, context);
   }
 
-  private createOverlayInstance<T>(
-    component: Type<T>,
-    config: SkyOverlayConfig
-  ): SkyOverlayInstance<T> {
-
-    const componentRef = this.createComponent(component, config.providers);
-    const instance = new SkyOverlayInstance<T>(config);
-
-    if (config.enableClose) {
-      this.applyBackdropClickListener(instance);
-    }
-
-    if (config.closeOnNavigation) {
-      this.applyRouteListener(instance);
-    }
-
-    instance.componentInstance = componentRef.instance;
-    instance.closed.subscribe(() => {
-      componentRef.destroy();
-      this._closed.next();
-    });
-
-    return instance;
-  }
-
-  private createComponent<T>(component: Type<T>, providers: StaticProvider[]): ComponentRef<T> {
-    const factory = this.resolver.resolveComponentFactory(component);
-    const injector = Injector.create({
-      providers: providers || [],
-      parent: this.injector
-    });
-
-    return this.targetRef.createComponent(factory, undefined, injector);
-  }
-
-  private applyRouteListener<T>(instance: SkyOverlayInstance<T>): void {
+  private applyRouteListener(): void {
     this.router.events
       .takeUntil(this.ngUnsubscribe)
       .subscribe(event => {
         /* istanbul ignore else */
         if (event instanceof NavigationStart) {
-          instance.close();
+          this._closed.next();
+          this._closed.complete();
         }
       });
   }
 
-  private applyBackdropClickListener<T>(instance: SkyOverlayInstance<T>): void {
+  private applyBackdropClickListener(): void {
     Observable.fromEvent(this.elementRef.nativeElement, 'click')
       .takeUntil(this.ngUnsubscribe)
       .subscribe(() => {
-        instance.close();
+        this._closed.next();
+        this._closed.complete();
       });
+  }
+
+  private applyConfig(config: SkyOverlayConfig): void {
+    this.showBackdrop = config.showBackdrop;
+    this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
+    this.changeDetector.markForCheck();
   }
 }

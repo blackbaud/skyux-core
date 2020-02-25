@@ -1,7 +1,6 @@
 import {
   ComponentRef,
-  Injectable,
-  Type
+  Injectable
 } from '@angular/core';
 
 import {
@@ -32,7 +31,7 @@ export class SkyOverlayService {
 
   private host: ComponentRef<SkyOverlayHostComponent>;
 
-  private instances: SkyOverlayInstance<any>[] = [];
+  private overlays: SkyOverlayInstance[] = [];
 
   constructor(
     private dynamicComponentService: SkyDynamicComponentService,
@@ -41,12 +40,33 @@ export class SkyOverlayService {
     this.createHostComponent();
   }
 
-  /**
-   * Creates a new overlay and appends an instance of the provided component.
-   * @param component The component to append to the overlay.
-   * @param config The configuration for the overlay.
-   */
-  public create<T>(component: Type<T>, config?: SkyOverlayConfig): SkyOverlayInstance<T> {
+  public create(config?: SkyOverlayConfig): SkyOverlayInstance {
+    const settings = this.prepareConfig(config);
+    if (settings.enableScroll === false) {
+      this.adapter.restrictBodyScroll();
+    }
+
+    const componentRef = this.host.instance.createOverlay(settings);
+    const overlayRef = new SkyOverlayInstance(
+      settings,
+      componentRef
+    );
+
+    overlayRef.closed.subscribe(() => {
+      this.destroyOverlay(overlayRef);
+      componentRef.destroy();
+    });
+
+    this.overlays.push(overlayRef);
+
+    return overlayRef;
+  }
+
+  private createHostComponent(): void {
+    this.host = this.dynamicComponentService.createComponent(SkyOverlayHostComponent);
+  }
+
+  private prepareConfig(config: SkyOverlayConfig): SkyOverlayConfig {
     const defaults: SkyOverlayConfig = {
       closeOnNavigation: true,
       enableClose: false,
@@ -54,33 +74,19 @@ export class SkyOverlayService {
       showBackdrop: false
     };
 
-    const settings = {...defaults, ...config};
-
-    if (settings.enableScroll === false) {
-      this.adapter.restrictBodyScroll();
-    }
-
-    const instance = this.host.instance.attach(component, settings);
-
-    instance.closed.subscribe(() => {
-      this.instances.splice(this.instances.indexOf(instance), 1);
-
-      // Only release the body scroll if no other overlay wishes it to be disabled.
-      if (settings.enableScroll === false) {
-        const anotherInstanceDisablesScroll = this.instances.find(i => !i.config.enableScroll);
-        if (!anotherInstanceDisablesScroll) {
-          this.adapter.releaseBodyScroll();
-        }
-      }
-    });
-
-    this.instances.push(instance);
-
-    return instance;
+    return {...defaults, ...config};
   }
 
-  private createHostComponent(): void {
-    this.host = this.dynamicComponentService.createComponent(SkyOverlayHostComponent);
+  private destroyOverlay(overlayRef: SkyOverlayInstance): void {
+    if (overlayRef.config.enableScroll === false) {
+      // Only release the body scroll if no other overlay wishes it to be disabled.
+      const anotherOverlayDisablesScroll = this.overlays.some(o => !o.config.enableScroll);
+      if (!anotherOverlayDisablesScroll) {
+        this.adapter.releaseBodyScroll();
+      }
+    }
+
+    this.overlays.splice(this.overlays.indexOf(overlayRef), 1);
   }
 
 }

@@ -1,5 +1,7 @@
 import {
-  Component
+  AfterViewInit,
+  Component,
+  ElementRef
 } from '@angular/core';
 
 import {
@@ -22,66 +24,65 @@ let uniqueId = 0;
   selector: 'sky-overlay-demo',
   templateUrl: './overlay-demo.component.html'
 })
-export class OverlayDemoComponent {
+export class OverlayDemoComponent implements AfterViewInit {
 
-  public overlays: SkyOverlayInstance<OverlayDemoExampleComponent>[] = [];
+  public overlays: SkyOverlayInstance<OverlayDemoExampleComponent | ElementRef>[] = [];
+
+  public showComponent = true;
 
   constructor(
     public overlayService: SkyOverlayService
   ) { }
 
+  public ngAfterViewInit(): void { }
+
   public onTestClick(): void {
     alert('Clicked! Is that a good thing?');
   }
 
-  public launchDefaultOverlay(): void {
-    this.createOverlay({});
-  }
+  // public launchCustomOverlay(): void {
+  //   this.createOverlay({
+  //     closeOnNavigation: false,
+  //     enableClose: true,
+  //     enableScroll: false,
+  //     showBackdrop: true
+  //   });
+  // }
 
-  public launchCustomOverlay(): void {
-    this.createOverlay({
-      closeOnNavigation: false,
-      enableClose: true,
-      enableScroll: false,
-      showBackdrop: true
-    });
-  }
+  // public closeAllOverlays(): void {
+  //   this.overlays.forEach(o => o.close());
+  // }
 
-  public closeAllOverlays(): void {
-    this.overlays.forEach(o => o.close());
-  }
+  // private createOverlay(
+  //   config: SkyOverlayConfig
+  // ): SkyOverlayInstance<OverlayDemoExampleComponent> {
 
-  private createOverlay(
-    config: SkyOverlayConfig
-  ): SkyOverlayInstance<OverlayDemoExampleComponent> {
+  //   const overlayInstance = this.overlayService.createComponent(
+  //     OverlayDemoExampleComponent,
+  //     [{
+  //       provide: OverlayDemoExampleContext,
+  //       useValue: new OverlayDemoExampleContext(++uniqueId)
+  //     }],
+  //     config
+  //   );
 
-    config.providers = [{
-      provide: OverlayDemoExampleContext,
-      useValue: new OverlayDemoExampleContext(++uniqueId)
-    }];
+  //   overlayInstance.closed.subscribe(() => {
+  //     setTimeout(() => {
+  //       this.removeInstance(overlayInstance);
+  //     });
+  //   });
 
-    const overlayInstance = this.overlayService.create(
-      OverlayDemoExampleComponent,
-      config
-    );
+  //   // Manually close the overlay instance when a button is clicked in the attached component.
+  //   overlayInstance.contentRef.closeClicked.subscribe(() => {
+  //     overlayInstance.close();
+  //   });
 
-    overlayInstance.closed.subscribe(() => {
-      setTimeout(() => {
-        this.removeInstance(overlayInstance);
-      });
-    });
+  //   this.overlays.push(overlayInstance);
 
-    // Manually close the overlay instance when a button is clicked in the attached component.
-    overlayInstance.componentInstance.closeClicked.subscribe(() => {
-      overlayInstance.close();
-    });
+  //   return overlayInstance;
+  // }
 
-    this.overlays.push(overlayInstance);
-
-    return overlayInstance;
-  }
-
-  private removeInstance(instance: SkyOverlayInstance<OverlayDemoExampleComponent>): void {
-    this.overlays.splice(this.overlays.indexOf(instance), 1);
-  }
+  // private removeInstance(instance: SkyOverlayInstance<OverlayDemoExampleComponent>): void {
+  //   this.overlays.splice(this.overlays.indexOf(instance), 1);
+  // }
 }

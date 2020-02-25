@@ -1,7 +1,3 @@
-import {
-  StaticProvider
-} from '@angular/core';
-
 export interface SkyOverlayConfig {
 
   /**
@@ -23,10 +19,5 @@ export interface SkyOverlayConfig {
    * Specifies if the overlay's backdrop should be visible.
    */
   showBackdrop?: boolean;
-
-  /**
-   * Specifies an array of providers to supply to the overlay's content component.
-   */
-  providers?: StaticProvider[];
 
 }

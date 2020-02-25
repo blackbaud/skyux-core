@@ -1,24 +1,25 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ComponentFactoryResolver,
+  ComponentRef,
   Injector,
-  Type,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+
+import {
+  SkyOverlayComponent
+} from './overlay.component';
 
 import {
   SkyOverlayConfig
 } from './overlay-config';
 
 import {
-  SkyOverlayInstance
-} from './overlay-instance';
-
-import {
-  SkyOverlayComponent
-} from './overlay.component';
+  SkyOverlayContext
+} from './overlay-context';
 
 /**
  * @internal
@@ -35,26 +36,49 @@ export class SkyOverlayHostComponent {
   private targetRef: ViewContainerRef;
 
   constructor(
+    private changeDetector: ChangeDetectorRef,
     private resolver: ComponentFactoryResolver,
     private injector: Injector
   ) { }
 
-  public attach<T>(component: Type<T>, config: SkyOverlayConfig): SkyOverlayInstance<T> {
-    const factory = this.resolver.resolveComponentFactory(SkyOverlayComponent);
-
+  public createOverlay(config?: SkyOverlayConfig): ComponentRef<SkyOverlayComponent> {
     const injector = Injector.create({
-      providers: config.providers,
-      parent: this.injector
+      parent: this.injector,
+      providers: [{
+        provide: SkyOverlayContext,
+        useValue: new SkyOverlayContext(config)
+      }]
     });
 
+    const factory = this.resolver.resolveComponentFactory(SkyOverlayComponent);
     const componentRef = this.targetRef.createComponent(factory, undefined, injector);
-    const instance = componentRef.instance.attach(component, config);
 
-    componentRef.instance.closed
-      .subscribe(() => {
-        componentRef.destroy();
-      });
+    this.changeDetector.markForCheck();
 
-    return instance;
+    return componentRef;
   }
+
+  // public createComponent<T>(
+  //   component: Type<T>,
+  //   providers: StaticProvider[],
+  //   config: SkyOverlayConfig
+  // ): SkyOverlayInstance<T> {
+
+  //   const factory = this.resolver.resolveComponentFactory(SkyOverlayComponent);
+
+  //   const injector = Injector.create({
+  //     parent: this.injector,
+  //     providers: []
+  //   });
+
+  //   const componentRef = this.targetRef.createComponent(factory, undefined, injector);
+  //   const instance = componentRef.instance.createComponent(component, providers, config);
+
+  //   componentRef.instance.closed
+  //     .subscribe(() => {
+  //       componentRef.destroy();
+  //     });
+
+  //   return instance;
+  // }
 }

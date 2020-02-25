@@ -1,3 +1,10 @@
+<app-overlay-demo-self>
+  This is content that should get added to an overlay on page load.
+  <p>
+    <a skyAppLink="demos/numeric">Click to test route change behavior...</a>
+  </p>
+</app-overlay-demo-self>
+
 <div style="text-align:right;">
   <button
     class="sky-btn"
@@ -37,3 +44,14 @@
     Number of overlays currently open: {{ overlays.length }}
   </p>
 </div>
+
+<!--
+<app-overlay-demo-example *ngIf="showComponent"
+  (closeClicked)="onCloseClicked()"
+  #myOverlayContent
+></app-overlay-demo-example>
+
+<button
+  type="button"
+  (click)="onOpenElementRef()"
+>Open element ref</button> -->

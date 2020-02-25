@@ -1,6 +1,8 @@
 import {
   Component,
-  ElementRef
+  ElementRef,
+  Optional,
+  Output
 } from '@angular/core';
 
 import {
@@ -18,11 +20,12 @@ import {
 })
 export class OverlayDemoExampleComponent {
 
+  @Output()
   public closeClicked = new Subject<void>();
 
   constructor(
-    public context: OverlayDemoExampleContext,
-    public elementRef: ElementRef
+    public elementRef: ElementRef,
+    @Optional() public context: OverlayDemoExampleContext
   ) { }
 
   public close(): void {
