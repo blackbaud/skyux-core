@@ -28,7 +28,8 @@ import {
   SkyDockModule,
   SkyDynamicComponentModule,
   SkyMediaQueryModule,
-  SkyNumericModule
+  SkyNumericModule,
+  SkyViewkeeperModule
 } from './public';
 
 @NgModule({
@@ -40,7 +41,8 @@ import {
     SkyDynamicComponentModule,
     SkyMediaQueryModule,
     SkyNumericModule,
-    SkyPageModule
+    SkyPageModule,
+    SkyViewkeeperModule
   ],
   entryComponents: [
     DockItemVisualComponent,
