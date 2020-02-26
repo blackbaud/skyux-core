@@ -6,6 +6,11 @@ export * from './affix/affix-placement';
 export * from './affix/affix-vertical-alignment';
 export * from './affix/affix.module';
 
+export * from './dock/dock-insert-component-config';
+export * from './dock/dock-item';
+export * from './dock/dock.module';
+export * from './dock/dock.service';
+
 export * from './dynamic-component';
 export * from './format';
 export * from './log';
