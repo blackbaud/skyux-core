@@ -31,6 +31,11 @@ export * from './modules/numeric/numeric.options';
 export * from './modules/numeric/numeric.pipe';
 export * from './modules/numeric/numeric.service';
 
+export * from './modules/overlay/overlay-config';
+export * from './modules/overlay/overlay-instance';
+export * from './modules/overlay/overlay.module';
+export * from './modules/overlay/overlay.service';
+
 export * from './modules/percent-pipe/percent-pipe.module';
 export * from './modules/percent-pipe/percent.pipe';
 
