@@ -21,22 +21,15 @@ import {
 } from '@angular/router';
 
 import {
-  Observable
-} from 'rxjs/Observable';
-
-import {
-  Subject
-} from 'rxjs/Subject';
-
-import {
+  fromEvent as observableFromEvent,
+  Observable,
+  Subject,
   Subscription
-} from 'rxjs/Subscription';
+} from 'rxjs';
 
-import 'rxjs/add/observable/fromEvent';
-
-import 'rxjs/add/observable/of';
-
-import 'rxjs/add/operator/takeUntil';
+import {
+  takeUntil
+} from 'rxjs/operators';
 
 import {
   SkyOverlayConfig
@@ -123,8 +116,8 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   }
 
   private addBackdropClickListener(): void {
-    Observable.fromEvent(this.elementRef.nativeElement, 'click')
-      .takeUntil(this.ngUnsubscribe)
+    observableFromEvent(this.elementRef.nativeElement, 'click')
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(() => {
         this._closed.next();
         this._closed.complete();

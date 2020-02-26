@@ -8,19 +8,17 @@ import {
 
 import {
   MutationObserverService
-} from '@skyux/core';
+} from '../mutation/mutation-observer-service';
 
 import {
-  Observable
-} from 'rxjs/Observable';
-
-import {
+  fromEvent as observableFromEvent,
   Subject
-} from 'rxjs/Subject';
+} from 'rxjs';
 
-import 'rxjs/add/observable/fromEvent';
-
-import 'rxjs/add/operator/debounceTime';
+import {
+  debounceTime,
+  takeUntil
+} from 'rxjs/operators';
 
 /**
  * @internal
@@ -71,9 +69,11 @@ export class SkyDockDomAdapterService implements OnDestroy {
       subtree: true
     });
 
-    Observable.fromEvent(window, 'resize')
-      .debounceTime(250)
-      .takeUntil(this.ngUnsubscribe)
+    observableFromEvent(window, 'resize')
+      .pipe(
+        debounceTime(250),
+        takeUntil(this.ngUnsubscribe)
+      )
       .subscribe(() => this.adjustBodyStyles(elementRef));
   }
 
