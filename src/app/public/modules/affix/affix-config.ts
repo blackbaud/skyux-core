@@ -16,8 +16,8 @@ export interface SkyAffixConfig {
 
   horizontalAlignment?: SkyAffixHorizontalAlignment;
 
-  verticalAlignment?: SkyAffixVerticalAlignment;
+  isSticky?: boolean;
 
-  updateOnScroll?: boolean;
+  verticalAlignment?: SkyAffixVerticalAlignment;
 
 }

@@ -19,13 +19,17 @@ import {
 })
 export class AffixDemoComponent implements OnInit {
 
-  public disabled: boolean = false;
+  public placement: SkyAffixPlacement;
 
   public horizontalAlignment: SkyAffixHorizontalAlignment;
 
-  public placement: SkyAffixPlacement;
-
   public verticalAlignment: SkyAffixVerticalAlignment;
+
+  public isSticky: boolean = true;
+
+  public enableScrollableParent: boolean = false;
+
+  public disabled: boolean = false;
 
   private interval: any;
 
@@ -85,6 +89,11 @@ export class AffixDemoComponent implements OnInit {
 
       this.changeDetector.markForCheck();
     }, 250);
+  }
+
+  public toggleScrollableParent(): void {
+    this.enableScrollableParent = !this.enableScrollableParent;
+    this.runAffixCycle();
   }
 
 }

@@ -9,3 +9,38 @@
 .target-gap {
   background-color: #fff;
 }
+
+.subject {
+  width: 100px;
+  height: 100px;
+  background-color: blue;
+  position: fixed;
+}
+
+.parent-scrollable {
+  &.enable-scroll {
+    width: 250px;
+    height: 250px;
+    overflow: auto;
+    border: 1px solid #f00;
+
+    .parent-scrollable-canvas {
+      width: 1200px;
+      height: 1200px;
+      background-color: #f2f2f2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
+
+.toolbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  box-shadow: 0px -3px 8px rgba(0, 0, 0, 0.25);
+  padding: 10px;
+}

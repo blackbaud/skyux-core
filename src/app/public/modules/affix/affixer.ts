@@ -6,6 +6,10 @@ import {
   SkyAffixConfig
 } from './affix-config';
 
+import {
+  getScrollableParentElements
+} from './dom-utils';
+
 interface SkyAffixCoords {
   top: number;
   left: number;
@@ -13,10 +17,16 @@ interface SkyAffixCoords {
 
 const defaultAffixConfig: SkyAffixConfig = {
   placement: 'above',
-  updateOnScroll: false
+  isSticky: false
 };
 
 export class SkyAffixer {
+
+  private scrollListeners: Function[];
+
+  private config: SkyAffixConfig;
+
+  private target: HTMLElement;
 
   constructor(
     private subject: HTMLElement,
@@ -24,19 +34,30 @@ export class SkyAffixer {
   ) { }
 
   public affixTo(target: HTMLElement, config: SkyAffixConfig): void {
-    const settings = {...defaultAffixConfig, ...config};
+    this.reset();
 
-    const targetRect = target.getBoundingClientRect();
+    this.config = {...defaultAffixConfig, ...config};
+    this.target = target;
+
+    this.affix();
+
+    if (this.config.isSticky) {
+      this.addScrollListeners(target, config);
+    }
+  }
+
+  public destroy(): void {
+    this.reset();
+  }
+
+  private affix(): void {
+    const targetRect = this.target.getBoundingClientRect();
     const subjectRect = this.subject.getBoundingClientRect();
 
-    const { top, left } = this.getPlacementCoords(subjectRect, targetRect, settings);
+    const { top, left } = this.getPlacementCoords(subjectRect, targetRect, this.config);
 
     this.renderer.setStyle(this.subject, 'top', `${top}px`);
     this.renderer.setStyle(this.subject, 'left', `${left}px`);
-
-    if (settings.updateOnScroll) {
-      this.setupScrollListeners(target);
-    }
   }
 
   private getPlacementCoords(
@@ -101,7 +122,40 @@ export class SkyAffixer {
     };
   }
 
-  private setupScrollListeners(target: HTMLElement): void {
+  private addScrollListeners(target: HTMLElement, config: SkyAffixConfig): void {
+    if (this.scrollListeners) {
+      return;
+    }
+
+    this.scrollListeners = this.getParentScrollListeners(
+      target,
+      () => this.affixTo(target, config)
+    );
+  }
+
+  private getParentScrollListeners(element: HTMLElement, callback: () => void): Function[] {
+    return getScrollableParentElements(element)
+      .map((parentElement) => {
+        const scrollable = (parentElement === document.body) ? 'window' : parentElement;
+        return this.renderer.listen(scrollable, 'scroll', () => callback());
+      });
+  }
+
+  private removeScrollListeners(): void {
+    if (this.scrollListeners) {
+      // Remove renderer-generated listeners by calling the listener itself.
+      // https://github.com/angular/angular/issues/9368#issuecomment-227199778
+      this.scrollListeners.forEach(listener => listener());
+      this.scrollListeners = undefined;
+    }
+  }
+
+  private reset(): void {
+    this.removeScrollListeners();
+
+    this.config =
+      this.target =
+      this.scrollListeners = undefined;
   }
 
 }
