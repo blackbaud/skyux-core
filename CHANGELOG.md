@@ -1,6 +1,6 @@
 # 3.11.0 (2020-02-26)
 
-- Added the viewkeeper directive. [#128](https://github.com/blackbaud/skyux-core/pull/128)
+- Added the viewkeeper directive that enables SKY UX components to keep elements in view while users scroll. [#128](https://github.com/blackbaud/skyux-core/pull/128)
 - Added the dock service. [#125](https://github.com/blackbaud/skyux-core/pull/125)
 
 # 3.10.1 (2020-02-07)
