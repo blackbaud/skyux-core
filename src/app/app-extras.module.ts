@@ -19,7 +19,8 @@ import {
   SkyDynamicComponentModule,
   SkyMediaQueryModule,
   SkyNumericModule,
-  SkyOverlayModule
+  SkyOverlayModule,
+  SkyViewkeeperModule
 } from './public';
 
 @NgModule({
@@ -29,7 +30,8 @@ import {
     SkyDynamicComponentModule,
     SkyMediaQueryModule,
     SkyNumericModule,
-    SkyOverlayModule
+    SkyOverlayModule,
+    SkyViewkeeperModule
   ],
   entryComponents: [
     DynamicComponentDemoExampleComponent,

@@ -12,4 +12,5 @@ export * from './overlay/overlay.service';
 export * from './percent-pipe';
 export * from './title';
 export * from './ui-config';
+export * from './viewkeeper';
 export * from './window';
