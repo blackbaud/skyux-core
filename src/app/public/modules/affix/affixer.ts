@@ -12,7 +12,8 @@ interface SkyAffixCoords {
 }
 
 const defaultAffixConfig: SkyAffixConfig = {
-  placement: 'above'
+  placement: 'above',
+  updateOnScroll: false
 };
 
 export class SkyAffixer {
@@ -32,6 +33,10 @@ export class SkyAffixer {
 
     this.renderer.setStyle(this.subject, 'top', `${top}px`);
     this.renderer.setStyle(this.subject, 'left', `${left}px`);
+
+    if (settings.updateOnScroll) {
+      this.setupScrollListeners(target);
+    }
   }
 
   private getPlacementCoords(
@@ -94,6 +99,9 @@ export class SkyAffixer {
       top,
       left
     };
+  }
+
+  private setupScrollListeners(target: HTMLElement): void {
   }
 
 }

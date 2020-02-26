@@ -18,4 +18,6 @@ export interface SkyAffixConfig {
 
   verticalAlignment?: SkyAffixVerticalAlignment;
 
+  updateOnScroll?: boolean;
+
 }

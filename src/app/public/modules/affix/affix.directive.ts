@@ -43,6 +43,9 @@ export class SkyAffixDirective implements OnChanges {
   @Input()
   public affixVerticalAlignment: SkyAffixVerticalAlignment;
 
+  @Input()
+  public affixUpdateOnScroll: boolean;
+
   private affixer: SkyAffixer;
 
   constructor(
@@ -66,6 +69,7 @@ export class SkyAffixDirective implements OnChanges {
     this.affixer.affixTo(this.skyAffixTo, {
       placement: this.affixPlacement,
       horizontalAlignment: this.affixHorizontalAlignment,
+      updateOnScroll: this.affixUpdateOnScroll,
       verticalAlignment: this.affixVerticalAlignment
     });
   }
