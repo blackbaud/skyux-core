@@ -32,7 +32,10 @@ import {
 })
 export class SkyOverlayHostComponent {
 
-  @ViewChild('target', { read: ViewContainerRef })
+  @ViewChild('target', {
+    read: ViewContainerRef,
+    static: true
+  })
   private targetRef: ViewContainerRef;
 
   constructor(

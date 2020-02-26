@@ -58,7 +58,10 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   public showBackdrop = false;
 
-  @ViewChild('target', { read: ViewContainerRef })
+  @ViewChild('target', {
+    read: ViewContainerRef,
+    static: true
+  })
   private targetRef: ViewContainerRef;
 
   private ngUnsubscribe = new Subject<void>();

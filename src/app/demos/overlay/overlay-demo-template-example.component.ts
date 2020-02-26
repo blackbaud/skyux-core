@@ -16,7 +16,8 @@ import {
 export class OverlayDemoTemplateExampleComponent {
 
   @ViewChild('content', {
-    read: TemplateRef
+    read: TemplateRef,
+    static: false
   })
   private contentTemplateRef: TemplateRef<any>;
 
