@@ -13,47 +13,7 @@ import {
 
 @Component({
   selector: 'app-affix-demo',
-  template: `
-<div style="padding:250px;text-align:center;">
-  <div class="target" style="width:50px;height:50px;" #target>
-    <div class="target target-gap" style="width:40px;height:40px;">
-      <div class="target" style="width:30px;height:30px;">
-        <div class="target target-gap" style="width:20px;height:20px;">
-          <div class="target" style="width:10px;height:10px;"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div
-    style="width:100px;height:100px;background-color:blue;position:fixed;"
-    [skyAffixTo]="target"
-    [affixPlacement]="placement"
-    [affixHorizontalAlignment]="horizontalAlignment"
-    [affixVerticalAlignment]="verticalAlignment"
-  ></div>
-  <div style="padding-top:150px;">
-    <table style="text-align:left">
-      <tr>
-        <td>Placement:</td>
-        <td>{{ placement }}</td>
-      </tr>
-      <tr>
-        <td>Alignment:</td>
-        <td *ngIf="placement === 'above' || placement === 'below'">{{ horizontalAlignment }}</td>
-        <td *ngIf="placement === 'left' || placement === 'right'">{{ verticalAlignment }}</td>
-      </tr>
-    </table>
-    <button
-      class="sky-btn"
-      type="button"
-      [disabled]="disabled"
-      (click)="runAffixCycle()"
-    >
-      Run affix cycle
-    </button>
-  </div>
-</div>
-`,
+  templateUrl: './affix-demo.component.html',
   styleUrls: ['./affix-demo.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

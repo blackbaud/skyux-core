@@ -57,13 +57,13 @@ export class SkyAffixer {
           left = targetRect.left;
           break;
 
+        case 'center':
+          default:
+            left = targetRect.left + (targetRect.width / 2) - (subjectRect.width / 2);
+            break;
+
         case 'right':
           left = targetRect.right - subjectRect.width;
-          break;
-
-        case 'center':
-        default:
-          left = targetRect.left + (targetRect.width / 2) - (subjectRect.width / 2);
           break;
       }
 
@@ -79,13 +79,13 @@ export class SkyAffixer {
           top = targetRect.top;
           break;
 
-        case 'bottom':
-          top = targetRect.bottom - subjectRect.height;
-          break;
-
         case 'middle':
         default:
           top = targetRect.top + (targetRect.height / 2) - (subjectRect.height / 2);
+          break;
+
+        case 'bottom':
+          top = targetRect.bottom - subjectRect.height;
           break;
       }
     }
