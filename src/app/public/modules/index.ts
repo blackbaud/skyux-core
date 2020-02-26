@@ -1,4 +1,8 @@
 export * from './adapter-service';
+
+export * from './affix/affix-placement';
+export * from './affix/affix.module';
+
 export * from './dynamic-component';
 export * from './format';
 export * from './log';
