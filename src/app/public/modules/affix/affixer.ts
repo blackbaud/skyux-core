@@ -129,7 +129,7 @@ export class SkyAffixer {
 
     this.scrollListeners = this.getParentScrollListeners(
       target,
-      () => this.affixTo(target, config)
+      () => this.affix()
     );
   }
 

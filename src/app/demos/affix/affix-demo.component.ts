@@ -1,8 +1,7 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component,
-  OnInit
+  Component
 } from '@angular/core';
 
 import {
@@ -17,7 +16,7 @@ import {
   styleUrls: ['./affix-demo.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AffixDemoComponent implements OnInit {
+export class AffixDemoComponent {
 
   public placement: SkyAffixPlacement;
 
@@ -36,10 +35,6 @@ export class AffixDemoComponent implements OnInit {
   constructor(
     private changeDetector: ChangeDetectorRef
   ) { }
-
-  public ngOnInit(): void {
-    this.runAffixCycle();
-  }
 
   public runAffixCycle(): void {
     if (this.interval) {
