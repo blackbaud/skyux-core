@@ -48,7 +48,7 @@ export class OverlayDemoComponent {
   }
 
   public closeAllOverlays(): void {
-    this.overlays.forEach(o => o.close());
+    this.overlayService.closeAll();
   }
 
   private createOverlay(config: SkyOverlayConfig): SkyOverlayInstance {

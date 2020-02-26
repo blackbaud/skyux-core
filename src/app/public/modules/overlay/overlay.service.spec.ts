@@ -70,6 +70,10 @@ describe('Overlay service', () => {
     app = TestBed.get(ApplicationRef);
   });
 
+  afterEach(async(() => {
+    service.closeAll();
+  }));
+
   it('should create an overlay', function () {
     const overlay = createOverlay();
 
@@ -192,20 +196,22 @@ describe('Overlay service', () => {
     overlay.close();
   }));
 
-  it('should close on navigation change', async(inject([NgZone], (ngZone: NgZone) => {
+  it('should close all on navigation change', async(inject([NgZone], (ngZone: NgZone) => {
     const router = TestBed.get(Router);
-    let overlay = createOverlay();
+
+    createOverlay();
+    createOverlay();
+    createOverlay();
 
     app.tick();
 
-    expect(getAllOverlays().item(0)).not.toBeNull();
+    expect(getAllOverlays().length).toEqual(3);
 
     // Run navigation through NgZone to avoid warnings in the console.
     ngZone.run(() => {
       router.navigate(['/']);
       app.tick();
-      expect(getAllOverlays().item(0)).toBeNull();
-      overlay.close();
+      expect(getAllOverlays().length).toEqual(0);
     });
   })));
 
@@ -213,7 +219,7 @@ describe('Overlay service', () => {
     [NgZone],
     (ngZone: NgZone) => {
       const router = TestBed.get(Router);
-      let overlay = createOverlay({
+      const overlay = createOverlay({
         closeOnNavigation: false
       });
 
@@ -274,13 +280,11 @@ describe('Overlay service', () => {
   }));
 
   it('should be accessible', async(function () {
-    const overlay = createOverlay();
+    createOverlay();
 
     app.tick();
 
     expect(getAllOverlays()[0]).toBeAccessible();
-
-    overlay.close();
   }));
 
 });

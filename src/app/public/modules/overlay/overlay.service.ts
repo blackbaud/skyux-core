@@ -4,15 +4,6 @@ import {
 } from '@angular/core';
 
 import {
-  NavigationStart,
-  Router
-} from '@angular/router';
-
-import {
-  Subscription
-} from 'rxjs';
-
-import {
   SkyDynamicComponentService
 } from '../dynamic-component';
 
@@ -42,11 +33,8 @@ export class SkyOverlayService {
 
   private overlays: SkyOverlayInstance[] = [];
 
-  private routerSubscription: Subscription;
-
   constructor(
     private dynamicComponentService: SkyDynamicComponentService,
-    private router: Router,
     private adapter: SkyOverlayAdapterService
   ) {
     this.createHostComponent();
@@ -63,10 +51,6 @@ export class SkyOverlayService {
       this.adapter.restrictBodyScroll();
     }
 
-    if (settings.closeOnNavigation) {
-      this.applyRouteListener();
-    }
-
     const componentRef = this.host.instance.createOverlay(settings);
     const instance = new SkyOverlayInstance(
       settings,
@@ -81,6 +65,14 @@ export class SkyOverlayService {
     this.overlays.push(instance);
 
     return instance;
+  }
+
+  public closeAll(): void {
+    // The `close` event handler for each instance alters the array's length asynchronously,
+    // so the only "safe" index to call is zero.
+    while (this.overlays.length > 0) {
+      this.overlays[0].close();
+    }
   }
 
   private createHostComponent(): void {
@@ -101,11 +93,6 @@ export class SkyOverlayService {
   private destroyOverlay(instance: SkyOverlayInstance): void {
     this.overlays.splice(this.overlays.indexOf(instance), 1);
 
-    if (this.overlays.length === 0 && this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
-      this.routerSubscription = undefined;
-    }
-
     if (instance.config.enableScroll === false) {
       // Only release the body scroll if no other overlay wishes it to be disabled.
       const anotherOverlayDisablesScroll = this.overlays.some(o => !o.config.enableScroll);
@@ -113,24 +100,6 @@ export class SkyOverlayService {
         this.adapter.releaseBodyScroll();
       }
     }
-  }
-
-  private applyRouteListener(): void {
-    if (this.routerSubscription) {
-      return;
-    }
-
-    this.routerSubscription = this.router.events.subscribe(event => {
-      /* istanbul ignore else */
-      if (event instanceof NavigationStart) {
-        this.overlays.forEach(overlay => {
-          /* istanbul ignore else */
-          if (overlay.config.closeOnNavigation) {
-            overlay.close();
-          }
-        });
-      }
-    });
   }
 
 }

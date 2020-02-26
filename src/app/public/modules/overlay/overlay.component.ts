@@ -16,12 +16,21 @@ import {
 } from '@angular/core';
 
 import {
+  NavigationStart,
+  Router
+} from '@angular/router';
+
+import {
   Observable
 } from 'rxjs/Observable';
 
 import {
   Subject
 } from 'rxjs/Subject';
+
+import {
+  Subscription
+} from 'rxjs/Subscription';
 
 import 'rxjs/add/observable/fromEvent';
 
@@ -61,6 +70,8 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private ngUnsubscribe = new Subject<void>();
 
+  private routerSubscription: Subscription;
+
   private _closed = new Subject<void>();
 
   constructor(
@@ -68,17 +79,24 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     private resolver: ComponentFactoryResolver,
     private elementRef: ElementRef,
     private injector: Injector,
+    private router: Router,
     private context: SkyOverlayContext
   ) { }
 
   public ngOnInit(): void {
     this.applyConfig(this.context.config);
+
     if (this.context.config.enableClose) {
-      this.applyBackdropClickListener();
+      this.addBackdropClickListener();
+    }
+
+    if (this.context.config.closeOnNavigation) {
+      this.addRouteListener();
     }
   }
 
   public ngOnDestroy(): void {
+    this.removeRouteListener();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this._closed.complete();
@@ -98,7 +116,13 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     this.targetRef.createEmbeddedView(templateRef, context);
   }
 
-  private applyBackdropClickListener(): void {
+  private applyConfig(config: SkyOverlayConfig): void {
+    this.showBackdrop = config.showBackdrop;
+    this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
+    this.changeDetector.markForCheck();
+  }
+
+  private addBackdropClickListener(): void {
     Observable.fromEvent(this.elementRef.nativeElement, 'click')
       .takeUntil(this.ngUnsubscribe)
       .subscribe(() => {
@@ -107,9 +131,20 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
       });
   }
 
-  private applyConfig(config: SkyOverlayConfig): void {
-    this.showBackdrop = config.showBackdrop;
-    this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
-    this.changeDetector.markForCheck();
+  private addRouteListener(): void {
+    this.routerSubscription = this.router.events.subscribe(event => {
+      /* istanbul ignore else */
+      if (event instanceof NavigationStart) {
+        this._closed.next();
+        this._closed.complete();
+      }
+    });
+  }
+
+  private removeRouteListener(): void {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+      this.routerSubscription = undefined;
+    }
   }
 }
