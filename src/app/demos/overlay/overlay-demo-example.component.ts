@@ -1,6 +1,5 @@
 import {
   Component,
-  ElementRef,
   Optional,
   Output
 } from '@angular/core';
@@ -24,7 +23,6 @@ export class OverlayDemoExampleComponent {
   public closeClicked = new Subject<void>();
 
   constructor(
-    public elementRef: ElementRef,
     @Optional() public context: OverlayDemoExampleContext
   ) { }
 

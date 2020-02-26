@@ -41,7 +41,7 @@ export class SkyOverlayService {
   }
 
   /**
-   * Creates a new overlay.
+   * Creates an empty overlay. Use the returned `SkyOverlayInstance` to append content.
    * @param config Configuration for the overlay.
    */
   public create(config?: SkyOverlayConfig): SkyOverlayInstance {
