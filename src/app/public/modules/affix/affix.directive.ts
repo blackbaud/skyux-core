@@ -1,12 +1,22 @@
 import {
   Directive,
   ElementRef,
-  Input
+  Input,
+  OnChanges,
+  SimpleChanges
 } from '@angular/core';
+
+import {
+  SkyAffixHorizontalAlignment
+} from './affix-horizontal-alignment';
 
 import {
   SkyAffixPlacement
 } from './affix-placement';
+
+import {
+  SkyAffixVerticalAlignment
+} from './affix-vertical-alignment';
 
 import {
   SkyAffixService
@@ -19,24 +29,21 @@ import {
 @Directive({
   selector: '[skyAffixTo]'
 })
-export class SkyAffixDirective {
+export class SkyAffixDirective implements OnChanges {
 
   @Input()
   public skyAffixTo: HTMLElement;
 
   @Input()
-  public set affixPlacement(value: SkyAffixPlacement) {
-    this._placement = value;
-    this.updatePlacement();
-  }
+  public affixPlacement: SkyAffixPlacement;
 
-  public get affixPlacement(): SkyAffixPlacement {
-    return this._placement || 'above';
-  }
+  @Input()
+  public affixHorizontalAlignment: SkyAffixHorizontalAlignment;
+
+  @Input()
+  public affixVerticalAlignment: SkyAffixVerticalAlignment;
 
   private affixer: SkyAffixer;
-
-  private _placement: SkyAffixPlacement;
 
   constructor(
     elementRef: ElementRef,
@@ -45,9 +52,21 @@ export class SkyAffixDirective {
     this.affixer = this.affixService.createAffixer(elementRef);
   }
 
-  private updatePlacement(): void {
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes.affixPlacement ||
+      changes.affixHorizontalAlignment ||
+      changes.affixVerticalAlignment
+    ) {
+      this.updateAlignment();
+    }
+  }
+
+  private updateAlignment(): void {
     this.affixer.affixTo(this.skyAffixTo, {
-      placement: this.affixPlacement
+      placement: this.affixPlacement,
+      horizontalAlignment: this.affixHorizontalAlignment,
+      verticalAlignment: this.affixVerticalAlignment
     });
   }
 

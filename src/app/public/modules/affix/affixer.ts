@@ -6,14 +6,14 @@ import {
   SkyAffixConfig
 } from './affix-config';
 
-import {
-  SkyAffixPlacement
-} from './affix-placement';
-
 interface SkyAffixCoords {
   top: number;
   left: number;
 }
+
+const defaultAffixConfig: SkyAffixConfig = {
+  placement: 'above'
+};
 
 export class SkyAffixer {
 
@@ -23,45 +23,71 @@ export class SkyAffixer {
   ) { }
 
   public affixTo(target: HTMLElement, config: SkyAffixConfig): void {
+    const settings = {...defaultAffixConfig, ...config};
+
     const targetRect = target.getBoundingClientRect();
     const subjectRect = this.subject.getBoundingClientRect();
 
-    const { top, left } = this.getPlacementCoords(config.placement, subjectRect, targetRect);
+    const { top, left } = this.getPlacementCoords(subjectRect, targetRect, settings);
 
     this.renderer.setStyle(this.subject, 'top', `${top}px`);
     this.renderer.setStyle(this.subject, 'left', `${left}px`);
   }
 
   private getPlacementCoords(
-    placement: SkyAffixPlacement,
     subjectRect: ClientRect,
-    targetRect: ClientRect
+    targetRect: ClientRect,
+    config: SkyAffixConfig
   ): SkyAffixCoords {
 
     let top: number;
     let left: number;
 
-    switch (placement) {
-      case 'above':
+    const placement = config.placement;
+
+    if (placement === 'above' || placement === 'below') {
+      if (placement === 'above') {
         top = targetRect.top - subjectRect.height;
-        left = targetRect.left + (targetRect.width / 2) - (subjectRect.width / 2);
-        break;
-
-      case 'below':
-      default:
+      } else {
         top = targetRect.bottom;
-        left = targetRect.left + (targetRect.width / 2) - (subjectRect.width / 2);
-        break;
+      }
 
-      case 'left':
-        top = targetRect.top + (targetRect.height / 2) - (subjectRect.height / 2);
+      switch (config.horizontalAlignment) {
+        case 'left':
+          left = targetRect.left;
+          break;
+
+        case 'right':
+          left = targetRect.right - subjectRect.width;
+          break;
+
+        case 'center':
+        default:
+          left = targetRect.left + (targetRect.width / 2) - (subjectRect.width / 2);
+          break;
+      }
+
+    } else {
+      if (placement === 'left') {
         left = targetRect.left - subjectRect.width;
-        break;
-
-      case 'right':
-        top = targetRect.top + (targetRect.height / 2) - (subjectRect.height / 2);
+      } else {
         left = targetRect.right;
-        break;
+      }
+
+      switch (config.verticalAlignment) {
+        case 'top':
+          top = targetRect.top;
+          break;
+
+        case 'bottom':
+          top = targetRect.bottom - subjectRect.height;
+          break;
+
+        case 'middle':
+        default:
+          top = targetRect.top + (targetRect.height / 2) - (subjectRect.height / 2);
+          break;
+      }
     }
 
     return {
