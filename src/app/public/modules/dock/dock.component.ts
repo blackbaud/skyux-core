@@ -16,8 +16,8 @@ import {
 } from './dock-dom-adapter.service';
 
 import {
-  SkyDockItemConfig
-} from './dock-item-config';
+  SkyDockInsertComponentConfig
+} from './dock-insert-component-config';
 
 import {
   SkyDockItemReference
@@ -67,7 +67,7 @@ export class SkyDockComponent implements OnInit {
 
   public insertComponent<T>(
     component: Type<T>,
-    config: SkyDockItemConfig = {}
+    config: SkyDockInsertComponentConfig = {}
   ): SkyDockItemReference<T> {
 
     const factory = this.resolver.resolveComponentFactory(component);

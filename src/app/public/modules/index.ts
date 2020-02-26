@@ -1,7 +1,7 @@
 export * from './adapter-service';
 
+export * from './dock/dock-insert-component-config';
 export * from './dock/dock-item';
-export * from './dock/dock-item-config';
 export * from './dock/dock.module';
 export * from './dock/dock.service';
 

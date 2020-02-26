@@ -31,8 +31,8 @@ import {
 } from './fixtures/dock-item-context.fixture';
 
 import {
-  SkyDockItemConfig
-} from './dock-item-config';
+  SkyDockInsertComponentConfig
+} from './dock-insert-component-config';
 
 const STYLE_ELEMENT_SELECTOR = '[data-test-selector="sky-layout-dock-bottom-styles"]';
 
@@ -41,7 +41,7 @@ describe('Dock component', function () {
   let fixture: ComponentFixture<DockFixtureComponent>;
   let mutationCallbacks: Function[];
 
-  function resetDockItems(itemConfigs: SkyDockItemConfig[]): void {
+  function resetDockItems(itemConfigs: SkyDockInsertComponentConfig[]): void {
     fixture.componentInstance.removeAllItems();
     fixture.detectChanges();
     fixture.componentInstance.itemConfigs = itemConfigs;

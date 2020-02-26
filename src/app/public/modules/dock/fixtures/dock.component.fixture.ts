@@ -7,8 +7,8 @@ import {
 } from '../dock-item';
 
 import {
-  SkyDockItemConfig
-} from '../dock-item-config';
+  SkyDockInsertComponentConfig
+} from '../dock-insert-component-config';
 
 import {
   SkyDockService
@@ -24,7 +24,7 @@ import {
 })
 export class DockFixtureComponent {
 
-  public set itemConfigs(value: SkyDockItemConfig[]) {
+  public set itemConfigs(value: SkyDockInsertComponentConfig[]) {
     value.forEach(c => this.addItem(c));
   }
 
@@ -34,7 +34,7 @@ export class DockFixtureComponent {
     public dockService: SkyDockService
   ) { }
 
-  public addItem(config: SkyDockItemConfig): void {
+  public addItem(config: SkyDockInsertComponentConfig): void {
     this.dockItems.push(this.dockService.insertComponent(DockItemFixtureComponent, config));
   }
 
