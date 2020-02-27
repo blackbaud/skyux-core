@@ -19,11 +19,21 @@ import {
 })
 export class AffixDemoComponent {
 
-  public placement: SkyAffixPlacement = 'above';
+  public placements: SkyAffixPlacement[] = ['above', 'right', 'below', 'left'];
 
-  public horizontalAlignment: SkyAffixHorizontalAlignment;
+  public horizontalAlignments: SkyAffixHorizontalAlignment[] = ['right', 'center', 'left'];
 
-  public verticalAlignment: SkyAffixVerticalAlignment;
+  public verticalAlignments: SkyAffixVerticalAlignment[] = ['bottom', 'middle', 'top'];
+
+  public model: {
+    placement: SkyAffixPlacement;
+    horizontalAlignment?: SkyAffixHorizontalAlignment;
+    verticalAlignment?: SkyAffixVerticalAlignment;
+  } = {
+    placement: 'above',
+    horizontalAlignment: 'center',
+    verticalAlignment: 'middle'
+  };
 
   public isSticky: boolean = true;
 
@@ -49,16 +59,12 @@ export class AffixDemoComponent {
     this.disabled = true;
     this.changeDetector.markForCheck();
 
-    const placements: SkyAffixPlacement[] = ['above', 'right', 'below', 'left'];
-    const horizontalAlignments: SkyAffixHorizontalAlignment[] = ['right', 'center', 'left'];
-    const verticalAlignments: SkyAffixVerticalAlignment[] = ['bottom', 'middle', 'top'];
-
     let placementIndex = 0;
     let horizontalAlignmentIndex = 0;
     let verticalAlignmentIndex = 0;
 
     this.interval = setInterval(() => {
-      if (placementIndex === placements.length) {
+      if (placementIndex === this.placements.length) {
         clearInterval(this.interval);
         this.interval = undefined;
         this.disabled = false;
@@ -66,24 +72,24 @@ export class AffixDemoComponent {
         return;
       }
 
-      const placement = placements[placementIndex];
-      this.placement = placement;
+      const placement = this.placements[placementIndex];
+      this.model.placement = placement;
 
       if (placement === 'above' || placement === 'below') {
-        this.horizontalAlignment = horizontalAlignments[horizontalAlignmentIndex];
+        this.model.horizontalAlignment = this.horizontalAlignments[horizontalAlignmentIndex];
         horizontalAlignmentIndex++;
-        if (horizontalAlignmentIndex === horizontalAlignments.length) {
+        if (horizontalAlignmentIndex === this.horizontalAlignments.length) {
           placementIndex++;
           horizontalAlignmentIndex = 0;
-          horizontalAlignments.reverse();
+          this.horizontalAlignments.reverse();
         }
       } else {
-        this.verticalAlignment = verticalAlignments[verticalAlignmentIndex];
+        this.model.verticalAlignment = this.verticalAlignments[verticalAlignmentIndex];
         verticalAlignmentIndex++;
-        if (verticalAlignmentIndex === verticalAlignments.length) {
+        if (verticalAlignmentIndex === this.verticalAlignments.length) {
           placementIndex++;
           verticalAlignmentIndex = 0;
-          verticalAlignments.reverse();
+          this.verticalAlignments.reverse();
         }
       }
 
@@ -93,7 +99,7 @@ export class AffixDemoComponent {
 
   public toggleScrollableParent(): void {
     this.enableScrollableParent = !this.enableScrollableParent;
-    this.placement = 'below';
+    this.model.placement = 'below';
     this.changeDetector.markForCheck();
   }
 

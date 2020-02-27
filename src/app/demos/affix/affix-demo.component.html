@@ -22,13 +22,11 @@
   <div
     class="subject"
     [affixEnableAutoFit]="enableAutoFit"
-    [affixHorizontalAlignment]="horizontalAlignment"
+    [affixHorizontalAlignment]="model.horizontalAlignment"
     [affixIsSticky]="isSticky"
-    [affixPlacement]="placement"
-    [affixVerticalAlignment]="verticalAlignment"
-    [ngClass]="{
-      'subject-hidden': !isVisible
-    }"
+    [affixPlacement]="model.placement"
+    [affixVerticalAlignment]="model.verticalAlignment"
+    [ngClass]="{ 'subject-hidden': !isVisible }"
     [skyAffixTo]="target"
     (affixSubjectVisibilityChange)="onAffixSubjectVisibilityChange($event)"
   ></div>
@@ -37,12 +35,33 @@
   <table style="text-align:left;margin-bottom:10px;">
     <tr>
       <td>Placement:</td>
-      <td>{{ placement }}</td>
+      <td>
+        <select [(ngModel)]="model.placement">
+          <option *ngFor="let placement of placements" [value]="placement">
+            {{ placement }}
+          </option>
+        </select>
+      </td>
     </tr>
     <tr>
-      <td>Alignment:</td>
-      <td *ngIf="placement === 'above' || placement === 'below'">{{ horizontalAlignment }}</td>
-      <td *ngIf="placement === 'left' || placement === 'right'">{{ verticalAlignment }}</td>
+      <td>Horizontal alignment:</td>
+      <td>
+        <select [(ngModel)]="model.horizontalAlignment">
+          <option *ngFor="let alignment of horizontalAlignments" [value]="alignment">
+            {{ alignment }}
+          </option>
+        </select>
+      </td>
+    </tr>
+    <tr>
+      <td>Vertical alignment:</td>
+      <td>
+        <select [(ngModel)]="model.verticalAlignment">
+          <option *ngFor="let alignment of verticalAlignments" [value]="alignment">
+            {{ alignment }}
+          </option>
+        </select>
+      </td>
     </tr>
     <tr>
       <td>Sticky:</td>
