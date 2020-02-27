@@ -32,7 +32,10 @@
     (affixSubjectVisibilityChange)="onAffixSubjectVisibilityChange($event)"
   ></div>
 </div>
-<div class="toolbar">
+<div
+  class="toolbar"
+  #toolbar
+>
   <table style="text-align:left;margin-bottom:10px;">
     <tr>
       <td>Placement:</td>
@@ -76,6 +79,7 @@
   <button
     class="sky-btn sky-btn-default sky-margin-inline-default"
     type="button"
+    [disabled]="disabled"
     (click)="scrollToTarget()"
   >
     Scroll to target
@@ -87,6 +91,14 @@
     (click)="runAffixCycle()"
   >
     Run affix cycle
+  </button>
+  <button
+    class="sky-btn sky-btn-default sky-margin-inline-default"
+    type="button"
+    [disabled]="disabled"
+    (click)="stepAffixCycle()"
+  >
+    Step affix cycle
   </button>
   <button
     class="sky-btn sky-btn-default sky-margin-inline-default"

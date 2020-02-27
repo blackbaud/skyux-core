@@ -53,7 +53,16 @@ export class AffixDemoComponent {
   @ViewChild('target', { read: ElementRef })
   private target: ElementRef;
 
+  @ViewChild('toolbar', { read: ElementRef })
+  private toolbar: ElementRef;
+
   private interval: any;
+
+  private horizontalAlignmentIndex = 0;
+
+  private placementIndex = 0;
+
+  private verticalAlignmentIndex = 0;
 
   constructor(
     private changeDetector: ChangeDetectorRef
@@ -67,15 +76,30 @@ export class AffixDemoComponent {
     if (this.enableScrollableParent) {
       const scrollable: HTMLDivElement = this.parentScrollable.nativeElement;
       scrollable.scroll(
-        left - scrollable.offsetLeft - (scrollable.clientWidth / 2) + (targetElement.clientWidth / 2),
-        top - scrollable.offsetTop - (scrollable.clientHeight / 2) + (targetElement.clientHeight / 2)
+        left -
+          scrollable.offsetLeft -
+          (scrollable.clientWidth / 2) +
+          (targetElement.clientWidth / 2),
+        top -
+          scrollable.offsetTop -
+          (scrollable.clientHeight / 2) +
+          (targetElement.clientHeight / 2)
       );
     } else {
       window.scroll(
-        left - (document.documentElement.clientWidth / 2) + (targetElement.clientWidth / 2),
-        top - (document.documentElement.clientHeight / 2) + (targetElement.clientHeight / 2)
+        left -
+          (document.documentElement.clientWidth / 2) +
+          (targetElement.clientWidth / 2),
+        top -
+          (document.documentElement.clientHeight / 2) +
+          (targetElement.clientHeight / 2) +
+          (this.toolbar.nativeElement.clientHeight / 2)
       );
     }
+  }
+
+  public stepAffixCycle(): void {
+    this.goToNext();
   }
 
   public runAffixCycle(): void {
@@ -86,12 +110,8 @@ export class AffixDemoComponent {
     this.disabled = true;
     this.changeDetector.markForCheck();
 
-    let placementIndex = 0;
-    let horizontalAlignmentIndex = 0;
-    let verticalAlignmentIndex = 0;
-
     this.interval = setInterval(() => {
-      if (placementIndex === this.placements.length) {
+      if (this.placementIndex === this.placements.length) {
         clearInterval(this.interval);
         this.interval = undefined;
         this.disabled = false;
@@ -99,28 +119,7 @@ export class AffixDemoComponent {
         return;
       }
 
-      const placement = this.placements[placementIndex];
-      this.model.placement = placement;
-
-      if (placement === 'above' || placement === 'below') {
-        this.model.horizontalAlignment = this.horizontalAlignments[horizontalAlignmentIndex];
-        horizontalAlignmentIndex++;
-        if (horizontalAlignmentIndex === this.horizontalAlignments.length) {
-          placementIndex++;
-          horizontalAlignmentIndex = 0;
-          this.horizontalAlignments.reverse();
-        }
-      } else {
-        this.model.verticalAlignment = this.verticalAlignments[verticalAlignmentIndex];
-        verticalAlignmentIndex++;
-        if (verticalAlignmentIndex === this.verticalAlignments.length) {
-          placementIndex++;
-          verticalAlignmentIndex = 0;
-          this.verticalAlignments.reverse();
-        }
-      }
-
-      this.changeDetector.markForCheck();
+      this.goToNext();
     }, 250);
   }
 
@@ -133,6 +132,36 @@ export class AffixDemoComponent {
   public onAffixSubjectVisibilityChange(change: SkyAffixSubjectVisibilityChange): void {
     this.isVisible = change.isVisible;
     this.changeDetector.detectChanges();
+  }
+
+  private goToNext(): void {
+    if (this.placementIndex >= this.placements.length) {
+      this.placementIndex = 0;
+    }
+
+    const placement = this.placements[this.placementIndex];
+    this.model.placement = placement;
+    this.changeDetector.markForCheck();
+
+    if (placement === 'above' || placement === 'below') {
+      this.model.horizontalAlignment = this.horizontalAlignments[this.horizontalAlignmentIndex];
+      this.horizontalAlignmentIndex++;
+      if (this.horizontalAlignmentIndex === this.horizontalAlignments.length) {
+        this.placementIndex++;
+        this.horizontalAlignmentIndex = 0;
+        this.horizontalAlignments.reverse();
+      }
+    } else {
+      this.model.verticalAlignment = this.verticalAlignments[this.verticalAlignmentIndex];
+      this.verticalAlignmentIndex++;
+      if (this.verticalAlignmentIndex === this.verticalAlignments.length) {
+        this.placementIndex++;
+        this.verticalAlignmentIndex = 0;
+        this.verticalAlignments.reverse();
+      }
+    }
+
+    this.changeDetector.markForCheck();
   }
 
 }
