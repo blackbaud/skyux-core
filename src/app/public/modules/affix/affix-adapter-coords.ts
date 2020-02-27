@@ -1,3 +1,6 @@
+/**
+ * @internal
+ */
 export interface SkyAffixAdapterCoords {
 
   left: number;

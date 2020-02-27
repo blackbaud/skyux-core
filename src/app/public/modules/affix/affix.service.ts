@@ -20,6 +20,10 @@ export class SkyAffixService {
     this.renderer = rendererFactory.createRenderer(undefined, undefined);
   }
 
+  /**
+   * Creates an instance of `SkyAffixer`.
+   * @param subject The element to be affixed.
+   */
   public createAffixer(subject: ElementRef): SkyAffixer {
     return new SkyAffixer(
       subject.nativeElement,

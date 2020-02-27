@@ -95,6 +95,11 @@ export class SkyAffixer {
     private renderer: Renderer2
   ) { }
 
+  /**
+   * Affixes a subject element to a target element.
+   * @param target The target element.
+   * @param config Configuration for the affix action.
+   */
   public affixTo(target: HTMLElement, config: SkyAffixConfig): void {
     this.reset();
 
@@ -110,6 +115,9 @@ export class SkyAffixer {
     }
   }
 
+  /**
+   * Destroys the affixer.
+   */
   public destroy(): void {
     this.reset();
     this._subjectVisibilityChange.complete();
