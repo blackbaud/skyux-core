@@ -100,10 +100,7 @@ export class SkyAffixer {
 
     this.config = config;
     this.target = target;
-
-    if (this.config.enableAutoFit || this.config.isSticky) {
-      this.scrollableParents = getScrollableParents(target);
-    }
+    this.scrollableParents = getScrollableParents(target);
 
     this.affix();
 

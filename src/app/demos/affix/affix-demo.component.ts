@@ -1,7 +1,9 @@
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
-  Component
+  Component,
+  ElementRef,
+  ViewChild
 } from '@angular/core';
 
 import {
@@ -45,11 +47,36 @@ export class AffixDemoComponent {
 
   public isVisible: boolean = false;
 
+  @ViewChild('parentScrollable', { read: ElementRef })
+  private parentScrollable: ElementRef;
+
+  @ViewChild('target', { read: ElementRef })
+  private target: ElementRef;
+
   private interval: any;
 
   constructor(
     private changeDetector: ChangeDetectorRef
   ) { }
+
+  public scrollToTarget(): void {
+    const targetElement: HTMLDivElement = this.target.nativeElement;
+    const top = targetElement.offsetTop;
+    const left = targetElement.offsetLeft;
+
+    if (this.enableScrollableParent) {
+      const scrollable: HTMLDivElement = this.parentScrollable.nativeElement;
+      scrollable.scroll(
+        left - scrollable.offsetLeft - (scrollable.clientWidth / 2) + (targetElement.clientWidth / 2),
+        top - scrollable.offsetTop - (scrollable.clientHeight / 2) + (targetElement.clientHeight / 2)
+      );
+    } else {
+      window.scroll(
+        left - (document.documentElement.clientWidth / 2) + (targetElement.clientWidth / 2),
+        top - (document.documentElement.clientHeight / 2) + (targetElement.clientHeight / 2)
+      );
+    }
+  }
 
   public runAffixCycle(): void {
     if (this.interval) {

@@ -5,6 +5,7 @@
     [ngClass]="{
       'enable-scroll': enableScrollableParent
     }"
+    #parentScrollable
   >
     <div class="parent-scrollable-canvas">
       <div class="target" style="width:50px;height:50px;" #target>
@@ -72,6 +73,13 @@
       <td>{{ enableAutoFit }}</td>
     </tr>
   </table>
+  <button
+    class="sky-btn sky-btn-default sky-margin-inline-default"
+    type="button"
+    (click)="scrollToTarget()"
+  >
+    Scroll to target
+  </button>
   <button
     class="sky-btn sky-btn-primary sky-margin-inline-default"
     type="button"
