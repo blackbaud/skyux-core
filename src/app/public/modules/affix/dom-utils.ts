@@ -5,21 +5,13 @@ export function isChildVisibleWithinParent(
 ): boolean {
 
   const childRect = child.getBoundingClientRect();
-  if (parent === document.body) {
-    return !(
-      top < 0 ||
-      left + childRect.width > document.documentElement.clientWidth ||
-      top + childRect.height > document.documentElement.clientHeight ||
-      left < 0
-    );
-  }
+  const parentCoords = getParentCoords(parent);
 
-  const parentRect = parent.getBoundingClientRect();
   return !(
-    parentRect.top > top ||
-    parentRect.right < childRect.width + left ||
-    parentRect.bottom < top + childRect.height ||
-    parentRect.left > left
+    parentCoords.top > top ||
+    parentCoords.right < childRect.width + left ||
+    parentCoords.bottom < top + childRect.height ||
+    parentCoords.left > left
   );
 }
 
@@ -51,4 +43,35 @@ export function getScrollableParents(subject: HTMLElement): HTMLElement[] {
 
 export function getImmediateScrollableParent(scrollableParents: HTMLElement[]): HTMLElement {
   return scrollableParents[scrollableParents.length - 1];
+}
+
+export function getParentCoords(parent: HTMLElement): {
+  bottom: number;
+  left: number;
+  right: number;
+  top: number;
+} {
+  let top: number;
+  let left: number;
+  let right: number;
+  let bottom: number;
+  if (parent === document.body) {
+    left = 0;
+    top = 0;
+    right = document.documentElement.clientWidth;
+    bottom = document.documentElement.clientHeight;
+  } else {
+    const parentRect = parent.getBoundingClientRect();
+    left = parentRect.left;
+    top = parentRect.top;
+    right = parentRect.right;
+    bottom = parentRect.bottom;
+  }
+
+  return {
+    bottom,
+    left,
+    right,
+    top
+  };
 }

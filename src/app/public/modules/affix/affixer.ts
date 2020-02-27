@@ -11,6 +11,10 @@ import {
 import 'rxjs/add/observable/fromEvent';
 
 import {
+  SkyAffixAdapterCoords
+} from './affix-adapter-coords';
+
+import {
   SkyAffixConfig
 } from './affix-config';
 
@@ -23,48 +27,22 @@ import {
 } from './affix-subject-visibility-change';
 
 import {
+  getInversePlacement,
+  getNextPlacement
+} from './affix-utils';
+
+import {
   getImmediateScrollableParent,
+  getParentCoords,
   getScrollableParents,
   isChildVisibleWithinParent
 } from './dom-utils';
-
-interface SkyAffixAdapterCoords {
-  top: number;
-  left: number;
-}
 
 const DEFAULT_AFFIX_CONFIG: SkyAffixConfig = {
   enableAutoFit: true,
   placement: 'above',
   isSticky: false
 };
-
-function getNextPlacement(placement: SkyAffixPlacement): SkyAffixPlacement {
-  const placements: SkyAffixPlacement[] = [
-    'above',
-    'right',
-    'below',
-    'left'
-  ];
-
-  let index = placements.indexOf(placement) + 1;
-  if (index >= placements.length) {
-    index = 0;
-  }
-
-  return placements[index];
-}
-
-function getInversePlacement(placement: SkyAffixPlacement): SkyAffixPlacement {
-  const pairings: {[_: string]: SkyAffixPlacement} = {
-    above: 'below',
-    below: 'above',
-    right: 'left',
-    left: 'right'
-  };
-
-  return pairings[placement];
-}
 
 export class SkyAffixer {
 
@@ -145,19 +123,51 @@ export class SkyAffixer {
     this.targetRect = this.target.getBoundingClientRect();
     this.subjectRect = this.subject.getBoundingClientRect();
 
-    const { top, left } = this.getAutoFitCoords();
+    const { top, left } = this.getCoords();
 
     this.renderer.setStyle(this.subject, 'top', `${top}px`);
     this.renderer.setStyle(this.subject, 'left', `${left}px`);
   }
 
-  private getPlacementCoords(): SkyAffixAdapterCoords {
+  private getCoords(): SkyAffixAdapterCoords {
+    const parent = getImmediateScrollableParent(this.scrollableParents);
+
+    const maxAttempts = 4;
+    let attempts = 0;
+
+    let isSubjectVisible = false;
+    let coords: SkyAffixAdapterCoords;
+    let placement = this.config.placement;
+
+    do {
+      coords = this.getPreferredCoords(placement);
+      isSubjectVisible = isChildVisibleWithinParent(this.subject, parent, coords);
+
+      if (!this.config.enableAutoFit) {
+        break;
+      }
+
+      if (!isSubjectVisible) {
+        placement = (attempts % 2 === 0)
+          ? getInversePlacement(placement)
+          : getNextPlacement(placement);
+      }
+
+      attempts++;
+    } while (!isSubjectVisible && attempts < maxAttempts);
+
+    this.emitSubjectVisibilityChange(isSubjectVisible);
+
+    return coords;
+  }
+
+  private getPreferredCoords(placement: SkyAffixPlacement): SkyAffixAdapterCoords {
     const subjectRect = this.subjectRect;
     const targetRect = this.targetRect;
-    const parent = getImmediateScrollableParent(this.scrollableParents);
-    const parentRect = parent.getBoundingClientRect();
 
-    const placement = this.config.placement;
+    const parent = getImmediateScrollableParent(this.scrollableParents);
+    const parentCoords = getParentCoords(parent);
+
     const horizontalAlignment = this.config.horizontalAlignment;
     const verticalAlignment = this.config.verticalAlignment;
     const enableAutoFit = this.config.enableAutoFit;
@@ -189,10 +199,10 @@ export class SkyAffixer {
 
       // Slightly adjust the coords to fit within the parent's boundaries if the target is in view.
       if (enableAutoFit) {
-        if (left < parentRect.left) {
-          left = parentRect.left;
-        } else if (left + subjectRect.width > parentRect.right) {
-          left = parentRect.right - subjectRect.width;
+        if (left < parentCoords.left) {
+          left = parentCoords.left;
+        } else if (left + subjectRect.width > parentCoords.right) {
+          left = parentCoords.right - subjectRect.width;
         }
         // Make sure the subject never detaches from the target.
         if (left > targetRect.left) {
@@ -226,10 +236,10 @@ export class SkyAffixer {
 
       // Slightly adjust the coords to fit within the parent's boundaries if the target is in view.
       if (enableAutoFit) {
-        if (top < parentRect.top) {
-          top = parentRect.top;
-        } else if (top + subjectRect.height > parentRect.bottom) {
-          top = parentRect.bottom - subjectRect.height;
+        if (top < parentCoords.top) {
+          top = parentCoords.top;
+        } else if (top + subjectRect.height > parentCoords.bottom) {
+          top = parentCoords.bottom - subjectRect.height;
         }
 
         // Make sure the subject never detaches from the target.
@@ -245,41 +255,6 @@ export class SkyAffixer {
       top,
       left
     };
-  }
-
-  private getAutoFitCoords(): SkyAffixAdapterCoords {
-    const parent = getImmediateScrollableParent(this.scrollableParents);
-
-    const maxAttempts = 4;
-    let attempts = 0;
-
-    let isSubjectVisible = false;
-    let coords: SkyAffixAdapterCoords;
-    let placement = this.config.placement;
-
-    do {
-      coords = this.getPlacementCoords();
-      isSubjectVisible = isChildVisibleWithinParent(this.subject, parent, coords);
-
-      if (!this.config.enableAutoFit) {
-        break;
-      }
-
-      if (!isSubjectVisible) {
-        placement = (attempts % 2 === 0)
-          ? getInversePlacement(placement)
-          : getNextPlacement(placement);
-
-        // Set a new placement and try to find coords that fit.
-        this.config.placement = placement;
-      }
-
-      attempts++;
-    } while (!isSubjectVisible && attempts < maxAttempts);
-
-    this.emitSubjectVisibilityChange(isSubjectVisible);
-
-    return coords;
   }
 
   private emitSubjectVisibilityChange(isVisible: boolean): void {
