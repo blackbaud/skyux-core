@@ -12,11 +12,13 @@ import {
 
 export interface SkyAffixConfig {
 
-  placement: SkyAffixPlacement;
+  enableAutoFit?: boolean;
 
   horizontalAlignment?: SkyAffixHorizontalAlignment;
 
   isSticky?: boolean;
+
+  placement?: SkyAffixPlacement;
 
   verticalAlignment?: SkyAffixVerticalAlignment;
 

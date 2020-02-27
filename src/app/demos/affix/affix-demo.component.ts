@@ -18,7 +18,7 @@ import {
 })
 export class AffixDemoComponent {
 
-  public placement: SkyAffixPlacement;
+  public placement: SkyAffixPlacement = 'above';
 
   public horizontalAlignment: SkyAffixHorizontalAlignment;
 
@@ -26,7 +26,7 @@ export class AffixDemoComponent {
 
   public isSticky: boolean = true;
 
-  public enableScrollableParent: boolean = false;
+  public enableScrollableParent: boolean = true;
 
   public disabled: boolean = false;
 

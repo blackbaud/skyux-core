@@ -7,24 +7,58 @@ import {
 } from './affix-config';
 
 import {
+  SkyAffixPlacement
+} from './affix-placement';
+
+import {
   getScrollableParentElements
 } from './dom-utils';
 
-interface SkyAffixCoords {
+interface SkyAffixAdapterCoords {
   top: number;
   left: number;
 }
 
 const defaultAffixConfig: SkyAffixConfig = {
+  enableAutoFit: true,
   placement: 'above',
   isSticky: false
 };
 
+function getNextPlacement(placement: SkyAffixPlacement): SkyAffixPlacement {
+  const placements: SkyAffixPlacement[] = [
+    'above',
+    'right',
+    'below',
+    'left'
+  ];
+
+  let index = placements.indexOf(placement) + 1;
+  if (index >= placements.length) {
+    index = 0;
+  }
+
+  return placements[index];
+}
+
+function getInversePlacement(placement: SkyAffixPlacement): SkyAffixPlacement {
+  const pairings: {[_: string]: SkyAffixPlacement} = {
+    above: 'below',
+    below: 'above',
+    right: 'left',
+    left: 'right'
+  };
+
+  return pairings[placement];
+}
+
 export class SkyAffixer {
 
-  private scrollListeners: Function[];
-
   private config: SkyAffixConfig;
+
+  private scrollableParents: HTMLElement[];
+
+  private scrollListeners: Function[];
 
   private target: HTMLElement;
 
@@ -36,8 +70,12 @@ export class SkyAffixer {
   public affixTo(target: HTMLElement, config: SkyAffixConfig): void {
     this.reset();
 
-    this.config = {...defaultAffixConfig, ...config};
+    this.config = this.prepareConfig(config);
     this.target = target;
+
+    if (this.config.enableAutoFit || this.config.isSticky) {
+      this.scrollableParents = getScrollableParentElements(target);
+    }
 
     this.affix();
 
@@ -54,21 +92,26 @@ export class SkyAffixer {
     const targetRect = this.target.getBoundingClientRect();
     const subjectRect = this.subject.getBoundingClientRect();
 
-    const { top, left } = this.getPlacementCoords(subjectRect, targetRect, this.config);
+    let coords: SkyAffixAdapterCoords;
+    if (this.config.enableAutoFit) {
+      coords = this.ensureFit(subjectRect, targetRect);
+    } else {
+      coords = this.getPlacementCoords(subjectRect, targetRect);
+    }
 
-    this.renderer.setStyle(this.subject, 'top', `${top}px`);
-    this.renderer.setStyle(this.subject, 'left', `${left}px`);
+    this.renderer.setStyle(this.subject, 'top', `${coords.top}px`);
+    this.renderer.setStyle(this.subject, 'left', `${coords.left}px`);
   }
 
   private getPlacementCoords(
     subjectRect: ClientRect,
-    targetRect: ClientRect,
-    config: SkyAffixConfig
-  ): SkyAffixCoords {
+    targetRect: ClientRect
+  ): SkyAffixAdapterCoords {
 
     let top: number;
     let left: number;
 
+    const config = this.config;
     const placement = config.placement;
 
     if (placement === 'above' || placement === 'below') {
@@ -122,23 +165,80 @@ export class SkyAffixer {
     };
   }
 
+  private ensureFit(
+    subjectRect: ClientRect,
+    targetRect: ClientRect
+  ): SkyAffixAdapterCoords {
+
+    const maxAttempts = 4;
+    const scrollableParent = this.scrollableParents[this.scrollableParents.length - 1];
+    const parentRect = scrollableParent.getBoundingClientRect();
+
+    let attempts = 0;
+    let coords: SkyAffixAdapterCoords;
+    let isSubjectFullyVisible = false;
+    let placement: SkyAffixPlacement = this.config.placement;
+
+    if (this.isSubjectLargerThanParent(subjectRect, parentRect)) {
+      console.warn('The subject element is larger than the parent element. A suitable placement cannot be found!');
+      return {
+        top: 0,
+        left: 0
+      };
+    }
+
+    do {
+      coords = this.getPlacementCoords(subjectRect, targetRect);
+      isSubjectFullyVisible = this.confirmSubjectVisibility(subjectRect, parentRect, coords);
+
+      if (!isSubjectFullyVisible) {
+        placement = (attempts % 2 === 0)
+          ? getInversePlacement(placement)
+          : getNextPlacement(placement);
+
+        // Set a new placement and try to find coords that fit.
+        this.config.placement = placement;
+      }
+
+      attempts++;
+    } while (!isSubjectFullyVisible && attempts < maxAttempts);
+
+    if (attempts === maxAttempts) {
+      console.warn('Suitable placement not found!');
+    }
+
+    return coords;
+  }
+
+  private confirmSubjectVisibility(
+    subjectRect: ClientRect,
+    parentRect: ClientRect,
+    { top, left }: SkyAffixAdapterCoords
+  ): boolean {
+    return !(
+      parentRect.top > top ||
+      parentRect.right < subjectRect.width + left ||
+      parentRect.bottom < top + subjectRect.height ||
+      parentRect.left > left
+    );
+  }
+
+  private isSubjectLargerThanParent(subjectRect: ClientRect, parentRect: ClientRect): boolean {
+    return (
+      subjectRect.height >= parentRect.height ||
+      subjectRect.width >= parentRect.width
+    );
+  }
+
   private addScrollListeners(target: HTMLElement, config: SkyAffixConfig): void {
     if (this.scrollListeners) {
       return;
     }
 
-    this.scrollListeners = this.getParentScrollListeners(
-      target,
-      () => this.affix()
-    );
-  }
-
-  private getParentScrollListeners(element: HTMLElement, callback: () => void): Function[] {
-    return getScrollableParentElements(element)
-      .map((parentElement) => {
-        const scrollable = (parentElement === document.body) ? 'window' : parentElement;
-        return this.renderer.listen(scrollable, 'scroll', () => callback());
-      });
+    this.scrollListeners = this.scrollableParents.map((parentElement) => {
+      const scrollable = (parentElement === document.body) ? 'window' : parentElement;
+      return this.renderer.listen(scrollable, 'scroll', () => this.affix());
+    });
   }
 
   private removeScrollListeners(): void {
@@ -150,11 +250,30 @@ export class SkyAffixer {
     }
   }
 
+  private prepareConfig(config: SkyAffixConfig): SkyAffixConfig {
+    const merged = {...defaultAffixConfig, ...config};
+
+    if (merged.placement === undefined) {
+      merged.placement = defaultAffixConfig.placement;
+    }
+
+    if (merged.enableAutoFit === undefined) {
+      merged.enableAutoFit = defaultAffixConfig.enableAutoFit;
+    }
+
+    if (merged.isSticky === undefined) {
+      merged.isSticky = defaultAffixConfig.isSticky;
+    }
+
+    return merged;
+  }
+
   private reset(): void {
     this.removeScrollListeners();
 
     this.config =
       this.target =
+      this.scrollableParents =
       this.scrollListeners = undefined;
   }
 
