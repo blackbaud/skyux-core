@@ -1,7 +1,11 @@
 export interface SkyAffixAdapterCoords {
 
+  left: number;
+
   top: number;
 
-  left: number;
+  bottom?: number;
+
+  right?: number;
 
 }

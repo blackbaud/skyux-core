@@ -1,17 +1,22 @@
-export function isChildVisibleWithinParent(
-  child: HTMLElement,
+import {
+  SkyAffixAdapterCoords
+} from './affix-adapter-coords';
+
+/**
+ * Validates coordinates are fully visible within an element.
+ * @param parent
+ * @param coords
+ */
+export function verifyCoordsVisibleWithinElement(
   parent: HTMLElement,
-  { top, left }: { top: number, left: number }
+  coords: SkyAffixAdapterCoords
 ): boolean {
-
-  const childRect = child.getBoundingClientRect();
   const parentCoords = getParentCoords(parent);
-
   return !(
-    parentCoords.top > top ||
-    parentCoords.right < childRect.width + left ||
-    parentCoords.bottom < top + childRect.height ||
-    parentCoords.left > left
+    parentCoords.top > coords.top ||
+    parentCoords.right < coords.right ||
+    parentCoords.bottom < coords.bottom ||
+    parentCoords.left > coords.left
   );
 }
 
@@ -45,16 +50,12 @@ export function getImmediateScrollableParent(scrollableParents: HTMLElement[]): 
   return scrollableParents[scrollableParents.length - 1];
 }
 
-export function getParentCoords(parent: HTMLElement): {
-  bottom: number;
-  left: number;
-  right: number;
-  top: number;
-} {
+export function getParentCoords(parent: HTMLElement): SkyAffixAdapterCoords {
   let top: number;
   let left: number;
   let right: number;
   let bottom: number;
+
   if (parent === document.body) {
     left = 0;
     top = 0;

@@ -35,7 +35,7 @@ import {
   getImmediateScrollableParent,
   getParentCoords,
   getScrollableParents,
-  isChildVisibleWithinParent
+  verifyCoordsVisibleWithinElement
 } from './dom-utils';
 
 const DEFAULT_AFFIX_CONFIG: SkyAffixConfig = {
@@ -141,7 +141,7 @@ export class SkyAffixer {
 
     do {
       coords = this.getPreferredCoords(placement);
-      isSubjectVisible = isChildVisibleWithinParent(this.subject, parent, coords);
+      isSubjectVisible = verifyCoordsVisibleWithinElement(parent, coords);
 
       if (!this.config.enableAutoFit) {
         break;
@@ -251,9 +251,14 @@ export class SkyAffixer {
       }
     }
 
+    const bottom = top + subjectRect.height;
+    const right = left + subjectRect.width;
+
     return {
-      top,
-      left
+      bottom,
+      left,
+      right,
+      top
     };
   }
 
