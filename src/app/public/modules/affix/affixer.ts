@@ -4,7 +4,8 @@ import {
 
 import {
   Observable,
-  Subscription
+  Subscription,
+  Subject
 } from 'rxjs';
 
 import 'rxjs/add/observable/fromEvent';
@@ -18,10 +19,13 @@ import {
 } from './affix-placement';
 
 import {
+  SkyAffixSubjectVisibilityChange
+} from './affix-subject-visibility-change';
+
+import {
   getImmediateScrollableParent,
   getScrollableParents,
-  isChildVisibleWithinParent,
-  isLargerThan
+  isChildVisibleWithinParent
 } from './dom-utils';
 
 interface SkyAffixAdapterCoords {
@@ -64,6 +68,12 @@ function getInversePlacement(placement: SkyAffixPlacement): SkyAffixPlacement {
 
 export class SkyAffixer {
 
+  public get subjectVisibilityChange(): Observable<SkyAffixSubjectVisibilityChange> {
+    return this._subjectVisibilityChange.asObservable();
+  }
+
+  private _subjectVisibilityChange = new Subject<SkyAffixSubjectVisibilityChange>();
+
   private get config(): SkyAffixConfig {
     return this._config || DEFAULT_AFFIX_CONFIG;
   }
@@ -85,6 +95,8 @@ export class SkyAffixer {
 
     this._config = merged;
   }
+
+  private isSubjectVisible: boolean = false;
 
   private resizeListener: Subscription;
 
@@ -125,15 +137,15 @@ export class SkyAffixer {
 
   public destroy(): void {
     this.reset();
+    this._subjectVisibilityChange.complete();
+    this._subjectVisibilityChange = undefined;
   }
 
   private affix(): void {
     this.targetRect = this.target.getBoundingClientRect();
     this.subjectRect = this.subject.getBoundingClientRect();
 
-    const { top, left } = this.config.enableAutoFit
-      ? this.getAutoFitCoords()
-      : this.getPlacementCoords();
+    const { top, left } = this.getAutoFitCoords();
 
     this.renderer.setStyle(this.subject, 'top', `${top}px`);
     this.renderer.setStyle(this.subject, 'left', `${left}px`);
@@ -142,7 +154,8 @@ export class SkyAffixer {
   private getPlacementCoords(): SkyAffixAdapterCoords {
     const subjectRect = this.subjectRect;
     const targetRect = this.targetRect;
-    const parentRect = getImmediateScrollableParent(this.scrollableParents);
+    const parent = getImmediateScrollableParent(this.scrollableParents);
+    const parentRect = parent.getBoundingClientRect();
 
     const placement = this.config.placement;
     const horizontalAlignment = this.config.horizontalAlignment;
@@ -235,17 +248,7 @@ export class SkyAffixer {
   }
 
   private getAutoFitCoords(): SkyAffixAdapterCoords {
-    const parentRect = getImmediateScrollableParent(this.scrollableParents);
-    const subjectRect = this.subjectRect;
-
-    // TODO: Emit an event instead.
-    if (isLargerThan(subjectRect, parentRect)) {
-      console.warn('The subject element is larger than the parent element. A suitable placement cannot be found!');
-      return {
-        top: 0,
-        left: 0
-      };
-    }
+    const parent = getImmediateScrollableParent(this.scrollableParents);
 
     const maxAttempts = 4;
     let attempts = 0;
@@ -256,7 +259,11 @@ export class SkyAffixer {
 
     do {
       coords = this.getPlacementCoords();
-      isSubjectVisible = isChildVisibleWithinParent(subjectRect, parentRect, coords);
+      isSubjectVisible = isChildVisibleWithinParent(this.subject, parent, coords);
+
+      if (!this.config.enableAutoFit) {
+        break;
+      }
 
       if (!isSubjectVisible) {
         placement = (attempts % 2 === 0)
@@ -270,12 +277,29 @@ export class SkyAffixer {
       attempts++;
     } while (!isSubjectVisible && attempts < maxAttempts);
 
-    if (attempts === maxAttempts) {
-      // TODO: Emit an event.
-      console.warn('Suitable placement not found!');
-    }
+    this.emitSubjectVisibilityChange(isSubjectVisible);
 
     return coords;
+  }
+
+  private emitSubjectVisibilityChange(isVisible: boolean): void {
+    if (this.isSubjectVisible !== isVisible) {
+      this.isSubjectVisible = isVisible;
+      this._subjectVisibilityChange.next({
+        isVisible: isVisible
+      });
+    }
+  }
+
+  private reset(): void {
+    this.removeScrollListeners();
+    this.removeResizeListener();
+
+    this._config =
+      this.target =
+      this.targetRect =
+      this.subjectRect =
+      this.scrollableParents = undefined;
   }
 
   private addScrollListeners(): void {
@@ -296,17 +320,6 @@ export class SkyAffixer {
 
     this.resizeListener = Observable.fromEvent(window, 'resize')
       .subscribe(() => this.affix());
-  }
-
-  private reset(): void {
-    this.removeScrollListeners();
-    this.removeResizeListener();
-
-    this._config =
-      this.target =
-      this.targetRect =
-      this.subjectRect =
-      this.scrollableParents = undefined;
   }
 
   private removeResizeListener(): void {

@@ -1,4 +1,4 @@
-<div style="display:flex;align-items:center;justify-content:center;height:1500px;width:1500px;">
+<div style="display:flex;align-items:center;justify-content:center;height:2500px;width:2500px;">
 
   <div
     class="parent-scrollable"
@@ -21,11 +21,16 @@
 
   <div
     class="subject"
-    [skyAffixTo]="target"
-    [affixPlacement]="placement"
+    [affixEnableAutoFit]="enableAutoFit"
     [affixHorizontalAlignment]="horizontalAlignment"
-    [affixVerticalAlignment]="verticalAlignment"
     [affixIsSticky]="isSticky"
+    [affixPlacement]="placement"
+    [affixVerticalAlignment]="verticalAlignment"
+    [ngClass]="{
+      'subject-hidden': !isVisible
+    }"
+    [skyAffixTo]="target"
+    (affixSubjectVisibilityChange)="onAffixSubjectVisibilityChange($event)"
   ></div>
 </div>
 <div class="toolbar">
@@ -43,6 +48,10 @@
       <td>Sticky:</td>
       <td>{{ isSticky }}</td>
     </tr>
+    <tr>
+      <td>Auto-fit:</td>
+      <td>{{ enableAutoFit }}</td>
+    </tr>
   </table>
   <button
     class="sky-btn sky-btn-primary sky-margin-inline-default"
@@ -59,6 +68,14 @@
     (click)="isSticky = !isSticky"
   >
     Toggle stickiness
+  </button>
+  <button
+    class="sky-btn sky-btn-default sky-margin-inline-default"
+    type="button"
+    [disabled]="disabled"
+    (click)="enableAutoFit = !enableAutoFit"
+  >
+    Toggle autofit
   </button>
   <button
     class="sky-btn sky-btn-default"

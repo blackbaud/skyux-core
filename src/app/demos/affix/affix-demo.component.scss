@@ -17,10 +17,14 @@
   position: fixed;
 }
 
+.subject-hidden {
+  visibility: hidden;
+}
+
 .parent-scrollable {
   &.enable-scroll {
-    width: 250px;
-    height: 250px;
+    width: 500px;
+    height: 500px;
     overflow: auto;
     border: 1px solid #f00;
 

@@ -1,20 +1,25 @@
 export function isChildVisibleWithinParent(
-  childRect: ClientRect,
-  parentRect: ClientRect,
+  child: HTMLElement,
+  parent: HTMLElement,
   { top, left }: { top: number, left: number }
 ): boolean {
+
+  const childRect = child.getBoundingClientRect();
+  if (parent === document.body) {
+    return !(
+      top < 0 ||
+      left + childRect.width > document.documentElement.clientWidth ||
+      top + childRect.height > document.documentElement.clientHeight ||
+      left < 0
+    );
+  }
+
+  const parentRect = parent.getBoundingClientRect();
   return !(
     parentRect.top > top ||
     parentRect.right < childRect.width + left ||
     parentRect.bottom < top + childRect.height ||
     parentRect.left > left
-  );
-}
-
-export function isLargerThan(firstRect: ClientRect, secondRect: ClientRect): boolean {
-  return (
-    firstRect.height >= secondRect.height ||
-    firstRect.width >= secondRect.width
   );
 }
 
@@ -44,7 +49,6 @@ export function getScrollableParents(subject: HTMLElement): HTMLElement[] {
   return result;
 }
 
-export function getImmediateScrollableParent(scrollableParents: HTMLElement[]): ClientRect {
-  const scrollableParent = scrollableParents[scrollableParents.length - 1];
-  return scrollableParent.getBoundingClientRect();
+export function getImmediateScrollableParent(scrollableParents: HTMLElement[]): HTMLElement {
+  return scrollableParents[scrollableParents.length - 1];
 }

@@ -7,6 +7,7 @@ import {
 import {
   SkyAffixHorizontalAlignment,
   SkyAffixPlacement,
+  SkyAffixSubjectVisibilityChange,
   SkyAffixVerticalAlignment
 } from '../../public';
 
@@ -26,9 +27,13 @@ export class AffixDemoComponent {
 
   public isSticky: boolean = true;
 
-  public enableScrollableParent: boolean = true;
+  public enableAutoFit: boolean = true;
+
+  public enableScrollableParent: boolean = false;
 
   public disabled: boolean = false;
+
+  public isVisible: boolean = false;
 
   private interval: any;
 
@@ -88,7 +93,13 @@ export class AffixDemoComponent {
 
   public toggleScrollableParent(): void {
     this.enableScrollableParent = !this.enableScrollableParent;
-    this.runAffixCycle();
+    this.placement = 'below';
+    this.changeDetector.markForCheck();
+  }
+
+  public onAffixSubjectVisibilityChange(change: SkyAffixSubjectVisibilityChange): void {
+    this.isVisible = change.isVisible;
+    this.changeDetector.detectChanges();
   }
 
 }
