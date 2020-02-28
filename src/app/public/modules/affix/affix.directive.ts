@@ -78,6 +78,7 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
+    /* istanbul ignore else */
     if (
       changes.affixPlacement ||
       changes.affixHorizontalAlignment ||
@@ -93,6 +94,7 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
     this.affixSubjectVisibilityChange.complete();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this.affixer.destroy();
   }
 
   private updateAlignment(): void {

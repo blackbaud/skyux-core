@@ -1,3 +1,11 @@
+.canvas {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2500px;
+  width: 2500px;
+}
+
 .target {
   background-color: #f00;
   border-radius: 50%;

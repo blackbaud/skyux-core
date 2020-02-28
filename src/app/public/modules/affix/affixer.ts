@@ -39,9 +39,11 @@ import {
 } from './dom-utils';
 
 const DEFAULT_AFFIX_CONFIG: SkyAffixConfig = {
-  enableAutoFit: true,
+  enableAutoFit: false,
+  horizontalAlignment: 'center',
+  isSticky: false,
   placement: 'above',
-  isSticky: false
+  verticalAlignment: 'middle'
 };
 
 export class SkyAffixer {
@@ -53,23 +55,18 @@ export class SkyAffixer {
   private _subjectVisibilityChange = new Subject<SkyAffixSubjectVisibilityChange>();
 
   private get config(): SkyAffixConfig {
-    return this._config || DEFAULT_AFFIX_CONFIG;
+    return this._config;
   }
 
   private set config(value: SkyAffixConfig) {
     const merged = {...DEFAULT_AFFIX_CONFIG, ...value};
 
-    if (merged.placement === undefined) {
-      merged.placement = DEFAULT_AFFIX_CONFIG.placement;
-    }
-
-    if (merged.enableAutoFit === undefined) {
-      merged.enableAutoFit = DEFAULT_AFFIX_CONFIG.enableAutoFit;
-    }
-
-    if (merged.isSticky === undefined) {
-      merged.isSticky = DEFAULT_AFFIX_CONFIG.isSticky;
-    }
+    // Make sure none of the values are undefined.
+    Object.keys(merged).forEach((k: keyof SkyAffixConfig) => {
+      if (merged[k] === undefined) {
+        (merged as any)[k] = DEFAULT_AFFIX_CONFIG[k];
+      }
+    });
 
     this._config = merged;
   }
@@ -160,6 +157,11 @@ export class SkyAffixer {
 
       attempts++;
     } while (!isSubjectVisible && attempts < maxAttempts);
+
+    // No suitable placement was found, so revert to preferred placement.
+    if (attempts >= maxAttempts) {
+      coords = this.getPreferredCoords(this.config.placement);
+    }
 
     this.emitSubjectVisibilityChange(isSubjectVisible);
 
@@ -288,10 +290,6 @@ export class SkyAffixer {
   }
 
   private addScrollListeners(): void {
-    if (this.scrollListeners) {
-      return;
-    }
-
     this.scrollListeners = this.scrollableParents.map((parentElement) => {
       const scrollable = (parentElement === document.body) ? 'window' : parentElement;
       return this.renderer.listen(scrollable, 'scroll', () => this.affix());
@@ -299,10 +297,6 @@ export class SkyAffixer {
   }
 
   private addResizeListener(): void {
-    if (this.resizeListener) {
-      return;
-    }
-
     this.resizeListener = Observable.fromEvent(window, 'resize')
       .subscribe(() => this.affix());
   }
