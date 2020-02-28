@@ -1,6 +1,7 @@
 import {
   ComponentFixture,
-  TestBed
+  TestBed,
+  async
 } from '@angular/core/testing';
 
 import {
@@ -292,6 +293,7 @@ describe('Affix directive', () => {
     componentInstance.isSticky = true;
     componentInstance.enableScrollableParent = true;
     componentInstance.placement = 'above';
+    componentInstance.scrollTargetOutOfView();
 
     const affixer = getAffixer();
     const coordsSpy = spyOn(affixer as any, 'getPreferredCoords').and.callThrough();
@@ -434,7 +436,46 @@ describe('Affix directive', () => {
     expect(subjectStyles.top).toEqual(`${expectedTop}px`);
   });
 
-  it('should emit when subject visibility changes', () => {});
+  it('should emit when subject visibility changes', () => {
+    const spy = spyOn(componentInstance, 'onAffixSubjectVisibilityChange').and.callThrough();
 
-  it('should allow disabling auto-fit', () => {});
+    componentInstance.enableAutoFit = false;
+    componentInstance.isSticky = true;
+    componentInstance.enableScrollableParent = true;
+    fixture.detectChanges();
+
+    // Trigger a change.
+    componentInstance.enableAutoFit = true;
+    fixture.detectChanges();
+
+    // Scroll to make target visible.
+    componentInstance.scrollTargetToTop();
+    triggerParentScroll();
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith({
+      isVisible: true
+    });
+    expect(spy.calls.count()).toEqual(1);
+    spy.calls.reset();
+
+    // Scroll to hide target.
+    componentInstance.scrollTargetOutOfView();
+    triggerParentScroll();
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith({
+      isVisible: false
+    });
+    expect(spy.calls.count()).toEqual(1);
+    spy.calls.reset();
+  });
+
+  it('should be accessible', async(() => {
+    componentInstance.scrollTargetToTop();
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(fixture.nativeElement).toBeAccessible();
+    });
+  }));
 });

@@ -107,6 +107,10 @@ export class AffixFixtureComponent {
     );
   }
 
+  public scrollTargetOutOfView(): void {
+    this.scrollableParent.nativeElement.scroll(0, 0);
+  }
+
   private getParentCenterX(): number {
     const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
     const target: HTMLDivElement = this.targetElement.nativeElement;
