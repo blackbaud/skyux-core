@@ -364,7 +364,6 @@ describe('Affix directive', () => {
 
     componentInstance.scrollTargetToBottom();
     triggerParentScroll();
-
     fixture.detectChanges();
 
     subjectStyles = getSubjectStyle();

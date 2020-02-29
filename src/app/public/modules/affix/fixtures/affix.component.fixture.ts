@@ -95,7 +95,10 @@ export class AffixFixtureComponent {
     const target: HTMLDivElement = this.targetElement.nativeElement;
     const top = target.offsetTop;
     const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
-    scrollable.scrollTop = top - scrollable.clientHeight - offset;
+    scrollable.scrollTop = top +
+      target.clientHeight -
+      scrollable.getBoundingClientRect().height -
+      offset;
     scrollable.scrollLeft = this.getParentCenterX();
   }
 

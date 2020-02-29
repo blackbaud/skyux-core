@@ -106,6 +106,9 @@ export class AffixDemoComponent {
     }
 
     this.disabled = true;
+    this.placementIndex = 0;
+    this.horizontalAlignmentIndex = 0;
+    this.verticalAlignmentIndex = 0;
     this.changeDetector.markForCheck();
 
     this.interval = setInterval(() => {
