@@ -37,29 +37,53 @@ import {
   SkyAffixer
 } from './affixer';
 
+/**
+ * Affixes the host element to a target element.
+ */
 @Directive({
   selector: '[skyAffixTo]'
 })
 export class SkyAffixDirective implements OnChanges, OnDestroy {
 
+  /**
+   * The target element to affix the host element.
+   */
   @Input()
   public skyAffixTo: HTMLElement;
 
+  /**
+   * Sets the `enableAutoFit` property of [[SkyAffixConfig]].
+   */
   @Input()
   public affixEnableAutoFit: boolean;
 
+  /**
+   * Sets the `placement` property of [[SkyAffixConfig]].
+   */
   @Input()
   public affixPlacement: SkyAffixPlacement;
 
+  /**
+   * Sets the `horizontalAlignment` property of [[SkyAffixConfig]].
+   */
   @Input()
   public affixHorizontalAlignment: SkyAffixHorizontalAlignment;
 
+  /**
+   * Sets the `verticalAlignment` property of [[SkyAffixConfig]].
+   */
   @Input()
   public affixVerticalAlignment: SkyAffixVerticalAlignment;
 
+  /**
+   * Sets the `isSticky` property of [[SkyAffixConfig]].
+   */
   @Input()
   public affixIsSticky: boolean;
 
+  /**
+   * Fires when the host element's visibility changes.
+   */
   @Output()
   public affixSubjectVisibilityChange = new EventEmitter<SkyAffixSubjectVisibilityChange>();
 
