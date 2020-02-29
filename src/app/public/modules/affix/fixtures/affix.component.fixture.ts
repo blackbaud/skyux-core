@@ -72,43 +72,37 @@ export class AffixFixtureComponent {
   public scrollTargetToLeft(offset: number = 0): void {
     const target: HTMLDivElement = this.targetElement.nativeElement;
     const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
-    scrollable.scroll(
-      target.offsetLeft - offset,
-      this.getParentCenterY()
-    );
+    scrollable.scrollTop = this.getParentCenterY();
+    scrollable.scrollLeft = target.offsetLeft - offset;
   }
 
   public scrollTargetToRight(offset: number = 0): void {
     const target: HTMLDivElement = this.targetElement.nativeElement;
     const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
-    scrollable.scroll(
-      target.offsetLeft - scrollable.clientWidth - offset,
-      this.getParentCenterY()
-    );
+    scrollable.scrollTop = this.getParentCenterY();
+    scrollable.scrollLeft = target.offsetLeft - scrollable.clientWidth - offset;
   }
 
   public scrollTargetToTop(offset: number = 0): void {
     const targetElement: HTMLDivElement = this.targetElement.nativeElement;
     const top = targetElement.offsetTop;
     const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
-    scrollable.scroll(
-      this.getParentCenterX(),
-      top - offset
-    );
+    scrollable.scrollTop = top - offset;
+    scrollable.scrollLeft = this.getParentCenterX();
   }
 
   public scrollTargetToBottom(offset: number = 0): void {
     const target: HTMLDivElement = this.targetElement.nativeElement;
     const top = target.offsetTop;
     const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
-    scrollable.scroll(
-      this.getParentCenterX(),
-      top - scrollable.clientHeight - offset
-    );
+    scrollable.scrollTop = top - scrollable.clientHeight - offset;
+    scrollable.scrollLeft = this.getParentCenterX();
   }
 
   public scrollTargetOutOfView(): void {
-    this.scrollableParent.nativeElement.scroll(0, 0);
+    const parent = this.scrollableParent.nativeElement;
+    parent.scrollTop = 0;
+    parent.scrollLeft = 0;
   }
 
   private getParentCenterX(): number {

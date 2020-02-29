@@ -472,6 +472,7 @@ describe('Affix directive', () => {
   });
 
   it('should be accessible', async(() => {
+    componentInstance.enableScrollableParent = true;
     componentInstance.scrollTargetToTop();
     fixture.detectChanges();
     fixture.whenStable().then(() => {

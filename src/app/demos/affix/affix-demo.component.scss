@@ -33,7 +33,7 @@
   &.enable-scroll {
     width: 500px;
     height: 500px;
-    overflow: auto;
+    overflow: scroll;
     border: 1px solid #f00;
 
     .parent-scrollable-canvas {

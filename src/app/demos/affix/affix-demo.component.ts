@@ -75,16 +75,14 @@ export class AffixDemoComponent {
 
     if (this.enableScrollableParent) {
       const scrollable: HTMLDivElement = this.parentScrollable.nativeElement;
-      scrollable.scroll(
-        left -
-          scrollable.offsetLeft -
-          (scrollable.clientWidth / 2) +
-          (targetElement.clientWidth / 2),
-        top -
-          scrollable.offsetTop -
-          (scrollable.clientHeight / 2) +
-          (targetElement.clientHeight / 2)
-      );
+      scrollable.scrollTop = top -
+        scrollable.offsetTop -
+        (scrollable.clientHeight / 2) +
+        (targetElement.clientHeight / 2);
+      scrollable.scrollLeft = left -
+        scrollable.offsetLeft -
+        (scrollable.clientWidth / 2) +
+        (targetElement.clientWidth / 2);
     } else {
       window.scroll(
         left -
