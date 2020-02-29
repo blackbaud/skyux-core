@@ -1,146 +1,151 @@
-<div
-  class="canvas"
->
+<sky-page>
   <div
-    class="parent-scrollable"
-    [ngClass]="{
-      'enable-scroll': enableScrollableParent
-    }"
-    #parentScrollable
+    class="canvas"
   >
     <div
-      class="parent-scrollable-canvas"
+      class="parent-scrollable"
+      id="screenshot-affix"
+      [ngClass]="{
+        'enable-scroll': enableScrollableParent
+      }"
+      #parentScrollable
     >
       <div
-        class="target"
-        style="width:50px;height:50px;"
-        #target
+        class="parent-scrollable-canvas"
       >
         <div
-          class="target target-gap"
-          style="width:40px;height:40px;"
+          class="target"
+          style="width:50px;height:50px;"
+          #target
         >
           <div
-            class="target"
-            style="width:30px;height:30px;"
+            class="target target-gap"
+            style="width:40px;height:40px;"
           >
             <div
-              class="target target-gap"
-              style="width:20px;height:20px;"
+              class="target"
+              style="width:30px;height:30px;"
             >
               <div
-                class="target"
-                style="width:10px;height:10px;"
-              ></div>
+                class="target target-gap"
+                style="width:20px;height:20px;"
+              >
+                <div
+                  class="target"
+                  style="width:10px;height:10px;"
+                ></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
+    <div
+      class="subject"
+      [affixEnableAutoFit]="enableAutoFit"
+      [affixHorizontalAlignment]="model.horizontalAlignment"
+      [affixIsSticky]="isSticky"
+      [affixPlacement]="model.placement"
+      [affixVerticalAlignment]="model.verticalAlignment"
+      [ngClass]="{ 'subject-hidden': !isVisible }"
+      [skyAffixTo]="target"
+      (affixSubjectVisibilityChange)="onAffixSubjectVisibilityChange($event)"
+    ></div>
+  </div>
   <div
-    class="subject"
-    [affixEnableAutoFit]="enableAutoFit"
-    [affixHorizontalAlignment]="model.horizontalAlignment"
-    [affixIsSticky]="isSticky"
-    [affixPlacement]="model.placement"
-    [affixVerticalAlignment]="model.verticalAlignment"
-    [ngClass]="{ 'subject-hidden': !isVisible }"
-    [skyAffixTo]="target"
-    (affixSubjectVisibilityChange)="onAffixSubjectVisibilityChange($event)"
-  ></div>
-</div>
-<div
-  class="toolbar"
-  #toolbar
->
-  <table style="text-align:left;margin-bottom:10px;">
-    <tr>
-      <td>Placement:</td>
-      <td>
-        <select [(ngModel)]="model.placement">
-          <option *ngFor="let placement of placements" [value]="placement">
-            {{ placement }}
-          </option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td>Horizontal alignment:</td>
-      <td>
-        <select [(ngModel)]="model.horizontalAlignment">
-          <option *ngFor="let alignment of horizontalAlignments" [value]="alignment">
-            {{ alignment }}
-          </option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td>Vertical alignment:</td>
-      <td>
-        <select [(ngModel)]="model.verticalAlignment">
-          <option *ngFor="let alignment of verticalAlignments" [value]="alignment">
-            {{ alignment }}
-          </option>
-        </select>
-      </td>
-    </tr>
-    <tr>
-      <td>Sticky:</td>
-      <td>{{ isSticky }}</td>
-    </tr>
-    <tr>
-      <td>Auto-fit:</td>
-      <td>{{ enableAutoFit }}</td>
-    </tr>
-  </table>
-  <button
-    class="sky-btn sky-btn-default sky-margin-inline-default"
-    type="button"
-    [disabled]="disabled"
-    (click)="scrollToTarget()"
+    class="toolbar"
+    #toolbar
   >
-    Scroll to target
-  </button>
-  <button
-    class="sky-btn sky-btn-primary sky-margin-inline-default"
-    type="button"
-    [disabled]="disabled"
-    (click)="runAffixCycle()"
-  >
-    Run affix cycle
-  </button>
-  <button
-    class="sky-btn sky-btn-default sky-margin-inline-default"
-    type="button"
-    [disabled]="disabled"
-    (click)="stepAffixCycle()"
-  >
-    Step affix cycle
-  </button>
-  <button
-    class="sky-btn sky-btn-default sky-margin-inline-default"
-    type="button"
-    [disabled]="disabled"
-    (click)="isSticky = !isSticky"
-  >
-    Toggle stickiness
-  </button>
-  <button
-    class="sky-btn sky-btn-default sky-margin-inline-default"
-    type="button"
-    [disabled]="disabled"
-    (click)="enableAutoFit = !enableAutoFit"
-  >
-    Toggle autofit
-  </button>
-  <button
-    class="sky-btn sky-btn-default"
-    type="button"
-    [disabled]="disabled"
-    (click)="toggleScrollableParent()"
-  >
-    Toggle scrollable parent
-  </button>
-</div>
+    <table style="text-align:left;margin-bottom:10px;">
+      <tr>
+        <td>Placement:</td>
+        <td>
+          <select [(ngModel)]="model.placement">
+            <option *ngFor="let placement of placements" [value]="placement">
+              {{ placement }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Horizontal alignment:</td>
+        <td>
+          <select [(ngModel)]="model.horizontalAlignment">
+            <option *ngFor="let alignment of horizontalAlignments" [value]="alignment">
+              {{ alignment }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Vertical alignment:</td>
+        <td>
+          <select [(ngModel)]="model.verticalAlignment">
+            <option *ngFor="let alignment of verticalAlignments" [value]="alignment">
+              {{ alignment }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Sticky:</td>
+        <td>{{ isSticky }}</td>
+      </tr>
+      <tr>
+        <td>Auto-fit:</td>
+        <td>{{ enableAutoFit }}</td>
+      </tr>
+    </table>
+    <button
+      class="sky-btn sky-btn-default sky-margin-inline-default"
+      id="screenshot-affix-button-scroll-to-target"
+      type="button"
+      [disabled]="disabled"
+      (click)="scrollToTarget()"
+    >
+      Scroll to target
+    </button>
+    <button
+      class="sky-btn sky-btn-primary sky-margin-inline-default"
+      type="button"
+      [disabled]="disabled"
+      (click)="runAffixCycle()"
+    >
+      Run affix cycle
+    </button>
+    <button
+      class="sky-btn sky-btn-default sky-margin-inline-default"
+      id="screenshot-affix-button-step-cycle"
+      type="button"
+      [disabled]="disabled"
+      (click)="stepAffixCycle()"
+    >
+      Step affix cycle
+    </button>
+    <button
+      class="sky-btn sky-btn-default sky-margin-inline-default"
+      type="button"
+      [disabled]="disabled"
+      (click)="isSticky = !isSticky"
+    >
+      Toggle stickiness
+    </button>
+    <button
+      class="sky-btn sky-btn-default sky-margin-inline-default"
+      type="button"
+      [disabled]="disabled"
+      (click)="enableAutoFit = !enableAutoFit"
+    >
+      Toggle autofit
+    </button>
+    <button
+      class="sky-btn sky-btn-default"
+      type="button"
+      [disabled]="disabled"
+      (click)="toggleScrollableParent()"
+    >
+      Toggle scrollable parent
+    </button>
+  </div>
+</sky-page>

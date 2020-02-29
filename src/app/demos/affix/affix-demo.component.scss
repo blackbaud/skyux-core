@@ -19,7 +19,7 @@
 }
 
 .subject {
-  width: 150px;
+  width: 100px;
   height: 100px;
   background-color: #00f;
   position: fixed;
@@ -30,6 +30,12 @@
 }
 
 .parent-scrollable {
+  width: 250px;
+  height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   &.enable-scroll {
     width: 500px;
     height: 500px;
