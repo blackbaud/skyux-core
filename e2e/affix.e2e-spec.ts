@@ -12,7 +12,7 @@ describe('Affix', function () {
 
   beforeEach(function () {
     SkyHostBrowser.get('demos/affix');
-    SkyHostBrowser.setWindowBreakpoint('md');
+    SkyHostBrowser.setWindowDimensions(2000, 2000);
     element(by.id('screenshot-affix-button-scroll-to-target')).click();
   });
 
@@ -81,13 +81,15 @@ describe('Affix', function () {
     );
   }
 
-  it('should match screenshots', async function (done) {
+  it('should match window screenshots', async function (done) {
     await takeScreenshots('window');
-
     await element(by.id('screenshot-affix-button-scrollable-parent')).click();
+    done();
+  });
 
+  it('should match scroll parent screenshots', async function (done) {
+    await element(by.id('screenshot-affix-button-scrollable-parent')).click();
     await takeScreenshots('scroll-parent');
-
     done();
   });
 
