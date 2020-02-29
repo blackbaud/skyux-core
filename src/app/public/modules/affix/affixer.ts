@@ -4,8 +4,8 @@ import {
 
 import {
   Observable,
-  Subscription,
-  Subject
+  Subject,
+  Subscription
 } from 'rxjs';
 
 import 'rxjs/add/observable/fromEvent';
@@ -172,9 +172,6 @@ export class SkyAffixer {
     const subjectRect = this.subjectRect;
     const targetRect = this.targetRect;
 
-    const parent = getImmediateScrollableParent(this.scrollableParents);
-    const parentCoords = getParentCoords(parent);
-
     const horizontalAlignment = this.config.horizontalAlignment;
     const verticalAlignment = this.config.verticalAlignment;
     const enableAutoFit = this.config.enableAutoFit;
@@ -203,22 +200,6 @@ export class SkyAffixer {
           left = targetRect.right - subjectRect.width;
           break;
       }
-
-      // Slightly adjust the coords to fit within the parent's boundaries if the target is in view.
-      if (enableAutoFit) {
-        if (left < parentCoords.left) {
-          left = parentCoords.left;
-        } else if (left + subjectRect.width > parentCoords.right) {
-          left = parentCoords.right - subjectRect.width;
-        }
-        // Make sure the subject never detaches from the target.
-        if (left > targetRect.left) {
-          left = targetRect.left;
-        } else if (left + subjectRect.width < targetRect.right) {
-          left = targetRect.right - subjectRect.width;
-        }
-      }
-
     } else {
       if (placement === 'left') {
         left = targetRect.left - subjectRect.width;
@@ -240,33 +221,69 @@ export class SkyAffixer {
           top = targetRect.bottom - subjectRect.height;
           break;
       }
+    }
 
-      // Slightly adjust the coords to fit within the parent's boundaries if the target is in view.
-      if (enableAutoFit) {
-        if (top < parentCoords.top) {
-          top = parentCoords.top;
-        } else if (top + subjectRect.height > parentCoords.bottom) {
-          top = parentCoords.bottom - subjectRect.height;
+    let coords: SkyAffixAdapterCoords = { left, top };
+    if (enableAutoFit) {
+      coords = this.adjustCoordsToScrollableParent({...coords}, placement);
+    }
+
+    coords.bottom = coords.top + subjectRect.height;
+    coords.right = coords.left + subjectRect.width;
+
+    return coords;
+  }
+
+  /**
+   * Slightly adjust the coords to fit within the scroll parent's boundaries if
+   * the subject element would otherwise be clipped.
+   */
+  private adjustCoordsToScrollableParent(
+    coords: SkyAffixAdapterCoords,
+    placement: SkyAffixPlacement
+  ): SkyAffixAdapterCoords {
+    const parent = getImmediateScrollableParent(this.scrollableParents);
+    const parentCoords = getParentCoords(parent);
+
+    const subjectRect = this.subjectRect;
+    const targetRect = this.targetRect;
+
+    /* tslint:disable-next-line:switch-default */
+    switch (placement) {
+      case 'above':
+      case 'below':
+        if (coords.left < parentCoords.left) {
+          coords.left = parentCoords.left;
+        } else if (coords.left + subjectRect.width > parentCoords.right) {
+          coords.left = parentCoords.right - subjectRect.width;
         }
 
         // Make sure the subject never detaches from the target.
-        if (top > targetRect.top) {
-          top = targetRect.top;
-        } else if (top + subjectRect.height < targetRect.bottom) {
-          top = targetRect.bottom - subjectRect.height;
+        if (coords.left > targetRect.left) {
+          coords.left = targetRect.left;
+        } else if (coords.left + subjectRect.width < targetRect.right) {
+          coords.left = targetRect.right - subjectRect.width;
         }
-      }
+        break;
+
+      case 'left':
+      case 'right':
+        if (coords.top < parentCoords.top) {
+          coords.top = parentCoords.top;
+        } else if (coords.top + subjectRect.height > parentCoords.bottom) {
+          coords.top = parentCoords.bottom - subjectRect.height;
+        }
+
+        // Make sure the subject never detaches from the target.
+        if (coords.top > targetRect.top) {
+          coords.top = targetRect.top;
+        } else if (coords.top + subjectRect.height < targetRect.bottom) {
+          coords.top = targetRect.bottom - subjectRect.height;
+        }
+        break;
     }
 
-    const bottom = top + subjectRect.height;
-    const right = left + subjectRect.width;
-
-    return {
-      bottom,
-      left,
-      right,
-      top
-    };
+    return coords;
   }
 
   private emitSubjectVisibilityChange(isVisible: boolean): void {

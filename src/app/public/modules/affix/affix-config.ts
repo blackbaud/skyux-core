@@ -1,10 +1,10 @@
 import {
-  SkyAffixPlacement
-} from './affix-placement';
-
-import {
   SkyAffixHorizontalAlignment
 } from './affix-horizontal-alignment';
+
+import {
+  SkyAffixPlacement
+} from './affix-placement';
 
 import {
   SkyAffixVerticalAlignment
