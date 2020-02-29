@@ -20,8 +20,8 @@ describe('Affix', function () {
     return element(by.id('screenshot-affix-button-step-cycle')).click();
   }
 
-  it('should match screenshots', async function (done) {
-    await Promise.all(
+  function takeScreenshots(parent: string) {
+    return Promise.all(
       [
         {
           placement: 'above',
@@ -49,7 +49,7 @@ describe('Affix', function () {
         },
         {
           placement: 'below',
-          alignment: 'right'
+          alignment: 'left'
         },
         {
           placement: 'below',
@@ -57,7 +57,7 @@ describe('Affix', function () {
         },
         {
           placement: 'below',
-          alignment: 'left'
+          alignment: 'right'
         },
         {
           placement: 'left',
@@ -74,11 +74,19 @@ describe('Affix', function () {
       ].map(o => new Promise(resolve => {
         stepAffixCycle().then(() => {
           expect('#screenshot-affix').toMatchBaselineScreenshot(resolve, {
-            screenshotName: `affix-${o.placement}-${o.alignment}`
+            screenshotName: `affix-${parent}-${o.placement}-${o.alignment}`
           });
         });
       }))
     );
+  }
+
+  it('should match screenshots', async function (done) {
+    await takeScreenshots('window');
+
+    await element(by.id('screenshot-affix-button-scrollable-parent')).click();
+
+    await takeScreenshots('scroll-parent');
 
     done();
   });
