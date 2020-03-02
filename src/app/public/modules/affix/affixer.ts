@@ -159,7 +159,7 @@ export class SkyAffixer {
     } while (!isSubjectVisible && attempts < maxAttempts);
 
     // No suitable placement was found, so revert to preferred placement.
-    if (attempts >= maxAttempts) {
+    if (attempts >= maxAttempts && !isSubjectVisible) {
       coords = this.getPreferredCoords(this.config.placement);
     }
 

@@ -21,11 +21,24 @@ import {
 })
 export class AffixDemoComponent {
 
-  public placements: SkyAffixPlacement[] = ['above', 'right', 'below', 'left'];
+  public horizontalAlignments: SkyAffixHorizontalAlignment[] = [
+    'right',
+    'center',
+    'left'
+  ];
 
-  public horizontalAlignments: SkyAffixHorizontalAlignment[] = ['right', 'center', 'left'];
+  public placements: SkyAffixPlacement[] = [
+    'above',
+    'right',
+    'below',
+    'left'
+  ];
 
-  public verticalAlignments: SkyAffixVerticalAlignment[] = ['bottom', 'middle', 'top'];
+  public verticalAlignments: SkyAffixVerticalAlignment[] = [
+    'bottom',
+    'middle',
+    'top'
+  ];
 
   public model: {
     placement: SkyAffixPlacement;
@@ -37,15 +50,17 @@ export class AffixDemoComponent {
     verticalAlignment: 'middle'
   };
 
-  public isSticky: boolean = true;
+  public disabled: boolean = false;
 
   public enableAutoFit: boolean = true;
 
-  public enableScrollableParent: boolean = false;
+  public enableScrollableParent: boolean = true;
 
-  public disabled: boolean = false;
+  public isSticky: boolean = true;
 
   public isVisible: boolean = false;
+
+  public showToolbar: boolean = true;
 
   @ViewChild('parentScrollable', { read: ElementRef })
   private parentScrollable: ElementRef;
@@ -56,9 +71,9 @@ export class AffixDemoComponent {
   @ViewChild('toolbar', { read: ElementRef })
   private toolbar: ElementRef;
 
-  private interval: any;
-
   private horizontalAlignmentIndex = 0;
+
+  private interval: any;
 
   private placementIndex = 0;
 

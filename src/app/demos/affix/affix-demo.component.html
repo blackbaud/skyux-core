@@ -53,48 +53,76 @@
       (affixSubjectVisibilityChange)="onAffixSubjectVisibilityChange($event)"
     ></div>
   </div>
-  <div
+  <div *ngIf="showToolbar"
     class="toolbar"
     #toolbar
   >
-    <table style="text-align:left;margin-bottom:10px;">
+    <table
+      style="text-align:left;margin-bottom:10px;"
+    >
       <tr>
-        <td>Placement:</td>
         <td>
-          <select [(ngModel)]="model.placement">
-            <option *ngFor="let placement of placements" [value]="placement">
+          Placement:
+        </td>
+        <td>
+          <select
+            [(ngModel)]="model.placement"
+          >
+            <option *ngFor="let placement of placements"
+              [value]="placement"
+            >
               {{ placement }}
             </option>
           </select>
         </td>
       </tr>
       <tr>
-        <td>Horizontal alignment:</td>
         <td>
-          <select [(ngModel)]="model.horizontalAlignment">
-            <option *ngFor="let alignment of horizontalAlignments" [value]="alignment">
+          Horizontal alignment:
+        </td>
+        <td>
+          <select
+            [(ngModel)]="model.horizontalAlignment"
+          >
+            <option *ngFor="let alignment of horizontalAlignments"
+              [value]="alignment"
+            >
               {{ alignment }}
             </option>
           </select>
         </td>
       </tr>
       <tr>
-        <td>Vertical alignment:</td>
         <td>
-          <select [(ngModel)]="model.verticalAlignment">
-            <option *ngFor="let alignment of verticalAlignments" [value]="alignment">
+          Vertical alignment:
+        </td>
+        <td>
+          <select
+            [(ngModel)]="model.verticalAlignment"
+          >
+            <option *ngFor="let alignment of verticalAlignments"
+              [value]="alignment"
+            >
               {{ alignment }}
             </option>
           </select>
         </td>
       </tr>
       <tr>
-        <td>Sticky:</td>
-        <td>{{ isSticky }}</td>
+        <td>
+          Sticky:
+        </td>
+        <td>
+          {{ isSticky }}
+        </td>
       </tr>
       <tr>
-        <td>Auto-fit:</td>
-        <td>{{ enableAutoFit }}</td>
+        <td>
+          Auto-fit:
+        </td>
+        <td>
+          {{ enableAutoFit }}
+        </td>
       </tr>
     </table>
     <button
@@ -150,3 +178,16 @@
     </button>
   </div>
 </sky-page>
+
+<div
+  style="position:fixed;top:10px;left:10px;"
+>
+  <button
+    class="sky-btn sky-btn-default"
+    type="button"
+    [disabled]="disabled"
+    (click)="showToolbar = !showToolbar"
+  >
+    Toggle toolbar
+  </button>
+</div>
