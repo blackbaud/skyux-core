@@ -97,7 +97,8 @@ export class SkyAffixer {
    * @param target The target element.
    * @param config Configuration for the affix action.
    */
-  public affixTo(target: HTMLElement, config: SkyAffixConfig): void {
+  public affixTo(target: HTMLElement, config?: SkyAffixConfig): void {
+
     this.reset();
 
     this.config = config;
