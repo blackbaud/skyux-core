@@ -11,8 +11,8 @@ import {
 import 'rxjs/add/observable/fromEvent';
 
 import {
-  SkyAffixAdapterCoords
-} from './affix-adapter-coords';
+  SkyAffixOffset
+} from './affix-offset';
 
 import {
   SkyAffixConfig
@@ -131,14 +131,14 @@ export class SkyAffixer {
     this.renderer.setStyle(this.subject, 'left', `${left}px`);
   }
 
-  private getCoords(): SkyAffixAdapterCoords {
+  private getCoords(): SkyAffixOffset {
     const parent = getImmediateScrollableParent(this.scrollableParents);
 
     const maxAttempts = 4;
     let attempts = 0;
 
     let isSubjectVisible = false;
-    let coords: SkyAffixAdapterCoords;
+    let coords: SkyAffixOffset;
     let placement = this.config.placement;
 
     do {
@@ -168,7 +168,7 @@ export class SkyAffixer {
     return coords;
   }
 
-  private getPreferredCoords(placement: SkyAffixPlacement): SkyAffixAdapterCoords {
+  private getPreferredCoords(placement: SkyAffixPlacement): SkyAffixOffset {
     const subjectRect = this.subjectRect;
     const targetRect = this.targetRect;
 
@@ -223,7 +223,7 @@ export class SkyAffixer {
       }
     }
 
-    let coords: SkyAffixAdapterCoords = { left, top };
+    let coords: SkyAffixOffset = { left, top };
     if (enableAutoFit) {
       coords = this.adjustCoordsToScrollableParent({...coords}, placement);
     }
@@ -239,9 +239,9 @@ export class SkyAffixer {
    * the subject element would otherwise be clipped.
    */
   private adjustCoordsToScrollableParent(
-    coords: SkyAffixAdapterCoords,
+    coords: SkyAffixOffset,
     placement: SkyAffixPlacement
-  ): SkyAffixAdapterCoords {
+  ): SkyAffixOffset {
     const parent = getImmediateScrollableParent(this.scrollableParents);
     const parentCoords = getParentCoords(parent);
 

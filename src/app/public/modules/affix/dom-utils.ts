@@ -1,6 +1,6 @@
 import {
-  SkyAffixAdapterCoords
-} from './affix-adapter-coords';
+  SkyAffixOffset
+} from './affix-offset';
 
 /**
  * Validates coordinates are fully visible within an element.
@@ -9,7 +9,7 @@ import {
  */
 export function verifyCoordsVisibleWithinElement(
   parent: HTMLElement,
-  coords: SkyAffixAdapterCoords
+  coords: SkyAffixOffset
 ): boolean {
   const parentCoords = getParentCoords(parent);
   return !(
@@ -50,7 +50,7 @@ export function getImmediateScrollableParent(scrollableParents: HTMLElement[]): 
   return scrollableParents[scrollableParents.length - 1];
 }
 
-export function getParentCoords(parent: HTMLElement): SkyAffixAdapterCoords {
+export function getParentCoords(parent: HTMLElement): SkyAffixOffset {
   let top: number;
   let left: number;
   let right: number;

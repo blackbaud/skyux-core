@@ -1,7 +1,7 @@
 /**
  * @internal
  */
-export interface SkyAffixAdapterCoords {
+export interface SkyAffixOffset {
 
   left: number;
 
