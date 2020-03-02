@@ -3,20 +3,20 @@ import {
 } from './affix-offset';
 
 /**
- * Validates coordinates are fully visible within an element.
+ * Confirms offset is fully visible within a parent element.
  * @param parent
- * @param coords
+ * @param offset
  */
-export function verifyCoordsVisibleWithinElement(
+export function isOffsetVisibleWithinParent(
   parent: HTMLElement,
-  coords: SkyAffixOffset
+  offset: SkyAffixOffset
 ): boolean {
-  const parentCoords = getParentCoords(parent);
+  const parentOffset = getElementOffset(parent);
   return !(
-    parentCoords.top > coords.top ||
-    parentCoords.right < coords.right ||
-    parentCoords.bottom < coords.bottom ||
-    parentCoords.left > coords.left
+    parentOffset.top > offset.top ||
+    parentOffset.right < offset.right ||
+    parentOffset.bottom < offset.bottom ||
+    parentOffset.left > offset.left
   );
 }
 
@@ -50,23 +50,23 @@ export function getImmediateScrollableParent(scrollableParents: HTMLElement[]): 
   return scrollableParents[scrollableParents.length - 1];
 }
 
-export function getParentCoords(parent: HTMLElement): SkyAffixOffset {
+export function getElementOffset(element: HTMLElement): SkyAffixOffset {
   let top: number;
   let left: number;
   let right: number;
   let bottom: number;
 
-  if (parent === document.body) {
+  if (element === document.body) {
     left = 0;
     top = 0;
     right = document.documentElement.clientWidth;
     bottom = document.documentElement.clientHeight;
   } else {
-    const parentRect = parent.getBoundingClientRect();
-    left = parentRect.left;
-    top = parentRect.top;
-    right = parentRect.right;
-    bottom = parentRect.bottom;
+    const clientRect = element.getBoundingClientRect();
+    left = clientRect.left;
+    top = clientRect.top;
+    right = clientRect.right;
+    bottom = clientRect.bottom;
   }
 
   return {

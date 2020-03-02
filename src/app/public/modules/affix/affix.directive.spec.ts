@@ -1,7 +1,7 @@
 import {
+  async,
   ComponentFixture,
-  TestBed,
-  async
+  TestBed
 } from '@angular/core/testing';
 
 import {
@@ -27,7 +27,7 @@ import {
 
 describe('Affix directive', () => {
 
-  const expectedCoords = {
+  const expectedOffsets = {
     aboveLeft: {
       top: '195px',
       left: '245px'
@@ -127,8 +127,8 @@ describe('Affix directive', () => {
     };
 
     expect(affixer['config']).toEqual(expectedConfig);
-    expect(subjectStyles.top).toEqual(expectedCoords.aboveCenter.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.aboveCenter.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.aboveCenter.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.aboveCenter.left);
   });
 
   it('should place subject on all sides of the target', () => {
@@ -137,24 +137,24 @@ describe('Affix directive', () => {
 
     let subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.rightMiddle.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.rightMiddle.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.rightMiddle.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.rightMiddle.left);
 
     componentInstance.placement = 'below';
     fixture.detectChanges();
 
     subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.belowCenter.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.belowCenter.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.belowCenter.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.belowCenter.left);
 
     componentInstance.placement = 'left';
     fixture.detectChanges();
 
     subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.leftMiddle.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.leftMiddle.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.leftMiddle.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.leftMiddle.left);
   });
 
   it('should place subject using vertical alignments', () => {
@@ -164,8 +164,8 @@ describe('Affix directive', () => {
 
     let subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.rightTop.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.rightTop.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.rightTop.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.rightTop.left);
 
     componentInstance.placement = 'right';
     componentInstance.verticalAlignment = 'bottom';
@@ -173,8 +173,8 @@ describe('Affix directive', () => {
 
     subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.rightBottom.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.rightBottom.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.rightBottom.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.rightBottom.left);
 
     componentInstance.placement = 'left';
     componentInstance.verticalAlignment = 'top';
@@ -182,8 +182,8 @@ describe('Affix directive', () => {
 
     subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.leftTop.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.leftTop.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.leftTop.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.leftTop.left);
 
     componentInstance.placement = 'left';
     componentInstance.verticalAlignment = 'bottom';
@@ -191,8 +191,8 @@ describe('Affix directive', () => {
 
     subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.leftBottom.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.leftBottom.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.leftBottom.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.leftBottom.left);
 
   });
 
@@ -203,8 +203,8 @@ describe('Affix directive', () => {
 
     let subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.aboveLeft.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.aboveLeft.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.aboveLeft.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.aboveLeft.left);
 
     componentInstance.placement = 'above';
     componentInstance.horizontalAlignment = 'right';
@@ -212,8 +212,8 @@ describe('Affix directive', () => {
 
     subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.aboveRight.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.aboveRight.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.aboveRight.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.aboveRight.left);
 
     componentInstance.placement = 'below';
     componentInstance.horizontalAlignment = 'left';
@@ -221,8 +221,8 @@ describe('Affix directive', () => {
 
     subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.belowLeft.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.belowLeft.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.belowLeft.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.belowLeft.left);
 
     componentInstance.placement = 'below';
     componentInstance.horizontalAlignment = 'right';
@@ -230,8 +230,8 @@ describe('Affix directive', () => {
 
     subjectStyles = getSubjectStyle();
 
-    expect(subjectStyles.top).toEqual(expectedCoords.belowRight.top);
-    expect(subjectStyles.left).toEqual(expectedCoords.belowRight.left);
+    expect(subjectStyles.top).toEqual(expectedOffsets.belowRight.top);
+    expect(subjectStyles.left).toEqual(expectedOffsets.belowRight.left);
   });
 
   it('should update placement on window scroll', () => {
@@ -296,27 +296,27 @@ describe('Affix directive', () => {
     componentInstance.scrollTargetOutOfView();
 
     const affixer = getAffixer();
-    const coordsSpy = spyOn(affixer as any, 'getPreferredCoords').and.callThrough();
+    const offsetSpy = spyOn(affixer as any, 'getPreferredOffset').and.callThrough();
 
     fixture.detectChanges();
 
     // Initially, the subject should be out of view, so all placements should be checked.
     // (It should settle on the preferred placement if all placements are hidden.)
-    expect(coordsSpy.calls.allArgs()).toEqual([
+    expect(offsetSpy.calls.allArgs()).toEqual([
       ['above'],
       ['below'],
       ['left'],
       ['right'],
       ['above'] // <-- preferred placement
     ]);
-    coordsSpy.calls.reset();
+    offsetSpy.calls.reset();
 
     componentInstance.scrollTargetToTop();
     triggerParentScroll();
     fixture.detectChanges();
 
     // The 'above' placement is hidden, so it should land on 'below'.
-    expect(coordsSpy.calls.allArgs()).toEqual([
+    expect(offsetSpy.calls.allArgs()).toEqual([
       ['above'],
       ['below']
     ]);

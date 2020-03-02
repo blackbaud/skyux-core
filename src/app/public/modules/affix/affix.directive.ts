@@ -58,28 +58,28 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
   public affixEnableAutoFit: boolean;
 
   /**
-   * Sets the `placement` property of [[SkyAffixConfig]].
-   */
-  @Input()
-  public affixPlacement: SkyAffixPlacement;
-
-  /**
    * Sets the `horizontalAlignment` property of [[SkyAffixConfig]].
    */
   @Input()
   public affixHorizontalAlignment: SkyAffixHorizontalAlignment;
 
   /**
-   * Sets the `verticalAlignment` property of [[SkyAffixConfig]].
-   */
-  @Input()
-  public affixVerticalAlignment: SkyAffixVerticalAlignment;
-
-  /**
    * Sets the `isSticky` property of [[SkyAffixConfig]].
    */
   @Input()
   public affixIsSticky: boolean;
+
+  /**
+   * Sets the `placement` property of [[SkyAffixConfig]].
+   */
+  @Input()
+  public affixPlacement: SkyAffixPlacement;
+
+  /**
+   * Sets the `verticalAlignment` property of [[SkyAffixConfig]].
+   */
+  @Input()
+  public affixVerticalAlignment: SkyAffixVerticalAlignment;
 
   /**
    * Fires when the host element's visibility changes.

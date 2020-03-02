@@ -33,9 +33,9 @@ import {
 
 import {
   getImmediateScrollableParent,
-  getParentCoords,
+  getElementOffset,
   getScrollableParents,
-  verifyCoordsVisibleWithinElement
+  isOffsetVisibleWithinParent
 } from './dom-utils';
 
 const DEFAULT_AFFIX_CONFIG: SkyAffixConfig = {
@@ -125,25 +125,25 @@ export class SkyAffixer {
     this.targetRect = this.target.getBoundingClientRect();
     this.subjectRect = this.subject.getBoundingClientRect();
 
-    const { top, left } = this.getCoords();
+    const { top, left } = this.getOffset();
 
     this.renderer.setStyle(this.subject, 'top', `${top}px`);
     this.renderer.setStyle(this.subject, 'left', `${left}px`);
   }
 
-  private getCoords(): SkyAffixOffset {
+  private getOffset(): SkyAffixOffset {
     const parent = getImmediateScrollableParent(this.scrollableParents);
 
     const maxAttempts = 4;
     let attempts = 0;
 
     let isSubjectVisible = false;
-    let coords: SkyAffixOffset;
+    let offset: SkyAffixOffset;
     let placement = this.config.placement;
 
     do {
-      coords = this.getPreferredCoords(placement);
-      isSubjectVisible = verifyCoordsVisibleWithinElement(parent, coords);
+      offset = this.getPreferredOffset(placement);
+      isSubjectVisible = isOffsetVisibleWithinParent(parent, offset);
 
       if (!this.config.enableAutoFit) {
         break;
@@ -160,15 +160,15 @@ export class SkyAffixer {
 
     // No suitable placement was found, so revert to preferred placement.
     if (attempts >= maxAttempts && !isSubjectVisible) {
-      coords = this.getPreferredCoords(this.config.placement);
+      offset = this.getPreferredOffset(this.config.placement);
     }
 
     this.emitSubjectVisibilityChange(isSubjectVisible);
 
-    return coords;
+    return offset;
   }
 
-  private getPreferredCoords(placement: SkyAffixPlacement): SkyAffixOffset {
+  private getPreferredOffset(placement: SkyAffixPlacement): SkyAffixOffset {
     const subjectRect = this.subjectRect;
     const targetRect = this.targetRect;
 
@@ -223,27 +223,27 @@ export class SkyAffixer {
       }
     }
 
-    let coords: SkyAffixOffset = { left, top };
+    let offset: SkyAffixOffset = { left, top };
     if (enableAutoFit) {
-      coords = this.adjustCoordsToScrollableParent({...coords}, placement);
+      offset = this.adjustOffsetToScrollableParent({...offset}, placement);
     }
 
-    coords.bottom = coords.top + subjectRect.height;
-    coords.right = coords.left + subjectRect.width;
+    offset.bottom = offset.top + subjectRect.height;
+    offset.right = offset.left + subjectRect.width;
 
-    return coords;
+    return offset;
   }
 
   /**
-   * Slightly adjust the coords to fit within the scroll parent's boundaries if
+   * Slightly adjust the offset to fit within the scroll parent's boundaries if
    * the subject element would otherwise be clipped.
    */
-  private adjustCoordsToScrollableParent(
-    coords: SkyAffixOffset,
+  private adjustOffsetToScrollableParent(
+    offset: SkyAffixOffset,
     placement: SkyAffixPlacement
   ): SkyAffixOffset {
     const parent = getImmediateScrollableParent(this.scrollableParents);
-    const parentCoords = getParentCoords(parent);
+    const parentOffset = getElementOffset(parent);
 
     const subjectRect = this.subjectRect;
     const targetRect = this.targetRect;
@@ -252,38 +252,38 @@ export class SkyAffixer {
     switch (placement) {
       case 'above':
       case 'below':
-        if (coords.left < parentCoords.left) {
-          coords.left = parentCoords.left;
-        } else if (coords.left + subjectRect.width > parentCoords.right) {
-          coords.left = parentCoords.right - subjectRect.width;
+        if (offset.left < parentOffset.left) {
+          offset.left = parentOffset.left;
+        } else if (offset.left + subjectRect.width > parentOffset.right) {
+          offset.left = parentOffset.right - subjectRect.width;
         }
 
         // Make sure the subject never detaches from the target.
-        if (coords.left > targetRect.left) {
-          coords.left = targetRect.left;
-        } else if (coords.left + subjectRect.width < targetRect.right) {
-          coords.left = targetRect.right - subjectRect.width;
+        if (offset.left > targetRect.left) {
+          offset.left = targetRect.left;
+        } else if (offset.left + subjectRect.width < targetRect.right) {
+          offset.left = targetRect.right - subjectRect.width;
         }
         break;
 
       case 'left':
       case 'right':
-        if (coords.top < parentCoords.top) {
-          coords.top = parentCoords.top;
-        } else if (coords.top + subjectRect.height > parentCoords.bottom) {
-          coords.top = parentCoords.bottom - subjectRect.height;
+        if (offset.top < parentOffset.top) {
+          offset.top = parentOffset.top;
+        } else if (offset.top + subjectRect.height > parentOffset.bottom) {
+          offset.top = parentOffset.bottom - subjectRect.height;
         }
 
         // Make sure the subject never detaches from the target.
-        if (coords.top > targetRect.top) {
-          coords.top = targetRect.top;
-        } else if (coords.top + subjectRect.height < targetRect.bottom) {
-          coords.top = targetRect.bottom - subjectRect.height;
+        if (offset.top > targetRect.top) {
+          offset.top = targetRect.top;
+        } else if (offset.top + subjectRect.height < targetRect.bottom) {
+          offset.top = targetRect.bottom - subjectRect.height;
         }
         break;
     }
 
-    return coords;
+    return offset;
   }
 
   private emitSubjectVisibilityChange(isVisible: boolean): void {
