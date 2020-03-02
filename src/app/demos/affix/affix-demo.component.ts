@@ -54,7 +54,7 @@ export class AffixDemoComponent {
 
   public enableAutoFit: boolean = true;
 
-  public enableScrollableParent: boolean = true;
+  public enableScrollableParent: boolean = false;
 
   public isSticky: boolean = true;
 
