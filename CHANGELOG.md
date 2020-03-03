@@ -1,3 +1,9 @@
+# 4.0.0-rc.2 (2020-03-03)
+
+### New features
+
+- Added bug fixes and features from the `master` branch. [#132](https://github.com/blackbaud/skyux-core/pull/132)
+
 # 3.12.0 (2020-03-03)
 
 - Added the affix service and directive that enables SKY UX components to affix an element to another element. [#135](https://github.com/blackbaud/skyux-core/pull/135)
