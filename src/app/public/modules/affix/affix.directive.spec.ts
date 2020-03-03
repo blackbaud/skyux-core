@@ -85,13 +85,13 @@ describe('Affix directive', () => {
     return componentInstance.affixDirective['affixer'];
   }
 
-  function getSubjectStyle(): CSSStyleDeclaration {
-    return window.getComputedStyle(componentInstance.subjectElement.nativeElement);
+  function getAffixedElementStyle(): CSSStyleDeclaration {
+    return window.getComputedStyle(componentInstance.affixedRef.nativeElement);
   }
 
   function triggerParentScroll(): void {
     SkyAppTestUtility.fireDomEvent(
-      componentInstance.scrollableParent.nativeElement,
+      componentInstance.scrollableParentRef.nativeElement,
       'scroll',
       { bubbles: false }
     );
@@ -116,7 +116,7 @@ describe('Affix directive', () => {
     fixture.detectChanges();
 
     const affixer = getAffixer();
-    const subjectStyles = getSubjectStyle();
+    const affixedElementStyles = getAffixedElementStyle();
 
     const expectedConfig: SkyAffixConfig = {
       enableAutoFit: false,
@@ -127,111 +127,111 @@ describe('Affix directive', () => {
     };
 
     expect(affixer['config']).toEqual(expectedConfig);
-    expect(subjectStyles.top).toEqual(expectedOffsets.aboveCenter.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.aboveCenter.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.aboveCenter.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.aboveCenter.left);
   });
 
-  it('should place subject on all sides of the target', () => {
+  it('should place affixed element on all sides of the base element', () => {
     componentInstance.placement = 'right';
     fixture.detectChanges();
 
-    let subjectStyles = getSubjectStyle();
+    let affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.rightMiddle.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.rightMiddle.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.rightMiddle.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.rightMiddle.left);
 
     componentInstance.placement = 'below';
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.belowCenter.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.belowCenter.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.belowCenter.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.belowCenter.left);
 
     componentInstance.placement = 'left';
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.leftMiddle.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.leftMiddle.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.leftMiddle.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.leftMiddle.left);
   });
 
-  it('should place subject using vertical alignments', () => {
+  it('should affix element using vertical alignments', () => {
     componentInstance.placement = 'right';
     componentInstance.verticalAlignment = 'top';
     fixture.detectChanges();
 
-    let subjectStyles = getSubjectStyle();
+    let affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.rightTop.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.rightTop.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.rightTop.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.rightTop.left);
 
     componentInstance.placement = 'right';
     componentInstance.verticalAlignment = 'bottom';
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.rightBottom.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.rightBottom.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.rightBottom.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.rightBottom.left);
 
     componentInstance.placement = 'left';
     componentInstance.verticalAlignment = 'top';
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.leftTop.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.leftTop.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.leftTop.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.leftTop.left);
 
     componentInstance.placement = 'left';
     componentInstance.verticalAlignment = 'bottom';
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.leftBottom.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.leftBottom.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.leftBottom.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.leftBottom.left);
 
   });
 
-  it('should place subject using horizontal alignments', () => {
+  it('should affix element using horizontal alignments', () => {
     componentInstance.placement = 'above';
     componentInstance.horizontalAlignment = 'left';
     fixture.detectChanges();
 
-    let subjectStyles = getSubjectStyle();
+    let affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.aboveLeft.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.aboveLeft.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.aboveLeft.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.aboveLeft.left);
 
     componentInstance.placement = 'above';
     componentInstance.horizontalAlignment = 'right';
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.aboveRight.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.aboveRight.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.aboveRight.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.aboveRight.left);
 
     componentInstance.placement = 'below';
     componentInstance.horizontalAlignment = 'left';
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.belowLeft.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.belowLeft.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.belowLeft.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.belowLeft.left);
 
     componentInstance.placement = 'below';
     componentInstance.horizontalAlignment = 'right';
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    expect(subjectStyles.top).toEqual(expectedOffsets.belowRight.top);
-    expect(subjectStyles.left).toEqual(expectedOffsets.belowRight.left);
+    expect(affixedElementStyles.top).toEqual(expectedOffsets.belowRight.top);
+    expect(affixedElementStyles.left).toEqual(expectedOffsets.belowRight.left);
   });
 
   it('should update placement on window scroll', () => {
@@ -300,7 +300,7 @@ describe('Affix directive', () => {
 
     fixture.detectChanges();
 
-    // Initially, the subject should be out of view, so all placements should be checked.
+    // Initially, the affixed element should be out of view, so all placements should be checked.
     // (It should settle on the preferred placement if all placements are hidden.)
     expect(offsetSpy.calls.allArgs()).toEqual([
       ['above'],
@@ -322,58 +322,64 @@ describe('Affix directive', () => {
     ]);
   });
 
-  it('should slightly adjust `left` if subject edges are flush with scrollable parent', () => {
-    componentInstance.enableAutoFit = true;
-    componentInstance.isSticky = true;
-    componentInstance.enableScrollableParent = true;
-    componentInstance.placement = 'above';
-    fixture.detectChanges();
+  it(
+    'should slightly adjust `left` if affixed element\'s edges are flush with scrollable parent',
+    () => {
+      componentInstance.enableAutoFit = true;
+      componentInstance.isSticky = true;
+      componentInstance.enableScrollableParent = true;
+      componentInstance.placement = 'above';
+      fixture.detectChanges();
 
-    componentInstance.scrollTargetToLeft();
-    triggerParentScroll();
-    fixture.detectChanges();
+      componentInstance.scrollTargetToLeft();
+      triggerParentScroll();
+      fixture.detectChanges();
 
-    let subjectStyles = getSubjectStyle();
-    expect(subjectStyles.left).toEqual(`0px`);
+      let affixedElementStyles = getAffixedElementStyle();
+      expect(affixedElementStyles.left).toEqual(`0px`);
 
-    componentInstance.scrollTargetToRight();
-    triggerParentScroll();
+      componentInstance.scrollTargetToRight();
+      triggerParentScroll();
 
-    fixture.detectChanges();
+      fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
-    const parentRect = componentInstance.scrollableParent.nativeElement.getBoundingClientRect();
-    const subjectRect = componentInstance.subjectElement.nativeElement.getBoundingClientRect();
-    const expectedLeft = parentRect.width - subjectRect.width;
-    expect(subjectStyles.left).toEqual(`${expectedLeft}px`);
-  });
+      affixedElementStyles = getAffixedElementStyle();
+      const parentRect = componentInstance.scrollableParentRef.nativeElement.getBoundingClientRect();
+      const affixedRect = componentInstance.affixedRef.nativeElement.getBoundingClientRect();
+      const expectedLeft = parentRect.width - affixedRect.width;
+      expect(affixedElementStyles.left).toEqual(`${expectedLeft}px`);
+    }
+  );
 
-  it('should slightly adjust `top` if subject edges are flush with scrollable parent', () => {
-    componentInstance.enableAutoFit = true;
-    componentInstance.isSticky = true;
-    componentInstance.enableScrollableParent = true;
-    componentInstance.placement = 'left';
-    fixture.detectChanges();
+  it(
+    'should slightly adjust `top` if affixed element\'s edges are flush with scrollable parent',
+    () => {
+      componentInstance.enableAutoFit = true;
+      componentInstance.isSticky = true;
+      componentInstance.enableScrollableParent = true;
+      componentInstance.placement = 'left';
+      fixture.detectChanges();
 
-    componentInstance.scrollTargetToTop();
-    triggerParentScroll();
-    fixture.detectChanges();
+      componentInstance.scrollTargetToTop();
+      triggerParentScroll();
+      fixture.detectChanges();
 
-    let subjectStyles = getSubjectStyle();
-    expect(subjectStyles.top).toEqual(`0px`);
+      let affixedElementStyles = getAffixedElementStyle();
+      expect(affixedElementStyles.top).toEqual(`0px`);
 
-    componentInstance.scrollTargetToBottom();
-    triggerParentScroll();
-    fixture.detectChanges();
+      componentInstance.scrollTargetToBottom();
+      triggerParentScroll();
+      fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
-    const parentRect = componentInstance.scrollableParent.nativeElement.getBoundingClientRect();
-    const subjectRect = componentInstance.subjectElement.nativeElement.getBoundingClientRect();
-    const expectedTop = parentRect.height - subjectRect.height;
-    expect(subjectStyles.top).toEqual(`${expectedTop}px`);
-  });
+      affixedElementStyles = getAffixedElementStyle();
+      const parentRect = componentInstance.scrollableParentRef.nativeElement.getBoundingClientRect();
+      const affixedRect = componentInstance.affixedRef.nativeElement.getBoundingClientRect();
+      const expectedTop = parentRect.height - affixedRect.height;
+      expect(affixedElementStyles.top).toEqual(`${expectedTop}px`);
+    }
+  );
 
-  it('should never detach subject `left` from target', () => {
+  it('should never detach affixed element `left` from base element', () => {
     componentInstance.enableAutoFit = true;
     componentInstance.isSticky = true;
     componentInstance.enableScrollableParent = true;
@@ -387,24 +393,24 @@ describe('Affix directive', () => {
     triggerParentScroll();
     fixture.detectChanges();
 
-    let subjectStyles = getSubjectStyle();
-    expect(subjectStyles.left).toEqual(`-${offset}px`);
+    let affixedElementStyles = getAffixedElementStyle();
+    expect(affixedElementStyles.left).toEqual(`-${offset}px`);
 
     componentInstance.scrollTargetToRight(offset);
     triggerParentScroll();
 
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    const targetRect = componentInstance.targetElement.nativeElement.getBoundingClientRect();
-    const subjectRect = componentInstance.subjectElement.nativeElement.getBoundingClientRect();
-    const expectedLeft = targetRect.right - subjectRect.width;
+    const baseRect = componentInstance.baseRef.nativeElement.getBoundingClientRect();
+    const affixedRect = componentInstance.affixedRef.nativeElement.getBoundingClientRect();
+    const expectedLeft = baseRect.right - affixedRect.width;
 
-    expect(subjectStyles.left).toEqual(`${expectedLeft}px`);
+    expect(affixedElementStyles.left).toEqual(`${expectedLeft}px`);
   });
 
-  it('should never detach subject `top` from target', () => {
+  it('should never detach affixed element `top` from base element', () => {
     componentInstance.enableAutoFit = true;
     componentInstance.isSticky = true;
     componentInstance.enableScrollableParent = true;
@@ -418,26 +424,24 @@ describe('Affix directive', () => {
     triggerParentScroll();
     fixture.detectChanges();
 
-    let subjectStyles = getSubjectStyle();
-    expect(subjectStyles.top).toEqual(`-${offset}px`);
+    let affixedElementStyles = getAffixedElementStyle();
+    expect(affixedElementStyles.top).toEqual(`-${offset}px`);
 
     componentInstance.scrollTargetToBottom(offset);
     triggerParentScroll();
 
     fixture.detectChanges();
 
-    subjectStyles = getSubjectStyle();
+    affixedElementStyles = getAffixedElementStyle();
 
-    const targetRect = componentInstance.targetElement.nativeElement.getBoundingClientRect();
-    const subjectRect = componentInstance.subjectElement.nativeElement.getBoundingClientRect();
-    const expectedTop = targetRect.bottom - subjectRect.height;
+    const baseRect = componentInstance.baseRef.nativeElement.getBoundingClientRect();
+    const affixedRect = componentInstance.affixedRef.nativeElement.getBoundingClientRect();
+    const expectedTop = baseRect.bottom - affixedRect.height;
 
-    expect(subjectStyles.top).toEqual(`${expectedTop}px`);
+    expect(affixedElementStyles.top).toEqual(`${expectedTop}px`);
   });
 
-  it('should emit when subject visibility changes', () => {
-    const spy = spyOn(componentInstance, 'onAffixSubjectVisibilityChange').and.callThrough();
-
+  it('should emit when placement changes', () => {
     componentInstance.enableAutoFit = false;
     componentInstance.isSticky = true;
     componentInstance.enableScrollableParent = true;
@@ -447,24 +451,27 @@ describe('Affix directive', () => {
     componentInstance.enableAutoFit = true;
     fixture.detectChanges();
 
-    // Scroll to make target visible.
+    const spy = spyOn(componentInstance, 'onAffixPlacementChange').and.callThrough();
+
+    // Scroll to make base element visible.
     componentInstance.scrollTargetToTop();
     triggerParentScroll();
     fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith({
-      isVisible: true
+      placement: 'below'
     });
     expect(spy.calls.count()).toEqual(1);
     spy.calls.reset();
 
-    // Scroll to hide target.
+    // Scroll to hide base element.
     componentInstance.scrollTargetOutOfView();
     triggerParentScroll();
     fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith({
-      isVisible: false
+      /* tslint:disable-next-line:no-null-keyword */
+      placement: null
     });
     expect(spy.calls.count()).toEqual(1);
     spy.calls.reset();
