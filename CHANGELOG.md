@@ -1,3 +1,13 @@
+# 3.12.0 (2020-03-03)
+
+- Added the affix service and directive that enables SKY UX components to affix an element to another element. [#135](https://github.com/blackbaud/skyux-core/pull/135)
+- Added the missing `SkyViewkeeperHostOptions` to the exports API. [#137](https://github.com/blackbaud/skyux-core/pull/137)
+- Added the `@Injectable()` decorator to the `SkyViewkeeperHostOptions` class to satisfy build requirements. [#137](https://github.com/blackbaud/skyux-core/pull/137)
+
+# 3.11.1 (2020-02-27)
+
+- Fixed internal circular references in the dock component. [#133](https://github.com/blackbaud/skyux-core/pull/133)
+
 # 3.11.0 (2020-02-26)
 
 - Added the viewkeeper directive that enables SKY UX components to keep elements in view while users scroll. [#128](https://github.com/blackbaud/skyux-core/pull/128)

@@ -2,6 +2,15 @@ export * from './modules/adapter-service/adapter.module';
 export * from './modules/adapter-service/adapter.service';
 export * from './modules/adapter-service/focusable-children-options';
 
+export * from './modules/affix/affix-config';
+export * from './modules/affix/affix-horizontal-alignment';
+export * from './modules/affix/affix-placement';
+export * from './modules/affix/affix-placement-change';
+export * from './modules/affix/affix-vertical-alignment';
+export * from './modules/affix/affix.module';
+export * from './modules/affix/affix.service';
+export * from './modules/affix/affixer';
+
 export * from './modules/dock/dock-insert-component-config';
 export * from './modules/dock/dock-item';
 export * from './modules/dock/dock-item-config';
@@ -44,6 +53,7 @@ export * from './modules/title/title.service';
 
 export * from './modules/ui-config/ui-config.service';
 
+export * from './modules/viewkeeper/viewkeeper-host-options';
 export * from './modules/viewkeeper/viewkeeper-options';
 export * from './modules/viewkeeper/viewkeeper.module';
 export * from './modules/viewkeeper/viewkeeper.service';

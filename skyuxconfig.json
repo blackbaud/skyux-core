@@ -13,5 +13,10 @@
     "unit": {
       "browserSet": "paranoid"
     }
+  },
+  "app": {
+    "styles": [
+      "@skyux/docs-tools/css/docs-tools.css"
+    ]
   }
 }
