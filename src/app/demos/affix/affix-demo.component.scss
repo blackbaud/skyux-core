@@ -6,7 +6,7 @@
   width: 2500px;
 }
 
-.target {
+.base {
   background-color: #f00;
   border-radius: 50%;
   display: flex;
@@ -14,18 +14,14 @@
   justify-content: center;
 }
 
-.target-gap {
-  background-color: #fff;
-}
-
-.subject {
+.affixed {
   width: 100px;
   height: 100px;
   background-color: #00f;
   position: fixed;
 }
 
-.subject-hidden {
+.hidden {
   visibility: hidden;
 }
 
@@ -36,7 +32,7 @@
   align-items: center;
   justify-content: center;
 
-  &.enable-scroll {
+  &.scroll {
     width: 300px;
     height: 300px;
     overflow: scroll;
@@ -50,6 +46,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    &.smaller {
+      width: 75px;
+      height: 75px;
     }
   }
 }

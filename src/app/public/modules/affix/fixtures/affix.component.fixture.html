@@ -3,26 +3,26 @@
   [ngClass]="{
     'canvas-scrollable': enableScrollableParent
   }"
-  #scrollableParent
+  #scrollableParentRef
 >
   <div
-    class="target-wrapper"
+    class="base-wrapper"
   >
     <div
-      class="target"
-      #target
+      class="base"
+      #baseRef
     ></div>
   </div>
 
   <div
-    class="subject"
+    class="affixed"
     [affixEnableAutoFit]="enableAutoFit"
     [affixHorizontalAlignment]="horizontalAlignment"
     [affixIsSticky]="isSticky"
     [affixPlacement]="placement"
     [affixVerticalAlignment]="verticalAlignment"
-    [skyAffixTo]="target"
-    (affixSubjectVisibilityChange)="onAffixSubjectVisibilityChange($event)"
-    #subject
+    [skyAffixTo]="baseRef"
+    (affixPlacementChange)="onAffixPlacementChange($event)"
+    #affixedRef
   ></div>
 </div>

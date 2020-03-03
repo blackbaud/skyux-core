@@ -23,8 +23,8 @@ import {
 } from './affix-placement';
 
 import {
-  SkyAffixSubjectVisibilityChange
-} from './affix-subject-visibility-change';
+  SkyAffixPlacementChange
+} from './affix-placement-change';
 
 import {
   getInversePlacement,
@@ -48,11 +48,13 @@ const DEFAULT_AFFIX_CONFIG: SkyAffixConfig = {
 
 export class SkyAffixer {
 
-  public get subjectVisibilityChange(): Observable<SkyAffixSubjectVisibilityChange> {
-    return this._subjectVisibilityChange.asObservable();
+  /**
+   * Fires when the placement value changes. A `null` value indicates that a suitable
+   * placement could not be found.
+   */
+  public get placementChange(): Observable<SkyAffixPlacementChange> {
+    return this._placementChange.asObservable();
   }
-
-  private _subjectVisibilityChange = new Subject<SkyAffixSubjectVisibilityChange>();
 
   private get config(): SkyAffixConfig {
     return this._config;
@@ -71,7 +73,13 @@ export class SkyAffixer {
     this._config = merged;
   }
 
-  private isSubjectVisible: boolean = false;
+  private affixedRect: ClientRect;
+
+  private baseElement: HTMLElement;
+
+  private baseRect: ClientRect;
+
+  private currentPlacement: SkyAffixPlacement;
 
   private resizeListener: Subscription;
 
@@ -79,31 +87,27 @@ export class SkyAffixer {
 
   private scrollListeners: Function[];
 
-  private subjectRect: ClientRect;
-
-  private target: HTMLElement;
-
-  private targetRect: ClientRect;
-
   private _config: SkyAffixConfig;
 
+  private _placementChange = new Subject<SkyAffixPlacementChange>();
+
   constructor(
-    private subject: HTMLElement,
+    private affixedElement: HTMLElement,
     private renderer: Renderer2
   ) { }
 
   /**
-   * Affixes a subject element to a target element.
-   * @param target The target element.
+   * Affixes an element to a base element.
+   * @param baseElement The base element.
    * @param config Configuration for the affix action.
    */
-  public affixTo(target: HTMLElement, config?: SkyAffixConfig): void {
+  public affixTo(baseElement: HTMLElement, config?: SkyAffixConfig): void {
 
     this.reset();
 
     this.config = config;
-    this.target = target;
-    this.scrollableParents = getScrollableParents(target);
+    this.baseElement = baseElement;
+    this.scrollableParents = getScrollableParents(baseElement);
 
     this.affix();
 
@@ -118,18 +122,18 @@ export class SkyAffixer {
    */
   public destroy(): void {
     this.reset();
-    this._subjectVisibilityChange.complete();
-    this._subjectVisibilityChange = undefined;
+    this._placementChange.complete();
+    this._placementChange = undefined;
   }
 
   private affix(): void {
-    this.targetRect = this.target.getBoundingClientRect();
-    this.subjectRect = this.subject.getBoundingClientRect();
+    this.baseRect = this.baseElement.getBoundingClientRect();
+    this.affixedRect = this.affixedElement.getBoundingClientRect();
 
     const { top, left } = this.getOffset();
 
-    this.renderer.setStyle(this.subject, 'top', `${top}px`);
-    this.renderer.setStyle(this.subject, 'left', `${left}px`);
+    this.renderer.setStyle(this.affixedElement, 'top', `${top}px`);
+    this.renderer.setStyle(this.affixedElement, 'left', `${left}px`);
   }
 
   private getOffset(): SkyAffixOffset {
@@ -138,40 +142,42 @@ export class SkyAffixer {
     const maxAttempts = 4;
     let attempts = 0;
 
-    let isSubjectVisible = false;
+    let isAffixedElementFullyVisible = false;
     let offset: SkyAffixOffset;
     let placement = this.config.placement;
 
     do {
       offset = this.getPreferredOffset(placement);
-      isSubjectVisible = isOffsetVisibleWithinParent(parent, offset);
+      isAffixedElementFullyVisible = isOffsetVisibleWithinParent(parent, offset);
 
       if (!this.config.enableAutoFit) {
         break;
       }
 
-      if (!isSubjectVisible) {
+      if (!isAffixedElementFullyVisible) {
         placement = (attempts % 2 === 0)
           ? getInversePlacement(placement)
           : getNextPlacement(placement);
       }
 
       attempts++;
-    } while (!isSubjectVisible && attempts < maxAttempts);
+    } while (!isAffixedElementFullyVisible && attempts < maxAttempts);
 
-    // No suitable placement was found, so revert to preferred placement.
-    if (attempts >= maxAttempts && !isSubjectVisible) {
-      offset = this.getPreferredOffset(this.config.placement);
+    if (isAffixedElementFullyVisible) {
+      this.emitPlacementChange(placement);
+      return offset;
     }
 
-    this.emitSubjectVisibilityChange(isSubjectVisible);
+    /* tslint:disable-next-line:no-null-keyword */
+    this.emitPlacementChange(null);
 
-    return offset;
+    // No suitable placement was found, so revert to preferred placement.
+    return this.getPreferredOffset(this.config.placement);
   }
 
   private getPreferredOffset(placement: SkyAffixPlacement): SkyAffixOffset {
-    const subjectRect = this.subjectRect;
-    const targetRect = this.targetRect;
+    const affixedRect = this.affixedRect;
+    const baseRect = this.baseRect;
 
     const horizontalAlignment = this.config.horizontalAlignment;
     const verticalAlignment = this.config.verticalAlignment;
@@ -182,44 +188,44 @@ export class SkyAffixer {
 
     if (placement === 'above' || placement === 'below') {
       if (placement === 'above') {
-        top = targetRect.top - subjectRect.height;
+        top = baseRect.top - affixedRect.height;
       } else {
-        top = targetRect.bottom;
+        top = baseRect.bottom;
       }
 
       switch (horizontalAlignment) {
         case 'left':
-          left = targetRect.left;
+          left = baseRect.left;
           break;
 
         case 'center':
           default:
-            left = targetRect.left + (targetRect.width / 2) - (subjectRect.width / 2);
+            left = baseRect.left + (baseRect.width / 2) - (affixedRect.width / 2);
             break;
 
         case 'right':
-          left = targetRect.right - subjectRect.width;
+          left = baseRect.right - affixedRect.width;
           break;
       }
     } else {
       if (placement === 'left') {
-        left = targetRect.left - subjectRect.width;
+        left = baseRect.left - affixedRect.width;
       } else {
-        left = targetRect.right;
+        left = baseRect.right;
       }
 
       switch (verticalAlignment) {
         case 'top':
-          top = targetRect.top;
+          top = baseRect.top;
           break;
 
         case 'middle':
         default:
-          top = targetRect.top + (targetRect.height / 2) - (subjectRect.height / 2);
+          top = baseRect.top + (baseRect.height / 2) - (affixedRect.height / 2);
           break;
 
         case 'bottom':
-          top = targetRect.bottom - subjectRect.height;
+          top = baseRect.bottom - affixedRect.height;
           break;
       }
     }
@@ -229,15 +235,15 @@ export class SkyAffixer {
       offset = this.adjustOffsetToScrollableParent({...offset}, placement);
     }
 
-    offset.bottom = offset.top + subjectRect.height;
-    offset.right = offset.left + subjectRect.width;
+    offset.bottom = offset.top + affixedRect.height;
+    offset.right = offset.left + affixedRect.width;
 
     return offset;
   }
 
   /**
    * Slightly adjust the offset to fit within the scroll parent's boundaries if
-   * the subject element would otherwise be clipped.
+   * the affixed element would otherwise be clipped.
    */
   private adjustOffsetToScrollableParent(
     offset: SkyAffixOffset,
@@ -246,8 +252,8 @@ export class SkyAffixer {
     const parent = getImmediateScrollableParent(this.scrollableParents);
     const parentOffset = getElementOffset(parent);
 
-    const subjectRect = this.subjectRect;
-    const targetRect = this.targetRect;
+    const affixedRect = this.affixedRect;
+    const baseRect = this.baseRect;
 
     /* tslint:disable-next-line:switch-default */
     switch (placement) {
@@ -255,15 +261,15 @@ export class SkyAffixer {
       case 'below':
         if (offset.left < parentOffset.left) {
           offset.left = parentOffset.left;
-        } else if (offset.left + subjectRect.width > parentOffset.right) {
-          offset.left = parentOffset.right - subjectRect.width;
+        } else if (offset.left + affixedRect.width > parentOffset.right) {
+          offset.left = parentOffset.right - affixedRect.width;
         }
 
-        // Make sure the subject never detaches from the target.
-        if (offset.left > targetRect.left) {
-          offset.left = targetRect.left;
-        } else if (offset.left + subjectRect.width < targetRect.right) {
-          offset.left = targetRect.right - subjectRect.width;
+        // Make sure the affixed element never detaches from the base element.
+        if (offset.left > baseRect.left) {
+          offset.left = baseRect.left;
+        } else if (offset.left + affixedRect.width < baseRect.right) {
+          offset.left = baseRect.right - affixedRect.width;
         }
         break;
 
@@ -271,15 +277,15 @@ export class SkyAffixer {
       case 'right':
         if (offset.top < parentOffset.top) {
           offset.top = parentOffset.top;
-        } else if (offset.top + subjectRect.height > parentOffset.bottom) {
-          offset.top = parentOffset.bottom - subjectRect.height;
+        } else if (offset.top + affixedRect.height > parentOffset.bottom) {
+          offset.top = parentOffset.bottom - affixedRect.height;
         }
 
-        // Make sure the subject never detaches from the target.
-        if (offset.top > targetRect.top) {
-          offset.top = targetRect.top;
-        } else if (offset.top + subjectRect.height < targetRect.bottom) {
-          offset.top = targetRect.bottom - subjectRect.height;
+        // Make sure the affixed element never detaches from the base element.
+        if (offset.top > baseRect.top) {
+          offset.top = baseRect.top;
+        } else if (offset.top + affixedRect.height < baseRect.bottom) {
+          offset.top = baseRect.bottom - affixedRect.height;
         }
         break;
     }
@@ -287,11 +293,11 @@ export class SkyAffixer {
     return offset;
   }
 
-  private emitSubjectVisibilityChange(isVisible: boolean): void {
-    if (this.isSubjectVisible !== isVisible) {
-      this.isSubjectVisible = isVisible;
-      this._subjectVisibilityChange.next({
-        isVisible: isVisible
+  private emitPlacementChange(placement: SkyAffixPlacement | null): void {
+    if (this.currentPlacement !== placement) {
+      this.currentPlacement = placement;
+      this._placementChange.next({
+        placement
       });
     }
   }
@@ -301,9 +307,9 @@ export class SkyAffixer {
     this.removeResizeListener();
 
     this._config =
-      this.target =
-      this.targetRect =
-      this.subjectRect =
+      this.affixedRect =
+      this.baseElement =
+      this.baseRect =
       this.scrollableParents = undefined;
   }
 

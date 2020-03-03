@@ -6,56 +6,37 @@
       class="parent-scrollable"
       id="screenshot-affix"
       [ngClass]="{
-        'enable-scroll': enableScrollableParent
+        'scroll': enableScrollableParent,
+        'smaller': enableSmallerParent
       }"
-      #parentScrollable
+      #parentScrollableRef
     >
       <div
         class="parent-scrollable-canvas"
       >
         <div
-          class="target"
+          class="base"
           style="width:50px;height:50px;"
-          #target
-        >
-          <div
-            class="target target-gap"
-            style="width:40px;height:40px;"
-          >
-            <div
-              class="target"
-              style="width:30px;height:30px;"
-            >
-              <div
-                class="target target-gap"
-                style="width:20px;height:20px;"
-              >
-                <div
-                  class="target"
-                  style="width:10px;height:10px;"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
+          #baseRef
+        ></div>
       </div>
     </div>
 
     <div
-      class="subject"
+      class="affixed"
       [affixEnableAutoFit]="enableAutoFit"
       [affixHorizontalAlignment]="model.horizontalAlignment"
       [affixIsSticky]="isSticky"
       [affixPlacement]="model.placement"
       [affixVerticalAlignment]="model.verticalAlignment"
-      [ngClass]="{ 'subject-hidden': !isVisible }"
-      [skyAffixTo]="target"
-      (affixSubjectVisibilityChange)="onAffixSubjectVisibilityChange($event)"
+      [ngClass]="{ 'hidden': !isVisible }"
+      [skyAffixTo]="baseRef"
+      (affixPlacementChange)="onAffixPlacementChange($event)"
     ></div>
   </div>
   <div *ngIf="showToolbar"
     class="toolbar"
-    #toolbar
+    #toolbarRef
   >
     <table
       style="text-align:left;margin-bottom:10px;"
@@ -127,12 +108,12 @@
     </table>
     <button
       class="sky-btn sky-btn-default sky-margin-inline-default"
-      id="screenshot-affix-button-scroll-to-target"
+      id="screenshot-affix-button-scroll-to-base-element"
       type="button"
       [disabled]="disabled"
-      (click)="scrollToTarget()"
+      (click)="scrollToBaseElement()"
     >
-      Scroll to target
+      Scroll to base element
     </button>
     <button
       class="sky-btn sky-btn-primary sky-margin-inline-default"
@@ -168,13 +149,21 @@
       Toggle autofit
     </button>
     <button
-      class="sky-btn sky-btn-default"
+      class="sky-btn sky-btn-default sky-margin-inline-default"
       id="screenshot-affix-button-scrollable-parent"
       type="button"
       [disabled]="disabled"
       (click)="toggleScrollableParent()"
     >
       Toggle scrollable parent
+    </button>
+    <button *ngIf="enableScrollableParent"
+      class="sky-btn sky-btn-default"
+      type="button"
+      [disabled]="disabled"
+      (click)="toggleSmallerParent()"
+    >
+      Toggle smaller parent
     </button>
   </div>
 </sky-page>

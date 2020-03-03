@@ -13,27 +13,27 @@ import {
 export interface SkyAffixConfig {
 
   /**
-   * Indicates if the affix service should try and find the best placement for the subject element if the element would be hidden otherwise.
+   * Indicates if the affix service should try and find the best placement for the affixed element if the element would be hidden otherwise.
    */
   enableAutoFit?: boolean;
 
   /**
-   * The horizontal alignment of the subject element to the target element.
+   * The horizontal alignment of the affixed element to the base element.
    */
   horizontalAlignment?: SkyAffixHorizontalAlignment;
 
   /**
-   * Indicates if the subject element should remain affixed to the target element when the window is scrolled or resized.
+   * Indicates if the affixed element should remain affixed to the base element when the window is scrolled or resized.
    */
   isSticky?: boolean;
 
   /**
-   * The placement of the subject element around the target element.
+   * The placement of the affixed element around the base element.
    */
   placement?: SkyAffixPlacement;
 
   /**
-   * The vertical alignment of the subject element to the target element.
+   * The vertical alignment of the affixed element to the base element.
    */
   verticalAlignment?: SkyAffixVerticalAlignment;
 

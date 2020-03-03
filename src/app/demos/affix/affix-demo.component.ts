@@ -9,7 +9,7 @@ import {
 import {
   SkyAffixHorizontalAlignment,
   SkyAffixPlacement,
-  SkyAffixSubjectVisibilityChange,
+  SkyAffixPlacementChange,
   SkyAffixVerticalAlignment
 } from '../../public';
 
@@ -56,20 +56,22 @@ export class AffixDemoComponent {
 
   public enableScrollableParent: boolean = false;
 
+  public enableSmallerParent: boolean = false;
+
   public isSticky: boolean = true;
 
   public isVisible: boolean = false;
 
   public showToolbar: boolean = true;
 
-  @ViewChild('parentScrollable', { read: ElementRef })
-  private parentScrollable: ElementRef;
+  @ViewChild('baseRef', { read: ElementRef })
+  private baseRef: ElementRef;
 
-  @ViewChild('target', { read: ElementRef })
-  private target: ElementRef;
+  @ViewChild('parentScrollableRef', { read: ElementRef })
+  private parentScrollableRef: ElementRef;
 
-  @ViewChild('toolbar', { read: ElementRef })
-  private toolbar: ElementRef;
+  @ViewChild('toolbarRef', { read: ElementRef })
+  private toolbarRef: ElementRef;
 
   private horizontalAlignmentIndex = 0;
 
@@ -83,30 +85,35 @@ export class AffixDemoComponent {
     private changeDetector: ChangeDetectorRef
   ) { }
 
-  public scrollToTarget(): void {
-    const targetElement: HTMLDivElement = this.target.nativeElement;
-    const top = targetElement.offsetTop;
-    const left = targetElement.offsetLeft;
+  public onAffixPlacementChange(change: SkyAffixPlacementChange): void {
+    this.isVisible = (change.placement !== null);
+    this.changeDetector.detectChanges();
+  }
+
+  public scrollToBaseElement(): void {
+    const baseElement: HTMLDivElement = this.baseRef.nativeElement;
+    const top = baseElement.offsetTop;
+    const left = baseElement.offsetLeft;
 
     if (this.enableScrollableParent) {
-      const scrollable: HTMLDivElement = this.parentScrollable.nativeElement;
+      const scrollable: HTMLDivElement = this.parentScrollableRef.nativeElement;
       scrollable.scrollTop = top -
         scrollable.offsetTop -
         (scrollable.clientHeight / 2) +
-        (targetElement.clientHeight / 2);
+        (baseElement.clientHeight / 2);
       scrollable.scrollLeft = left -
         scrollable.offsetLeft -
         (scrollable.clientWidth / 2) +
-        (targetElement.clientWidth / 2);
+        (baseElement.clientWidth / 2);
     } else {
       window.scroll(
         left -
           (document.documentElement.clientWidth / 2) +
-          (targetElement.clientWidth / 2),
+          (baseElement.clientWidth / 2),
         top -
           (document.documentElement.clientHeight / 2) +
-          (targetElement.clientHeight / 2) +
-          (this.toolbar.nativeElement.clientHeight / 2)
+          (baseElement.clientHeight / 2) +
+          (this.toolbarRef.nativeElement.clientHeight / 2)
       );
     }
   }
@@ -143,11 +150,13 @@ export class AffixDemoComponent {
     this.enableScrollableParent = !this.enableScrollableParent;
     this.model.placement = 'below';
     this.changeDetector.markForCheck();
+    setTimeout(() => this.scrollToBaseElement());
   }
 
-  public onAffixSubjectVisibilityChange(change: SkyAffixSubjectVisibilityChange): void {
-    this.isVisible = change.isVisible;
-    this.changeDetector.detectChanges();
+  public toggleSmallerParent(): void {
+    this.enableSmallerParent = !this.enableSmallerParent;
+    this.changeDetector.markForCheck();
+    setTimeout(() => this.scrollToBaseElement());
   }
 
   private goToNext(): void {

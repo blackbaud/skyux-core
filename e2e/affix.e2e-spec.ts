@@ -13,7 +13,7 @@ describe('Affix', function () {
   beforeEach(function () {
     SkyHostBrowser.get('demos/affix');
     SkyHostBrowser.setWindowDimensions(2000, 2000);
-    element(by.id('screenshot-affix-button-scroll-to-target')).click();
+    element(by.id('screenshot-affix-button-scroll-to-base-element')).click();
   });
 
   function stepAffixCycle() {

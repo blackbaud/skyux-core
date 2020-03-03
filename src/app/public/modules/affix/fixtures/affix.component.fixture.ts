@@ -13,10 +13,6 @@ import {
 } from '../affix-placement';
 
 import {
-  SkyAffixSubjectVisibilityChange
-} from '../affix-subject-visibility-change';
-
-import {
   SkyAffixVerticalAlignment
 } from '../affix-vertical-alignment';
 
@@ -45,85 +41,85 @@ export class AffixFixtureComponent {
 
   // #endregion
 
-  @ViewChild('subject', {
-    read: ElementRef
-  })
-  public subjectElement: ElementRef;
-
   @ViewChild(SkyAffixDirective, {
     read: SkyAffixDirective
   })
   public affixDirective: SkyAffixDirective;
 
-  @ViewChild('scrollableParent', {
+  @ViewChild('affixedRef', {
     read: ElementRef
   })
-  public scrollableParent: ElementRef;
+  public affixedRef: ElementRef;
 
-  @ViewChild('target', {
+  @ViewChild('scrollableParentRef', {
     read: ElementRef
   })
-  public targetElement: ElementRef;
+  public scrollableParentRef: ElementRef;
+
+  @ViewChild('baseRef', {
+    read: ElementRef
+  })
+  public baseRef: ElementRef;
 
   public enableScrollableParent: boolean = false;
 
-  public onAffixSubjectVisibilityChange(change: SkyAffixSubjectVisibilityChange): void { }
+  public onAffixPlacementChange(): void { }
 
   public scrollTargetToLeft(offset: number = 0): void {
-    const target: HTMLDivElement = this.targetElement.nativeElement;
-    const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
+    const baseElement: HTMLDivElement = this.baseRef.nativeElement;
+    const scrollable: HTMLDivElement = this.scrollableParentRef.nativeElement;
     scrollable.scrollTop = this.getParentCenterY();
-    scrollable.scrollLeft = target.offsetLeft - offset;
+    scrollable.scrollLeft = baseElement.offsetLeft - offset;
   }
 
   public scrollTargetToRight(offset: number = 0): void {
-    const target: HTMLDivElement = this.targetElement.nativeElement;
-    const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
+    const baseElement: HTMLDivElement = this.baseRef.nativeElement;
+    const scrollable: HTMLDivElement = this.scrollableParentRef.nativeElement;
     scrollable.scrollTop = this.getParentCenterY();
-    scrollable.scrollLeft = target.offsetLeft - scrollable.clientWidth - offset;
+    scrollable.scrollLeft = baseElement.offsetLeft - scrollable.clientWidth - offset;
   }
 
   public scrollTargetToTop(offset: number = 0): void {
-    const targetElement: HTMLDivElement = this.targetElement.nativeElement;
-    const top = targetElement.offsetTop;
-    const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
+    const baseRef: HTMLDivElement = this.baseRef.nativeElement;
+    const top = baseRef.offsetTop;
+    const scrollable: HTMLDivElement = this.scrollableParentRef.nativeElement;
     scrollable.scrollTop = top - offset;
     scrollable.scrollLeft = this.getParentCenterX();
   }
 
   public scrollTargetToBottom(offset: number = 0): void {
-    const target: HTMLDivElement = this.targetElement.nativeElement;
-    const top = target.offsetTop;
-    const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
+    const baseElement: HTMLDivElement = this.baseRef.nativeElement;
+    const top = baseElement.offsetTop;
+    const scrollable: HTMLDivElement = this.scrollableParentRef.nativeElement;
     scrollable.scrollTop = top +
-      target.clientHeight -
+      baseElement.clientHeight -
       scrollable.getBoundingClientRect().height -
       offset;
     scrollable.scrollLeft = this.getParentCenterX();
   }
 
   public scrollTargetOutOfView(): void {
-    const parent = this.scrollableParent.nativeElement;
+    const parent = this.scrollableParentRef.nativeElement;
     parent.scrollTop = 0;
     parent.scrollLeft = 0;
   }
 
   private getParentCenterX(): number {
-    const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
-    const target: HTMLDivElement = this.targetElement.nativeElement;
-    return target.offsetLeft -
+    const scrollable: HTMLDivElement = this.scrollableParentRef.nativeElement;
+    const baseElement: HTMLDivElement = this.baseRef.nativeElement;
+    return baseElement.offsetLeft -
       scrollable.offsetLeft -
       (scrollable.clientWidth / 2) +
-      (target.clientWidth / 2);
+      (baseElement.clientWidth / 2);
   }
 
   private getParentCenterY(): number {
-    const scrollable: HTMLDivElement = this.scrollableParent.nativeElement;
-    const target: HTMLDivElement = this.targetElement.nativeElement;
-    return target.offsetTop -
+    const scrollable: HTMLDivElement = this.scrollableParentRef.nativeElement;
+    const baseElement: HTMLDivElement = this.baseRef.nativeElement;
+    return baseElement.offsetTop -
       scrollable.offsetTop -
       (scrollable.clientHeight / 2) +
-      (target.clientHeight / 2);
+      (baseElement.clientHeight / 2);
   }
 
 }

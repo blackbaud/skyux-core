@@ -22,8 +22,8 @@ import {
 } from './affix-placement';
 
 import {
-  SkyAffixSubjectVisibilityChange
-} from './affix-subject-visibility-change';
+  SkyAffixPlacementChange
+} from './affix-placement-change';
 
 import {
   SkyAffixVerticalAlignment
@@ -38,7 +38,7 @@ import {
 } from './affixer';
 
 /**
- * Affixes the host element to a target element.
+ * Affixes the host element to a base element.
  */
 @Directive({
   selector: '[skyAffixTo]'
@@ -46,7 +46,7 @@ import {
 export class SkyAffixDirective implements OnChanges, OnDestroy {
 
   /**
-   * The target element to affix the host element.
+   * The base element to affix the host element.
    */
   @Input()
   public skyAffixTo: HTMLElement;
@@ -82,10 +82,10 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
   public affixVerticalAlignment: SkyAffixVerticalAlignment;
 
   /**
-   * Fires when the host element's visibility changes.
+   * Fires when the placement value changes.
    */
   @Output()
-  public affixSubjectVisibilityChange = new EventEmitter<SkyAffixSubjectVisibilityChange>();
+  public affixPlacementChange = new EventEmitter<SkyAffixPlacementChange>();
 
   private affixer: SkyAffixer;
 
@@ -96,9 +96,9 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
     private affixService: SkyAffixService
   ) {
     this.affixer = this.affixService.createAffixer(elementRef);
-    this.affixer.subjectVisibilityChange
+    this.affixer.placementChange
       .takeUntil(this.ngUnsubscribe)
-      .subscribe((change) => this.affixSubjectVisibilityChange.emit(change));
+      .subscribe((change) => this.affixPlacementChange.emit(change));
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -115,7 +115,7 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.affixSubjectVisibilityChange.complete();
+    this.affixPlacementChange.complete();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
     this.affixer.destroy();

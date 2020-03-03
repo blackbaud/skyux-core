@@ -22,11 +22,11 @@ export class SkyAffixService {
 
   /**
    * Creates an instance of [[SkyAffixer]].
-   * @param subject The element to be affixed.
+   * @param affixed The element to be affixed.
    */
-  public createAffixer(subject: ElementRef): SkyAffixer {
+  public createAffixer(affixed: ElementRef): SkyAffixer {
     return new SkyAffixer(
-      subject.nativeElement,
+      affixed.nativeElement,
       this.renderer
     );
   }
