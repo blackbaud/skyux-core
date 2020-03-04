@@ -11,6 +11,10 @@ import {
 import 'rxjs/add/observable/fromEvent';
 
 import {
+  SkyAffixAutoFitContext
+} from './affix-auto-fit-context';
+
+import {
   SkyAffixOffset
 } from './affix-offset';
 
@@ -32,13 +36,13 @@ import {
 } from './affix-utils';
 
 import {
-  getImmediateScrollableParent,
   getElementOffset,
-  getScrollableParents,
+  getOverflowParents,
   isOffsetVisibleWithinParent
 } from './dom-utils';
 
 const DEFAULT_AFFIX_CONFIG: SkyAffixConfig = {
+  autoFitContext: SkyAffixAutoFitContext.OverflowParent,
   enableAutoFit: false,
   horizontalAlignment: 'center',
   isSticky: false,
@@ -83,7 +87,7 @@ export class SkyAffixer {
 
   private resizeListener: Subscription;
 
-  private scrollableParents: HTMLElement[];
+  private overflowParents: HTMLElement[];
 
   private scrollListeners: Function[];
 
@@ -107,7 +111,7 @@ export class SkyAffixer {
 
     this.config = config;
     this.baseElement = baseElement;
-    this.scrollableParents = getScrollableParents(baseElement);
+    this.overflowParents = getOverflowParents(baseElement);
 
     this.affix();
 
@@ -137,7 +141,7 @@ export class SkyAffixer {
   }
 
   private getOffset(): SkyAffixOffset {
-    const parent = getImmediateScrollableParent(this.scrollableParents);
+    const parent = this.getImmediateOverflowParent();
 
     const maxAttempts = 4;
     let attempts = 0;
@@ -232,7 +236,7 @@ export class SkyAffixer {
 
     let offset: SkyAffixOffset = { left, top };
     if (enableAutoFit) {
-      offset = this.adjustOffsetToScrollableParent({...offset}, placement);
+      offset = this.adjustOffsetToOverflowParent({...offset}, placement);
     }
 
     offset.bottom = offset.top + affixedRect.height;
@@ -245,11 +249,11 @@ export class SkyAffixer {
    * Slightly adjust the offset to fit within the scroll parent's boundaries if
    * the affixed element would otherwise be clipped.
    */
-  private adjustOffsetToScrollableParent(
+  private adjustOffsetToOverflowParent(
     offset: SkyAffixOffset,
     placement: SkyAffixPlacement
   ): SkyAffixOffset {
-    const parent = getImmediateScrollableParent(this.scrollableParents);
+    const parent = this.getImmediateOverflowParent();
     const parentOffset = getElementOffset(parent);
 
     const affixedRect = this.affixedRect;
@@ -293,6 +297,12 @@ export class SkyAffixer {
     return offset;
   }
 
+  private getImmediateOverflowParent(): HTMLElement {
+    return (this.config.autoFitContext === SkyAffixAutoFitContext.OverflowParent)
+      ? this.overflowParents[this.overflowParents.length - 1]
+      : window.document.body;
+  }
+
   private emitPlacementChange(placement: SkyAffixPlacement | null): void {
     if (this.currentPlacement !== placement) {
       this.currentPlacement = placement;
@@ -310,13 +320,13 @@ export class SkyAffixer {
       this.affixedRect =
       this.baseElement =
       this.baseRect =
-      this.scrollableParents = undefined;
+      this.overflowParents = undefined;
   }
 
   private addScrollListeners(): void {
-    this.scrollListeners = this.scrollableParents.map((parentElement) => {
-      const scrollable = (parentElement === document.body) ? 'window' : parentElement;
-      return this.renderer.listen(scrollable, 'scroll', () => this.affix());
+    this.scrollListeners = this.overflowParents.map((parentElement) => {
+      const overflow = (parentElement === document.body) ? 'window' : parentElement;
+      return this.renderer.listen(overflow, 'scroll', () => this.affix());
     });
   }
 

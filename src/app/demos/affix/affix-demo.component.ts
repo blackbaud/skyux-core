@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 
 import {
+  SkyAffixAutoFitContext,
   SkyAffixHorizontalAlignment,
   SkyAffixPlacement,
   SkyAffixPlacementChange,
@@ -40,11 +41,18 @@ export class AffixDemoComponent {
     'top'
   ];
 
+  public autoFitContexts: SkyAffixAutoFitContext[] = [
+    SkyAffixAutoFitContext.Window,
+    SkyAffixAutoFitContext.OverflowParent
+  ];
+
   public model: {
+    autoFitContext: SkyAffixAutoFitContext;
     placement: SkyAffixPlacement;
     horizontalAlignment?: SkyAffixHorizontalAlignment;
     verticalAlignment?: SkyAffixVerticalAlignment;
   } = {
+    autoFitContext: SkyAffixAutoFitContext.OverflowParent,
     placement: 'above',
     horizontalAlignment: 'center',
     verticalAlignment: 'middle'
@@ -54,7 +62,7 @@ export class AffixDemoComponent {
 
   public enableAutoFit: boolean = true;
 
-  public enableScrollableParent: boolean = false;
+  public enableOverflowParent: boolean = false;
 
   public enableSmallerParent: boolean = false;
 
@@ -67,8 +75,8 @@ export class AffixDemoComponent {
   @ViewChild('baseRef', { read: ElementRef })
   private baseRef: ElementRef;
 
-  @ViewChild('parentScrollableRef', { read: ElementRef })
-  private parentScrollableRef: ElementRef;
+  @ViewChild('parentOverflowRef', { read: ElementRef })
+  private parentOverflowRef: ElementRef;
 
   @ViewChild('toolbarRef', { read: ElementRef })
   private toolbarRef: ElementRef;
@@ -95,15 +103,15 @@ export class AffixDemoComponent {
     const top = baseElement.offsetTop;
     const left = baseElement.offsetLeft;
 
-    if (this.enableScrollableParent) {
-      const scrollable: HTMLDivElement = this.parentScrollableRef.nativeElement;
-      scrollable.scrollTop = top -
-        scrollable.offsetTop -
-        (scrollable.clientHeight / 2) +
+    if (this.enableOverflowParent) {
+      const overflowParent: HTMLDivElement = this.parentOverflowRef.nativeElement;
+      overflowParent.scrollTop = top -
+        overflowParent.offsetTop -
+        (overflowParent.clientHeight / 2) +
         (baseElement.clientHeight / 2);
-      scrollable.scrollLeft = left -
-        scrollable.offsetLeft -
-        (scrollable.clientWidth / 2) +
+      overflowParent.scrollLeft = left -
+        overflowParent.offsetLeft -
+        (overflowParent.clientWidth / 2) +
         (baseElement.clientWidth / 2);
     } else {
       window.scroll(
@@ -146,8 +154,8 @@ export class AffixDemoComponent {
     }, 250);
   }
 
-  public toggleScrollableParent(): void {
-    this.enableScrollableParent = !this.enableScrollableParent;
+  public toggleOverflowParent(): void {
+    this.enableOverflowParent = !this.enableOverflowParent;
     this.model.placement = 'below';
     this.changeDetector.markForCheck();
     setTimeout(() => this.scrollToBaseElement());
@@ -157,6 +165,12 @@ export class AffixDemoComponent {
     this.enableSmallerParent = !this.enableSmallerParent;
     this.changeDetector.markForCheck();
     setTimeout(() => this.scrollToBaseElement());
+  }
+
+  public getAutoFitContextForDisplay(context: SkyAffixAutoFitContext): string {
+    return (context === SkyAffixAutoFitContext.OverflowParent)
+      ? 'OverflowParent'
+      : 'Window';
   }
 
   private goToNext(): void {

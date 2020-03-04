@@ -3,16 +3,16 @@
     class="canvas"
   >
     <div
-      class="parent-scrollable"
+      class="parent-overflow"
       id="screenshot-affix"
       [ngClass]="{
-        'scroll': enableScrollableParent,
+        'overflow': enableOverflowParent,
         'smaller': enableSmallerParent
       }"
-      #parentScrollableRef
+      #parentOverflowRef
     >
       <div
-        class="parent-scrollable-canvas"
+        class="parent-overflow-canvas"
       >
         <div
           class="base"
@@ -24,6 +24,7 @@
 
     <div
       class="affixed"
+      [affixAutoFitContext]="model.autoFitContext"
       [affixEnableAutoFit]="enableAutoFit"
       [affixHorizontalAlignment]="model.horizontalAlignment"
       [affixIsSticky]="isSticky"
@@ -91,6 +92,22 @@
       </tr>
       <tr>
         <td>
+          Auto-fit context:
+        </td>
+        <td>
+          <select
+            [(ngModel)]="model.autoFitContext"
+          >
+            <option *ngFor="let context of autoFitContexts"
+              [value]="context"
+            >
+              {{ getAutoFitContextForDisplay(context) }}
+            </option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>
           Sticky:
         </td>
         <td>
@@ -146,18 +163,18 @@
       [disabled]="disabled"
       (click)="enableAutoFit = !enableAutoFit"
     >
-      Toggle autofit
+      Toggle auto-fit
     </button>
     <button
       class="sky-btn sky-btn-default sky-margin-inline-default"
-      id="screenshot-affix-button-scrollable-parent"
+      id="screenshot-affix-button-overflow-parent"
       type="button"
       [disabled]="disabled"
-      (click)="toggleScrollableParent()"
+      (click)="toggleOverflowParent()"
     >
-      Toggle scrollable parent
+      Toggle overflow parent
     </button>
-    <button *ngIf="enableScrollableParent"
+    <button *ngIf="enableOverflowParent"
       class="sky-btn sky-btn-default"
       type="button"
       [disabled]="disabled"

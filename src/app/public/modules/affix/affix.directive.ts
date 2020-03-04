@@ -14,6 +14,10 @@ import {
 } from 'rxjs';
 
 import {
+  SkyAffixAutoFitContext
+} from './affix-auto-fit-context';
+
+import {
   SkyAffixHorizontalAlignment
 } from './affix-horizontal-alignment';
 
@@ -50,6 +54,12 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
    */
   @Input()
   public skyAffixTo: HTMLElement;
+
+  /**
+   * Sets the `autoFitContext` property of [[SkyAffixConfig]].
+   */
+  @Input()
+  public affixAutoFitContext: SkyAffixAutoFitContext;
 
   /**
    * Sets the `enableAutoFit` property of [[SkyAffixConfig]].
@@ -104,11 +114,12 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
   public ngOnChanges(changes: SimpleChanges): void {
     /* istanbul ignore else */
     if (
-      changes.affixPlacement ||
+      changes.affixAutoFitContext ||
+      changes.affixEnableAutoFit ||
       changes.affixHorizontalAlignment ||
-      changes.affixVerticalAlignment ||
       changes.affixIsSticky ||
-      changes.affixEnableAutoFit
+      changes.affixPlacement ||
+      changes.affixVerticalAlignment
     ) {
       this.updateAlignment();
     }
@@ -123,6 +134,7 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
 
   private updateAlignment(): void {
     this.affixer.affixTo(this.skyAffixTo, {
+      autoFitContext: this.affixAutoFitContext,
       enableAutoFit: this.affixEnableAutoFit,
       horizontalAlignment: this.affixHorizontalAlignment,
       isSticky: this.affixIsSticky,

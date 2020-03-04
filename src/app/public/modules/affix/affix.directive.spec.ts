@@ -91,7 +91,7 @@ describe('Affix directive', () => {
 
   function triggerParentScroll(): void {
     SkyAppTestUtility.fireDomEvent(
-      componentInstance.scrollableParentRef.nativeElement,
+      componentInstance.overflowParentRef.nativeElement,
       'scroll',
       { bubbles: false }
     );
@@ -269,7 +269,7 @@ describe('Affix directive', () => {
   });
 
   it('should update placement on parent element scroll', () => {
-    componentInstance.enableScrollableParent = true;
+    componentInstance.enableOverflowParent = true;
     fixture.detectChanges();
 
     const affixer = getAffixer();
@@ -291,7 +291,7 @@ describe('Affix directive', () => {
   it('should find a suitable placement if preferred placement is hidden', () => {
     componentInstance.enableAutoFit = true;
     componentInstance.isSticky = true;
-    componentInstance.enableScrollableParent = true;
+    componentInstance.enableOverflowParent = true;
     componentInstance.placement = 'above';
     componentInstance.scrollTargetOutOfView();
 
@@ -323,11 +323,11 @@ describe('Affix directive', () => {
   });
 
   it(
-    'should slightly adjust `left` if affixed element\'s edges are flush with scrollable parent',
+    'should slightly adjust `left` if affixed element\'s edges are flush with overflow parent',
     () => {
       componentInstance.enableAutoFit = true;
       componentInstance.isSticky = true;
-      componentInstance.enableScrollableParent = true;
+      componentInstance.enableOverflowParent = true;
       componentInstance.placement = 'above';
       fixture.detectChanges();
 
@@ -344,7 +344,7 @@ describe('Affix directive', () => {
       fixture.detectChanges();
 
       affixedElementStyles = getAffixedElementStyle();
-      const parentRect = componentInstance.scrollableParentRef.nativeElement.getBoundingClientRect();
+      const parentRect = componentInstance.overflowParentRef.nativeElement.getBoundingClientRect();
       const affixedRect = componentInstance.affixedRef.nativeElement.getBoundingClientRect();
       const expectedLeft = parentRect.width - affixedRect.width;
       expect(affixedElementStyles.left).toEqual(`${expectedLeft}px`);
@@ -352,11 +352,11 @@ describe('Affix directive', () => {
   );
 
   it(
-    'should slightly adjust `top` if affixed element\'s edges are flush with scrollable parent',
+    'should slightly adjust `top` if affixed element\'s edges are flush with overflow parent',
     () => {
       componentInstance.enableAutoFit = true;
       componentInstance.isSticky = true;
-      componentInstance.enableScrollableParent = true;
+      componentInstance.enableOverflowParent = true;
       componentInstance.placement = 'left';
       fixture.detectChanges();
 
@@ -372,7 +372,7 @@ describe('Affix directive', () => {
       fixture.detectChanges();
 
       affixedElementStyles = getAffixedElementStyle();
-      const parentRect = componentInstance.scrollableParentRef.nativeElement.getBoundingClientRect();
+      const parentRect = componentInstance.overflowParentRef.nativeElement.getBoundingClientRect();
       const affixedRect = componentInstance.affixedRef.nativeElement.getBoundingClientRect();
       const expectedTop = parentRect.height - affixedRect.height;
       expect(affixedElementStyles.top).toEqual(`${expectedTop}px`);
@@ -382,7 +382,7 @@ describe('Affix directive', () => {
   it('should never detach affixed element `left` from base element', () => {
     componentInstance.enableAutoFit = true;
     componentInstance.isSticky = true;
-    componentInstance.enableScrollableParent = true;
+    componentInstance.enableOverflowParent = true;
     componentInstance.placement = 'above';
     componentInstance.horizontalAlignment = 'left';
     fixture.detectChanges();
@@ -413,7 +413,7 @@ describe('Affix directive', () => {
   it('should never detach affixed element `top` from base element', () => {
     componentInstance.enableAutoFit = true;
     componentInstance.isSticky = true;
-    componentInstance.enableScrollableParent = true;
+    componentInstance.enableOverflowParent = true;
     componentInstance.placement = 'right';
     componentInstance.verticalAlignment = 'top';
     fixture.detectChanges();
@@ -444,7 +444,7 @@ describe('Affix directive', () => {
   it('should emit when placement changes', () => {
     componentInstance.enableAutoFit = false;
     componentInstance.isSticky = true;
-    componentInstance.enableScrollableParent = true;
+    componentInstance.enableOverflowParent = true;
     fixture.detectChanges();
 
     // Trigger a change.
@@ -478,7 +478,7 @@ describe('Affix directive', () => {
   });
 
   it('should be accessible', async(() => {
-    componentInstance.enableScrollableParent = true;
+    componentInstance.enableOverflowParent = true;
     componentInstance.scrollTargetToTop();
     fixture.detectChanges();
     fixture.whenStable().then(() => {

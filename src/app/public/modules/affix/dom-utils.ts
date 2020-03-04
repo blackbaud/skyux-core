@@ -29,11 +29,7 @@ export function getElementOffset(element: HTMLElement): SkyAffixOffset {
   };
 }
 
-export function getImmediateScrollableParent(scrollableParents: HTMLElement[]): HTMLElement {
-  return scrollableParents[scrollableParents.length - 1];
-}
-
-export function getScrollableParents(child: HTMLElement): HTMLElement[] {
+export function getOverflowParents(child: HTMLElement): HTMLElement[] {
   const bodyElement = window.document.body;
   const results = [bodyElement];
 

@@ -1,4 +1,8 @@
 import {
+  SkyAffixAutoFitContext
+} from './affix-auto-fit-context';
+
+import {
   SkyAffixHorizontalAlignment
 } from './affix-horizontal-alignment';
 
@@ -11,6 +15,11 @@ import {
 } from './affix-vertical-alignment';
 
 export interface SkyAffixConfig {
+
+  /**
+   * Indicates which parent element is used by the auto-fit functionality.
+   */
+  autoFitContext?: SkyAffixAutoFitContext;
 
   /**
    * Indicates if the affix service should try and find the best placement for the affixed element if the element would be hidden otherwise.
