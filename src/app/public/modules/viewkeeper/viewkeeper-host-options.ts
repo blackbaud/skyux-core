@@ -8,11 +8,11 @@ import {
 
 @Injectable()
 export class SkyViewkeeperHostOptions implements SkyViewkeeperOptions {
-  public setWidth?: boolean;
+  public boundaryEl?: HTMLElement;
 
   public el?: HTMLElement;
 
-  public boundaryEl?: HTMLElement;
+  public setWidth?: boolean;
 
   public verticalOffset?: number;
 
