@@ -18,6 +18,10 @@ import {
 } from './fixtures/affix.module.fixture';
 
 import {
+  SkyAffixAutoFitContext
+} from './affix-auto-fit-context';
+
+import {
   SkyAffixConfig
 } from './affix-config';
 
@@ -119,10 +123,11 @@ describe('Affix directive', () => {
     const affixedElementStyles = getAffixedElementStyle();
 
     const expectedConfig: SkyAffixConfig = {
+      autoFitContext: SkyAffixAutoFitContext.OverflowParent,
       enableAutoFit: false,
-      placement: 'above',
-      isSticky: false,
       horizontalAlignment: 'center',
+      isSticky: false,
+      placement: 'above',
       verticalAlignment: 'middle'
     };
 
@@ -318,6 +323,29 @@ describe('Affix directive', () => {
     // The 'above' placement is hidden, so it should land on 'below'.
     expect(offsetSpy.calls.allArgs()).toEqual([
       ['above'],
+      ['below']
+    ]);
+  });
+
+  it('should allow ignoring overflow parent boundaries when using auto-fit', () => {
+    componentInstance.autoFitContext = SkyAffixAutoFitContext.Window;
+    componentInstance.enableAutoFit = true;
+    componentInstance.isSticky = true;
+    componentInstance.enableOverflowParent = true;
+    componentInstance.placement = 'below';
+
+    const affixer = getAffixer();
+    fixture.detectChanges();
+
+    componentInstance.scrollTargetToBottom();
+    const offsetSpy = spyOn(affixer as any, 'getPreferredOffset').and.callThrough();
+    triggerParentScroll();
+    fixture.detectChanges();
+
+    // Because the auto-fit context is now set to Window, the auto-fit functionality shouldn't
+    // fire when the affixed element's offset is located outside of the nearest scrollable parent.
+    // (Normally, the placement would be changed from 'below' to 'above'.)
+    expect(offsetSpy.calls.allArgs()).toEqual([
       ['below']
     ]);
   });

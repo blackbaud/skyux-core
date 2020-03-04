@@ -298,9 +298,16 @@ export class SkyAffixer {
   }
 
   private getImmediateOverflowParent(): HTMLElement {
+    const numParents = this.overflowParents.length;
+    const bodyElement = this.overflowParents[0];
+
+    if (numParents === 1) {
+      return bodyElement;
+    }
+
     return (this.config.autoFitContext === SkyAffixAutoFitContext.OverflowParent)
-      ? this.overflowParents[this.overflowParents.length - 1]
-      : window.document.body;
+      ? this.overflowParents[numParents - 1]
+      : bodyElement;
   }
 
   private emitPlacementChange(placement: SkyAffixPlacement | null): void {

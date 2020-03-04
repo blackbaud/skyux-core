@@ -5,6 +5,10 @@ import {
 } from '@angular/core';
 
 import {
+  SkyAffixAutoFitContext
+} from '../affix-auto-fit-context';
+
+import {
   SkyAffixHorizontalAlignment
 } from '../affix-horizontal-alignment';
 
@@ -28,6 +32,8 @@ import {
 export class AffixFixtureComponent {
 
   // #region directive properties
+
+  public autoFitContext: SkyAffixAutoFitContext;
 
   public enableAutoFit: boolean;
 
