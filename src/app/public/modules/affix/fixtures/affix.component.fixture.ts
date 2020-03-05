@@ -13,6 +13,10 @@ import {
 } from '../affix-horizontal-alignment';
 
 import {
+  SkyAffixOffset
+} from '../affix-offset';
+
+import {
   SkyAffixPlacement
 } from '../affix-placement';
 
@@ -34,6 +38,8 @@ export class AffixFixtureComponent {
   // #region directive properties
 
   public autoFitContext: SkyAffixAutoFitContext;
+
+  public autoFitOverflowOffset: SkyAffixOffset;
 
   public enableAutoFit: boolean;
 
