@@ -2,7 +2,21 @@ import {
   SkyAffixOffset
 } from './affix-offset';
 
-export function getElementOffset(element: HTMLElement): SkyAffixOffset {
+/**
+ * Returns the offset values of a given element.
+ * @param element The HTML element.
+ * @param bufferOffset An optional offset to add/subtract to the element's actual offset.
+ */
+export function getElementOffset(
+  element: HTMLElement,
+  bufferOffset: SkyAffixOffset = {}
+): SkyAffixOffset {
+
+  const bufferOffsetBottom = bufferOffset.bottom || 0;
+  const bufferOffsetLeft = bufferOffset.left || 0;
+  const bufferOffsetRight = bufferOffset.right || 0;
+  const bufferOffsetTop = bufferOffset.top || 0;
+
   let top: number;
   let left: number;
   let right: number;
@@ -11,8 +25,8 @@ export function getElementOffset(element: HTMLElement): SkyAffixOffset {
   if (element === document.body) {
     left = 0;
     top = 0;
-    right = document.documentElement.clientWidth;
-    bottom = document.documentElement.clientHeight;
+    right = window.innerWidth;
+    bottom = window.innerHeight;
   } else {
     const clientRect = element.getBoundingClientRect();
     left = clientRect.left;
@@ -20,6 +34,11 @@ export function getElementOffset(element: HTMLElement): SkyAffixOffset {
     right = clientRect.right;
     bottom = clientRect.bottom;
   }
+
+  bottom -= bufferOffsetBottom;
+  left += bufferOffsetLeft;
+  right -= bufferOffsetRight;
+  top += bufferOffsetTop;
 
   return {
     bottom,
@@ -66,9 +85,10 @@ export function getOverflowParents(child: HTMLElement): HTMLElement[] {
  */
 export function isOffsetVisibleWithinParent(
   parent: HTMLElement,
-  offset: SkyAffixOffset
+  offset: SkyAffixOffset,
+  bufferOffset?: SkyAffixOffset
 ): boolean {
-  const parentOffset = getElementOffset(parent);
+  const parentOffset = getElementOffset(parent, bufferOffset);
 
   return !(
     parentOffset.top > offset.top ||

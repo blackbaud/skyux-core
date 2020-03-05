@@ -3,9 +3,9 @@
  */
 export interface SkyAffixOffset {
 
-  left: number;
+  left?: number;
 
-  top: number;
+  top?: number;
 
   bottom?: number;
 

@@ -152,7 +152,11 @@ export class SkyAffixer {
 
     do {
       offset = this.getPreferredOffset(placement);
-      isAffixedElementFullyVisible = isOffsetVisibleWithinParent(parent, offset);
+      isAffixedElementFullyVisible = isOffsetVisibleWithinParent(
+        parent,
+        offset,
+        this.config.autoFitOverflowOffset
+      );
 
       if (!this.config.enableAutoFit) {
         break;
@@ -172,8 +176,10 @@ export class SkyAffixer {
       return offset;
     }
 
-    /* tslint:disable-next-line:no-null-keyword */
-    this.emitPlacementChange(null);
+    if (this.config.enableAutoFit) {
+      /* tslint:disable-next-line:no-null-keyword */
+      this.emitPlacementChange(null);
+    }
 
     // No suitable placement was found, so revert to preferred placement.
     return this.getPreferredOffset(this.config.placement);
@@ -254,7 +260,7 @@ export class SkyAffixer {
     placement: SkyAffixPlacement
   ): SkyAffixOffset {
     const parent = this.getImmediateOverflowParent();
-    const parentOffset = getElementOffset(parent);
+    const parentOffset = getElementOffset(parent, this.config.autoFitOverflowOffset);
 
     const affixedRect = this.affixedRect;
     const baseRect = this.baseRect;

@@ -26,6 +26,10 @@ import {
 } from './affix-config';
 
 import {
+  SkyAffixOffset
+} from './affix-offset';
+
+import {
   SkyAffixer
 } from './affixer';
 
@@ -124,6 +128,7 @@ describe('Affix directive', () => {
 
     const expectedConfig: SkyAffixConfig = {
       autoFitContext: SkyAffixAutoFitContext.OverflowParent,
+      autoFitOverflowOffset: undefined,
       enableAutoFit: false,
       horizontalAlignment: 'center',
       isSticky: false,
@@ -160,6 +165,44 @@ describe('Affix directive', () => {
 
     expect(affixedElementStyles.top).toEqual(expectedOffsets.leftMiddle.top);
     expect(affixedElementStyles.left).toEqual(expectedOffsets.leftMiddle.left);
+  });
+
+  it('should allow adding buffer values to overflow parent offset', () => {
+    const offset: SkyAffixOffset = {
+      bottom: 10,
+      left: 10,
+      right: 10,
+      top: 10
+    };
+
+    componentInstance.enableAutoFit = true;
+    componentInstance.isSticky = true;
+    componentInstance.enableOverflowParent = true;
+    componentInstance.placement = 'right';
+    fixture.detectChanges();
+
+    const affixer = getAffixer();
+    const offsetSpy = spyOn(affixer as any, 'getPreferredOffset').and.callThrough();
+    const affixedElementWidth = -50;
+
+    componentInstance.scrollTargetToRight(affixedElementWidth);
+    triggerParentScroll();
+    fixture.detectChanges();
+
+    // The placement shouldn't change.
+    expect(offsetSpy.calls.allArgs()).toEqual([
+      ['right']
+    ]);
+    offsetSpy.calls.reset();
+
+    componentInstance.autoFitOverflowOffset = offset;
+    fixture.detectChanges();
+
+    // The placement should now change since the overflow offset was added.
+    expect(offsetSpy.calls.allArgs()).toEqual([
+      ['right'],
+      ['left']
+    ]);
   });
 
   it('should affix element using vertical alignments', () => {
@@ -328,7 +371,7 @@ describe('Affix directive', () => {
   });
 
   it('should allow ignoring overflow parent boundaries when using auto-fit', () => {
-    componentInstance.autoFitContext = SkyAffixAutoFitContext.Window;
+    componentInstance.autoFitContext = SkyAffixAutoFitContext.Viewport;
     componentInstance.enableAutoFit = true;
     componentInstance.isSticky = true;
     componentInstance.enableOverflowParent = true;

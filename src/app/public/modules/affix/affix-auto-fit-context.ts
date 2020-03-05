@@ -1,14 +1,13 @@
 export enum SkyAffixAutoFitContext {
 
   /**
-   * Auto-fit functionality will respect the Window's dimensions.
+   * Auto-fit functionality will respect the nearest overflow parent element's dimensions.
    */
-  Window = 0,
+  OverflowParent = 0,
 
   /**
-   * Auto-fit functionality will respect the nearest
-   * overflow parent's dimensions.
+   * Auto-fit functionality will respect the browser viewport dimensions.
    */
-  OverflowParent
+  Viewport
 
 }

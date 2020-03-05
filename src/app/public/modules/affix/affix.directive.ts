@@ -38,6 +38,10 @@ import {
 } from './affix.service';
 
 import {
+  SkyAffixOffset
+} from './affix-offset';
+
+import {
   SkyAffixer
 } from './affixer';
 
@@ -60,6 +64,12 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
    */
   @Input()
   public affixAutoFitContext: SkyAffixAutoFitContext;
+
+  /**
+   * Sets the `autoFitOverflowOffset` property of [[SkyAffixConfig]].
+   */
+  @Input()
+  public affixAutoFitOverflowOffset: SkyAffixOffset;
 
   /**
    * Sets the `enableAutoFit` property of [[SkyAffixConfig]].
@@ -115,6 +125,7 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
     /* istanbul ignore else */
     if (
       changes.affixAutoFitContext ||
+      changes.affixAutoFitOverflowOffset ||
       changes.affixEnableAutoFit ||
       changes.affixHorizontalAlignment ||
       changes.affixIsSticky ||
@@ -135,6 +146,7 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
   private updateAlignment(): void {
     this.affixer.affixTo(this.skyAffixTo, {
       autoFitContext: this.affixAutoFitContext,
+      autoFitOverflowOffset: this.affixAutoFitOverflowOffset,
       enableAutoFit: this.affixEnableAutoFit,
       horizontalAlignment: this.affixHorizontalAlignment,
       isSticky: this.affixIsSticky,

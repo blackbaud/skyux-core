@@ -3,6 +3,7 @@ export * from './adapter-service';
 export * from './affix/affix-auto-fit-context';
 export * from './affix/affix-config';
 export * from './affix/affix-horizontal-alignment';
+export * from './affix/affix-offset';
 export * from './affix/affix-placement';
 export * from './affix/affix-placement-change';
 export * from './affix/affix-vertical-alignment';

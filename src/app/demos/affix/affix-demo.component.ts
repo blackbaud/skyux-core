@@ -9,6 +9,7 @@ import {
 import {
   SkyAffixAutoFitContext,
   SkyAffixHorizontalAlignment,
+  SkyAffixOffset,
   SkyAffixPlacement,
   SkyAffixPlacementChange,
   SkyAffixVerticalAlignment
@@ -42,8 +43,8 @@ export class AffixDemoComponent {
   ];
 
   public autoFitContexts: SkyAffixAutoFitContext[] = [
-    SkyAffixAutoFitContext.Window,
-    SkyAffixAutoFitContext.OverflowParent
+    SkyAffixAutoFitContext.OverflowParent,
+    SkyAffixAutoFitContext.Viewport
   ];
 
   public model: {
@@ -58,6 +59,8 @@ export class AffixDemoComponent {
     verticalAlignment: 'middle'
   };
 
+  public autoFitOverflowOffset: SkyAffixOffset;
+
   public disabled: boolean = false;
 
   public enableAutoFit: boolean = true;
@@ -69,8 +72,6 @@ export class AffixDemoComponent {
   public isSticky: boolean = true;
 
   public isVisible: boolean = false;
-
-  public showToolbar: boolean = true;
 
   @ViewChild('baseRef', { read: ElementRef })
   private baseRef: ElementRef;
@@ -167,10 +168,22 @@ export class AffixDemoComponent {
     setTimeout(() => this.scrollToBaseElement());
   }
 
+  public toggleAutoFitOverflowOffset(): void {
+    if (this.autoFitOverflowOffset) {
+      this.autoFitOverflowOffset = undefined;
+    } else {
+      this.autoFitOverflowOffset = {
+        top: 50, // Omnibar
+        bottom: this.toolbarRef.nativeElement.getBoundingClientRect().height
+      };
+    }
+    this.changeDetector.markForCheck();
+  }
+
   public getAutoFitContextForDisplay(context: SkyAffixAutoFitContext): string {
     return (context === SkyAffixAutoFitContext.OverflowParent)
       ? 'OverflowParent'
-      : 'Window';
+      : 'Viewport';
   }
 
   private goToNext(): void {

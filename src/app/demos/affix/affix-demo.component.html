@@ -25,6 +25,7 @@
     <div
       class="affixed"
       [affixAutoFitContext]="model.autoFitContext"
+      [affixAutoFitOverflowOffset]="autoFitOverflowOffset"
       [affixEnableAutoFit]="enableAutoFit"
       [affixHorizontalAlignment]="model.horizontalAlignment"
       [affixIsSticky]="isSticky"
@@ -35,77 +36,57 @@
       (affixPlacementChange)="onAffixPlacementChange($event)"
     ></div>
   </div>
-  <div *ngIf="showToolbar"
+  <div
     class="toolbar"
     #toolbarRef
   >
+    <select
+      class="sky-margin-inline-compact"
+      [(ngModel)]="model.placement"
+    >
+      <option>Select placement...</option>
+      <option *ngFor="let placement of placements"
+        [value]="placement"
+      >
+        {{ placement }}
+      </option>
+    </select>
+    <select
+      class="sky-margin-inline-compact"
+      [(ngModel)]="model.horizontalAlignment"
+    >
+      <option>Select horizontal alignment...</option>
+      <option *ngFor="let alignment of horizontalAlignments"
+        [value]="alignment"
+      >
+        {{ alignment }}
+      </option>
+    </select>
+    <select
+      class="sky-margin-inline-compact"
+      [(ngModel)]="model.verticalAlignment"
+    >
+      <option>Select vertical alignment...</option>
+      <option *ngFor="let alignment of verticalAlignments"
+        [value]="alignment"
+      >
+        {{ alignment }}
+      </option>
+    </select>
+    <select
+      class="sky-margin-inline-compact"
+      [(ngModel)]="model.autoFitContext"
+    >
+      <option>Select auto-fit context...</option>
+      <option *ngFor="let context of autoFitContexts"
+        [value]="context"
+      >
+        {{ getAutoFitContextForDisplay(context) }}
+      </option>
+    </select>
     <table
       style="text-align:left;margin-bottom:10px;"
     >
-      <tr>
-        <td>
-          Placement:
-        </td>
-        <td>
-          <select
-            [(ngModel)]="model.placement"
-          >
-            <option *ngFor="let placement of placements"
-              [value]="placement"
-            >
-              {{ placement }}
-            </option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Horizontal alignment:
-        </td>
-        <td>
-          <select
-            [(ngModel)]="model.horizontalAlignment"
-          >
-            <option *ngFor="let alignment of horizontalAlignments"
-              [value]="alignment"
-            >
-              {{ alignment }}
-            </option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Vertical alignment:
-        </td>
-        <td>
-          <select
-            [(ngModel)]="model.verticalAlignment"
-          >
-            <option *ngFor="let alignment of verticalAlignments"
-              [value]="alignment"
-            >
-              {{ alignment }}
-            </option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          Auto-fit context:
-        </td>
-        <td>
-          <select
-            [(ngModel)]="model.autoFitContext"
-          >
-            <option *ngFor="let context of autoFitContexts"
-              [value]="context"
-            >
-              {{ getAutoFitContextForDisplay(context) }}
-            </option>
-          </select>
-        </td>
-      </tr>
       <tr>
         <td>
           Sticky:
@@ -124,7 +105,7 @@
       </tr>
     </table>
     <button
-      class="sky-btn sky-btn-default sky-margin-inline-default"
+      class="sky-btn sky-btn-default sky-margin-inline-compact"
       id="screenshot-affix-button-scroll-to-base-element"
       type="button"
       [disabled]="disabled"
@@ -133,7 +114,7 @@
       Scroll to base element
     </button>
     <button
-      class="sky-btn sky-btn-primary sky-margin-inline-default"
+      class="sky-btn sky-btn-primary sky-margin-inline-compact"
       type="button"
       [disabled]="disabled"
       (click)="runAffixCycle()"
@@ -141,7 +122,7 @@
       Run affix cycle
     </button>
     <button
-      class="sky-btn sky-btn-default sky-margin-inline-default"
+      class="sky-btn sky-btn-default sky-margin-inline-compact"
       id="screenshot-affix-button-step-cycle"
       type="button"
       [disabled]="disabled"
@@ -150,7 +131,7 @@
       Step affix cycle
     </button>
     <button
-      class="sky-btn sky-btn-default sky-margin-inline-default"
+      class="sky-btn sky-btn-default sky-margin-inline-compact"
       type="button"
       [disabled]="disabled"
       (click)="isSticky = !isSticky"
@@ -158,7 +139,7 @@
       Toggle stickiness
     </button>
     <button
-      class="sky-btn sky-btn-default sky-margin-inline-default"
+      class="sky-btn sky-btn-default sky-margin-inline-compact"
       type="button"
       [disabled]="disabled"
       (click)="enableAutoFit = !enableAutoFit"
@@ -166,7 +147,15 @@
       Toggle auto-fit
     </button>
     <button
-      class="sky-btn sky-btn-default sky-margin-inline-default"
+      class="sky-btn sky-btn-default sky-margin-inline-compact"
+      type="button"
+      [disabled]="disabled"
+      (click)="toggleAutoFitOverflowOffset()"
+    >
+      Toggle auto-fit offset
+    </button>
+    <button
+      class="sky-btn sky-btn-default sky-margin-inline-compact"
       id="screenshot-affix-button-overflow-parent"
       type="button"
       [disabled]="disabled"
@@ -186,14 +175,12 @@
 </sky-page>
 
 <div
-  style="position:fixed;top:10px;left:10px;"
+  class="mock-omnibar"
 >
-  <button
-    class="sky-btn sky-btn-default"
-    type="button"
-    [disabled]="disabled"
-    (click)="showToolbar = !showToolbar"
+  <span class="sky-margin-inline-default">Mock Omnibar</span>
+  <div *ngIf="autoFitOverflowOffset"
+    class="alert"
   >
-    Toggle toolbar
-  </button>
+    Overflow offset is active!
+  </div>
 </div>
