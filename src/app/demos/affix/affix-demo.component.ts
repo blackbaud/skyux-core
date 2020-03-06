@@ -65,9 +65,21 @@ export class AffixDemoComponent {
 
   public enableAutoFit: boolean = true;
 
+  public enableLargeBaseElement: boolean = false;
+
+  public enableFullWidthBaseElement: boolean = false;
+
   public enableOverflowParent: boolean = false;
 
   public enableSmallerParent: boolean = false;
+
+  public get overflowParentWidth(): string {
+    if (this.enableOverflowParent) {
+      return `${this.parentOverflowRef.nativeElement.scrollWidth}px`;
+    }
+
+    return `${document.body.scrollWidth}px`;
+  }
 
   public isSticky: boolean = true;
 

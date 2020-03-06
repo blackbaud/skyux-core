@@ -314,10 +314,18 @@ export class SkyAffixer {
     const affixedRect = this.affixedRect;
     const baseRect = this.baseRect;
 
+    // A pixel value representing the leeway between the edge of the overflow parent and the edge
+    // of the base element before it dissapears from view.
+    // If the visible portion of the base element is less than this pixel value, the auto-fit
+    // functionality attempts to find another placement.
+    const buffer = 20;
+
     /* tslint:disable-next-line:switch-default */
     switch (placement) {
       case 'above':
       case 'below':
+
+        // Keep the affixed element within the overflow parent.
         if (offset.left < parentOffset.left) {
           offset.left = parentOffset.left;
         } else if (offset.left + affixedRect.width > parentOffset.right) {
@@ -325,15 +333,18 @@ export class SkyAffixer {
         }
 
         // Make sure the affixed element never detaches from the base element.
-        if (offset.left > baseRect.left) {
-          offset.left = baseRect.left;
-        } else if (offset.left + affixedRect.width < baseRect.right) {
-          offset.left = baseRect.right - affixedRect.width;
+        if (offset.left > baseRect.right - buffer) {
+          offset.left = baseRect.right - buffer;
+        } else if (offset.left + affixedRect.width < baseRect.left + buffer) {
+          offset.left = baseRect.left + buffer;
         }
+
         break;
 
       case 'left':
       case 'right':
+
+        // Keep the affixed element within the overflow parent.
         if (offset.top < parentOffset.top) {
           offset.top = parentOffset.top;
         } else if (offset.top + affixedRect.height > parentOffset.bottom) {
@@ -341,11 +352,12 @@ export class SkyAffixer {
         }
 
         // Make sure the affixed element never detaches from the base element.
-        if (offset.top > baseRect.top) {
-          offset.top = baseRect.top;
-        } else if (offset.top + affixedRect.height < baseRect.bottom) {
-          offset.top = baseRect.bottom - affixedRect.height;
+        if (offset.top > baseRect.bottom - buffer) {
+          offset.top = baseRect.bottom - buffer;
+        } else if (offset.top + affixedRect.height < baseRect.top + buffer) {
+          offset.top = baseRect.top + buffer;
         }
+
         break;
     }
 
