@@ -7,6 +7,10 @@ import {
 } from '@angular/core';
 
 import {
+  MutationObserverService
+} from '../mutation';
+
+import {
   SkyAffixDirective
 } from './affix.directive';
 
@@ -25,6 +29,7 @@ import {
     SkyAffixDirective
   ],
   providers: [
+    MutationObserverService,
     SkyAffixService
   ]
 })
