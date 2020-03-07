@@ -318,7 +318,7 @@ export class SkyAffixer {
     // of the base element before it dissapears from view.
     // If the visible portion of the base element is less than this pixel value, the auto-fit
     // functionality attempts to find another placement.
-    const buffer = 20;
+    const pixelTolerance = 40;
 
     /* tslint:disable-next-line:switch-default */
     switch (placement) {
@@ -333,10 +333,10 @@ export class SkyAffixer {
         }
 
         // Make sure the affixed element never detaches from the base element.
-        if (offset.left > baseRect.right - buffer) {
-          offset.left = baseRect.right - buffer;
-        } else if (offset.left + affixedRect.width < baseRect.left + buffer) {
-          offset.left = baseRect.left + buffer;
+        if (offset.left + pixelTolerance > baseRect.right) {
+          offset.left = baseRect.right - pixelTolerance;
+        } else if (offset.left + affixedRect.width - pixelTolerance < baseRect.left) {
+          offset.left = baseRect.left + pixelTolerance;
         }
 
         break;
@@ -352,10 +352,10 @@ export class SkyAffixer {
         }
 
         // Make sure the affixed element never detaches from the base element.
-        if (offset.top > baseRect.bottom - buffer) {
-          offset.top = baseRect.bottom - buffer;
-        } else if (offset.top + affixedRect.height < baseRect.top + buffer) {
-          offset.top = baseRect.top + buffer;
+        if (offset.top + pixelTolerance > baseRect.bottom) {
+          offset.top = baseRect.bottom - pixelTolerance;
+        } else if (offset.top + affixedRect.height - pixelTolerance < baseRect.top) {
+          offset.top = baseRect.top + pixelTolerance;
         }
 
         break;

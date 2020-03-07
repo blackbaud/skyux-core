@@ -25,8 +25,8 @@ export function getElementOffset(
   if (element === document.body) {
     left = 0;
     top = 0;
-    right = window.innerWidth;
-    bottom = window.innerHeight;
+    right = document.documentElement.clientWidth;
+    bottom = document.documentElement.clientHeight;
   } else {
     const clientRect = element.getBoundingClientRect();
     left = clientRect.left;
