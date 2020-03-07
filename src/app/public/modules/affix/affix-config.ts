@@ -28,9 +28,9 @@ export interface SkyAffixConfig {
   /**
    * This optional offset is added to (or subtracted from) the [[SkyAffixAutoFitContext]] element's
    * offset during an auto-fit placement calculation. This value is useful if you need to consider
-   * another fixed element's dimensions on the page (such as a navbar) when the auto-fit
-   * functionality attempts to find the best possible placement (in the case of a navbar, you would
-   * add a `top` value equal to the navbar's height in pixels).
+   * another `position: fixed` element on the page (such as a navbar) when the auto-fit
+   * functionality attempts to find the best possible placement.
+   * (In the case of a navbar, you would add a `top` value equal to the navbar's height in pixels.)
    */
   autoFitOverflowOffset?: SkyAffixOffset;
 
