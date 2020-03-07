@@ -318,7 +318,11 @@ export class SkyAffixer {
     // of the base element before it dissapears from view.
     // If the visible portion of the base element is less than this pixel value, the auto-fit
     // functionality attempts to find another placement.
-    const pixelTolerance = 40;
+    const defaultPixelTolerance = 40;
+    let pixelTolerance: number;
+
+    const originalOffsetTop = offset.top;
+    const originalOffsetLeft = offset.left;
 
     /* tslint:disable-next-line:switch-default */
     switch (placement) {
@@ -332,11 +336,18 @@ export class SkyAffixer {
           offset.left = parentOffset.right - affixedRect.width;
         }
 
+        // Use a smaller pixel tolerance if the base element width is less than the default.
+        pixelTolerance = Math.min(
+          defaultPixelTolerance,
+          baseRect.width
+        );
+
         // Make sure the affixed element never detaches from the base element.
-        if (offset.left + pixelTolerance > baseRect.right) {
-          offset.left = baseRect.right - pixelTolerance;
-        } else if (offset.left + affixedRect.width - pixelTolerance < baseRect.left) {
-          offset.left = baseRect.left + pixelTolerance;
+        if (
+          offset.left + pixelTolerance > baseRect.right ||
+          offset.left + affixedRect.width - pixelTolerance < baseRect.left
+        ) {
+          offset.left = originalOffsetLeft;
         }
 
         break;
@@ -351,11 +362,18 @@ export class SkyAffixer {
           offset.top = parentOffset.bottom - affixedRect.height;
         }
 
+        // Use a smaller pixel tolerance if the base element height is less than the default.
+        pixelTolerance = Math.min(
+          defaultPixelTolerance,
+          baseRect.height
+        );
+
         // Make sure the affixed element never detaches from the base element.
-        if (offset.top + pixelTolerance > baseRect.bottom) {
-          offset.top = baseRect.bottom - pixelTolerance;
-        } else if (offset.top + affixedRect.height - pixelTolerance < baseRect.top) {
-          offset.top = baseRect.top + pixelTolerance;
+        if (
+          offset.top + pixelTolerance > baseRect.bottom ||
+          offset.top + affixedRect.height - pixelTolerance < baseRect.top
+        ) {
+          offset.top = originalOffsetTop;
         }
 
         break;

@@ -167,7 +167,7 @@ describe('Affix directive', () => {
     expect(affixedElementStyles.left).toEqual(expectedOffsets.leftMiddle.left);
   });
 
-  it('should allow adding buffer values to overflow parent offset', () => {
+  it('should allow adjustments to overflow parent offset', () => {
     const offset: SkyAffixOffset = {
       bottom: 10,
       left: 10,
@@ -183,7 +183,8 @@ describe('Affix directive', () => {
 
     const affixer = getAffixer();
     const offsetSpy = spyOn(affixer as any, 'getPreferredOffset').and.callThrough();
-    const affixedElementWidth = -50;
+    const affixedElementWidth = componentInstance.affixedRef.nativeElement
+      .getBoundingClientRect().width;
 
     componentInstance.scrollTargetToRight(affixedElementWidth);
     triggerParentScroll();
@@ -465,7 +466,8 @@ describe('Affix directive', () => {
     fixture.detectChanges();
 
     let affixedElementStyles = getAffixedElementStyle();
-    expect(affixedElementStyles.left).toEqual(`-${offset}px`);
+    let baseRect = componentInstance.baseRef.nativeElement.getBoundingClientRect();
+    expect(affixedElementStyles.left).toEqual(`${baseRect.left}px`);
 
     componentInstance.scrollTargetToRight(offset);
     triggerParentScroll();
@@ -473,12 +475,9 @@ describe('Affix directive', () => {
     fixture.detectChanges();
 
     affixedElementStyles = getAffixedElementStyle();
+    baseRect = componentInstance.baseRef.nativeElement.getBoundingClientRect();
 
-    const baseRect = componentInstance.baseRef.nativeElement.getBoundingClientRect();
-    const affixedRect = componentInstance.affixedRef.nativeElement.getBoundingClientRect();
-    const expectedLeft = baseRect.right - affixedRect.width;
-
-    expect(affixedElementStyles.left).toEqual(`${expectedLeft}px`);
+    expect(affixedElementStyles.left).toEqual(`${baseRect.left}px`);
   });
 
   it('should never detach affixed element `top` from base element', () => {
@@ -496,7 +495,9 @@ describe('Affix directive', () => {
     fixture.detectChanges();
 
     let affixedElementStyles = getAffixedElementStyle();
-    expect(affixedElementStyles.top).toEqual(`-${offset}px`);
+    let baseRect = componentInstance.baseRef.nativeElement.getBoundingClientRect();
+
+    expect(affixedElementStyles.top).toEqual(`${baseRect.top}px`);
 
     componentInstance.scrollTargetToBottom(offset);
     triggerParentScroll();
@@ -504,12 +505,9 @@ describe('Affix directive', () => {
     fixture.detectChanges();
 
     affixedElementStyles = getAffixedElementStyle();
+    baseRect = componentInstance.baseRef.nativeElement.getBoundingClientRect();
 
-    const baseRect = componentInstance.baseRef.nativeElement.getBoundingClientRect();
-    const affixedRect = componentInstance.affixedRef.nativeElement.getBoundingClientRect();
-    const expectedTop = baseRect.bottom - affixedRect.height;
-
-    expect(affixedElementStyles.top).toEqual(`${expectedTop}px`);
+    expect(affixedElementStyles.top).toEqual(`${baseRect.top}px`);
   });
 
   it('should emit when placement changes', () => {
@@ -556,4 +554,16 @@ describe('Affix directive', () => {
       expect(fixture.nativeElement).toBeAccessible();
     });
   }));
+
+  it('should work when the base element is larger than the affixed element', () => {});
+
+  it('should work when the base element is 100% width', () => {});
+
+  it('should emit when affixed element offset changes', () => {});
+
+  it('should emit when the overflow parent scrolls', () => {});
+
+  it('should allow re-running the affix calculation', () => {});
+
+  it('should handle DOM changes to the affixed element', () => {});
 });

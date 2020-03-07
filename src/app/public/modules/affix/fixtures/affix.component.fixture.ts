@@ -87,14 +87,17 @@ export class AffixFixtureComponent {
   public scrollTargetToRight(offset: number = 0): void {
     const baseElement: HTMLDivElement = this.baseRef.nativeElement;
     const overflowParent: HTMLDivElement = this.overflowParentRef.nativeElement;
+    const baseRect = baseElement.getBoundingClientRect();
+    const overflowRect = overflowParent.getBoundingClientRect();
+
     overflowParent.scrollTop = this.getParentCenterY();
-    overflowParent.scrollLeft = baseElement.offsetLeft - overflowParent.clientWidth - offset;
+    overflowParent.scrollLeft = (baseElement.offsetLeft + baseRect.width) - overflowParent.offsetLeft - overflowRect.width + offset;
   }
 
   public scrollTargetToTop(offset: number = 0): void {
-    const baseRef: HTMLDivElement = this.baseRef.nativeElement;
+    const baseRef = this.baseRef.nativeElement;
     const top = baseRef.offsetTop;
-    const overflowParent: HTMLDivElement = this.overflowParentRef.nativeElement;
+    const overflowParent = this.overflowParentRef.nativeElement;
     overflowParent.scrollTop = top - offset;
     overflowParent.scrollLeft = this.getParentCenterX();
   }
@@ -121,8 +124,8 @@ export class AffixFixtureComponent {
     const baseElement: HTMLDivElement = this.baseRef.nativeElement;
     return baseElement.offsetLeft -
       overflowParent.offsetLeft -
-      (overflowParent.clientWidth / 2) +
-      (baseElement.clientWidth / 2);
+      (overflowParent.getBoundingClientRect().width / 2) +
+      (baseElement.getBoundingClientRect().width / 2);
   }
 
   private getParentCenterY(): number {
