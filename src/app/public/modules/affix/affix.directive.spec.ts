@@ -566,4 +566,5 @@ describe('Affix directive', () => {
   it('should allow re-running the affix calculation', () => {});
 
   it('should handle DOM changes to the affixed element', () => {});
+
 });
