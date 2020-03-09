@@ -24,6 +24,8 @@
     [affixPlacement]="placement"
     [affixVerticalAlignment]="verticalAlignment"
     [skyAffixTo]="baseRef"
+    (affixOffsetChange)="onAffixOffsetChange($event)"
+    (affixOverflowScroll)="onAffixOverflowScroll($event)"
     (affixPlacementChange)="onAffixPlacementChange($event)"
     #affixedRef
   ></div>

@@ -559,9 +559,39 @@ describe('Affix directive', () => {
 
   it('should work when the base element is 100% width', () => {});
 
-  it('should emit when affixed element offset changes', () => {});
+  it('should emit when affixed element offset changes', () => {
+    componentInstance.isSticky = true;
+    componentInstance.enableOverflowParent = true;
+    fixture.detectChanges();
 
-  it('should emit when the overflow parent scrolls', () => {});
+    const spy = spyOn(componentInstance, 'onAffixOffsetChange').and.callThrough();
+
+    // Scroll to trigger offset change.
+    componentInstance.scrollTargetToTop();
+    triggerParentScroll();
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalled();
+    expect(spy.calls.count()).toEqual(1);
+    spy.calls.reset();
+  });
+
+  it('should emit when the overflow parent scrolls', () => {
+    componentInstance.isSticky = true;
+    componentInstance.enableOverflowParent = true;
+    fixture.detectChanges();
+
+    const spy = spyOn(componentInstance, 'onAffixOverflowScroll').and.callThrough();
+
+    // Scroll to trigger offset change.
+    componentInstance.scrollTargetToTop();
+    triggerParentScroll();
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalled();
+    expect(spy.calls.count()).toEqual(1);
+    spy.calls.reset();
+  });
 
   it('should allow re-running the affix calculation', () => {});
 

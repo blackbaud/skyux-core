@@ -75,6 +75,10 @@ export class AffixFixtureComponent {
 
   public enableOverflowParent: boolean = false;
 
+  public onAffixOffsetChange(): void {}
+
+  public onAffixOverflowScroll(): void {}
+
   public onAffixPlacementChange(): void { }
 
   public scrollTargetToLeft(offset: number = 0): void {
