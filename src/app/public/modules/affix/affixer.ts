@@ -19,10 +19,6 @@ import {
 } from './affix-auto-fit-context';
 
 import {
-  SkyAffixOffsetChange
-} from './affix-offset-change';
-
-import {
   SkyAffixOffset
 } from './affix-offset';
 
@@ -59,13 +55,6 @@ const DEFAULT_AFFIX_CONFIG: SkyAffixConfig = {
 };
 
 export class SkyAffixer {
-
-  /**
-   * Fires when the affixed element's offset changes.
-   */
-  public get offsetChange(): Observable<SkyAffixOffsetChange> {
-    return this._offsetChange.asObservable();
-  }
 
   /**
    * Fires when the base element's nearest overflow parent is scrolling. This is useful if you need
@@ -121,8 +110,6 @@ export class SkyAffixer {
 
   private _config: SkyAffixConfig;
 
-  private _offsetChange = new Subject<SkyAffixOffsetChange>();
-
   private _overflowScroll = new Subject<void>();
 
   private _placementChange = new Subject<SkyAffixPlacementChange>();
@@ -170,10 +157,8 @@ export class SkyAffixer {
   public destroy(): void {
     this.reset();
     this._placementChange.complete();
-    this._offsetChange.complete();
 
-    this._offsetChange =
-      this._placementChange =
+    this._placementChange =
       this._overflowScroll = undefined;
   }
 
@@ -429,7 +414,6 @@ export class SkyAffixer {
       return false;
     }
 
-    this._offsetChange.next({ offset });
     this.currentOffset = offset;
 
     return true;
