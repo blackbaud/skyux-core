@@ -5,8 +5,11 @@ import {
 
 import {
   async,
+  ComponentFixture,
+  fakeAsync,
   inject,
-  TestBed
+  TestBed,
+  tick
 } from '@angular/core/testing';
 
 import {
@@ -17,10 +20,6 @@ import {
   expect,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
-
-import {
-  OverlayFixtureContext
-} from './fixtures/overlay-context.fixture';
 
 import {
   OverlayFixtureComponent
@@ -49,14 +48,34 @@ import {
 describe('Overlay service', () => {
 
   let service: SkyOverlayService;
-  let app: ApplicationRef;
+  let fixture: ComponentFixture<OverlayFixtureComponent>;
 
   function getAllOverlays(): NodeListOf<Element> {
     return document.querySelectorAll('.sky-overlay');
   }
 
   function createOverlay(config?: SkyOverlayConfig): SkyOverlayInstance {
-    return service.create(config);
+    const instance = service.create(config);
+    fixture.detectChanges();
+    tick();
+
+    return instance;
+  }
+
+  function destroyOverlay(instance: SkyOverlayInstance): void {
+    service.destroy(instance);
+    fixture.detectChanges();
+    tick();
+  }
+
+  function verifyOverlayCount(num: number): void {
+    expect(getAllOverlays().length).toEqual(num);
+  }
+
+  function getStyleElement(): HTMLStyleElement {
+    return document.getElementsByTagName('head')[0].querySelector(
+      '[data-test-selector="sky-overlay-restrict-scroll-styles"]'
+    );
   }
 
   beforeEach(() => {
@@ -66,225 +85,148 @@ describe('Overlay service', () => {
       ]
     });
 
-    service = TestBed.get(SkyOverlayService);
-    app = TestBed.get(ApplicationRef);
+    fixture = TestBed.createComponent(OverlayFixtureComponent);
   });
 
-  afterEach(async(() => {
+  beforeEach(inject(
+    [SkyOverlayService],
+    (_service: SkyOverlayService) => {
+      service = _service;
+    }
+  ));
+
+  afterEach(fakeAsync(() => {
     service.closeAll();
+
+    fixture.detectChanges();
+    tick();
+
+    verifyOverlayCount(0);
+
+    fixture.destroy();
   }));
 
-  it('should create an overlay', function () {
-    const overlay = createOverlay();
+  it('should create an overlay', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
 
-    app.tick();
+    createOverlay();
 
-    expect(getAllOverlays().length).toEqual(1);
+    verifyOverlayCount(1);
+  }));
 
-    overlay.close();
-  });
+  it('should optionally prevent body scroll', fakeAsync(inject(
+    [SkyOverlayAdapterService],
+    (adapter: SkyOverlayAdapterService) => {
+      fixture.detectChanges();
+      tick();
 
-  it('should optionally prevent body scroll', async(() => {
-    const adapter = TestBed.get(SkyOverlayAdapterService);
-    const adapterSpy = spyOn(adapter, 'restrictBodyScroll').and.callThrough();
+      const adapterSpy = spyOn(adapter, 'restrictBodyScroll').and.callThrough();
+      const instance = createOverlay();
 
-    let overlay = createOverlay();
+      let styleElement = getStyleElement();
 
-    app.tick();
+      expect(adapterSpy).not.toHaveBeenCalled();
+      expect(styleElement).toBeNull();
 
-    expect(adapterSpy).not.toHaveBeenCalled();
-    expect(document.body.style.overflow).toEqual('');
+      verifyOverlayCount(1);
 
-    adapterSpy.calls.reset();
+      destroyOverlay(instance);
+      adapterSpy.calls.reset();
 
-    overlay.closed.subscribe(() => {
-      overlay = createOverlay({
+      createOverlay({
         enableScroll: false
       });
 
-      app.tick();
+      styleElement = getStyleElement();
 
       expect(adapterSpy).toHaveBeenCalled();
-      expect(document.body.style.overflow).toEqual('hidden');
-
-      overlay.close();
-    });
-
-    overlay.close();
-  }));
-
-  it('should optionally allow closing overlay when clicking outside', async(() => {
-    const overlay1 = createOverlay({
-      enableClose: false
-    });
-
-    SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
-    app.tick();
-
-    expect(getAllOverlays().item(0)).not.toBeNull();
-
-    overlay1.closed.subscribe(() => {
-      const overlay2 = createOverlay({
-        enableClose: true
-      });
-      app.tick();
-
-      SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
-      app.tick();
-
-      expect(getAllOverlays().item(0)).toBeNull();
-
-      overlay2.close();
-    });
-
-    overlay1.close();
-  }));
-
-  it('should prevent body scroll after another overlay is closed', async(() => {
-    const adapter = TestBed.get(SkyOverlayAdapterService);
-    const restrictScrollSpy = spyOn(adapter, 'restrictBodyScroll').and.callThrough();
-    const releaseScrollSpy = spyOn(adapter, 'releaseBodyScroll').and.callThrough();
-
-    const overlay1 = createOverlay({
-      enableScroll: false
-    });
-
-    const overlay2 = createOverlay({
-      enableScroll: false
-    });
-
-    app.tick();
-
-    overlay2.closed.subscribe(() => {
-      expect(restrictScrollSpy).toHaveBeenCalled();
-      expect(releaseScrollSpy).not.toHaveBeenCalled();
-      releaseScrollSpy.calls.reset();
-
-      overlay1.closed.subscribe(() => {
-        expect(releaseScrollSpy).toHaveBeenCalled();
-      });
-
-      overlay1.close();
-    });
-
-    overlay2.close();
-  }));
-
-  it('should optionally show a backdrop', async(() => {
-    let overlay = createOverlay();
-
-    app.tick();
-
-    let backdropElement = document.querySelector('.sky-overlay-backdrop');
-
-    expect(backdropElement).toBeNull();
-
-    overlay.closed.subscribe(() => {
-      overlay = createOverlay({
-        showBackdrop: true
-      });
-
-      app.tick();
-
-      backdropElement = document.querySelector('.sky-overlay-backdrop');
-
-      expect(backdropElement).not.toBeNull();
-
-      overlay.close();
-    });
-
-    overlay.close();
-  }));
-
-  it('should close all on navigation change', async(inject([NgZone], (ngZone: NgZone) => {
-    const router = TestBed.get(Router);
-
-    createOverlay();
-    createOverlay();
-    createOverlay();
-
-    app.tick();
-
-    expect(getAllOverlays().length).toEqual(3);
-
-    // Run navigation through NgZone to avoid warnings in the console.
-    ngZone.run(() => {
-      router.navigate(['/']);
-      app.tick();
-      expect(getAllOverlays().length).toEqual(0);
-    });
-  })));
-
-  it('should optionally remain open on navigation change', async(inject(
-    [NgZone],
-    (ngZone: NgZone) => {
-      const router = TestBed.get(Router);
-      const overlay = createOverlay({
-        closeOnNavigation: false
-      });
-
-      app.tick();
-
-      expect(getAllOverlays().item(0)).not.toBeNull();
-
-      ngZone.run(() => {
-        router.navigate(['/']);
-        app.tick();
-
-        expect(getAllOverlays().item(0)).not.toBeNull();
-
-        overlay.close();
-      });
+      expect(styleElement.textContent).toContain('body { overflow: hidden }');
+      verifyOverlayCount(1);
     }
   )));
 
-  it('should attach a component', async(() => {
-    const overlay = createOverlay();
+  it('should optionally allow closing overlay on click', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
 
-    overlay.attachComponent(OverlayFixtureComponent);
-    app.tick();
+    const instance = createOverlay();
 
-    expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: none');
+    SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
+    fixture.detectChanges();
+    tick();
 
-    overlay.close();
-  }));
+    // The overlay should still exist.
+    verifyOverlayCount(1);
 
-  it('should attach a component with providers', async(() => {
-    const overlay = createOverlay();
+    destroyOverlay(instance);
 
-    overlay.attachComponent(OverlayFixtureComponent, [{
-      provide: OverlayFixtureContext,
-      useValue: new OverlayFixtureContext(1)
-    }]);
-    app.tick();
-
-    expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: 1');
-
-    overlay.close();
-  }));
-
-  it('should attach a template', async(() => {
-    const fixture = TestBed.createComponent(OverlayFixtureComponent);
-    const overlay = createOverlay();
-    overlay.attachTemplate(fixture.componentInstance.myTemplate, {
-      $implicit: {
-        id: 5
-      }
+    createOverlay({
+      enableClose: true
     });
 
-    app.tick();
+    SkyAppTestUtility.fireDomEvent(getAllOverlays().item(0), 'click');
+    fixture.detectChanges();
+    tick();
 
-    expect(getAllOverlays().item(0).textContent).toContain('Templated content ID: 5');
-
-    overlay.close();
+    // The overlay should now be gone.
+    verifyOverlayCount(0);
   }));
 
-  it('should be accessible', async(function () {
-    createOverlay();
+  it('should prevent body scroll after another overlay is closed', fakeAsync(inject(
+    [SkyOverlayAdapterService],
+    (adapter: SkyOverlayAdapterService) => {
+      fixture.detectChanges();
+      tick();
 
-    app.tick();
+      const instance1 = createOverlay({
+        enableScroll: false
+      });
 
-    expect(getAllOverlays()[0]).toBeAccessible();
-  }));
+      const instance2 = createOverlay({
+        enableScroll: false
+      });
+
+      // Overflow should be applied to the body.
+      expect(getStyleElement()).toBeTruthy();
+      verifyOverlayCount(2);
+
+      destroyOverlay(instance1);
+
+      // The body should still have overflow applied.
+      expect(getStyleElement()).toBeTruthy();
+      verifyOverlayCount(1);
+
+      destroyOverlay(instance2);
+
+      // Now that all overlays are closed, the body should not have any overflow.
+      expect(getStyleElement()).toBeNull();
+      verifyOverlayCount(0);
+    }
+  )));
+
+  // it('should optionally show a backdrop', fakeAsync(() => {
+  // }));
+
+  // it('should close all on navigation change', fakeAsync(inject([NgZone], (ngZone: NgZone) => {
+  // })));
+
+  // it('should optionally remain open on navigation change', fakeAsync(inject(
+  //   [NgZone],
+  //   (ngZone: NgZone) => {
+  //   }
+  // )));
+
+  // it('should attach a component', fakeAsync(() => {
+  // }));
+
+  // it('should attach a component with providers', fakeAsync(() => {
+  // }));
+
+  // it('should attach a template', fakeAsync(() => {
+  // }));
+
+  // it('should be accessible', async(() => {
+  // }));
 
 });

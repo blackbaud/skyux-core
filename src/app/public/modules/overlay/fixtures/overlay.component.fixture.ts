@@ -1,27 +1,19 @@
 import {
-  Component,
-  Optional,
-  TemplateRef,
-  ViewChild
+  Component
 } from '@angular/core';
 
 import {
-  OverlayFixtureContext
-} from './overlay-context.fixture';
+  SkyOverlayService
+} from '../overlay.service';
 
 @Component({
-  selector: 'overlay-fixture',
+  selector: 'app-overlay-test',
   templateUrl: './overlay.component.fixture.html'
 })
 export class OverlayFixtureComponent {
 
-  @ViewChild('myTemplate', {
-    read: TemplateRef
-  })
-  public myTemplate: TemplateRef<any>;
-
   constructor(
-    @Optional() public readonly context: OverlayFixtureContext
+    public overlayService: SkyOverlayService
   ) { }
 
 }

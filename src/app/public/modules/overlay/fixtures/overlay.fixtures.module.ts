@@ -15,6 +15,10 @@ import {
 } from '../overlay.module';
 
 import {
+  OverlayTemplateFixtureComponent
+} from './overlay-template.component.fixture';
+
+import {
   OverlayFixtureComponent
 } from './overlay.component.fixture';
 
@@ -25,10 +29,12 @@ import {
     SkyOverlayModule
   ],
   declarations: [
-    OverlayFixtureComponent
+    OverlayFixtureComponent,
+    OverlayTemplateFixtureComponent
   ],
-  entryComponents: [
-    OverlayFixtureComponent
+  exports: [
+    OverlayFixtureComponent,
+    OverlayTemplateFixtureComponent
   ]
 })
 export class OverlayFixturesModule { }
