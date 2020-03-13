@@ -70,7 +70,7 @@ describe('Overlay service', () => {
   }
 
   function destroyOverlay(instance: SkyOverlayInstance): void {
-    service.destroy(instance);
+    service.close(instance);
     fixture.detectChanges();
     tick();
   }
@@ -321,7 +321,7 @@ describe('Overlay service', () => {
 
     await expect(getAllOverlays().item(0)).toBeAccessible();
 
-    service.destroy(overlay);
+    service.close(overlay);
 
     fixture.detectChanges();
 
@@ -339,6 +339,22 @@ describe('Overlay service', () => {
 
     await expect(getAllOverlays().item(0)).toBeAccessible();
 
+  }));
+
+  it('should remove the host component if all overlays destroyed', fakeAsync(() => {
+    createOverlay();
+    createOverlay();
+
+    let hostComponents = document.querySelectorAll('sky-overlay-host');
+
+    expect(hostComponents.length).toEqual(1);
+
+    service.closeAll();
+    fixture.detectChanges();
+    tick();
+
+    hostComponents = document.querySelectorAll('sky-overlay-host');
+    expect(hostComponents.length).toEqual(0);
   }));
 
 });

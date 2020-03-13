@@ -62,7 +62,7 @@ export class SkyOverlayService {
     );
 
     instance.closed.subscribe(() => {
-      this.destroy(instance);
+      this.close(instance);
     });
 
     SkyOverlayService.overlays.push(instance);
@@ -70,7 +70,11 @@ export class SkyOverlayService {
     return instance;
   }
 
-  public destroy(instance: SkyOverlayInstance): void {
+  /**
+   * Closes (and destroys) an overlay instance.
+   * @param instance The instance to close.
+   */
+  public close(instance: SkyOverlayInstance): void {
     this.destroyOverlay(instance);
 
     instance.componentRef.destroy();
@@ -87,7 +91,7 @@ export class SkyOverlayService {
     // The `close` event handler for each instance alters the array's length asynchronously,
     // so the only "safe" index to call is zero.
     while (SkyOverlayService.overlays.length > 0) {
-      this.destroy(SkyOverlayService.overlays[0]);
+      this.close(SkyOverlayService.overlays[0]);
     }
   }
 

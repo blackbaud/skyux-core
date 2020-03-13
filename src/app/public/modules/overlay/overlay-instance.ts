@@ -72,7 +72,7 @@ export class SkyOverlayInstance {
 
   /**
    * Closes the overlay.
-   * @deprecated Use the public `destroy` method on the `SkyOverlayService` instead.
+   * @deprecated Use the public `close` method on the `SkyOverlayService` instead.
    */
   public close(): void {
     this._closed.next();
