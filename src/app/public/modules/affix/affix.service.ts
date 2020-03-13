@@ -6,10 +6,6 @@ import {
 } from '@angular/core';
 
 import {
-  MutationObserverService
-} from '../mutation';
-
-import {
   SkyAffixer
 } from './affixer';
 
@@ -19,8 +15,7 @@ export class SkyAffixService {
   private renderer: Renderer2;
 
   constructor(
-    rendererFactory: RendererFactory2,
-    private observerService: MutationObserverService
+    rendererFactory: RendererFactory2
   ) {
     this.renderer = rendererFactory.createRenderer(undefined, undefined);
   }
@@ -32,8 +27,7 @@ export class SkyAffixService {
   public createAffixer(affixed: ElementRef): SkyAffixer {
     return new SkyAffixer(
       affixed.nativeElement,
-      this.renderer,
-      this.observerService
+      this.renderer
     );
   }
 

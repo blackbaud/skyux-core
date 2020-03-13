@@ -11,10 +11,6 @@ import {
 import 'rxjs/add/observable/fromEvent';
 
 import {
-  MutationObserverService
-} from '../mutation';
-
-import {
   SkyAffixAutoFitContext
 } from './affix-auto-fit-context';
 
@@ -111,8 +107,6 @@ export class SkyAffixer {
 
   private currentPlacement: SkyAffixPlacement;
 
-  private observer: MutationObserver;
-
   private overflowParents: HTMLElement[];
 
   private resizeListener: Subscription;
@@ -129,8 +123,7 @@ export class SkyAffixer {
 
   constructor(
     private affixedElement: HTMLElement,
-    private renderer: Renderer2,
-    private observerService: MutationObserverService
+    private renderer: Renderer2
   ) { }
 
   /**
@@ -151,7 +144,6 @@ export class SkyAffixer {
     if (this.config.isSticky) {
       this.addScrollListeners();
       this.addResizeListener();
-      this.addMutationObserver();
     }
   }
 
@@ -408,7 +400,6 @@ export class SkyAffixer {
   private reset(): void {
     this.removeScrollListeners();
     this.removeResizeListener();
-    this.removeMutationObserver();
 
     this._config =
       this.affixedRect =
@@ -450,19 +441,6 @@ export class SkyAffixer {
       .subscribe(() => this.affix());
   }
 
-  private addMutationObserver(): void {
-    this.observer = this.observerService.create(() => {
-      this.affix();
-    });
-
-    this.observer.observe(this.affixedElement, {
-      attributes: true,
-      childList: true,
-      characterData: true,
-      subtree: true
-    });
-  }
-
   private removeResizeListener(): void {
     if (this.resizeListener) {
       this.resizeListener.unsubscribe();
@@ -476,13 +454,6 @@ export class SkyAffixer {
       // https://github.com/angular/angular/issues/9368#issuecomment-227199778
       this.scrollListeners.forEach(listener => listener());
       this.scrollListeners = undefined;
-    }
-  }
-
-  private removeMutationObserver(): void {
-    if (this.observer) {
-      this.observer.disconnect();
-      this.observer = undefined;
     }
   }
 

@@ -1,5 +1,4 @@
 import {
-  ApplicationRef,
   NgZone
 } from '@angular/core';
 
@@ -20,6 +19,14 @@ import {
   expect,
   SkyAppTestUtility
 } from '@skyux-sdk/testing';
+
+import {
+  OverlayFixtureContext
+} from './fixtures/overlay-context.fixture';
+
+import {
+  OverlayEntryFixtureComponent
+} from './fixtures/overlay-entry.component';
 
 import {
   OverlayFixtureComponent
@@ -205,28 +212,133 @@ describe('Overlay service', () => {
     }
   )));
 
-  // it('should optionally show a backdrop', fakeAsync(() => {
-  // }));
+  it('should optionally show a backdrop', fakeAsync(() => {
+    const instance = createOverlay();
 
-  // it('should close all on navigation change', fakeAsync(inject([NgZone], (ngZone: NgZone) => {
-  // })));
+    let backdropElement = document.querySelector('.sky-overlay-backdrop');
 
-  // it('should optionally remain open on navigation change', fakeAsync(inject(
-  //   [NgZone],
-  //   (ngZone: NgZone) => {
-  //   }
-  // )));
+    expect(backdropElement).toBeNull();
 
-  // it('should attach a component', fakeAsync(() => {
-  // }));
+    destroyOverlay(instance);
 
-  // it('should attach a component with providers', fakeAsync(() => {
-  // }));
+    createOverlay({
+      showBackdrop: true
+    });
 
-  // it('should attach a template', fakeAsync(() => {
-  // }));
+    backdropElement = document.querySelector('.sky-overlay-backdrop');
 
-  // it('should be accessible', async(() => {
-  // }));
+    expect(backdropElement).not.toBeNull();
+
+  }));
+
+  it('should close all on navigation change', fakeAsync(inject(
+    [NgZone, Router],
+    (ngZone: NgZone, router: Router) => {
+      createOverlay();
+      createOverlay();
+      createOverlay();
+
+      verifyOverlayCount(3);
+
+      // Run navigation through NgZone to avoid warnings in the console.
+      ngZone.run(() => {
+        router.navigate(['/']);
+        fixture.detectChanges();
+        tick();
+        verifyOverlayCount(0);
+      });
+    }
+  )));
+
+  it('should optionally remain open on navigation change', fakeAsync(inject(
+    [NgZone, Router],
+    (ngZone: NgZone, router: Router) => {
+      createOverlay({
+        closeOnNavigation: false
+      });
+
+      verifyOverlayCount(1);
+
+      ngZone.run(() => {
+        router.navigate(['/']);
+        fixture.detectChanges();
+        tick();
+
+        verifyOverlayCount(1);
+      });
+    }
+  )));
+
+  it('should attach a component', async(async () => {
+    const overlay = service.create();
+
+    overlay.attachComponent(OverlayEntryFixtureComponent);
+
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: none');
+  }));
+
+  it('should attach a component with providers', async(async () => {
+    const overlay = service.create();
+
+    overlay.attachComponent(OverlayEntryFixtureComponent, [{
+      provide: OverlayFixtureContext,
+      useValue: new OverlayFixtureContext('1')
+    }]);
+
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: 1');
+  }));
+
+  it('should attach a template', async(async () => {
+    const overlay = service.create();
+
+    overlay.attachTemplate(fixture.componentInstance.myTemplate, {
+      $implicit: {
+        id: 5
+      }
+    });
+
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    expect(getAllOverlays().item(0).textContent).toContain('Templated content ID: 5');
+  }));
+
+  it('should be accessible', async(async () => {
+    const overlay = service.create();
+
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    await expect(getAllOverlays().item(0)).toBeAccessible();
+
+    service.destroy(overlay);
+
+    fixture.detectChanges();
+
+    // Create overlay with all options turned on.
+    service.create({
+      closeOnNavigation: false,
+      enableClose: true,
+      enableScroll: false,
+      showBackdrop: true
+    });
+
+    fixture.detectChanges();
+
+    await fixture.whenStable();
+
+    await expect(getAllOverlays().item(0)).toBeAccessible();
+
+  }));
 
 });

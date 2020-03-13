@@ -96,10 +96,8 @@ export class SkyOverlayService {
   }
 
   private removeHostComponent(): void {
-    if (SkyOverlayService.host) {
-      this.dynamicComponentService.removeComponent(SkyOverlayService.host);
-      SkyOverlayService.host = undefined;
-    }
+    this.dynamicComponentService.removeComponent(SkyOverlayService.host);
+    SkyOverlayService.host = undefined;
   }
 
   private prepareConfig(config: SkyOverlayConfig): SkyOverlayConfig {

@@ -138,6 +138,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   }
 
   private addRouteListener(): void {
+    /*istanbul ignore else*/
     if (this.router) {
       this.routerSubscription = this.router.events.subscribe(event => {
         /* istanbul ignore else */
