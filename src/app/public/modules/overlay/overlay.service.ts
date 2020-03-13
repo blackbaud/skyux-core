@@ -76,11 +76,7 @@ export class SkyOverlayService {
    */
   public close(instance: SkyOverlayInstance): void {
     this.destroyOverlay(instance);
-
     instance.componentRef.destroy();
-
-    // Remove the DOM node since it exists outside of the app.
-    instance.componentRef.location.nativeElement.remove();
 
     if (SkyOverlayService.overlays.length === 0) {
       this.removeHostComponent();
