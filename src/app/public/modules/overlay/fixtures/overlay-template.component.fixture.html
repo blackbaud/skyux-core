@@ -1,0 +1,7 @@
+Overlay content ID: {{ context?.id || 'none' }}
+<ng-template let-item #myTemplate>
+  Templated content ID: {{ item.id }}
+  <span #a>A</span>
+  <span #b>B</span>
+  <ng-content></ng-content>
+</ng-template>
