@@ -83,7 +83,7 @@ export function getOverflowParents(child: HTMLElement): HTMLElement[] {
  * @param parent
  * @param offset
  */
-export function isOffsetVisibleWithinParent(
+export function isOffsetFullyVisibleWithinParent(
   parent: HTMLElement,
   offset: SkyAffixOffset,
   bufferOffset?: SkyAffixOffset
@@ -95,5 +95,20 @@ export function isOffsetVisibleWithinParent(
     parentOffset.right < offset.right ||
     parentOffset.bottom < offset.bottom ||
     parentOffset.left > offset.left
+  );
+}
+
+export function isOffsetPartiallyVisibleWithinParent(
+  parent: HTMLElement,
+  offset: SkyAffixOffset,
+  bufferOffset?: SkyAffixOffset
+): boolean {
+  const parentOffset = getElementOffset(parent, bufferOffset);
+
+  return !(
+    parentOffset.top >= offset.bottom ||
+    parentOffset.right <= offset.left ||
+    parentOffset.bottom <= offset.top ||
+    parentOffset.left >= offset.right
   );
 }

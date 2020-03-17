@@ -42,7 +42,8 @@ import {
 import {
   getElementOffset,
   getOverflowParents,
-  isOffsetVisibleWithinParent
+  isOffsetFullyVisibleWithinParent,
+  isOffsetPartiallyVisibleWithinParent
 } from './dom-utils';
 
 const DEFAULT_AFFIX_CONFIG: SkyAffixConfig = {
@@ -148,15 +149,6 @@ export class SkyAffixer {
   }
 
   /**
-   * Re-runs the affix calculation.
-   */
-  public reaffix(): void {
-    // Reset current placement to preferred placement.
-    this.currentPlacement = this.config.placement;
-    this.affix();
-  }
-
-  /**
    * Destroys the affixer.
    */
   public destroy(): void {
@@ -179,11 +171,13 @@ export class SkyAffixer {
       this.renderer.setStyle(this.affixedElement, 'top', `${offset.top}px`);
       this.renderer.setStyle(this.affixedElement, 'left', `${offset.left}px`);
       this._offsetChange.next({ offset });
+
+      this.checkBaseElementVisibility();
     }
   }
 
   private getOffset(): SkyAffixOffset {
-    const parent = this.getImmediateOverflowParent();
+    const parent = this.getAutoFitContextParent();
 
     const maxAttempts = 4;
     let attempts = 0;
@@ -194,7 +188,7 @@ export class SkyAffixer {
 
     do {
       offset = this.getPreferredOffset(placement);
-      isAffixedElementFullyVisible = isOffsetVisibleWithinParent(
+      isAffixedElementFullyVisible = isOffsetFullyVisibleWithinParent(
         parent,
         offset,
         this.config.autoFitOverflowOffset
@@ -214,13 +208,13 @@ export class SkyAffixer {
     } while (!isAffixedElementFullyVisible && attempts < maxAttempts);
 
     if (isAffixedElementFullyVisible) {
-      this.emitPlacementChange(placement);
+      this.notifyPlacementChange(placement);
       return offset;
     }
 
     if (this.config.enableAutoFit) {
       /* tslint:disable-next-line:no-null-keyword */
-      this.emitPlacementChange(null);
+      this.notifyPlacementChange(null);
     }
 
     // No suitable placement was found, so revert to preferred placement.
@@ -301,7 +295,7 @@ export class SkyAffixer {
     offset: SkyAffixOffset,
     placement: SkyAffixPlacement
   ): SkyAffixOffset {
-    const parent = this.getImmediateOverflowParent();
+    const parent = this.getAutoFitContextParent();
     const parentOffset = getElementOffset(parent, this.config.autoFitOverflowOffset);
 
     const affixedRect = this.affixedRect;
@@ -376,19 +370,18 @@ export class SkyAffixer {
   }
 
   private getImmediateOverflowParent(): HTMLElement {
-    const numParents = this.overflowParents.length;
+    return this.overflowParents[this.overflowParents.length - 1];
+  }
+
+  private getAutoFitContextParent(): HTMLElement {
     const bodyElement = this.overflowParents[0];
 
-    if (numParents === 1) {
-      return bodyElement;
-    }
-
     return (this.config.autoFitContext === SkyAffixAutoFitContext.OverflowParent)
-      ? this.overflowParents[numParents - 1]
+      ? this.getImmediateOverflowParent()
       : bodyElement;
   }
 
-  private emitPlacementChange(placement: SkyAffixPlacement | null): void {
+  private notifyPlacementChange(placement: SkyAffixPlacement | null): void {
     if (this.currentPlacement !== placement) {
       this.currentPlacement = placement;
       this._placementChange.next({
@@ -424,6 +417,24 @@ export class SkyAffixer {
     this.currentOffset = offset;
 
     return true;
+  }
+
+  private checkBaseElementVisibility(): void {
+    const isBaseElementVisible = isOffsetPartiallyVisibleWithinParent(
+      this.getImmediateOverflowParent(),
+      {
+        top: this.baseRect.top,
+        left: this.baseRect.left,
+        right: this.baseRect.right,
+        bottom: this.baseRect.bottom
+      },
+      this.config.autoFitOverflowOffset
+    );
+
+    if (!isBaseElementVisible) {
+      /*tslint:disable-next-line:no-null-keyword*/
+      this.notifyPlacementChange(null);
+    }
   }
 
   private addScrollListeners(): void {
