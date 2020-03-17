@@ -149,6 +149,15 @@ export class SkyAffixer {
   }
 
   /**
+   * Re-runs the affix calculation.
+   */
+  public reaffix(): void {
+    // Reset current placement to preferred placement.
+    this.currentPlacement = this.config.placement;
+    this.affix();
+  }
+
+  /**
    * Destroys the affixer.
    */
   public destroy(): void {
@@ -171,8 +180,6 @@ export class SkyAffixer {
       this.renderer.setStyle(this.affixedElement, 'top', `${offset.top}px`);
       this.renderer.setStyle(this.affixedElement, 'left', `${offset.left}px`);
       this._offsetChange.next({ offset });
-
-      this.checkBaseElementVisibility();
     }
   }
 
@@ -208,7 +215,13 @@ export class SkyAffixer {
     } while (!isAffixedElementFullyVisible && attempts < maxAttempts);
 
     if (isAffixedElementFullyVisible) {
-      this.notifyPlacementChange(placement);
+      if (this.isBaseElementVisible()) {
+        this.notifyPlacementChange(placement);
+      } else {
+        /* tslint:disable-next-line:no-null-keyword */
+        this.notifyPlacementChange(null);
+      }
+
       return offset;
     }
 
@@ -398,6 +411,8 @@ export class SkyAffixer {
       this.affixedRect =
       this.baseElement =
       this.baseRect =
+      this.currentPlacement =
+      this.currentOffset =
       this.overflowParents = undefined;
   }
 
@@ -419,8 +434,8 @@ export class SkyAffixer {
     return true;
   }
 
-  private checkBaseElementVisibility(): void {
-    const isBaseElementVisible = isOffsetPartiallyVisibleWithinParent(
+  private isBaseElementVisible(): boolean {
+    return isOffsetPartiallyVisibleWithinParent(
       this.getImmediateOverflowParent(),
       {
         top: this.baseRect.top,
@@ -430,11 +445,6 @@ export class SkyAffixer {
       },
       this.config.autoFitOverflowOffset
     );
-
-    if (!isBaseElementVisible) {
-      /*tslint:disable-next-line:no-null-keyword*/
-      this.notifyPlacementChange(null);
-    }
   }
 
   private addScrollListeners(): void {

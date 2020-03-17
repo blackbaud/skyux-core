@@ -649,4 +649,40 @@ describe('Affix directive', () => {
     spy.calls.reset();
   });
 
+  it('should allow re-running the affix calculation', () => {
+    const preferredPlacement = 'right';
+
+    componentInstance.enableAutoFit = true;
+    componentInstance.isSticky = true;
+    componentInstance.enableOverflowParent = true;
+    componentInstance.placement = preferredPlacement;
+    fixture.detectChanges();
+
+    const affixer = getAffixer();
+    const placementSpy = spyOn(componentInstance, 'onAffixPlacementChange').and.callThrough();
+
+    // Scroll to right to make the affixer find a new placement.
+    componentInstance.scrollTargetToRight();
+    triggerParentScroll();
+    fixture.detectChanges();
+
+    expect(placementSpy.calls.allArgs()).toEqual([
+      [{ placement: 'left' }]
+    ]);
+    placementSpy.calls.reset();
+
+    const affixSpy = spyOn(affixer as any, 'affix').and.callThrough();
+
+    affixer.reaffix();
+    fixture.detectChanges();
+
+    expect(affixSpy).toHaveBeenCalled();
+
+    // The placement change emitter should be exactly the same as before since we're forcing the
+    // affix functionality to be called again.
+    expect(placementSpy.calls.allArgs()).toEqual([
+      [{ placement: 'left' }]
+    ]);
+  });
+
 });
