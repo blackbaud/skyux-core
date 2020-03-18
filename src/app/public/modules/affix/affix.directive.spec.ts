@@ -685,4 +685,38 @@ describe('Affix directive', () => {
     ]);
   });
 
+  it('should emit a placement of `null` if base element hidden', () => {
+    componentInstance.placement = 'above';
+    componentInstance.enableAutoFit = true;
+    componentInstance.isSticky = true;
+    componentInstance.autoFitContext = SkyAffixAutoFitContext.Viewport;
+    componentInstance.enableOverflowParent = true;
+    fixture.detectChanges();
+
+    const spy = spyOn(componentInstance, 'onAffixPlacementChange').and.callThrough();
+
+    expect(spy).not.toHaveBeenCalled();
+
+    componentInstance.scrollTargetToBottom();
+    SkyAppTestUtility.fireDomEvent(window, 'scroll');
+    fixture.detectChanges();
+
+    // Confirm baseline expectation.
+    expect(spy).toHaveBeenCalledWith({
+      placement: 'above'
+    });
+    spy.calls.reset();
+
+    // Scroll base element out of view.
+    const baseElementHeight = componentInstance.baseRef.nativeElement
+      .getBoundingClientRect().height;
+    componentInstance.scrollTargetToBottom(baseElementHeight);
+    SkyAppTestUtility.fireDomEvent(window, 'scroll');
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith({
+      placement: null
+    });
+  });
+
 });
