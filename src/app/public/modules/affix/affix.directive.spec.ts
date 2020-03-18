@@ -715,6 +715,7 @@ describe('Affix directive', () => {
     fixture.detectChanges();
 
     expect(spy).toHaveBeenCalledWith({
+      /*tslint:disable-next-line:no-null-keyword*/
       placement: null
     });
   });
