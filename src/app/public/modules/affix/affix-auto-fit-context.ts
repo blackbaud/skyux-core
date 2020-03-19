@@ -8,6 +8,6 @@ export enum SkyAffixAutoFitContext {
   /**
    * Auto-fit functionality will respect the browser viewport dimensions.
    */
-  Viewport
+  Viewport = 1
 
 }
