@@ -23,29 +23,42 @@ import {
 })
 export class AffixDemoComponent {
 
+  public get overflowParentWidth(): string {
+    if (this.enableOverflowParent) {
+      return `${this.parentOverflowRef.nativeElement.scrollWidth}px`;
+    }
+
+    return `${document.body.scrollWidth}px`;
+  }
+
+  public autoFitContexts: SkyAffixAutoFitContext[] = [
+    SkyAffixAutoFitContext.OverflowParent,
+    SkyAffixAutoFitContext.Viewport
+  ];
+
+  public autoFitOverflowOffset: SkyAffixOffset;
+
+  public disabled: boolean = false;
+
+  public enableAutoFit: boolean = true;
+
+  public enableFullWidthBaseElement: boolean = false;
+
+  public enableLargeBaseElement: boolean = false;
+
+  public enableOverflowParent: boolean = false;
+
+  public enableSmallerParent: boolean = false;
+
   public horizontalAlignments: SkyAffixHorizontalAlignment[] = [
     'right',
     'center',
     'left'
   ];
 
-  public placements: SkyAffixPlacement[] = [
-    'above',
-    'right',
-    'below',
-    'left'
-  ];
+  public isSticky: boolean = true;
 
-  public verticalAlignments: SkyAffixVerticalAlignment[] = [
-    'bottom',
-    'middle',
-    'top'
-  ];
-
-  public autoFitContexts: SkyAffixAutoFitContext[] = [
-    SkyAffixAutoFitContext.OverflowParent,
-    SkyAffixAutoFitContext.Viewport
-  ];
+  public isVisible: boolean = false;
 
   public model: {
     autoFitContext: SkyAffixAutoFitContext;
@@ -59,31 +72,18 @@ export class AffixDemoComponent {
     verticalAlignment: 'middle'
   };
 
-  public autoFitOverflowOffset: SkyAffixOffset;
+  public placements: SkyAffixPlacement[] = [
+    'above',
+    'right',
+    'below',
+    'left'
+  ];
 
-  public disabled: boolean = false;
-
-  public enableAutoFit: boolean = true;
-
-  public enableLargeBaseElement: boolean = false;
-
-  public enableFullWidthBaseElement: boolean = false;
-
-  public enableOverflowParent: boolean = false;
-
-  public enableSmallerParent: boolean = false;
-
-  public get overflowParentWidth(): string {
-    if (this.enableOverflowParent) {
-      return `${this.parentOverflowRef.nativeElement.scrollWidth}px`;
-    }
-
-    return `${document.body.scrollWidth}px`;
-  }
-
-  public isSticky: boolean = true;
-
-  public isVisible: boolean = false;
+  public verticalAlignments: SkyAffixVerticalAlignment[] = [
+    'bottom',
+    'middle',
+    'top'
+  ];
 
   @ViewChild('baseRef', { read: ElementRef })
   private baseRef: ElementRef;

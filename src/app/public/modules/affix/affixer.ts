@@ -164,6 +164,7 @@ export class SkyAffixer {
     this.reset();
     this._placementChange.complete();
     this._offsetChange.complete();
+    this._overflowScroll.complete();
 
     this._offsetChange =
       this._placementChange =

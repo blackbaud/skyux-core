@@ -162,6 +162,8 @@ export class SkyAffixDirective implements OnChanges, OnDestroy {
   }
 
   public ngOnDestroy(): void {
+    this.affixOffsetChange.complete();
+    this.affixOverflowScroll.complete();
     this.affixPlacementChange.complete();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();

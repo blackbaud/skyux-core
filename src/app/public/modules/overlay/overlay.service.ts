@@ -83,6 +83,9 @@ export class SkyOverlayService {
     }
   }
 
+  /**
+   * Closes all overlay instances.
+   */
   public closeAll(): void {
     // The `close` event handler for each instance alters the array's length asynchronously,
     // so the only "safe" index to call is zero.

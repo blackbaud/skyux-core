@@ -567,53 +567,56 @@ describe('Affix directive', () => {
     });
   }));
 
-  it('should work when the base element is larger than the affixed element', () => {
-    fixture.detectChanges();
+  it(
+    'should find correct placements when the base element is larger than the affixed element',
+    () => {
+      fixture.detectChanges();
 
-    // First, get the original base element's width value.
-    const originalBaseElementWidth = componentInstance.baseRef.nativeElement
-      .getBoundingClientRect().width;
+      // First, get the original base element's width value.
+      const originalBaseElementWidth = componentInstance.baseRef.nativeElement
+        .getBoundingClientRect().width;
 
-    componentInstance.enableLargerBaseElement = true;
-    componentInstance.placement = 'above';
-    fixture.detectChanges();
+      componentInstance.enableLargerBaseElement = true;
+      componentInstance.placement = 'above';
+      fixture.detectChanges();
 
-    // Then, get the new base element's width after resize.
-    const baseElementWidth = componentInstance.baseRef.nativeElement
-      .getBoundingClientRect().width;
+      // Then, get the new base element's width after resize.
+      const baseElementWidth = componentInstance.baseRef.nativeElement
+        .getBoundingClientRect().width;
 
-    // Finally, calculate the offset difference so we can use it in our calculations.
-    const offsetDifference = (baseElementWidth / 2) - (originalBaseElementWidth / 2);
+      // Finally, calculate the offset difference so we can use it in our calculations.
+      const offsetDifference = (baseElementWidth / 2) - (originalBaseElementWidth / 2);
 
-    let affixedOffset = getAffixedOffset();
+      let affixedOffset = getAffixedOffset();
 
-    expect(affixedOffset.top).toEqual(expectedOffsets.aboveCenter.top - offsetDifference);
-    expect(affixedOffset.left).toEqual(expectedOffsets.aboveCenter.left);
+      expect(affixedOffset.top).toEqual(expectedOffsets.aboveCenter.top - offsetDifference);
+      expect(affixedOffset.left).toEqual(expectedOffsets.aboveCenter.left);
 
-    componentInstance.placement = 'right';
-    fixture.detectChanges();
+      componentInstance.placement = 'right';
+      fixture.detectChanges();
 
-    affixedOffset = getAffixedOffset();
+      affixedOffset = getAffixedOffset();
 
-    expect(affixedOffset.top).toEqual(expectedOffsets.rightMiddle.top);
-    expect(affixedOffset.left).toEqual(expectedOffsets.rightMiddle.left + offsetDifference);
+      expect(affixedOffset.top).toEqual(expectedOffsets.rightMiddle.top);
+      expect(affixedOffset.left).toEqual(expectedOffsets.rightMiddle.left + offsetDifference);
 
-    componentInstance.placement = 'below';
-    fixture.detectChanges();
+      componentInstance.placement = 'below';
+      fixture.detectChanges();
 
-    affixedOffset = getAffixedOffset();
+      affixedOffset = getAffixedOffset();
 
-    expect(affixedOffset.top).toEqual(expectedOffsets.belowCenter.top + offsetDifference);
-    expect(affixedOffset.left).toEqual(expectedOffsets.belowCenter.left);
+      expect(affixedOffset.top).toEqual(expectedOffsets.belowCenter.top + offsetDifference);
+      expect(affixedOffset.left).toEqual(expectedOffsets.belowCenter.left);
 
-    componentInstance.placement = 'left';
-    fixture.detectChanges();
+      componentInstance.placement = 'left';
+      fixture.detectChanges();
 
-    affixedOffset = getAffixedOffset();
+      affixedOffset = getAffixedOffset();
 
-    expect(affixedOffset.top).toEqual(expectedOffsets.leftMiddle.top);
-    expect(affixedOffset.left).toEqual(expectedOffsets.leftMiddle.left - offsetDifference);
-  });
+      expect(affixedOffset.top).toEqual(expectedOffsets.leftMiddle.top);
+      expect(affixedOffset.left).toEqual(expectedOffsets.leftMiddle.left - offsetDifference);
+    }
+  );
 
   it('should emit when affixed element offset changes', () => {
     componentInstance.isSticky = true;
