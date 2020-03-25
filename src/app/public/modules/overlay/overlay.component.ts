@@ -125,7 +125,6 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private applyConfig(config: SkyOverlayConfig): void {
     this.showBackdrop = config.showBackdrop;
-    // this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
     this.changeDetector.markForCheck();
   }
 
