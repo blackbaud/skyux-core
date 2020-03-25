@@ -63,9 +63,10 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     return this._closed.asObservable();
   }
 
-  public allowClickThrough = false;
-
   public showBackdrop = false;
+
+  @ViewChild('overlayContentRef', { read: ElementRef })
+  private overlayContentRef: ElementRef;
 
   @ViewChild('target', { read: ViewContainerRef })
   private targetRef: ViewContainerRef;
@@ -88,9 +89,9 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   public ngOnInit(): void {
     this.applyConfig(this.context.config);
 
-    if (this.context.config.enableClose) {
+    setTimeout(() => {
       this.addBackdropClickListener();
-    }
+    });
 
     if (this.context.config.closeOnNavigation) {
       this.addRouteListener();
@@ -124,16 +125,22 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private applyConfig(config: SkyOverlayConfig): void {
     this.showBackdrop = config.showBackdrop;
-    this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
+    // this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
     this.changeDetector.markForCheck();
   }
 
   private addBackdropClickListener(): void {
     Observable.fromEvent(this.elementRef.nativeElement, 'click')
       .takeUntil(this.ngUnsubscribe)
-      .subscribe(() => {
-        this._closed.next();
-        this._closed.complete();
+      .subscribe((event: MouseEvent) => {
+        if (this.context.config.enableClose) {
+          const isChild = this.overlayContentRef.nativeElement.contains(event.target);
+          /* istanbul ignore else */
+          if (!isChild) {
+            this._closed.next();
+            this._closed.complete();
+          }
+        }
       });
   }
 

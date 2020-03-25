@@ -16,7 +16,7 @@ import {
 
 import {
   OverlayEntryFixtureComponent
-} from './overlay-entry.component';
+} from './overlay-entry.component.fixture';
 
 import {
   OverlayFixtureComponent

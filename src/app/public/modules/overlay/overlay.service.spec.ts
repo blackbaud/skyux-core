@@ -26,7 +26,7 @@ import {
 
 import {
   OverlayEntryFixtureComponent
-} from './fixtures/overlay-entry.component';
+} from './fixtures/overlay-entry.component.fixture';
 
 import {
   OverlayFixtureComponent
@@ -153,7 +153,7 @@ describe('Overlay service', () => {
     }
   )));
 
-  it('should optionally allow closing overlay on click', fakeAsync(() => {
+  it('should optionally allow closing overlay when clicking outside', fakeAsync(() => {
     fixture.detectChanges();
     tick();
 
@@ -180,37 +180,49 @@ describe('Overlay service', () => {
     verifyOverlayCount(0);
   }));
 
-  it('should prevent body scroll after another overlay is closed', fakeAsync(inject(
-    [SkyOverlayAdapterService],
-    (adapter: SkyOverlayAdapterService) => {
-      fixture.detectChanges();
-      tick();
+  it('should not close overlay if overlay content is clicked', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
 
-      const instance1 = createOverlay({
-        enableScroll: false
-      });
+    createOverlay({
+      enableClose: true
+    });
 
-      const instance2 = createOverlay({
-        enableScroll: false
-      });
+    SkyAppTestUtility.fireDomEvent(document.querySelector('.sky-overlay-content'), 'click');
+    fixture.detectChanges();
+    tick();
 
-      // Overflow should be applied to the body.
-      expect(getStyleElement()).toBeTruthy();
-      verifyOverlayCount(2);
+    verifyOverlayCount(1);
+  }));
 
-      destroyOverlay(instance1);
+  it('should prevent body scroll after another overlay is closed', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
 
-      // The body should still have overflow applied.
-      expect(getStyleElement()).toBeTruthy();
-      verifyOverlayCount(1);
+    const instance1 = createOverlay({
+      enableScroll: false
+    });
 
-      destroyOverlay(instance2);
+    const instance2 = createOverlay({
+      enableScroll: false
+    });
 
-      // Now that all overlays are closed, the body should not have any overflow.
-      expect(getStyleElement()).toBeNull();
-      verifyOverlayCount(0);
-    }
-  )));
+    // Overflow should be applied to the body.
+    expect(getStyleElement()).toBeTruthy();
+    verifyOverlayCount(2);
+
+    destroyOverlay(instance1);
+
+    // The body should still have overflow applied.
+    expect(getStyleElement()).toBeTruthy();
+    verifyOverlayCount(1);
+
+    destroyOverlay(instance2);
+
+    // Now that all overlays are closed, the body should not have any overflow.
+    expect(getStyleElement()).toBeNull();
+    verifyOverlayCount(0);
+  }));
 
   it('should optionally show a backdrop', fakeAsync(() => {
     const instance = createOverlay();
