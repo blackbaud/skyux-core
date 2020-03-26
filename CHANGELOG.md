@@ -1,6 +1,6 @@
 # 3.13.0 (2020-03-26)
 
-- Added the `SkyAffixConfig.autoFitContext` configuration to allow the `Affixer`'s auto-fit functionality to respond to different contexts such as the viewport and the base element's overflow parent. [#143](https://github.com/blackbaud/skyux-core/pull/143)
+- Added the `SkyAffixConfig.autoFitContext` configuration to allow the `Affixer`'s auto-fit functionality to respond to contexts such as the viewport and the base element's overflow parent. [#143](https://github.com/blackbaud/skyux-core/pull/143)
 - Added the `SkyAffixConfig.autoFitOverflowOffset` to allow the `Affixer`'s auto-fit functionality to detect dynamic boundaries. [#143](https://github.com/blackbaud/skyux-core/pull/143)
 - Added the `offsetChange` and `overflowScroll` events to the `Affixer`. [#143](https://github.com/blackbaud/skyux-core/pull/143)
 - Added a `close` method to the overlay service to replace the deprecated `close` method on the overlay instance. [#143](https://github.com/blackbaud/skyux-core/pull/143)
