@@ -59,6 +59,10 @@ import {
 })
 export class SkyOverlayComponent implements OnInit, OnDestroy {
 
+  public get click(): Observable<void> {
+    return this._click.asObservable();
+  }
+
   public get closed(): Observable<void> {
     return this._closed.asObservable();
   }
@@ -74,6 +78,8 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
 
   private routerSubscription: Subscription;
+
+  private _click = new Subject<void>();
 
   private _closed = new Subject<void>();
 
@@ -102,7 +108,12 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     this.removeRouteListener();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+    this._click.complete();
     this._closed.complete();
+
+    this._click =
+      this._closed =
+      this.ngUnsubscribe = undefined;
   }
 
   public attachComponent<C>(component: Type<C>, providers: StaticProvider[] = []): ComponentRef<C> {
@@ -114,13 +125,21 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
       parent: this.injector
     });
 
-    return this.targetRef.createComponent(factory, undefined, injector);
+    const instance = this.targetRef.createComponent(factory, undefined, injector);
+
+    this.changeDetector.markForCheck();
+
+    return instance;
   }
 
   public attachTemplate<T>(templateRef: TemplateRef<T>, context: T): EmbeddedViewRef<T> {
     this.targetRef.clear();
 
-    return this.targetRef.createEmbeddedView(templateRef, context);
+    const embeddedView = this.targetRef.createEmbeddedView(templateRef, context);
+
+    this.changeDetector.markForCheck();
+
+    return embeddedView;
   }
 
   private applyConfig(config: SkyOverlayConfig): void {
@@ -132,12 +151,12 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     Observable.fromEvent(this.elementRef.nativeElement, 'click')
       .takeUntil(this.ngUnsubscribe)
       .subscribe((event: MouseEvent) => {
-        if (this.context.config.enableClose) {
-          const isChild = this.overlayContentRef.nativeElement.contains(event.target);
-          /* istanbul ignore else */
-          if (!isChild) {
+        const isChild = this.overlayContentRef.nativeElement.contains(event.target);
+        /* istanbul ignore else */
+        if (!isChild) {
+          this._click.next();
+          if (this.context.config.enableClose) {
             this._closed.next();
-            this._closed.complete();
           }
         }
       });
