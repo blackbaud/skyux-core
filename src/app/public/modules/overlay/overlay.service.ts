@@ -111,7 +111,7 @@ export class SkyOverlayService {
     const defaults: SkyOverlayConfig = {
       closeOnNavigation: true,
       enableClose: false,
-      enablePointerEvents: true,
+      enablePointerEvents: false,
       enableScroll: true,
       showBackdrop: false
     };

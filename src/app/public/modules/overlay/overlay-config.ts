@@ -11,7 +11,7 @@ export interface SkyOverlayConfig {
   enableClose?: boolean;
 
   /**
-   * Specifies if mouse interactions should be prevented from passing through the overlay.
+   * Specifies if mouse interactions should be allowed below the backdrop.
    */
   enablePointerEvents?: boolean;
 

@@ -73,7 +73,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     return this._closed.asObservable();
   }
 
-  public enablePointerEvents = true;
+  public enablePointerEvents = false;
 
   public showBackdrop = false;
 

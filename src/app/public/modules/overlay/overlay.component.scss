@@ -29,7 +29,7 @@
   position: absolute;
 }
 
-.disable-pointer-events {
+.enable-pointer-events-pass-through {
   pointer-events: none;
 
   .sky-overlay-backdrop {

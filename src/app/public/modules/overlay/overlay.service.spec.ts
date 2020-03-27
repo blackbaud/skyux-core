@@ -285,17 +285,17 @@ describe('Overlay service', () => {
 
   it('should optionally allow pointer events to pass through the overlay', fakeAsync(() => {
     let instance = createOverlay({
-      enablePointerEvents: true
+      enablePointerEvents: false // default
     });
 
-    expect(getAllOverlays().item(0)).not.toHaveCssClass('disable-pointer-events');
+    expect(getAllOverlays().item(0)).not.toHaveCssClass('enable-pointer-events-pass-through');
     destroyOverlay(instance);
 
     instance = createOverlay({
-      enablePointerEvents: false
+      enablePointerEvents: true
     });
 
-    expect(getAllOverlays().item(0)).toHaveCssClass('disable-pointer-events');
+    expect(getAllOverlays().item(0)).toHaveCssClass('enable-pointer-events-pass-through');
   }));
 
   it('should attach a component', async(async () => {
