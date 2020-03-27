@@ -63,7 +63,7 @@ export class OverlayDemoComponent {
       }]
     );
 
-    overlayInstance.outsideClick.subscribe(() => {
+    overlayInstance.backdropClick.subscribe(() => {
       console.log('Outside clicked.');
     });
 

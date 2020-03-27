@@ -65,8 +65,8 @@ let uniqueZIndex = 1001; // Omnibar is 1000
 })
 export class SkyOverlayComponent implements OnInit, OnDestroy {
 
-  public get outsideClick(): Observable<void> {
-    return this._outsideClick.asObservable();
+  public get backdropClick(): Observable<void> {
+    return this._backdropClick.asObservable();
   }
 
   public get closed(): Observable<void> {
@@ -92,7 +92,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private routerSubscription: Subscription;
 
-  private _outsideClick = new Subject<void>();
+  private _backdropClick = new Subject<void>();
 
   private _closed = new Subject<void>();
 
@@ -121,10 +121,13 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     this.removeRouteListener();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this._outsideClick.complete();
+
+    this._backdropClick.complete();
+
+    this._closed.next();
     this._closed.complete();
 
-    this._outsideClick =
+    this._backdropClick =
       this._closed =
       this.ngUnsubscribe = undefined;
   }
@@ -138,21 +141,13 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
       parent: this.injector
     });
 
-    const instance = this.targetRef.createComponent(factory, undefined, injector);
-
-    this.changeDetector.markForCheck();
-
-    return instance;
+    return this.targetRef.createComponent(factory, undefined, injector);
   }
 
   public attachTemplate<T>(templateRef: TemplateRef<T>, context: T): EmbeddedViewRef<T> {
     this.targetRef.clear();
 
-    const embeddedView = this.targetRef.createEmbeddedView(templateRef, context);
-
-    this.changeDetector.markForCheck();
-
-    return embeddedView;
+    return this.targetRef.createEmbeddedView(templateRef, context);
   }
 
   private applyConfig(config: SkyOverlayConfig): void {
@@ -166,10 +161,14 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe((event: MouseEvent) => {
         const isChild = this.overlayContentRef.nativeElement.contains(event.target);
-        const isAbove = this.coreAdapter.isTargetAboveElement(event.target, this.overlayRef);
+        const isAbove = this.coreAdapter.isTargetAboveElement(
+          event.target,
+          this.overlayRef.nativeElement
+        );
+
         /* istanbul ignore else */
         if (!isChild && !isAbove) {
-          this._outsideClick.next();
+          this._backdropClick.next();
           if (this.context.config.enableClose) {
             this._closed.next();
           }
@@ -184,7 +183,6 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
         /* istanbul ignore else */
         if (event instanceof NavigationStart) {
           this._closed.next();
-          this._closed.complete();
         }
       });
     }

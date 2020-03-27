@@ -62,7 +62,11 @@ export class SkyOverlayService {
     );
 
     instance.closed.subscribe(() => {
-      this.close(instance);
+      // Only execute the service's close method if the instance still exists.
+      // This is needed to address a race condition if the deprecated instance.close method is used instead.
+      if (SkyOverlayService.overlays.indexOf(instance) > -1) {
+        this.close(instance);
+      }
     });
 
     SkyOverlayService.overlays.push(instance);
@@ -75,15 +79,12 @@ export class SkyOverlayService {
    * @param instance The instance to close.
    */
   public close(instance: SkyOverlayInstance): void {
-    // Let the consumer's `instance.closed` event handlers fire before removing the element from the DOM.
-    setTimeout(() => {
-      this.destroyOverlay(instance);
-      instance.componentRef.destroy();
+    this.destroyOverlay(instance);
+    instance.componentRef.destroy();
 
-      if (SkyOverlayService.overlays.length === 0) {
-        this.removeHostComponent();
-      }
-    });
+    if (SkyOverlayService.overlays.length === 0) {
+      this.removeHostComponent();
+    }
   }
 
   /**
