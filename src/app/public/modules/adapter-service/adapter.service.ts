@@ -161,7 +161,7 @@ export class SkyCoreAdapterService {
     return elements;
   }
 
-  public isTargetLayerAboveElement(target: EventTarget, elementRef: ElementRef): boolean {
+  public isTargetAboveElement(target: EventTarget, elementRef: ElementRef): boolean {
     const zIndex: string = getComputedStyle(elementRef.nativeElement).zIndex;
 
     let el: HTMLElement = target as HTMLElement;

@@ -41,13 +41,16 @@ import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/takeUntil';
 
 import {
+  SkyCoreAdapterService
+} from '../adapter-service';
+
+import {
   SkyOverlayConfig
 } from './overlay-config';
 
 import {
   SkyOverlayContext
 } from './overlay-context';
-import { SkyCoreAdapterService } from '../adapter-service';
 
 let uniqueZIndex = 1001; // Omnibar is 1000
 
@@ -163,7 +166,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
       .takeUntil(this.ngUnsubscribe)
       .subscribe((event: MouseEvent) => {
         const isChild = this.overlayContentRef.nativeElement.contains(event.target);
-        const isAbove = this.coreAdapter.isTargetLayerAboveElement(event.target, this.overlayRef);
+        const isAbove = this.coreAdapter.isTargetAboveElement(event.target, this.overlayRef);
         /* istanbul ignore else */
         if (!isChild && !isAbove) {
           this._outsideClick.next();

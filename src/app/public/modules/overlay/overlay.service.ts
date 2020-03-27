@@ -76,14 +76,14 @@ export class SkyOverlayService {
    */
   public close(instance: SkyOverlayInstance): void {
     // Let the consumer's `instance.closed` event handlers fire before removing the element from the DOM.
-    setTimeout(() => {
+    // setTimeout(() => {
       this.destroyOverlay(instance);
       instance.componentRef.destroy();
 
       if (SkyOverlayService.overlays.length === 0) {
         this.removeHostComponent();
       }
-    });
+    // });
   }
 
   /**
