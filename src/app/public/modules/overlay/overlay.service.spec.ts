@@ -52,7 +52,7 @@ import {
   SkyOverlayService
 } from './overlay.service';
 
-describe('Overlay service', () => {
+fdescribe('Overlay service', () => {
 
   let service: SkyOverlayService;
   let fixture: ComponentFixture<OverlayFixtureComponent>;

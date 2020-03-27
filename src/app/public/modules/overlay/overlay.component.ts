@@ -47,6 +47,9 @@ import {
 import {
   SkyOverlayContext
 } from './overlay-context';
+import { SkyCoreAdapterService } from '../adapter-service';
+
+let uniqueZIndex = 1001; // Omnibar is 1000
 
 /**
  * @internal
@@ -59,18 +62,25 @@ import {
 })
 export class SkyOverlayComponent implements OnInit, OnDestroy {
 
-  public get click(): Observable<void> {
-    return this._click.asObservable();
+  public get outsideClick(): Observable<void> {
+    return this._outsideClick.asObservable();
   }
 
   public get closed(): Observable<void> {
     return this._closed.asObservable();
   }
 
+  public enablePointerEvents = true;
+
   public showBackdrop = false;
+
+  public zIndex: string = `${++uniqueZIndex}`;
 
   @ViewChild('overlayContentRef', { read: ElementRef })
   private overlayContentRef: ElementRef;
+
+  @ViewChild('overlayRef', { read: ElementRef })
+  private overlayRef: ElementRef;
 
   @ViewChild('target', { read: ViewContainerRef })
   private targetRef: ViewContainerRef;
@@ -79,15 +89,15 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private routerSubscription: Subscription;
 
-  private _click = new Subject<void>();
+  private _outsideClick = new Subject<void>();
 
   private _closed = new Subject<void>();
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private resolver: ComponentFactoryResolver,
-    private elementRef: ElementRef,
     private injector: Injector,
+    private coreAdapter: SkyCoreAdapterService,
     private context: SkyOverlayContext,
     @Optional() private router?: Router
   ) { }
@@ -108,10 +118,10 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     this.removeRouteListener();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
-    this._click.complete();
+    this._outsideClick.complete();
     this._closed.complete();
 
-    this._click =
+    this._outsideClick =
       this._closed =
       this.ngUnsubscribe = undefined;
   }
@@ -144,17 +154,19 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private applyConfig(config: SkyOverlayConfig): void {
     this.showBackdrop = config.showBackdrop;
+    this.enablePointerEvents = config.enablePointerEvents;
     this.changeDetector.markForCheck();
   }
 
   private addBackdropClickListener(): void {
-    Observable.fromEvent(this.elementRef.nativeElement, 'click')
+    Observable.fromEvent(window.document, 'click')
       .takeUntil(this.ngUnsubscribe)
       .subscribe((event: MouseEvent) => {
         const isChild = this.overlayContentRef.nativeElement.contains(event.target);
+        const isAbove = this.coreAdapter.isTargetLayerAboveElement(event.target, this.overlayRef);
         /* istanbul ignore else */
-        if (!isChild) {
-          this._click.next();
+        if (!isChild && !isAbove) {
+          this._outsideClick.next();
           if (this.context.config.enableClose) {
             this._closed.next();
           }

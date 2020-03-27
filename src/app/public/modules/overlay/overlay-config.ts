@@ -11,6 +11,11 @@ export interface SkyOverlayConfig {
   enableClose?: boolean;
 
   /**
+   * Specifies if mouse interactions should be prevented from passing through the overlay.
+   */
+  enablePointerEvents?: boolean;
+
+  /**
    * Specifies if window scrolling is disabled when the overlay is opened.
    */
   enableScroll?: boolean;

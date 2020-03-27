@@ -27,8 +27,8 @@ export class SkyOverlayInstance {
   /**
    * Emits when the overlay is clicked (but not its content).
    */
-  public get click(): Observable<void> {
-    return this._click.asObservable();
+  public get outsideClick(): Observable<void> {
+    return this._outsideClick.asObservable();
   }
 
   /**
@@ -38,7 +38,7 @@ export class SkyOverlayInstance {
     return this._closed.asObservable();
   }
 
-  private _click = new Subject<void>();
+  private _outsideClick = new Subject<void>();
 
   private _closed = new Subject<void>();
 
@@ -52,8 +52,9 @@ export class SkyOverlayInstance {
     this.componentRef.instance.closed.subscribe(() => {
       this.close();
     });
-    this.componentRef.instance.click.subscribe(() => {
-      this._click.next();
+
+    this.componentRef.instance.outsideClick.subscribe(() => {
+      this._outsideClick.next();
     });
   }
 
@@ -89,7 +90,7 @@ export class SkyOverlayInstance {
   public close(): void {
     this._closed.next();
     this._closed.complete();
-    this._click.complete();
+    this._outsideClick.complete();
   }
 
 }

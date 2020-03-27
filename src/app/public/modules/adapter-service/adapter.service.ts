@@ -161,6 +161,25 @@ export class SkyCoreAdapterService {
     return elements;
   }
 
+  public isTargetLayerAboveElement(target: EventTarget, elementRef: ElementRef): boolean {
+    const zIndex: string = getComputedStyle(elementRef.nativeElement).zIndex;
+
+    let el: HTMLElement = target as HTMLElement;
+
+    while (el) {
+      let targetZIndex = getComputedStyle(el).zIndex;
+      if (targetZIndex !== '' && targetZIndex !== 'auto') {
+        if (+targetZIndex > +zIndex) {
+          return true;
+        }
+      }
+
+      el = el.parentElement;
+    }
+
+    return false;
+  }
+
   private focusFirstElement(list: Array<HTMLElement>): boolean {
     if (list.length > 0) {
       list[0].focus();

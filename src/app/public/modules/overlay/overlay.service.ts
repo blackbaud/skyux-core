@@ -75,12 +75,15 @@ export class SkyOverlayService {
    * @param instance The instance to close.
    */
   public close(instance: SkyOverlayInstance): void {
-    this.destroyOverlay(instance);
-    instance.componentRef.destroy();
+    // Let the consumer's `instance.closed` event handlers fire before removing the element from the DOM.
+    setTimeout(() => {
+      this.destroyOverlay(instance);
+      instance.componentRef.destroy();
 
-    if (SkyOverlayService.overlays.length === 0) {
-      this.removeHostComponent();
-    }
+      if (SkyOverlayService.overlays.length === 0) {
+        this.removeHostComponent();
+      }
+    });
   }
 
   /**
@@ -107,6 +110,7 @@ export class SkyOverlayService {
     const defaults: SkyOverlayConfig = {
       closeOnNavigation: true,
       enableClose: false,
+      enablePointerEvents: true,
       enableScroll: true,
       showBackdrop: false
     };
