@@ -12,7 +12,7 @@ import {
 
 import {
   SkyCoreAdapterModule
-} from '../adapter-service';
+} from '../adapter-service/adapter.module';
 
 import {
   SkyDynamicComponentModule
