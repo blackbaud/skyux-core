@@ -164,7 +164,7 @@ export class SkyCoreAdapterService {
   /**
    * Checks if an event target has a higher z-index than a given element.
    * @param target The event target element.
-   * @param elementRef The element to test against. A z-index must be explicitly set for this element.
+   * @param element The element to test against. A z-index must be explicitly set for this element.
    */
   public isTargetAboveElement(target: EventTarget, element: HTMLElement): boolean {
     const zIndex: string = getComputedStyle(element).zIndex;
