@@ -235,7 +235,7 @@ describe('Core adapter service', () => {
       expect(result).toEqual(true);
     });
 
-    it('should walk parents until z-index is found', () => {
+    it('should search parents recursively until z-index is found', () => {
       const div1 = document.createElement('div');
       const div1Parent = document.createElement('div');
       div1Parent.style.position = 'fixed';
