@@ -2,8 +2,11 @@ export * from './modules/adapter-service/adapter.module';
 export * from './modules/adapter-service/adapter.service';
 export * from './modules/adapter-service/focusable-children-options';
 
+export * from './modules/affix/affix-auto-fit-context';
 export * from './modules/affix/affix-config';
 export * from './modules/affix/affix-horizontal-alignment';
+export * from './modules/affix/affix-offset';
+export * from './modules/affix/affix-offset-change';
 export * from './modules/affix/affix-placement';
 export * from './modules/affix/affix-placement-change';
 export * from './modules/affix/affix-vertical-alignment';

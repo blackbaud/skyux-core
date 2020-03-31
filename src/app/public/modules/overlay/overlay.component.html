@@ -1,12 +1,14 @@
 <div
   class="sky-overlay"
+  [style.zIndex]="zIndex"
   [ngClass]="{
-    'sky-overlay-ignore-pointer-events': allowClickThrough
+    'enable-pointer-events-pass-through': enablePointerEvents
   }"
+  #overlayRef
 >
   <div
     class="sky-overlay-content"
-    (click)="$event.stopPropagation();"
+    #overlayContentRef
   >
     <ng-template
       #target

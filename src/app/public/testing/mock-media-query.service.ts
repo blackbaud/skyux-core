@@ -4,20 +4,14 @@ import {
 } from '@angular/core';
 
 import {
-  SkyMediaBreakpoints
-} from '../modules/media-query/media-breakpoints';
-
-import {
-  SkyMediaQueryListener
-} from '../modules/media-query/media-query-listener';
-
-import {
+  SkyMediaBreakpoints,
+  SkyMediaQueryListener,
   SkyMediaQueryService
-} from '../modules/media-query/media-query.service';
+} from '@skyux/core';
 
 import {
   BehaviorSubject,
- Subscription
+  Subscription
 } from 'rxjs';
 
 @Injectable()

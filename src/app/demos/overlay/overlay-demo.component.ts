@@ -42,6 +42,7 @@ export class OverlayDemoComponent {
     this.createOverlay({
       closeOnNavigation: false,
       enableClose: true,
+      enablePointerEvents: true,
       enableScroll: false,
       showBackdrop: true
     });
@@ -62,13 +63,17 @@ export class OverlayDemoComponent {
       }]
     );
 
+    overlayInstance.backdropClick.subscribe(() => {
+      console.log('Outside clicked.');
+    });
+
     overlayInstance.closed.subscribe(() => {
       this.removeLocalInstance(overlayInstance);
     });
 
     // Manually close the overlay instance when a button is clicked in the attached component.
     componentInstance.closeClicked.subscribe(() => {
-      overlayInstance.close();
+      this.overlayService.close(overlayInstance);
     });
 
     this.overlays.push(overlayInstance);
