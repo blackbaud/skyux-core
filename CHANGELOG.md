@@ -1,3 +1,9 @@
+# 4.0.0-rc.3 (2020-03-31)
+
+### New features
+
+- Added bug fixes and features from the `master` branch. [#150](https://github.com/blackbaud/skyux-core/pull/150)
+
 # 3.14.0 (2020-03-30)
 
 - Added the `enablePointerEvents` option to `SkyOverlayConfig` to enable click events to pass through the overlay's backdrop. [#148](https://github.com/blackbaud/skyux-core/pull/148)
