@@ -32,8 +32,6 @@
 - Added the missing `SkyViewkeeperHostOptions` to the exports API. [#137](https://github.com/blackbaud/skyux-core/pull/137)
 - Added the `@Injectable()` decorator to the `SkyViewkeeperHostOptions` class to satisfy build requirements. [#137](https://github.com/blackbaud/skyux-core/pull/137)
 
-
-
 # 3.11.1 (2020-02-27)
 
 - Fixed internal circular references in the dock component. [#133](https://github.com/blackbaud/skyux-core/pull/133)
