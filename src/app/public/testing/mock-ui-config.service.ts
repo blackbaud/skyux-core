@@ -3,12 +3,12 @@ import {
 } from '@angular/core';
 
 import {
-  of as observableOf
-} from 'rxjs';
+  SkyUIConfigService
+} from '@skyux/core';
 
 import {
-  SkyUIConfigService
-} from '../modules/ui-config/ui-config.service';
+  of as observableOf
+} from 'rxjs';
 
 @Injectable()
 export class MockSkyUIConfigService extends SkyUIConfigService {

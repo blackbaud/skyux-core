@@ -5,9 +5,11 @@ import {
   ComponentFactoryResolver,
   ComponentRef,
   ElementRef,
+  EmbeddedViewRef,
   Injector,
   OnDestroy,
   OnInit,
+  Optional,
   StaticProvider,
   TemplateRef,
   Type,
@@ -21,8 +23,9 @@ import {
 } from '@angular/router';
 
 import {
-  fromEvent as observableFromEvent,
+  fromEvent,
   Observable,
+  of as observableOf,
   Subject,
   Subscription
 } from 'rxjs';
@@ -32,12 +35,18 @@ import {
 } from 'rxjs/operators';
 
 import {
+  SkyCoreAdapterService
+} from '../adapter-service/adapter.service';
+
+import {
   SkyOverlayConfig
 } from './overlay-config';
 
 import {
   SkyOverlayContext
 } from './overlay-context';
+
+let uniqueZIndex = 1001; // Omnibar is 1000
 
 /**
  * @internal
@@ -50,13 +59,31 @@ import {
 })
 export class SkyOverlayComponent implements OnInit, OnDestroy {
 
+  public get backdropClick(): Observable<void> {
+    return this._backdropClick.asObservable();
+  }
+
   public get closed(): Observable<void> {
     return this._closed.asObservable();
   }
 
-  public allowClickThrough = false;
+  public enablePointerEvents = false;
 
   public showBackdrop = false;
+
+  public zIndex: string = `${++uniqueZIndex}`;
+
+  @ViewChild('overlayContentRef', {
+    read: ElementRef,
+    static: true
+  })
+  private overlayContentRef: ElementRef;
+
+  @ViewChild('overlayRef', {
+    read: ElementRef,
+    static: true
+  })
+  private overlayRef: ElementRef;
 
   @ViewChild('target', {
     read: ViewContainerRef,
@@ -68,23 +95,25 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
 
   private routerSubscription: Subscription;
 
+  private _backdropClick = new Subject<void>();
+
   private _closed = new Subject<void>();
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private resolver: ComponentFactoryResolver,
-    private elementRef: ElementRef,
     private injector: Injector,
-    private router: Router,
-    private context: SkyOverlayContext
+    private coreAdapter: SkyCoreAdapterService,
+    private context: SkyOverlayContext,
+    @Optional() private router?: Router
   ) { }
 
   public ngOnInit(): void {
     this.applyConfig(this.context.config);
 
-    if (this.context.config.enableClose) {
+    setTimeout(() => {
       this.addBackdropClickListener();
-    }
+    });
 
     if (this.context.config.closeOnNavigation) {
       this.addRouteListener();
@@ -95,10 +124,20 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     this.removeRouteListener();
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
+
+    this._backdropClick.complete();
+
+    this._closed.next();
     this._closed.complete();
+
+    this._backdropClick =
+      this._closed =
+      this.ngUnsubscribe = undefined;
   }
 
   public attachComponent<C>(component: Type<C>, providers: StaticProvider[] = []): ComponentRef<C> {
+    this.targetRef.clear();
+
     const factory = this.resolver.resolveComponentFactory(component);
     const injector = Injector.create({
       providers,
@@ -108,33 +147,48 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     return this.targetRef.createComponent(factory, undefined, injector);
   }
 
-  public attachTemplate<T>(templateRef: TemplateRef<T>, context: T): void {
-    this.targetRef.createEmbeddedView(templateRef, context);
+  public attachTemplate<T>(templateRef: TemplateRef<T>, context: T): EmbeddedViewRef<T> {
+    this.targetRef.clear();
+
+    return this.targetRef.createEmbeddedView(templateRef, context);
   }
 
   private applyConfig(config: SkyOverlayConfig): void {
     this.showBackdrop = config.showBackdrop;
-    this.allowClickThrough = (!this.showBackdrop && !config.enableClose);
+    this.enablePointerEvents = config.enablePointerEvents;
     this.changeDetector.markForCheck();
   }
 
   private addBackdropClickListener(): void {
-    observableFromEvent(this.elementRef.nativeElement, 'click')
+    fromEvent(window.document, 'click')
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe(() => {
-        this._closed.next();
-        this._closed.complete();
+      .subscribe((event: MouseEvent) => {
+        const isChild = this.overlayContentRef.nativeElement.contains(event.target);
+        const isAbove = this.coreAdapter.isTargetAboveElement(
+          event.target,
+          this.overlayRef.nativeElement
+        );
+
+        /* istanbul ignore else */
+        if (!isChild && !isAbove) {
+          this._backdropClick.next();
+          if (this.context.config.enableClose) {
+            this._closed.next();
+          }
+        }
       });
   }
 
   private addRouteListener(): void {
-    this.routerSubscription = this.router.events.subscribe(event => {
-      /* istanbul ignore else */
-      if (event instanceof NavigationStart) {
-        this._closed.next();
-        this._closed.complete();
-      }
-    });
+    /*istanbul ignore else*/
+    if (this.router) {
+      this.routerSubscription = this.router.events.subscribe(event => {
+        /* istanbul ignore else */
+        if (event instanceof NavigationStart) {
+          this._closed.next();
+        }
+      });
+    }
   }
 
   private removeRouteListener(): void {
