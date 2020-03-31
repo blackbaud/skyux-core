@@ -54,7 +54,7 @@
     "@skyux/core": "4.0.0-rc.2",
     "@skyux/docs-tools": "4.0.0-rc.1",
     "@skyux/forms": "4.0.0-rc.0",
-    "@skyux/http": "4.0.0-rc.2",
+    "@skyux/http": "4.0.0-rc.3",
     "@skyux/i18n": "4.0.0-rc.2",
     "@skyux/indicators": "4.0.0-rc.2",
     "@skyux/inline-form": "4.0.0-rc.0",
