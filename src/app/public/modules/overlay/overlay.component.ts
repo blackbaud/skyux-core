@@ -25,7 +25,6 @@ import {
 import {
   fromEvent,
   Observable,
-  of as observableOf,
   Subject,
   Subscription
 } from 'rxjs';
