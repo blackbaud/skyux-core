@@ -89,6 +89,16 @@ export class SkyDynamicComponentService {
 
     this.applicationRef.detachView(componentRef.hostView);
     componentRef.destroy();
+
+    // Angular keeps dynamically generated component nodes in the DOM during unit tests.
+    // This can make querying difficult because the older DOM nodes still exist and produce
+    // inconsistent results.
+    // (Ignoring from coverage since this branch will only be hit by consumer unit tests.)
+    /* istanbul ignore if */
+    const componentElement = componentRef.location.nativeElement;
+    if (document.body.contains(componentElement)) {
+      document.body.removeChild(componentElement);
+    }
   }
 
   private getRootNode<T>(componentRef: ComponentRef<T>): any {
