@@ -85,12 +85,12 @@ describe('Affix', function () {
     await takeScreenshots('window');
     await element(by.id('screenshot-affix-button-overflow-parent')).click();
     done();
-  });
+  }, 60000);
 
   it('should match scroll parent screenshots', async function (done) {
     await element(by.id('screenshot-affix-button-overflow-parent')).click();
     await takeScreenshots('scroll-parent');
     done();
-  });
+  }, 60000);
 
 });
