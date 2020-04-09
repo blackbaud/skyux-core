@@ -25,6 +25,10 @@ import {
 } from 'rxjs/operators';
 
 import {
+  SkyCoreAdapterService
+} from '../adapter-service/adapter.service';
+
+import {
   OverlayFixtureContext
 } from './fixtures/overlay-context.fixture';
 
@@ -343,49 +347,33 @@ describe('Overlay service', () => {
     expect(getAllOverlays().item(0).textContent).toContain('Templated content ID: 5');
   }));
 
-  it('should be accessible', async(async () => {
+  it('should be accessible', async(async (done: DoneFn) => {
     const overlay = service.create();
 
     fixture.detectChanges();
 
     await fixture.whenStable();
 
-    await expect(getAllOverlays().item(0)).toBeAccessible();
+    expect(getAllOverlays().item(0)).toBeAccessible(async () => {
+      service.close(overlay);
 
-    service.close(overlay);
+      fixture.detectChanges();
 
-    fixture.detectChanges();
+      // Create overlay with all options turned on.
+      service.create({
+        closeOnNavigation: false,
+        enableClose: true,
+        enableScroll: false,
+        showBackdrop: true
+      });
 
-    // Create overlay with all options turned on.
-    service.create({
-      closeOnNavigation: false,
-      enableClose: true,
-      enableScroll: false,
-      showBackdrop: true
+      fixture.detectChanges();
+
+      await fixture.whenStable();
+
+      expect(getAllOverlays().item(0)).toBeAccessible(done);
     });
 
-    fixture.detectChanges();
-
-    await fixture.whenStable();
-
-    await expect(getAllOverlays().item(0)).toBeAccessible();
-
-  }));
-
-  it('should remove the host component if all overlays destroyed', fakeAsync(() => {
-    createOverlay();
-    createOverlay();
-
-    let hostComponents = document.querySelectorAll('sky-overlay-host');
-
-    expect(hostComponents.length).toEqual(1);
-
-    service.closeAll();
-    fixture.detectChanges();
-    tick();
-
-    hostComponents = document.querySelectorAll('sky-overlay-host');
-    expect(hostComponents.length).toEqual(0);
   }));
 
   it('should emit when overlay is closed by the instance (deprecated)', fakeAsync(() => {
@@ -440,5 +428,24 @@ describe('Overlay service', () => {
     const zIndex2 = getComputedStyle(overlays.item(1)).zIndex;
     expect(zIndex2 > zIndex1).toEqual(true);
   }));
+
+  it('should appear above modals', fakeAsync(inject(
+    [SkyCoreAdapterService],
+    (adapter: SkyCoreAdapterService) => {
+      createOverlay();
+
+      const modal = fixture.componentInstance.createModal();
+
+      fixture.detectChanges();
+      tick();
+
+      expect(adapter.isTargetAboveElement(
+        getAllOverlays().item(0),
+        document.querySelector('.sky-modal-host-backdrop')
+      )).toEqual(true);
+
+      modal.close();
+    }
+  )));
 
 });
