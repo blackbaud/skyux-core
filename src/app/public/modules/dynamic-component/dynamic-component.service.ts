@@ -96,8 +96,8 @@ export class SkyDynamicComponentService {
     // (Ignoring from coverage since this branch will only be hit by consumer unit tests.)
     /* istanbul ignore if */
     const componentElement = componentRef.location.nativeElement;
-    if (document.body.contains(componentElement)) {
-      document.body.removeChild(componentElement);
+    if (componentElement.parentNode !== null) {
+      componentElement.parentNode.removeChild(componentElement);
     }
   }
 
