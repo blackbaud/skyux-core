@@ -1,3 +1,9 @@
+# 4.0.0-rc.4 (2020-04-09)
+
+### New features
+
+- Added bug fixes and features from the `master` branch. [#158](https://github.com/blackbaud/skyux-core/pull/158)
+
 # 3.14.2 (2020-04-09)
 
 - Fixed the overlay service to remove overlay component DOM nodes during unit tests. [#156](https://github.com/blackbaud/skyux-core/pull/156)
