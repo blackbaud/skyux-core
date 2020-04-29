@@ -18,13 +18,13 @@ export class SkyNumericDemoComponent implements OnInit {
   ) { }
 
   public ngOnInit(): void {
-    // const quantity = 40.50;
-    // const formatted = this.numericService.formatNumber(quantity, {
-    //   digits: 2,
-    //   format: 'currency',
-    //   iso: 'USD'
-    // });
+    const quantity = 40.50;
+    const formatted = this.numericService.formatNumber(quantity, {
+      digits: 2,
+      format: 'currency',
+      iso: 'USD'
+    });
 
-    // console.log(`The number, ${quantity}, is formatted as ${formatted}.`);
+    console.log(`The number, ${quantity}, is formatted as ${formatted}.`);
   }
 }

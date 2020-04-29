@@ -265,7 +265,7 @@ describe('Numeric service', () => {
     expect(skyNumeric.formatNumber(value, options)).toBe('1.0001');
   });
 
-  it('should handle trailing 0s and commas', () => {
+  it('should handle both trailing 0s and commas', () => {
     const value = 1234.5;
     const options = new NumericOptions();
     options.digits = 2;
