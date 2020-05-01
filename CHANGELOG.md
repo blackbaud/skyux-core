@@ -1,6 +1,6 @@
 # 3.14.3 (2020-05-01)
 
-- Fixed `SkyNumericPipe` to properly format decimals for numbers over one thousand. [#161](https://github.com/blackbaud/skyux-core/pull/161)
+- Fixed `SkyNumericPipe` to properly format decimals for numbers over 1000. [#161](https://github.com/blackbaud/skyux-core/pull/161)
 
 # 3.14.2 (2020-04-09)
 
