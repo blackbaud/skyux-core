@@ -13,7 +13,7 @@ import {
   SkyAffixPlacement,
   SkyAffixPlacementChange,
   SkyAffixVerticalAlignment
-} from '../../public';
+} from '../../public/public_api';
 
 @Component({
   selector: 'app-affix-demo',

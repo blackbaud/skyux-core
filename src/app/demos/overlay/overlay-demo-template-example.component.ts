@@ -7,7 +7,7 @@ import {
 import {
   SkyOverlayInstance,
   SkyOverlayService
-} from '../../public';
+} from '../../public/public_api';
 
 @Component({
   selector: 'app-overlay-demo-template-example',

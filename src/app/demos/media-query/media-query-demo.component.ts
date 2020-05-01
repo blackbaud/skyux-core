@@ -10,7 +10,7 @@ import {
 import {
   SkyMediaBreakpoints,
   SkyMediaQueryService
-} from '../../public';
+} from '../../public/public_api';
 
 @Component({
   selector: 'sky-media-query-demo',
