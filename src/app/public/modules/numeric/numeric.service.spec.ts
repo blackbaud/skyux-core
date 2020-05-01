@@ -1,9 +1,5 @@
 import {
-  SkyLibResourcesTestService
-} from '@skyux/i18n/testing';
-
-import {
-  SkyIntlNumberFormatStyle
+  SkyIntlNumberFormatStyle, SkyLibResourcesService
 } from '@skyux/i18n';
 
 import {
@@ -17,12 +13,24 @@ import {
 import {
   SkyNumericService
 } from './numeric.service';
-
-const skyNumeric = new SkyNumericService(
-  new SkyLibResourcesTestService() as any
-);
+import { TestBed, inject } from '@angular/core/testing';
+import { SkyNumericModule } from './numeric.module';
 
 describe('Numeric service', () => {
+  let skyNumeric: SkyNumericService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        SkyNumericModule
+      ]
+    });
+  });
+
+  beforeEach(inject([SkyLibResourcesService], (resourcesService: SkyLibResourcesService) => {
+    skyNumeric = new SkyNumericService(resourcesService);
+  }));
+
   it('formats 0 with 0 digits as 0', () => {
     const value = 0;
     const options = new NumericOptions();
@@ -263,6 +271,16 @@ describe('Numeric service', () => {
     options.minDigits = 3;
     options.digits = 4;
     expect(skyNumeric.formatNumber(value, options)).toBe('1.0001');
+  });
+
+  it('should handle both trailing 0s and commas', () => {
+    const value = 1234.5;
+    const options = new NumericOptions();
+    options.digits = 2;
+    options.format = 'currency';
+    options.iso = 'USD';
+    options.truncate = false;
+    expect(skyNumeric.formatNumber(value, options)).toBe('$1,234.50');
   });
 
   describe('roundNumber', () => {
