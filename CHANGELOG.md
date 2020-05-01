@@ -1,3 +1,7 @@
+# 4.0.0-rc.5 (2020-05-01)
+
+- Added bug fixes and features from the `master` branch. [#163](https://github.com/blackbaud/skyux-core/pull/163)
+
 # 3.14.3 (2020-05-01)
 
 - Fixed `SkyNumericPipe` to properly format decimals for numbers over 1000. [#161](https://github.com/blackbaud/skyux-core/pull/161)
