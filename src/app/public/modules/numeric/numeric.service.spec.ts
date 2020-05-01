@@ -1,9 +1,5 @@
 import {
-  SkyLibResourcesTestService
-} from '@skyux/i18n/testing';
-
-import {
-  SkyIntlNumberFormatStyle
+  SkyIntlNumberFormatStyle, SkyLibResourcesService
 } from '@skyux/i18n';
 
 import {
@@ -17,12 +13,24 @@ import {
 import {
   SkyNumericService
 } from './numeric.service';
-
-const skyNumeric = new SkyNumericService(
-  new SkyLibResourcesTestService() as any
-);
+import { TestBed, inject } from '@angular/core/testing';
+import { SkyNumericModule } from './numeric.module';
 
 describe('Numeric service', () => {
+  let skyNumeric: SkyNumericService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        SkyNumericModule
+      ]
+    });
+  });
+
+  beforeEach(inject([SkyLibResourcesService], (resourcesService: SkyLibResourcesService) => {
+    skyNumeric = new SkyNumericService(resourcesService);
+  }));
+
   it('formats 0 with 0 digits as 0', () => {
     const value = 0;
     const options = new NumericOptions();
