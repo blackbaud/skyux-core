@@ -6,7 +6,7 @@
 
 ### Breaking changes
 
-- Dropped support for `rxjs@5`. Consumers may install `rxjs-compat@^6` to support older versions of `rxjs`. [#122](https://github.com/blackbaud/skyux-core/pull/122)
+- Dropped support for `rxjs@5`. Consumers can install `rxjs-compat@^6` to support older versions of `rxjs`. [#122](https://github.com/blackbaud/skyux-core/pull/122)
 - Removed `SkyWindowRefService` and `SkyFormat`. Use `SkyAppWindowRef` and `SkyAppFormat` instead. [#122](https://github.com/blackbaud/skyux-core/pull/122)
 
 # 4.0.0-rc.5 (2020-05-01)
@@ -94,7 +94,7 @@
 
 ### Breaking changes
 
-- Dropped support for `rxjs@5`. Consumers may install `rxjs-compat@^6` to support older versions of `rxjs`. [#122](https://github.com/blackbaud/skyux-core/pull/122)
+- Dropped support for `rxjs@5`. Consumers can install `rxjs-compat@^6` to support older versions of `rxjs`. [#122](https://github.com/blackbaud/skyux-core/pull/122)
 - Removed `SkyWindowRefService` and `SkyFormat`. Use `SkyAppWindowRef` and `SkyAppFormat` instead. [#122](https://github.com/blackbaud/skyux-core/pull/122)
 
 # 3.10.1 (2020-02-07)
