@@ -1,12 +1,6 @@
 import {
-  registerLocaleData
-} from '@angular/common';
-
-import {
   Component
 } from '@angular/core';
-
-import localeEs from '@angular/common/locales/es';
 
 import {
   SkyAppLocaleProvider
@@ -34,9 +28,5 @@ class MockLocaleProvider extends SkyAppLocaleProvider {
 export class NumericPipeFixtureComponent {
 
   public locale: string;
-
-  constructor() {
-    registerLocaleData(localeEs, 'es');
-  }
 
 }

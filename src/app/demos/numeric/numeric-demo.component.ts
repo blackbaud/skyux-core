@@ -4,13 +4,16 @@ import {
 } from '@angular/core';
 
 import {
-  SkyNumericService
-} from '../../public';
-import { SkyAppLocaleProvider } from '@skyux/i18n';
-import { Observable } from 'rxjs';
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
 
-import localeEs from '@angular/common/locales/es';
-import { registerLocaleData } from '@angular/common';
+import {
+  Observable
+} from 'rxjs';
+
+import {
+  SkyNumericService
+} from '../../public/public_api';
 
 class MockLocaleProvider extends SkyAppLocaleProvider {
   public getLocaleInfo() {
@@ -49,9 +52,7 @@ export class SkyNumericDemoComponent implements OnInit {
 
   constructor(
     private numericService: SkyNumericService
-  ) {
-    registerLocaleData(localeEs, 'es');
-  }
+  ) {}
 
   public ngOnInit(): void {
     const quantity = 40.50;
