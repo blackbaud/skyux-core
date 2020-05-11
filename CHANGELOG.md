@@ -1,3 +1,14 @@
+# 4.0.0 (2020-05-11)
+
+### New features
+
+- Updated the pipeline to transpile to the [Angular Package Format](https://docs.google.com/document/d/1CZC2rcpxffTDfRDs6p1cfbmKNLA6x5O-NtkJglDaBVs/preview). [#122](https://github.com/blackbaud/skyux-core/pull/122)
+
+### Breaking changes
+
+- Dropped support for `rxjs@5`. Consumers may install `rxjs-compat@^6` to support older versions of `rxjs`. [#122](https://github.com/blackbaud/skyux-core/pull/122)
+- Removed `SkyWindowRefService` and `SkyFormat`. Use `SkyAppWindowRef` and `SkyAppFormat` instead. [#122](https://github.com/blackbaud/skyux-core/pull/122)
+
 # 4.0.0-rc.5 (2020-05-01)
 
 - Added bug fixes and features from the `master` branch. [#163](https://github.com/blackbaud/skyux-core/pull/163)

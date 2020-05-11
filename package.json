@@ -1,6 +1,6 @@
 {
   "name": "@skyux/core",
-  "version": "4.0.0-rc.5",
+  "version": "4.0.0",
   "description": "SKY UX Core",
   "scripts": {
     "build": "skyux build-public-library",
@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/blackbaud/skyux-core#readme",
   "peerDependencies": {
-    "@angular/common": "^9.1.1",
-    "@angular/core": "^9.1.1",
-    "@skyux/i18n": "^4.0.0-rc.3"
+    "@angular/common": "^9.1.6",
+    "@angular/core": "^9.1.6",
+    "@skyux/i18n": "^4.0.0"
   },
   "dependencies": {},
   "devDependencies": {
@@ -54,7 +54,7 @@
     "@skyux/docs-tools": "4.0.0-rc.4",
     "@skyux/forms": "4.0.0-rc.1",
     "@skyux/http": "4.0.0-rc.4",
-    "@skyux/i18n": "4.0.0-rc.5",
+    "@skyux/i18n": "4.0.0",
     "@skyux/indicators": "4.0.0-rc.5",
     "@skyux/inline-form": "4.0.0-rc.0",
     "@skyux/layout": "4.0.0-rc.4",
