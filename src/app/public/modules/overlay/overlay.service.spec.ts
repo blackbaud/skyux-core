@@ -376,14 +376,6 @@ describe('Overlay service', () => {
 
   }));
 
-  it('should emit when overlay is closed by the instance (deprecated)', fakeAsync(() => {
-    const instance = createOverlay();
-    const closedSpy = spyOn(instance['_closed'], 'next').and.callThrough();
-    instance.close();
-    fixture.detectChanges();
-    expect(closedSpy).toHaveBeenCalled();
-  }));
-
   it('should emit when overlay is closed by the service', fakeAsync(() => {
     const instance = createOverlay();
     const closedSpy = spyOn(instance['_closed'], 'next').and.callThrough();

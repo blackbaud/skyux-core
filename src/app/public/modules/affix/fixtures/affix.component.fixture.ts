@@ -21,6 +21,10 @@ import {
 } from '../affix-placement';
 
 import {
+  SkyAffixPlacementChange
+} from '../affix-placement-change';
+
+import {
   SkyAffixVerticalAlignment
 } from '../affix-vertical-alignment';
 
@@ -85,7 +89,7 @@ export class AffixFixtureComponent {
 
   public onAffixOverflowScroll(): void {}
 
-  public onAffixPlacementChange(): void { }
+  public onAffixPlacementChange(change: SkyAffixPlacementChange): void { }
 
   public scrollTargetToLeft(offset: number = 0): void {
     const baseElement: HTMLDivElement = this.baseRef.nativeElement;
