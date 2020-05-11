@@ -54,7 +54,7 @@ export class OverlayDemoTemplateExampleComponent {
   }
 
   private closeOverlay(): void {
-    this.overlay.close();
+    this.overlayService.close(this.overlay);
     this.overlay = undefined;
   }
 
