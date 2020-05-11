@@ -1,6 +1,11 @@
 import {
-  TestBed
+  TestBed,
+  ComponentFixture
 } from '@angular/core/testing';
+
+import {
+  NumericPipeFixtureComponent
+} from './fixtures/numeric.pipe.fixture';
 
 import {
   SkyNumericModule
@@ -30,6 +35,9 @@ describe('Numeric pipe', () => {
     expectedConfig.iso = 'USD';
 
     TestBed.configureTestingModule({
+      declarations: [
+        NumericPipeFixtureComponent
+      ],
       imports: [
         SkyNumericModule
       ]
@@ -77,5 +85,36 @@ describe('Numeric pipe', () => {
     expect(() => {
       pipe.transform(42.87549, options);
     }).toThrowError();
+  });
+
+  describe('locale support', () => {
+    let fixture: ComponentFixture<NumericPipeFixtureComponent>;
+    let component: NumericPipeFixtureComponent;
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(NumericPipeFixtureComponent);
+      component = fixture.componentInstance;
+    });
+
+    it('should allow overriding SkyAppLocaleProvider', () => {
+      fixture.detectChanges();
+
+      const el = document.querySelector('p');
+
+      // Expect spanish default format of ###.###.###,## CUR[SYMBOL].
+      expect(el.innerText).toEqual('1.234.567,89 US$');
+    });
+
+    it('should properly format date based on pipe locale parameter', () => {
+      component.locale = 'ru';
+
+      fixture.detectChanges();
+
+      const el = document.querySelector('p');
+
+      console.log(el.innerText);
+      // Expect russian default format of ### ### ###,## [SYMBOL].
+      expect(el.innerText).toEqual('1 234 567,89 $');
+    });
   });
 });
