@@ -1,10 +1,20 @@
 import {
-  SkyIntlNumberFormatStyle, SkyLibResourcesService
+  inject,
+  TestBed
+} from '@angular/core/testing';
+
+import {
+  SkyIntlNumberFormatStyle,
+  SkyLibResourcesService
 } from '@skyux/i18n';
 
 import {
   SkyNumberFormatUtility
 } from '../shared/number-format/number-format-utility';
+
+import {
+  SkyNumericModule
+} from './numeric.module';
 
 import {
   NumericOptions
@@ -13,8 +23,6 @@ import {
 import {
   SkyNumericService
 } from './numeric.service';
-import { TestBed, inject } from '@angular/core/testing';
-import { SkyNumericModule } from './numeric.module';
 
 describe('Numeric service', () => {
   let skyNumeric: SkyNumericService;
