@@ -3,9 +3,6 @@
   "name": "skyux-core",
   "mode": "easy",
   "compileMode": "aot",
-  "skyuxModules": [
-    "SkyErrorModule"
-  ],
   "plugins": [
     "@skyux-sdk/builder-plugin-skyux"
   ],
@@ -21,5 +18,10 @@
     "styles": [
       "@skyux/docs-tools/css/docs-tools.css"
     ]
+  },
+  "host": {
+    "frameOptions": {
+      "none": true
+    }
   }
 }
