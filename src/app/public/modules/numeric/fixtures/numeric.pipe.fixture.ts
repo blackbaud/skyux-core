@@ -7,12 +7,12 @@ import {
 } from '@skyux/i18n';
 
 import {
-  Observable
+  of
 } from 'rxjs';
 
 class MockLocaleProvider extends SkyAppLocaleProvider {
   public getLocaleInfo() {
-    return Observable.of({
+    return of({
       locale: 'es'
     });
   }
