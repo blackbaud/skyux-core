@@ -102,7 +102,7 @@ describe('Numeric pipe', () => {
       const el = document.querySelector('p');
 
       // Expect spanish default format of ###.###.###,## CUR[SYMBOL].
-      expect(el.innerText).toEqual('1.234.567,89 US$');
+      expect(el.innerText.trim()).toEqual('1.234.567,89 US$');
     });
 
     it('should properly format date based on pipe locale parameter', () => {
@@ -114,7 +114,7 @@ describe('Numeric pipe', () => {
 
       console.log(el.innerText);
       // Expect russian default format of ### ### ###,## [SYMBOL].
-      expect(el.innerText).toEqual('1 234 567,89 $');
+      expect(el.innerText.trim()).toEqual('1 234 567,89 $');
     });
   });
 });
