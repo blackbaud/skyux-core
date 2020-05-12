@@ -9,6 +9,10 @@ import {
 } from '@skyux/i18n';
 
 import {
+  takeUntil
+} from 'rxjs/operators';
+
+import {
   Subject
 } from 'rxjs';
 
@@ -37,7 +41,7 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
     private readonly numericService: SkyNumericService
   ) {
     this.localeProvider.getLocaleInfo()
-      .takeUntil(this.ngUnsubscribe)
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((localeInfo) => {
         numericService.currentLocale = localeInfo.locale;
       });
