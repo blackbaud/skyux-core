@@ -37,6 +37,7 @@ export class NumericOptions {
 
   /**
    * Specifies the starting point after which numbers are shortened to rounded numbers and abbreviation characters.
+   * @default "0"
    */
   public truncateAfter?: number = 0;
 }
