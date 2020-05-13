@@ -99,10 +99,13 @@ describe('Numeric pipe', () => {
     it('should allow overriding SkyAppLocaleProvider', () => {
       fixture.detectChanges();
 
+      // Get formatted date and remove unwanted special characters.
+      // For example, IE11 adds invisible characters that will cause this test to fail.
       const el = document.querySelector('p');
+      const actual = el.innerText.trim().replace(/[^ -~]/g,' ');
 
       // Expect spanish default format of ###.###.###,## CUR[SYMBOL].
-      expect(el.innerText.trim()).toEqual('1.234.567,89 US$');
+      expect(actual).toEqual('1.234.567,89 US$');
     });
 
     it('should properly format date based on pipe locale parameter', () => {
@@ -110,11 +113,13 @@ describe('Numeric pipe', () => {
 
       fixture.detectChanges();
 
+      // Get formatted date and remove unwanted special characters.
+      // For example, IE11 adds invisible characters that will cause this test to fail.
       const el = document.querySelector('p');
+      const actual = el.innerText.trim().replace(/[^ -~]/g,' ');
 
-      console.log(el.innerText);
       // Expect russian default format of ### ### ###,## [SYMBOL].
-      expect(el.innerText.trim()).toEqual('1 234 567,89 $');
+      expect(actual).toEqual('1 234 567,89 $');
     });
   });
 });
