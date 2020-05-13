@@ -102,7 +102,7 @@ describe('Numeric pipe', () => {
       // Get formatted date and remove unwanted special characters.
       // For example, IE11 adds invisible characters that will cause this test to fail.
       const el = document.querySelector('p');
-      const actual = el.innerText.trim().replace(/[^ -~]/g, ' ');
+      const actual = el.innerText;
 
       // Expect spanish default format of ###.###.###,## CUR[SYMBOL].
       expect(actual).toEqual('1.234.567,89 US$');
@@ -116,7 +116,7 @@ describe('Numeric pipe', () => {
       // Get formatted date and remove unwanted special characters.
       // For example, IE11 adds invisible characters that will cause this test to fail.
       const el = document.querySelector('p');
-      const actual = el.innerText.trim().replace(/[^ -~]/g, ' ');
+      const actual = el.innerText;
 
       // Expect russian default format of ### ### ###,## [SYMBOL].
       expect(actual).toEqual('1 234 567,89 $');
