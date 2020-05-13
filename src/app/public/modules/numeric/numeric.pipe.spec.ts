@@ -103,8 +103,13 @@ describe('Numeric pipe', () => {
       const el = document.querySelector('p');
       const actual = el.innerHTML.trim().replace(/&nbsp;/g, ' ');
 
+      const expected = [
+        '1.234.567,89 $', // IE11 doesn't render 'US'.
+        '1.234.567,89 US$'
+      ];
+
       // Expect spanish default format of ###.###.###,## CUR[SYMBOL].
-      expect(actual).toEqual('1.234.567,89 US$');
+      expect(expected).toContain(actual);
     });
 
     it('should properly format date based on pipe locale parameter', () => {
