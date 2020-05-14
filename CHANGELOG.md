@@ -1,3 +1,7 @@
+# 4.1.0 (2020-05-14)
+
+- Added locale support to the `SkyNumericPipe` [#167](https://github.com/blackbaud/skyux-core/pull/167)
+
 # 4.0.0 (2020-05-11)
 
 ### New features
