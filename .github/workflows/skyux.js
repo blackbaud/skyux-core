@@ -43,7 +43,7 @@ function run(command, argv, specsPattern) {
   });
 }
 
-run(command, argv, 'src/app/**/*.spec.ts')
+run('test', {}, 'src/app/**/*.spec.ts')
   .then(exitCode => {
     process.exit(exitCode);
   });
