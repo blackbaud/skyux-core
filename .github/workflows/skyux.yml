@@ -48,8 +48,7 @@ jobs:
       - name: Publish coverage report
         run: bash <(curl -s https://codecov.io/bash)
         if: job.status == 'success'
-
-        - name: Run visual tests
+      - name: Run visual tests
         run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux e2e --platform travis
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
