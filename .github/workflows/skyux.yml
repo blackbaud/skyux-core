@@ -11,20 +11,30 @@ on:
     ]
 
 jobs:
-  coverage:
-    name: Coverage
+  ci:
+    name: CI
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: 'lts/dubnium'
       - run: npm install --ignore-scripts
       - run: npm install --no-save blackbaud/skyux-sdk-builder-config
       - run: npx -p @skyux-sdk/cli skyux version
       - run: npx -p @skyux-sdk/cli skyux certs install
       - run: npx -p @skyux-sdk/cli skyux build-public-library
-      - run: npx -p @skyux-sdk/cli skyux test --coverage library --headless --platform travis
+      - name: Coverage
+        run: npx -p @skyux-sdk/cli skyux test --coverage library --headless --platform travis
+        env:
+          BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
+          BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
+          BROWSER_STACK_PROJECT: ${{ github.repository }}
       - run: bash <(curl -s https://codecov.io/bash)
         if: job.status == 'success'
-      - run: npx -p @skyux-sdk/cli skyux e2e --headless --platform travis
+      - name: Visual Tests
+        run: npx -p @skyux-sdk/cli skyux e2e --headless --platform travis
+        env:
+          BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
+          BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
+          BROWSER_STACK_PROJECT: ${{ github.repository }}
