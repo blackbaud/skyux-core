@@ -11,23 +11,6 @@ on:
     ]
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-      - run: npm install --ignore-scripts
-      - name: List SKY UX versions
-        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux version
-      - name: Install SSL certificates
-        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux certs install
-      - name: Build SPA
-        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux build
-      - name: Build library
-        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux build-public-library
   coverage:
     name: Coverage
     runs-on: ubuntu-latest
@@ -45,7 +28,7 @@ jobs:
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
           BROWSER_STACK_PROJECT: ${{ github.repository }}
           TRAVIS_BUILD_NUMBER: ${{ github.run_number }}
-        run: node ./skyux.js
+        run: node ./.github/workflows/skyux.js
       - name: Publish coverage report
         run: bash <(curl -s https://codecov.io/bash)
         if: job.status == 'success'
