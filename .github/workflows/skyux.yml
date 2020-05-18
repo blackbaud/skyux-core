@@ -1,0 +1,23 @@
+name: SKY UX Pipeline
+
+on:
+  pull_request:
+    branches: [
+      master
+    ]
+  push:
+    branches: [
+      master
+    ]
+
+jobs:
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10'
+      - run: npm install
+      - run: npx -p @skyux-sdk/cli skyux test --coverage library --headless
