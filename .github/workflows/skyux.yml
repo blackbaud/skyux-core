@@ -21,11 +21,11 @@ jobs:
           node-version: '10.x'
       - run: npm install --ignore-scripts
       - run: npm install --no-save blackbaud/skyux-sdk-builder-config
-      - run: npx -p @skyux-sdk/cli skyux version
-      - run: npx -p @skyux-sdk/cli skyux certs install
-      - run: npx -p @skyux-sdk/cli skyux build-public-library
+      - run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux version
+      - run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux certs install
+      - run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux build-public-library
       - name: Coverage
-        run: npx -p @skyux-sdk/cli skyux test --coverage library --headless --platform travis
+        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux test --coverage library --headless --platform travis
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
@@ -33,7 +33,7 @@ jobs:
       - run: bash <(curl -s https://codecov.io/bash)
         if: job.status == 'success'
       - name: Visual Tests
-        run: npx -p @skyux-sdk/cli skyux e2e --headless --platform travis
+        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux e2e --headless --platform travis
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
