@@ -14,7 +14,7 @@ function run(command, argv, specsPattern) {
   // This method interally sets it to LOG_INFO.
   karmaLogger.setupFromConfig({});
 
-  const karmaConfig = karmaConfigUtil.parseConfig('./karma.conf.js');
+  const karmaConfig = karmaConfigUtil.parseConfig(path.resolve(__dirname, 'karma.conf.js'));
   const specsPath = path.resolve(process.cwd(), specsPattern);
   const specsGlob = glob.sync(specsPath);
 
