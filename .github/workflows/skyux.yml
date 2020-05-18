@@ -37,7 +37,6 @@ jobs:
         with:
           node-version: '10.x'
       - run: npm install --ignore-scripts
-      - run: npm install --no-save blackbaud-stevebrush/skyux-sdk-builder-config#debug
       - name: Install SSL certificates
         run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux certs install
       - name: Run code coverage
@@ -46,26 +45,7 @@ jobs:
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
           BROWSER_STACK_PROJECT: ${{ github.repository }}
           TRAVIS_BUILD_NUMBER: ${{ github.run_number }}
-        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux test --coverage library --platform travis
+        run: node ./skyux.js
       - name: Publish coverage report
         run: bash <(curl -s https://codecov.io/bash)
         if: job.status == 'success'
-  visual:
-    name: Visual tests
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-      - run: npm install --ignore-scripts
-      - run: npm install --no-save blackbaud-stevebrush/skyux-sdk-builder-config#debug
-      - name: Install SSL certificates
-        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux certs install
-      - name: Run visual tests
-        env:
-          BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
-          BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
-          BROWSER_STACK_PROJECT: ${{ github.repository }}
-          TRAVIS_BUILD_NUMBER: ${{ github.run_number }}
-        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux e2e --platform travis
