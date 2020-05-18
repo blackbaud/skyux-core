@@ -20,7 +20,6 @@ jobs:
         with:
           node-version: '10.x'
       - run: npm install --ignore-scripts
-      - run: npm install --no-save blackbaud/skyux-sdk-builder-config
       - name: List SKY UX versions
         run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux version
       - name: Install SSL certificates
@@ -39,6 +38,8 @@ jobs:
           node-version: '10.x'
       - run: npm install --ignore-scripts
       - run: npm install --no-save blackbaud/skyux-sdk-builder-config
+      - name: Install SSL certificates
+        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux certs install
       - name: Run code coverage
         run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux test --coverage library --platform travis
         env:
@@ -59,6 +60,8 @@ jobs:
           node-version: '10.x'
       - run: npm install --ignore-scripts
       - run: npm install --no-save blackbaud/skyux-sdk-builder-config
+      - name: Install SSL certificates
+        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux certs install
       - name: Run visual tests
         run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux e2e --platform travis
         env:
