@@ -18,7 +18,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: 'lts/dubnium'
+          node-version: '10.x'
       - run: npm install --ignore-scripts
       - run: npm install --no-save blackbaud/skyux-sdk-builder-config
       - run: npx -p @skyux-sdk/cli skyux version
