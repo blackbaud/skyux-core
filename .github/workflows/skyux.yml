@@ -20,6 +20,9 @@ jobs:
         with:
           node-version: '10'
       - run: npm install
+      - run: npx -p @skyux-sdk/cli skyux version
+      - run: npx -p @skyux-sdk/cli skyux certs install
       - run: npx -p @skyux-sdk/cli skyux build-public-library
       - run: npx -p @skyux-sdk/cli skyux test --coverage library --headless
       - run: bash <(curl -s https://codecov.io/bash)
+      - run: npx -p @skyux-sdk/cli skyux e2e --headless
