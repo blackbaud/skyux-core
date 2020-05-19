@@ -19,12 +19,12 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '10.x'
-      - run: npm i
-      - run: npm i --no-save blackbaud/skyux-sdk-builder-config
-      - run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux certs install
+      - run: npm ci --ignore-scripts
+      - run: npm i --no-save blackbaud-stevebrush/skyux-sdk-builder-config#debug
+      - run: npx -p @skyux-sdk/cli@next skyux certs install
 
       - name: Run code coverage
-        run: npx -p @skyux-sdk/cli@^4.0.0-rc.0 skyux test --coverage library --platform travis
+        run: npx -p @skyux-sdk/cli@next skyux test --coverage library --platform travis
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
