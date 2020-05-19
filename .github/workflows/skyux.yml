@@ -19,9 +19,11 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '10.x'
+      - run: npm i -g @skyux-sdk/cli@next
+      - run: skyux version
+      - run: skyux certs install
       - run: npm ci --ignore-scripts
       - run: npm i --no-save blackbaud-stevebrush/skyux-sdk-builder-config#debug
-      - run: npx -p @skyux-sdk/cli@next skyux certs install
 
       - name: Run code coverage
         run: npx -p @skyux-sdk/cli@next skyux test --coverage library --platform travis
