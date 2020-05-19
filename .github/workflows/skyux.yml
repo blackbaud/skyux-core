@@ -26,7 +26,7 @@ jobs:
       - run: npm i --no-save blackbaud-stevebrush/skyux-sdk-builder-config#debug
 
       - name: Run code coverage
-        run: npx -p @skyux-sdk/cli@next skyux test --coverage library --platform travis
+        run: skyux test --coverage library --platform travis
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
