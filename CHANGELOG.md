@@ -1,3 +1,7 @@
+# 3.15.0 (2020-05-21)
+
+- Added the `locale` propertly to the `SkyNumericPipe` to support different locales [#167](https://github.com/blackbaud/skyux-core/pull/167)
+
 # 3.14.3 (2020-05-01)
 
 - Fixed `SkyNumericPipe` to properly format decimals for numbers over 1000. [#161](https://github.com/blackbaud/skyux-core/pull/161)
