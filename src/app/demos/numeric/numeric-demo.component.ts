@@ -17,7 +17,7 @@ import {
   SkyNumericService
 } from '../../public';
 
-class MockLocaleProvider extends SkyAppLocaleProvider {
+export class MockLocaleProvider extends SkyAppLocaleProvider {
   public getLocaleInfo() {
     return Observable.of({
       locale: 'es'
