@@ -9,10 +9,6 @@ import {
 } from '@skyux/i18n';
 
 import {
-  takeUntil
-} from 'rxjs/operators';
-
-import {
   Subject
 } from 'rxjs';
 
