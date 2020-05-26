@@ -1,7 +1,16 @@
 import {
   Pipe,
-  PipeTransform
+  PipeTransform,
+  OnDestroy
 } from '@angular/core';
+
+import {
+  SkyAppLocaleProvider
+} from '@skyux/i18n';
+
+import {
+  Subject
+} from 'rxjs';
 
 import {
   SkyNumericService
@@ -19,13 +28,27 @@ import {
 @Pipe({
   name: 'skyNumeric'
 })
-export class SkyNumericPipe implements PipeTransform {
+export class SkyNumericPipe implements PipeTransform, OnDestroy {
+
+  private ngUnsubscribe = new Subject<void>();
 
   constructor(
-    private readonly skyNumeric: SkyNumericService
-  ) { }
+    private localeProvider: SkyAppLocaleProvider,
+    private readonly numericService: SkyNumericService
+  ) {
+    this.localeProvider.getLocaleInfo()
+      .takeUntil(this.ngUnsubscribe)
+      .subscribe((localeInfo) => {
+        numericService.currentLocale = localeInfo.locale;
+      });
+  }
 
-  public transform(value: number, config: any): string {
+  public ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
+  public transform(value: number, config: any = {}): string {
     const options = new NumericOptions();
 
     // The default number of digits is `1`. When truncate is disabled, set digits
@@ -60,6 +83,6 @@ export class SkyNumericPipe implements PipeTransform {
 
     Object.assign(options, config);
 
-    return this.skyNumeric.formatNumber(value, options);
+    return this.numericService.formatNumber(value, options);
   }
 }
