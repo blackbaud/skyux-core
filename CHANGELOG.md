@@ -1,4 +1,4 @@
-# 3.15.0 (2020-05-21)
+# 3.15.0 (2020-05-26)
 
 - Added the `locale` propertly to the `SkyNumericPipe` to support different locales [#167](https://github.com/blackbaud/skyux-core/pull/167)
 
