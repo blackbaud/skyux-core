@@ -17,6 +17,8 @@ module.exports = (config) => {
   preprocessors[specBundle] = ['webpack', 'sourcemap'];
   preprocessors[specStyles] = ['webpack'];
 
+  const assetsPattern = path.join(process.cwd(), 'src', 'assets', '**');
+
   const port = 9876;
 
   config.set({
