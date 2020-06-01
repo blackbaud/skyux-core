@@ -23,7 +23,7 @@ jobs:
       - run: skyux certs install
       - run: npm ci --ignore-scripts
       - name: Run code coverage
-        uses: ianwalter/bsl@v2.1.0
+        uses: ianwalter/bsl@2.1.1
         with:
           args: npm test
         env:
