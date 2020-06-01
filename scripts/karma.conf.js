@@ -23,7 +23,10 @@ module.exports = (config) => {
     browserStack: {
       username: process.env.BROWSER_STACK_USERNAME,
       accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
-      port
+      port,
+      local: false,
+      debug: true,
+      console: 'verbose'
     },
     customLaunchers: {
       bs_firefox_mac: {
