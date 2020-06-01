@@ -25,7 +25,7 @@ jobs:
       - name: Run code coverage
         uses: ianwalter/bsl@2.1.1
         with:
-          args: npm test
+          args: npx -p @skyux-sdk/cli skyux test --coverage library
         env:
           BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSERSTACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
