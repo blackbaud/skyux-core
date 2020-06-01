@@ -9,9 +9,7 @@ function test() {
 
   karmaLogger.setupFromConfig({});
 
-  const karmaConfig = karmaConfigUtil.parseConfig(
-    path.resolve(__dirname, 'karma.conf.js')
-  );
+  const karmaConfig = karmaConfigUtil.parseConfig(path.resolve(__dirname, 'karma.conf.js'));
 
   return new Promise(resolve => {
     const server = new KarmaServer(karmaConfig, (exitCode) => {
