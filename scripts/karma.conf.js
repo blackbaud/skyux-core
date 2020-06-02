@@ -42,7 +42,7 @@ module.exports = (config) => {
         browser_version: '83.0',
         os: 'Windows',
         os_version: '10',
-        url: `http://0.0.0.0:${port}`
+        url: `http://localhost:${port}`
       }
     },
 
