@@ -28,6 +28,8 @@ module.exports = (config) => {
       accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
       port,
       local: true,
+      forcelocal: true,
+      force: true,
       debug: true,
       console: 'verbose',
       networkLogs: true,

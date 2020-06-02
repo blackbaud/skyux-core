@@ -22,8 +22,8 @@ jobs:
       - run: skyux version
       - run: skyux certs install
       - run: npm ci --ignore-scripts
-      - name: Run code coverage
-        run: node ./scripts/ci-test.js
+      - name: Run e2e
+        run: npx -p @skyux-sdk/cli skyux e2e --platform travis
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
