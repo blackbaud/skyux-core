@@ -28,4 +28,4 @@ jobs:
       - run: skyux certs install
       - run: npm ci --ignore-scripts
       - name: Tests
-        run: skyux test --coverage library
+        run: skyux test --coverage library --headless
