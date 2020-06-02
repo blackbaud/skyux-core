@@ -7,11 +7,11 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 function spaPath(...args) {
-  return path.join(process.cwd(), args);
+  return path.join(process.cwd(), ...args);
 }
 
 function outPath(...args) {
-  return path.join(process.cwd(), 'node_modules/@skyux-sdk/builder', args);
+  return path.join(process.cwd(), 'node_modules/@skyux-sdk/builder', ...args);
 }
 
 module.exports = {
