@@ -23,9 +23,7 @@ jobs:
       - run: skyux certs install
       - run: npm ci --ignore-scripts
       - name: Run code coverage
-        uses: ianwalter/bsl@2.1.1
-        with:
-          args: npx -p @skyux-sdk/cli skyux test --coverage library
+        run: node ./scripts/ci-test.js
         env:
-          BROWSERSTACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
-          BROWSERSTACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
+          BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
+          BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}

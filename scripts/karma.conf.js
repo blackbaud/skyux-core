@@ -29,15 +29,17 @@ module.exports = (config) => {
       port,
       local: false,
       debug: true,
-      console: 'verbose'
+      console: 'verbose',
+      networkLogs: true,
+      selenium_version: '3.5.2'
     },
     customLaunchers: {
-      bs_firefox_mac: {
+      bs_chrome_win: {
         base: 'BrowserStack',
-        browser: 'firefox',
-        browser_version: '21.0',
-        os: 'OS X',
-        os_version: 'Mountain Lion'
+        browser: 'Chrome',
+        browser_version: '83.0',
+        os: 'Windows',
+        os_version: '10'
       }
     },
     browsers: ['bs_firefox_mac'],
