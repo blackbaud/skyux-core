@@ -31,7 +31,8 @@ module.exports = (config) => {
       name: 'Core unit tests',
       project: '@skyux/core',
       build: process.env.BROWSER_STACK_BUILD_NAME || browserStackTunnelID,
-      tunnelIdentifier: browserStackTunnelID
+      tunnelIdentifier: browserStackTunnelID,
+      startTunnel: true
     },
 
     customLaunchers: {
