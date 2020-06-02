@@ -42,7 +42,7 @@ module.exports = (config) => {
         os_version: '10'
       }
     },
-    browsers: ['bs_firefox_mac'],
+    browsers: ['bs_chrome_win'],
     port,
     webpack: webpackConfig,
     skyPagesConfig,
