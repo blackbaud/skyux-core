@@ -27,25 +27,12 @@ module.exports = (config) => {
 
   config.set({
     browserStack: {
-      username: process.env.BROWSER_STACK_USERNAME,
-      accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
-      build: process.env.BROWSER_STACK_BUILD_NAME || browserStackTunnelID,
-      tunnelIdentifier: browserStackTunnelID,
+      idleTimeout: 600,
       name: 'Core unit tests',
       project: '@skyux/core',
-      port,
-      local: true,
-      forcelocal: true,
-      force: true,
-      debug: true,
-      console: 'verbose',
-      networkLogs: true,
-      selenium_version: '3.5.2',
-      apiClientEndpoint: 'https://api.browserstack.com'
+      build: process.env.BROWSER_STACK_BUILD_NAME || browserStackTunnelID,
+      tunnelIdentifier: browserStackTunnelID
     },
-
-    singleRun: true,
-    hostname: 'bs-local.com',
 
     customLaunchers: {
       bs_chrome_win: {
@@ -60,7 +47,6 @@ module.exports = (config) => {
 
     browsers: ['bs_chrome_win'],
 
-    port,
     webpack: webpackConfig,
     skyPagesConfig,
     preprocessors,
@@ -84,7 +70,8 @@ module.exports = (config) => {
       }
     ],
     basePath: '',
+
     frameworks: ['jasmine'],
-    reporters: ['BrowserStack', 'mocha']
+    reporters: ['BrowserStack']
   });
 };
