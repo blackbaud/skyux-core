@@ -1,7 +1,6 @@
 module.exports = (config) => {
 
   const minimist = require('minimist');
-  const path = require('path');
   const testWebpackConfig = require('@skyux-sdk/builder/config/webpack/test.webpack.config');
   const skyPagesConfigUtil = require('@skyux-sdk/builder/config/sky-pages/sky-pages.config');
 
@@ -15,14 +14,11 @@ module.exports = (config) => {
 
   const preprocessors = {};
   preprocessors[polyfillsBundle] = ['webpack'];
-  preprocessors[specBundle] = ['webpack', 'sourcemap'];
+  preprocessors[specBundle] = ['webpack'];
   preprocessors[specStyles] = ['webpack'];
-
-  const assetsPattern = path.join(process.cwd(), 'src', 'assets', '**');
 
   config.set({
     webpack: webpackConfig,
-    skyPagesConfig,
     preprocessors,
     files: [
       {
@@ -36,11 +32,6 @@ module.exports = (config) => {
       {
         pattern: specStyles,
         watched: false
-      },
-      {
-        pattern: assetsPattern,
-        included: false,
-        served: true,
       }
     ],
     basePath: '',
