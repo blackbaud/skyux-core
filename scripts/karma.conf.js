@@ -27,7 +27,7 @@ module.exports = (config) => {
       username: process.env.BROWSER_STACK_USERNAME,
       accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
       port,
-      local: false,
+      local: true,
       debug: true,
       console: 'verbose',
       networkLogs: true,
