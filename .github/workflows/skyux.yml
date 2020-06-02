@@ -22,7 +22,7 @@ jobs:
       - run: skyux version
       - run: skyux certs install
       - run: npm ci --ignore-scripts
-      - run: npm i --no-save --no-package-lock blackbaud/skyux-sdk-builder-config
+      - run: npm install --no-save blackbaud/skyux-sdk-builder-config
       - name: Run e2e
         run: skyux e2e --platform travis
         env:
