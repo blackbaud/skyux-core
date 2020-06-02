@@ -17,6 +17,8 @@ function outPath(args) {
 module.exports = {
   getWebpackConfig: function (skyPagesConfig, argv) {
 
+    const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
+
     const resolves = [
       process.cwd(),
       spaPath('node_modules'),
