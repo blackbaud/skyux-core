@@ -20,12 +20,6 @@ module.exports = (config) => {
 
   const assetsPattern = path.join(process.cwd(), 'src', 'assets', '**');
 
-  // const merge = require('deepmerge');
-  const { bsSettings } = require('@open-wc/testing-karma-bs');
-  // const createBaseConfig = require('./karma.conf.js');
-
-  config.set(bsSettings());
-
   config.set({
     webpack: webpackConfig,
     skyPagesConfig,
@@ -50,6 +44,18 @@ module.exports = (config) => {
       }
     ],
     basePath: '',
-    reporters: ['BrowserStack']
+
+    // BrowserStack
+    browserStack: {},
+    customLaunchers: {
+      bs_chrome_mac: {
+        base: 'BrowserStack',
+        browser: 'Chrome',
+        os: 'OS X',
+        os_version: 'Mountain Lion'
+      }
+    },
+    browsers: ['bs_chrome_mac'],
+    reporters: ['dots', 'BrowserStack']
   });
 };
