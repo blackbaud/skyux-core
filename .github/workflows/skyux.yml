@@ -23,9 +23,9 @@ jobs:
       - run: skyux version
       - run: skyux certs install
       - run: npm ci --ignore-scripts
-      - run: npm install --no-save blackbaud/skyux-sdk-builder-config
-      - name: Run e2e
-        run: skyux e2e --platform travis
+      - name: Tests
+        run: node ./scripts/ci-test.js
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
+          TRAVIS_BUILD_NUMBER: '10001'

@@ -33,8 +33,12 @@ module.exports = (config) => {
       debug: true,
       console: 'verbose',
       networkLogs: true,
-      selenium_version: '3.5.2'
+      selenium_version: '3.5.2',
+      apiClientEndpoint: 'https://api.browserstack.com'
     },
+    singleRun: true,
+    hostname: 'bs-local.com',
+
     customLaunchers: {
       bs_chrome_win: {
         base: 'BrowserStack',
@@ -45,6 +49,7 @@ module.exports = (config) => {
       }
     },
     browsers: ['bs_chrome_win'],
+
     port,
     webpack: webpackConfig,
     skyPagesConfig,
