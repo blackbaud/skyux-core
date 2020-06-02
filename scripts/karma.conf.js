@@ -1,8 +1,9 @@
 module.exports = (config) => {
 
   const minimist = require('minimist');
-  const testWebpackConfig = require('@skyux-sdk/builder/config/webpack/test.webpack.config');
+  // const testWebpackConfig = require('@skyux-sdk/builder/config/webpack/test.webpack.config');
   const skyPagesConfigUtil = require('@skyux-sdk/builder/config/sky-pages/sky-pages.config');
+  const testWebpackConfig = require('./webpack.config');
 
   const argv = minimist(process.argv.slice(2));
   const skyPagesConfig = skyPagesConfigUtil.getSkyPagesConfig(argv._[0]);
