@@ -20,10 +20,9 @@ jobs:
         with:
           node-version: '12.x'
 
-      - run: npm i -g @skyux-sdk/cli@next
-      - run: npm ci --ignore-scripts
+      - run: npm ci
       - name: Tests
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
-        run: node ./scripts/ci-test.js
+        run: npm run test:ci
