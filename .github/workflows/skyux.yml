@@ -12,20 +12,24 @@ on:
 
 jobs:
   coverage:
+    env:
+      USE_BROWSER_STACK: true
+
     name: Coverage
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
-          node-version: '10.x'
+          node-version: '12.x'
+
       - run: npm i -g @skyux-sdk/cli@next
       - run: skyux version
       - run: skyux certs install
       - run: npm ci --ignore-scripts
       - name: Tests
-        run: node ./scripts/ci-test.js
         env:
           BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
           BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
-          TRAVIS_BUILD_NUMBER: '10001'
+          BROWSER_STACK_BUILD_NAME: ${{ format('{0} / {1}', github.ref, github.run_id) }}
+        run: node ./scripts/ci-test.js

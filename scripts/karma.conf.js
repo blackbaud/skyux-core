@@ -22,10 +22,17 @@ module.exports = (config) => {
 
   const port = 9876;
 
+  const {applyKarmaHacks} = require('./karma-hacks.js');
+  const browserStackTunnelID = applyKarmaHacks();
+
   config.set({
     browserStack: {
       username: process.env.BROWSER_STACK_USERNAME,
       accessKey: process.env.BROWSER_STACK_ACCESS_KEY,
+      build: process.env.BROWSER_STACK_BUILD_NAME || browserStackTunnelID,
+      tunnelIdentifier: browserStackTunnelID,
+      name: 'Core unit tests',
+      project: '@skyux/core',
       port,
       local: true,
       forcelocal: true,
@@ -36,6 +43,7 @@ module.exports = (config) => {
       selenium_version: '3.5.2',
       apiClientEndpoint: 'https://api.browserstack.com'
     },
+
     singleRun: true,
     hostname: 'bs-local.com',
 
@@ -45,9 +53,11 @@ module.exports = (config) => {
         browser: 'Chrome',
         browser_version: '83.0',
         os: 'Windows',
-        os_version: '10'
+        os_version: '10',
+        url: `http://127.0.0.1:${port}`
       }
     },
+
     browsers: ['bs_chrome_win'],
 
     port,
@@ -74,6 +84,7 @@ module.exports = (config) => {
       }
     ],
     basePath: '',
-    frameworks: ['jasmine']
+    frameworks: ['jasmine'],
+    reporters: ['BrowserStack', 'mocha']
   });
 };
