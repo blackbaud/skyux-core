@@ -20,21 +20,13 @@ module.exports = (config) => {
 
   const assetsPattern = path.join(process.cwd(), 'src', 'assets', '**');
 
+  // const merge = require('deepmerge');
+  const { bsSettings } = require('@open-wc/testing-karma-bs');
+  // const createBaseConfig = require('./karma.conf.js');
+
+  config.set(bsSettings());
+
   config.set({
-    browserStack: {
-    },
-
-    customLaunchers: {
-      bs_chrome_win: {
-        base: 'BrowserStack',
-        browser: 'Chrome',
-        os: 'Windows',
-        os_version: '10'
-      }
-    },
-
-    browsers: ['bs_chrome_win'],
-
     webpack: webpackConfig,
     skyPagesConfig,
     preprocessors,

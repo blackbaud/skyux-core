@@ -12,9 +12,6 @@ on:
 
 jobs:
   coverage:
-    env:
-      USE_BROWSER_STACK: true
-
     name: Coverage
     runs-on: ubuntu-latest
     steps:
