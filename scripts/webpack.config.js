@@ -2,6 +2,9 @@ const skyPagesConfigUtil = require('@skyux-sdk/builder/config/sky-pages/sky-page
 const aliasBuilder = require('@skyux-sdk/builder/config/webpack/alias-builder');
 const tsLoaderUtil = require('@skyux-sdk/builder/config/webpack/ts-loader-rule');
 const path = require('path');
+const DefinePlugin = require('webpack/lib/DefinePlugin');
+const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
+const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 function spaPath(args) {
   return path.join(process.cwd(), ...args);
