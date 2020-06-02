@@ -20,29 +20,16 @@ module.exports = (config) => {
 
   const assetsPattern = path.join(process.cwd(), 'src', 'assets', '**');
 
-  const port = 9876;
-
-  const {applyKarmaHacks} = require('./karma-hacks.js');
-  const browserStackTunnelID = applyKarmaHacks();
-
   config.set({
     browserStack: {
-      idleTimeout: 600,
-      name: 'Core unit tests',
-      project: '@skyux/core',
-      build: process.env.BROWSER_STACK_BUILD_NAME || browserStackTunnelID,
-      tunnelIdentifier: browserStackTunnelID,
-      startTunnel: true
     },
 
     customLaunchers: {
       bs_chrome_win: {
         base: 'BrowserStack',
         browser: 'Chrome',
-        browser_version: '83.0',
         os: 'Windows',
-        os_version: '10',
-        url: `http://localhost:${port}`
+        os_version: '10'
       }
     },
 
@@ -71,8 +58,6 @@ module.exports = (config) => {
       }
     ],
     basePath: '',
-
-    frameworks: ['jasmine'],
     reporters: ['BrowserStack']
   });
 };
