@@ -21,8 +21,6 @@ jobs:
           node-version: '12.x'
 
       - run: npm i -g @skyux-sdk/cli@next
-      - run: skyux version
-      - run: skyux certs install
       - run: npm ci --ignore-scripts
       - name: Tests
         env:
