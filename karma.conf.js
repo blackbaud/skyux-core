@@ -1,7 +1,6 @@
 module.exports = (config) => {
 
   const minimist = require('minimist');
-  // const testWebpackConfig = require('@skyux-sdk/builder/config/webpack/test.webpack.config');
   const skyPagesConfigUtil = require('@skyux-sdk/builder/config/sky-pages/sky-pages.config');
   const testWebpackConfig = require('./webpack.config');
 
@@ -10,13 +9,9 @@ module.exports = (config) => {
   const webpackConfig = testWebpackConfig.getWebpackConfig(skyPagesConfig, argv);
 
   const specBundle = `${__dirname}/spec-bundle.js`;
-  const specStyles = `${__dirname}/spec-styles.js`;
-  // const polyfillsBundle = `${__dirname}/polyfills.ts`;
 
   const preprocessors = {};
-  // preprocessors[polyfillsBundle] = ['webpack'];
   preprocessors[specBundle] = ['webpack'];
-  preprocessors[specStyles] = ['webpack'];
 
   const useBrowserStack = (argv.browserstack === true);
 
@@ -24,16 +19,8 @@ module.exports = (config) => {
     webpack: webpackConfig,
     preprocessors,
     files: [
-      // {
-      //   pattern: polyfillsBundle,
-      //   watched: false
-      // },
       {
         pattern: specBundle,
-        watched: false
-      },
-      {
-        pattern: specStyles,
         watched: false
       }
     ],
