@@ -1,10 +1,7 @@
-const skyPagesConfigUtil = require('@skyux-sdk/builder/config/sky-pages/sky-pages.config');
-const aliasBuilder = require('@skyux-sdk/builder/config/webpack/alias-builder');
 const tsLoaderUtil = require('@skyux-sdk/builder/config/webpack/ts-loader-rule');
 const path = require('path');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-const ContextReplacementPlugin = require('webpack/lib/ContextReplacementPlugin');
 
 function spaPath(...args) {
   return path.join(process.cwd(), ...args);
@@ -17,7 +14,6 @@ function outPath(...args) {
 module.exports = {
   getWebpackConfig: function (skyPagesConfig, argv) {
 
-    const ENV = process.env.ENV = process.env.NODE_ENV = 'test';
     const srcPath = path.resolve(process.cwd(), 'src', 'app', 'public');
 
     const resolves = [
@@ -31,20 +27,12 @@ module.exports = {
       outPath('node_modules')
     ];
 
-    const alias = aliasBuilder.buildAliasList(skyPagesConfig);
-
     return {
-
       mode: 'development',
-
-      devtool: 'inline-source-map',
-
       resolveLoader: {
         modules: resolves
       },
-
       resolve: {
-        alias,
         modules: resolves,
         extensions: [
           '.js',
@@ -84,15 +72,6 @@ module.exports = {
           {
             test: /\.html$/,
             loader: 'raw-loader'
-          },
-          {
-            // Mark files inside `@angular/core` as using SystemJS style dynamic imports.
-            // Removing this will cause deprecation warnings to appear.
-            // See: https://github.com/angular/angular/issues/21560#issuecomment-433601967
-            test: /[\/\\]@angular[\/\\]core[\/\\].+\.js$/,
-            parser: {
-              system: true
-            }
           }
         ]
       },
