@@ -7,6 +7,7 @@
     "skyux": "skyux",
     "start": "skyux serve --hmr",
     "test": "karma start karma.conf.js",
+    "test:browserstack": "karma start karma.conf.js --browserstack",
     "test:visual": "skyux e2e --logFormat none"
   },
   "keywords": [],

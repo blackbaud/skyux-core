@@ -18,6 +18,8 @@ module.exports = (config) => {
   preprocessors[specBundle] = ['webpack'];
   preprocessors[specStyles] = ['webpack'];
 
+  const useBrowserStack = (argv.browserstack === true);
+
   config.set({
     webpack: webpackConfig,
     preprocessors,
@@ -39,18 +41,25 @@ module.exports = (config) => {
     singleRun: true,
     failOnEmptyTestSuite: false,
     logLevel: config.LOG_INFO,
-
-    // BrowserStack
-    browserStack: {},
-    customLaunchers: {
-      bs_chrome_mac: {
-        base: 'BrowserStack',
-        browser: 'Chrome',
-        os: 'OS X',
-        os_version: 'Mountain Lion'
-      }
-    },
-    browsers: ['bs_chrome_mac'],
-    reporters: ['dots', 'BrowserStack']
+    frameworks: ['jasmine'],
+    reporters: ['dots'],
+    browsers: ['ChromeHeadless'],
   });
+
+  if (useBrowserStack) {
+    console.log('Launching BrowserStack...');
+    config.set({
+      browserStack: {},
+      customLaunchers: {
+        bs_chrome_mac: {
+          base: 'BrowserStack',
+          browser: 'Chrome',
+          os: 'OS X',
+          os_version: 'Mountain Lion'
+        }
+      },
+      browsers: ['bs_chrome_mac'],
+      reporters: ['dots', 'BrowserStack']
+    });
+  }
 };
