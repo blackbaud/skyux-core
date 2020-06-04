@@ -1,7 +1,3 @@
-/*jslint node: true */
-/*global ROOT_DIR*/
-'use strict';
-
 require('zone.js/dist/zone');
 require('zone.js/dist/zone-testing');
 
@@ -15,6 +11,8 @@ testing.getTestBed().initTestEnvironment(
   browser.BrowserDynamicTestingModule,
   browser.platformBrowserDynamicTesting()
 );
+
+console.log('ROOT_DIR:', ROOT_DIR);
 
 // Then we find all the tests.
 const testContext = require.context(ROOT_DIR, true, /\.spec\.ts/);
