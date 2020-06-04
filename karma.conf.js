@@ -9,9 +9,9 @@ module.exports = (config) => {
   const skyPagesConfig = skyPagesConfigUtil.getSkyPagesConfig(argv._[0]);
   const webpackConfig = testWebpackConfig.getWebpackConfig(skyPagesConfig, argv);
 
-  const specBundle = `${__dirname}/../node_modules/@skyux-sdk/builder/utils/spec-bundle.js`;
-  const specStyles = `${__dirname}/../node_modules/@skyux-sdk/builder/utils/spec-styles.js`;
-  const polyfillsBundle = `${__dirname}/../node_modules/@skyux-sdk/builder/src/polyfills.ts`;
+  const specBundle = `${__dirname}/node_modules/@skyux-sdk/builder/utils/spec-bundle.js`;
+  const specStyles = `${__dirname}/node_modules/@skyux-sdk/builder/utils/spec-styles.js`;
+  const polyfillsBundle = `${__dirname}/node_modules/@skyux-sdk/builder/src/polyfills.ts`;
 
   const preprocessors = {};
   preprocessors[polyfillsBundle] = ['webpack'];
@@ -36,6 +36,9 @@ module.exports = (config) => {
       }
     ],
     basePath: '',
+    singleRun: true,
+    failOnEmptyTestSuite: false,
+    logLevel: config.LOG_INFO,
 
     // BrowserStack
     browserStack: {},
