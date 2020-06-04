@@ -1,19 +1,15 @@
-module.exports = (config) => {
+module.exports = function (config) {
 
   const minimist = require('minimist');
-  const skyPagesConfigUtil = require('@skyux-sdk/builder/config/sky-pages/sky-pages.config');
-  const testWebpackConfig = require('./webpack.config');
+  const webpackConfig = require('./webpack.config');
 
   const argv = minimist(process.argv.slice(2));
-  const skyPagesConfig = skyPagesConfigUtil.getSkyPagesConfig(argv._[0]);
-  const webpackConfig = testWebpackConfig.getWebpackConfig(skyPagesConfig, argv);
+  const useBrowserStack = (argv.browserstack === true);
 
   const specBundle = `${__dirname}/spec-bundle.js`;
 
   const preprocessors = {};
   preprocessors[specBundle] = ['webpack'];
-
-  const useBrowserStack = (argv.browserstack === true);
 
   config.set({
     basePath: '',
@@ -25,7 +21,7 @@ module.exports = (config) => {
     browsers: ['ChromeHeadless'],
 
     // Webpack
-    webpack: webpackConfig,
+    webpack: webpackConfig.getWebpackConfig(),
     preprocessors,
     files: [
       {
@@ -36,7 +32,6 @@ module.exports = (config) => {
   });
 
   if (useBrowserStack) {
-    console.log('Launching BrowserStack...');
     config.set({
       browserStack: {},
       customLaunchers: {
@@ -51,4 +46,5 @@ module.exports = (config) => {
       reporters: ['dots', 'BrowserStack']
     });
   }
+
 };
