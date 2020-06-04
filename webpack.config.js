@@ -107,31 +107,8 @@ module.exports = {
         }),
 
         new DefinePlugin({
-          'ENV': JSON.stringify(ENV),
-          'HMR': false,
-          'process.env': {
-            'ENV': JSON.stringify(ENV),
-            'NODE_ENV': JSON.stringify(ENV),
-            'HMR': false
-          },
-          'ROOT_DIR': JSON.stringify(srcPath),
-          'skyPagesConfig': JSON.stringify(skyPagesConfig)
-        }),
-
-        new ContextReplacementPlugin(
-          // The (\\|\/) piece accounts for path separators in *nix and Windows
-          /angular(\\|\/)core(\\|\/)@angular/,
-          skyPagesConfigUtil.spaPath('src'),
-          {}
-        ),
-
-        // Suppress the "request of a dependency is an expression" warnings.
-        // See: https://github.com/angular/angular/issues/20357#issuecomment-343683491
-        new ContextReplacementPlugin(
-          /\@angular(\\|\/)core(\\|\/)fesm5/,
-          spaPath('src'),
-          {}
-        )
+          'ROOT_DIR': JSON.stringify(srcPath)
+        })
       ]
     };
 

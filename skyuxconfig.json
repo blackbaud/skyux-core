@@ -3,9 +3,6 @@
   "name": "skyux-core",
   "mode": "easy",
   "compileMode": "aot",
-  "plugins": [
-    "@skyux-sdk/builder-plugin-skyux"
-  ],
   "testSettings": {
     "e2e": {
       "browserSet": "speedy"
@@ -13,11 +10,6 @@
     "unit": {
       "browserSet": "speedy"
     }
-  },
-  "app": {
-    "styles": [
-      "@skyux/docs-tools/css/docs-tools.css"
-    ]
   },
   "host": {
     "frameOptions": {
