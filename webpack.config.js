@@ -16,12 +16,6 @@ module.exports = {
 
     const srcPath = path.resolve(process.cwd(), 'src', 'app', 'public');
 
-    const resolves = [
-      process.cwd(),
-      spaPath('node_modules'),
-      outPath('node_modules')
-    ];
-
     const excludes = [
       spaPath('node_modules'),
       outPath('node_modules')
@@ -29,15 +23,8 @@ module.exports = {
 
     return {
       mode: 'development',
-      resolveLoader: {
-        modules: resolves
-      },
       resolve: {
-        modules: resolves,
-        extensions: [
-          '.js',
-          '.ts'
-        ]
+        extensions: ['.ts', '.js']
       },
 
       module: {
