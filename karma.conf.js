@@ -11,10 +11,10 @@ module.exports = (config) => {
 
   const specBundle = `${__dirname}/spec-bundle.js`;
   const specStyles = `${__dirname}/spec-styles.js`;
-  const polyfillsBundle = `${__dirname}/polyfills.ts`;
+  // const polyfillsBundle = `${__dirname}/polyfills.ts`;
 
   const preprocessors = {};
-  preprocessors[polyfillsBundle] = ['webpack'];
+  // preprocessors[polyfillsBundle] = ['webpack'];
   preprocessors[specBundle] = ['webpack'];
   preprocessors[specStyles] = ['webpack'];
 
@@ -24,10 +24,10 @@ module.exports = (config) => {
     webpack: webpackConfig,
     preprocessors,
     files: [
-      {
-        pattern: polyfillsBundle,
-        watched: false
-      },
+      // {
+      //   pattern: polyfillsBundle,
+      //   watched: false
+      // },
       {
         pattern: specBundle,
         watched: false
