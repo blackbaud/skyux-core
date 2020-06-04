@@ -1,13 +1,8 @@
 const path = require('path');
 const DefinePlugin = require('webpack/lib/DefinePlugin');
-const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
-
-function outPath(...args) {
-  return path.join(process.cwd(), 'node_modules/@skyux-sdk/builder', ...args);
-}
 
 module.exports = {
-  getWebpackConfig: function (skyPagesConfig, argv) {
+  getWebpackConfig: function () {
 
     const srcPath = path.resolve(process.cwd(), 'src', 'app', 'public');
 
@@ -20,12 +15,6 @@ module.exports = {
 
       module: {
         rules: [
-          {
-            enforce: 'pre',
-            test: /sky-pages\.module\.ts$/,
-            loader: outPath('loader', 'sky-pages-module')
-          },
-
           {
             test: /\.ts$/,
             use: ['awesome-typescript-loader', 'angular2-template-loader']
@@ -44,14 +33,6 @@ module.exports = {
       },
 
       plugins: [
-        new LoaderOptionsPlugin({
-          debug: true,
-          options: {
-            context: __dirname,
-            skyPagesConfig
-          }
-        }),
-
         new DefinePlugin({
           'ROOT_DIR': JSON.stringify(srcPath)
         })

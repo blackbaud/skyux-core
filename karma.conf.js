@@ -16,6 +16,15 @@ module.exports = (config) => {
   const useBrowserStack = (argv.browserstack === true);
 
   config.set({
+    basePath: '',
+    frameworks: ['jasmine'],
+    reporters: ['dots'],
+    singleRun: true,
+    failOnEmptyTestSuite: false,
+    logLevel: config.LOG_INFO,
+    browsers: ['ChromeHeadless'],
+
+    // Webpack
     webpack: webpackConfig,
     preprocessors,
     files: [
@@ -23,14 +32,7 @@ module.exports = (config) => {
         pattern: specBundle,
         watched: false
       }
-    ],
-    basePath: '',
-    singleRun: true,
-    failOnEmptyTestSuite: false,
-    logLevel: config.LOG_INFO,
-    frameworks: ['jasmine'],
-    reporters: ['dots'],
-    browsers: ['ChromeHeadless'],
+    ]
   });
 
   if (useBrowserStack) {

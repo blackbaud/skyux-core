@@ -12,8 +12,6 @@ testing.getTestBed().initTestEnvironment(
   browser.platformBrowserDynamicTesting()
 );
 
-console.log('ROOT_DIR:', ROOT_DIR);
-
 // Then we find all the tests.
 const testContext = require.context(ROOT_DIR, true, /\.spec\.ts/);
 
