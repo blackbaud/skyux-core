@@ -1,0 +1,21 @@
+name: SKY UX Pipeline
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - uses: Blackbaud-SteveBrush/skyux-libraries-action
+        with:
+          browser-stack-access-key: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
+          browser-stack-username: ${{ secrets.BROWSER_STACK_USERNAME }}
+          visual-baselines-repo: ${{ secrets.VISUAL_BASELINES_REPO_URL }}
+          visual-failures-repo: ${{ secrets.VISUAL_FAILURES_REPO_URL }}
