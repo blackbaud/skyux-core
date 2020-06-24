@@ -11,11 +11,4 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-        with:
-          node-version: '12.x'
-      - run: npm ci
-      - name: Test
-        run: npm run test:browserstack
-        env:
-          BROWSER_STACK_ACCESS_KEY: ${{ secrets.BROWSER_STACK_ACCESS_KEY }}
-          BROWSER_STACK_USERNAME: ${{ secrets.BROWSER_STACK_USERNAME }}
+      - uses: Blackbaud-SteveBrush/skyux-libraries-action@v1.0.0-alpha.1
