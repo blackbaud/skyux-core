@@ -12,7 +12,7 @@ jobs:
       - name: Print context
         env:
           EVENT_PAYLOAD: ${{ toJson(github.event) }}
-        run: | 
+        run: |
           echo "$EVENT_PAYLOAD"
       - uses: danhellem/github-actions-issue-to-work-item@master
         if: contains(github.event.issue.labels.*.name, env.TEST_VALUE)
