@@ -3,8 +3,19 @@ import {
   ElementRef,
   Input,
   OnDestroy,
-  OnInit
+  OnInit,
+  Optional,
+  Self,
+  SkipSelf
 } from '@angular/core';
+
+import {
+  Subject
+} from 'rxjs';
+
+import {
+  takeUntil
+} from 'rxjs/operators';
 
 import {
   MutationObserverService
@@ -15,11 +26,20 @@ import {
 } from './viewkeeper';
 
 import {
+  SkyViewkeeperGroupService
+} from './viewkeeper-group.service';
+
+import {
   SkyViewkeeperService
 } from './viewkeeper.service';
 
+let idIndex = 0;
+
 @Directive({
-  selector: '[skyViewkeeper]'
+  selector: '[skyViewkeeper]',
+  providers: [
+    SkyViewkeeperGroupService
+  ]
 })
 export class SkyViewkeeperDirective implements OnInit, OnDestroy {
 
@@ -34,19 +54,42 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
     return this._skyViewkeeper;
   }
 
+  @Input()
+  public set skyViewkeeperGroup(value: string) {
+    this._skyViewkeeperGroup = value;
+
+    this.groupSvc.groupName = value;
+
+    this.detectElements();
+  }
+
+  public get skyViewkeeperGroup(): string {
+    return this._skyViewkeeperGroup;
+  }
+
   private _skyViewkeeper: string[];
+
+  private _skyViewkeeperGroup: string;
 
   private viewkeepers: SkyViewkeeper[] = [];
 
   private observer: MutationObserver;
 
-  private currentViewkeeperEls: HTMLElement[];
+  private currentViewkeeperEls: HTMLElement[] = [];
+
+  private id: string;
+
+  private ngUnsubscribe = new Subject<any>();
 
   constructor(
     private el: ElementRef,
     private mutationObserverSvc: MutationObserverService,
-    private viewkeeperSvc: SkyViewkeeperService
-  ) { }
+    private viewkeeperSvc: SkyViewkeeperService,
+    @Self() private groupSvc: SkyViewkeeperGroupService,
+    @Optional() @SkipSelf() private parentGroupSvc?: SkyViewkeeperGroupService
+  ) {
+    this.id = 'sky-viewkeeper-id-' + (++idIndex);
+  }
 
   public ngOnInit(): void {
     this.observer = this.mutationObserverSvc.create(() => this.detectElements());
@@ -58,12 +101,25 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
         subtree: true
       }
     );
+
+    this.groupSvc.viewkeeperEls
+      .pipe(
+        takeUntil(this.ngUnsubscribe)
+      )
+      .subscribe(() => {
+        this.detectElements();
+      });
   }
 
   public ngOnDestroy(): void {
     this.observer.disconnect();
 
     this.destroyViewkeepers();
+
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+
+    this.groupSvc.destroy();
   }
 
   private destroyViewkeepers(): void {
@@ -75,11 +131,9 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
   }
 
   private getViewkeeperEls(): HTMLElement[] {
-    let viewkeeperEls: HTMLElement[];
+    let viewkeeperEls: HTMLElement[] = [];
 
     if (this.skyViewkeeper) {
-      viewkeeperEls = [];
-
       for (const item of this.skyViewkeeper) {
         let matchingEls = Array.from(
           (this.el.nativeElement as HTMLElement).querySelectorAll(item)
@@ -93,19 +147,13 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
   }
 
   private viewkeeperElsChanged(viewkeeperEls: HTMLElement[]): boolean {
-    if (!viewkeeperEls !== !this.currentViewkeeperEls) {
+    if (viewkeeperEls.length !== this.currentViewkeeperEls.length) {
       return true;
     }
 
-    if (viewkeeperEls && this.currentViewkeeperEls) {
-      if (viewkeeperEls.length !== this.currentViewkeeperEls.length) {
+    for (let i = 0, n = viewkeeperEls.length; i < n; i++) {
+      if (viewkeeperEls[i] !== this.currentViewkeeperEls[i]) {
         return true;
-      }
-
-      for (let i = 0, n = viewkeeperEls.length; i < n; i++) {
-        if (viewkeeperEls[i] !== this.currentViewkeeperEls[i]) {
-          return true;
-        }
       }
     }
 
@@ -115,27 +163,37 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
   private detectElements(): void {
     let viewkeeperEls = this.getViewkeeperEls();
 
-    if (this.viewkeeperElsChanged(viewkeeperEls)) {
+    if (this.parentGroupSvc && this.parentGroupSvc.groupName === this.skyViewkeeperGroup) {
       this.destroyViewkeepers();
 
-      let previousViewkeeperEl: HTMLElement;
+      this.parentGroupSvc.setViewkeeperEls(this.id, viewkeeperEls);
+    } else {
+      viewkeeperEls = viewkeeperEls.concat(
+        this.groupSvc.getGroupViewkeeperEls()
+      );
 
-      for (const viewkeeperEl of viewkeeperEls) {
-        this.viewkeepers.push(
-          this.viewkeeperSvc.create(
-            {
-              boundaryEl: this.el.nativeElement,
-              el: viewkeeperEl,
-              setWidth: true,
-              verticalOffsetEl: previousViewkeeperEl
-            }
-          )
-        );
+      if (this.viewkeeperElsChanged(viewkeeperEls)) {
+        this.destroyViewkeepers();
 
-        previousViewkeeperEl = viewkeeperEl;
+        let previousViewkeeperEl: HTMLElement;
+
+        for (const viewkeeperEl of viewkeeperEls) {
+          this.viewkeepers.push(
+            this.viewkeeperSvc.create(
+              {
+                boundaryEl: this.el.nativeElement,
+                el: viewkeeperEl,
+                setWidth: true,
+                verticalOffsetEl: previousViewkeeperEl
+              }
+            )
+          );
+
+          previousViewkeeperEl = viewkeeperEl;
+        }
+
+        this.currentViewkeeperEls = viewkeeperEls;
       }
-
-      this.currentViewkeeperEls = viewkeeperEls;
     }
   }
 }

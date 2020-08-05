@@ -20,51 +20,61 @@ import {
 } from './viewkeeper.service';
 
 import {
-  ViewkeeperTestComponent
-} from './fixtures/viewkeeper-test.component';
-
-import {
   ViewkeeperEmptyTestComponent
 } from './fixtures/viewkeeper-empty-test.component';
 
+import {
+  ViewkeeperGroupTestComponent
+} from './fixtures/viewkeeper-group-test.component';
+
+import {
+  ViewkeeperTestComponent
+} from './fixtures/viewkeeper-test.component';
+
 describe('Viewkeeper directive', () => {
-  let mockViewkeeperSvc: any;
+  let mockViewkeeperSvc: {
+    create: jasmine.Spy,
+    destroy: jasmine.Spy,
+    viewkeeperClasses: string[]
+  };
+
   let mockMutationObserverSvc: any;
   let mutationCallbacks: any[];
   let mockMutationObserver: any;
 
-  function getBoundaryEl(fixture: ComponentFixture<ViewkeeperTestComponent>): void {
+  function getBoundaryEl(
+    fixture: ComponentFixture<ViewkeeperGroupTestComponent | ViewkeeperTestComponent>
+  ): void {
     return fixture.debugElement.query(By.css('.boundary-el')).nativeElement;
   }
 
-  function validateViewkeepersCreated(fixture: ComponentFixture<ViewkeeperTestComponent>): void {
+  function validateViewkeepersCreated(
+    fixture: ComponentFixture<ViewkeeperGroupTestComponent | ViewkeeperTestComponent>
+  ): void {
     const boundaryEl = getBoundaryEl(fixture);
+    const expectedViewkeeperClasses: string[] = [];
 
-    let expectedCallCount = 2;
+    if (fixture.componentInstance.showEl1) {
+      expect(mockViewkeeperSvc.create).toHaveBeenCalledWith({
+        boundaryEl,
+        el: document.querySelector('.el1'),
+        setWidth: true,
+        verticalOffsetEl: undefined
+      });
 
-    if (fixture.componentInstance.showEl3) {
-      expectedCallCount++;
+      expectedViewkeeperClasses.push('el1');
     }
 
-    if (fixture.componentInstance.showEl4) {
-      expectedCallCount++;
+    if (fixture.componentInstance.showEl2) {
+      expect(mockViewkeeperSvc.create).toHaveBeenCalledWith({
+        boundaryEl,
+        el: document.querySelector('.el2'),
+        setWidth: true,
+        verticalOffsetEl: document.querySelector('.el1')
+      });
+
+      expectedViewkeeperClasses.push('el2');
     }
-
-    expect(mockViewkeeperSvc.create).toHaveBeenCalledTimes(expectedCallCount);
-
-    expect(mockViewkeeperSvc.create).toHaveBeenCalledWith({
-      boundaryEl,
-      el: document.querySelector('.el1'),
-      setWidth: true,
-      verticalOffsetEl: undefined
-    });
-
-    expect(mockViewkeeperSvc.create).toHaveBeenCalledWith({
-      boundaryEl,
-      el: document.querySelector('.el2'),
-      setWidth: true,
-      verticalOffsetEl: document.querySelector('.el1')
-    });
 
     if (fixture.componentInstance.showEl3) {
       expect(mockViewkeeperSvc.create).toHaveBeenCalledWith({
@@ -73,6 +83,8 @@ describe('Viewkeeper directive', () => {
         setWidth: true,
         verticalOffsetEl: document.querySelector('.el2')
       });
+
+      expectedViewkeeperClasses.push('el3');
     }
 
     if (fixture.componentInstance.showEl4) {
@@ -86,7 +98,11 @@ describe('Viewkeeper directive', () => {
           '.el2'
         )
       });
+
+      expectedViewkeeperClasses.push('el4');
     }
+
+    expect(mockViewkeeperSvc.viewkeeperClasses).toEqual(expectedViewkeeperClasses);
   }
 
   function triggerMutationChange(): void {
@@ -95,12 +111,71 @@ describe('Viewkeeper directive', () => {
     }
   }
 
+  function validateWithElementToggle(
+    fixture: ComponentFixture<ViewkeeperTestComponent | ViewkeeperGroupTestComponent>
+  ): void {
+    fixture.detectChanges();
+    triggerMutationChange();
+
+    validateViewkeepersCreated(fixture);
+
+    mockViewkeeperSvc.create.calls.reset();
+
+    // Add a new matching element.
+    fixture.componentInstance.showEl3 = true;
+
+    fixture.detectChanges();
+    triggerMutationChange();
+
+    validateViewkeepersCreated(fixture);
+
+    mockViewkeeperSvc.create.calls.reset();
+
+    triggerMutationChange();
+
+    expect(mockViewkeeperSvc.create).not.toHaveBeenCalled();
+
+    // Remove a matching element and add another.
+    fixture.componentInstance.showEl3 = false;
+    fixture.componentInstance.showEl4 = true;
+
+    fixture.detectChanges();
+    triggerMutationChange();
+
+    validateViewkeepersCreated(fixture);
+
+    // Remove all matching elements.
+    mockViewkeeperSvc.create.calls.reset();
+
+    fixture.componentInstance.showEl1 = false;
+    fixture.componentInstance.showEl2 = false;
+    fixture.componentInstance.showEl3 = false;
+    fixture.componentInstance.showEl4 = false;
+
+    fixture.detectChanges();
+    triggerMutationChange();
+
+    validateViewkeepersCreated(fixture);
+  }
+
   beforeEach(() => {
     mutationCallbacks = [];
 
     mockViewkeeperSvc = {
-      create: jasmine.createSpy('create'),
-      destroy: jasmine.createSpy('destroy')
+      create: jasmine.createSpy('create').and.callFake((options) => {
+        mockViewkeeperSvc.viewkeeperClasses.push(options.el.className);
+
+        return {
+          className: options.el.className
+        };
+      }),
+      destroy: jasmine.createSpy('destroy').and.callFake((vk) => {
+        mockViewkeeperSvc.viewkeeperClasses.splice(
+          mockViewkeeperSvc.viewkeeperClasses.indexOf(vk.className),
+          1
+        );
+      }),
+      viewkeeperClasses: []
     };
 
     mockMutationObserver = {
@@ -118,7 +193,8 @@ describe('Viewkeeper directive', () => {
     TestBed.configureTestingModule({
       declarations: [
         ViewkeeperTestComponent,
-        ViewkeeperEmptyTestComponent
+        ViewkeeperEmptyTestComponent,
+        ViewkeeperGroupTestComponent
       ],
       imports: [
         SkyViewkeeperModule
@@ -166,54 +242,7 @@ describe('Viewkeeper directive', () => {
   it('should create viewkeeper objects for elements that appear after initial render', () => {
     const fixture = TestBed.createComponent(ViewkeeperTestComponent);
 
-    fixture.detectChanges();
-    triggerMutationChange();
-
-    validateViewkeepersCreated(fixture);
-
-    mockViewkeeperSvc.create.calls.reset();
-
-    // Add a new matching element.
-    fixture.componentInstance.showEl3 = true;
-
-    fixture.detectChanges();
-    triggerMutationChange();
-
-    validateViewkeepersCreated(fixture);
-
-    expect(mockViewkeeperSvc.destroy).toHaveBeenCalledTimes(2);
-
-    mockViewkeeperSvc.create.calls.reset();
-    mockViewkeeperSvc.destroy.calls.reset();
-
-    triggerMutationChange();
-
-    expect(mockViewkeeperSvc.create).not.toHaveBeenCalled();
-    expect(mockViewkeeperSvc.destroy).not.toHaveBeenCalled();
-
-    // Remove a matching element and add another.
-    fixture.componentInstance.showEl3 = false;
-    fixture.componentInstance.showEl4 = true;
-
-    fixture.detectChanges();
-    triggerMutationChange();
-
-    validateViewkeepersCreated(fixture);
-
-    expect(mockViewkeeperSvc.destroy).toHaveBeenCalledTimes(3);
-
-    // Remove all matching elements.
-    mockViewkeeperSvc.create.calls.reset();
-
-    fixture.componentInstance.showEl1 = false;
-    fixture.componentInstance.showEl2 = false;
-    fixture.componentInstance.showEl3 = false;
-    fixture.componentInstance.showEl4 = false;
-
-    fixture.detectChanges();
-    triggerMutationChange();
-
-    expect(mockViewkeeperSvc.create).not.toHaveBeenCalled();
+    validateWithElementToggle(fixture);
   });
 
   it('should handle an empty viewkeeper attribute value', () => {
@@ -227,6 +256,12 @@ describe('Viewkeeper directive', () => {
     triggerMutationChange();
 
     expect(mockViewkeeperSvc.create).not.toHaveBeenCalled();
+  });
+
+  it('should support grouping nested viewkeepers', () => {
+    const fixture = TestBed.createComponent(ViewkeeperGroupTestComponent);
+
+    validateWithElementToggle(fixture);
   });
 
 });
