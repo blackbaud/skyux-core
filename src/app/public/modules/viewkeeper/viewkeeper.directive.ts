@@ -102,7 +102,7 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
       }
     );
 
-    this.groupSvc.viewkeeperEls
+    this.groupSvc.viewkeeperElsChange
       .pipe(
         takeUntil(this.ngUnsubscribe)
       )
