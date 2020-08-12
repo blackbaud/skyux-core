@@ -8,9 +8,16 @@ import {
 let idIndex = 0;
 
 function generateId(): string {
-  return '__sky-id-gen-' + ++idIndex;
+  idIndex++;
+
+  return `sky-id-gen__${idIndex}`;
 }
 
+/**
+ * Sets the element's `id` property to a unique ID. To reference this unique ID on other elements,
+ * such as in a `label` element's `for` attribute, assign this directive to a template reference
+ * variable, then use its `id` property.
+ */
 @Directive({
   selector: '[skyId]',
   exportAs: 'skyId'
