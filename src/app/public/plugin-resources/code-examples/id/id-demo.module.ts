@@ -6,9 +6,9 @@ import {
   CommonModule
 } from '@angular/common';
 
-import {
-  SkyIdModule
-} from '@skyux/core';
+// import {
+//   SkyIdModule
+// } from '@skyux/core';
 
 import {
   IdDemoComponent
@@ -16,8 +16,8 @@ import {
 
 @NgModule({
   imports: [
-    CommonModule,
-    SkyIdModule
+    CommonModule // ,
+    // SkyIdModule
   ],
   declarations: [
     IdDemoComponent
