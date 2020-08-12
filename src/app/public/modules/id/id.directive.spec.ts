@@ -1,10 +1,15 @@
 import {
+  async,
   TestBed
 } from '@angular/core/testing';
 
 import {
   By
 } from '@angular/platform-browser';
+
+import {
+  expect
+} from '@skyux-sdk/testing';
 
 import {
   IdDirectiveFixtureComponent
@@ -27,7 +32,7 @@ describe('ID directive', () => {
     });
   });
 
-  it('should assign a unique ID and provide it through its API to other controls', () => {
+  it('should assign a unique ID and provide it through its API to other controls', async(() => {
     const fixture = TestBed.createComponent(IdDirectiveFixtureComponent);
 
     fixture.detectChanges();
@@ -40,6 +45,8 @@ describe('ID directive', () => {
 
     expect(label1El.htmlFor).toBe(input1El.id);
     expect(label2El.htmlFor).toBe(input2El.id);
-  });
+
+    expect(fixture.nativeElement).toBeAccessible();
+  }));
 
 });
