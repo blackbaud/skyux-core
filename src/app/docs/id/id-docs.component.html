@@ -13,9 +13,7 @@
         <sky-column
           screenSmall="6"
         >
-          <div
-            class="sky-form-group"
-            >
+          <sky-input-box>
             <label
               class="sky-control-label"
               [for]="input1.id"
@@ -28,11 +26,9 @@
               skyId
               #input1="skyId"
             >
-            </div>
+          </sky-input-box>
 
-            <div
-            class="sky-form-group"
-            >
+          <sky-input-box>
             <label
               class="sky-control-label"
               [for]="input2.id"
@@ -47,24 +43,7 @@
             >
               <option>Value</option>
             </select>
-            </div>
-
-            <div
-            class="sky-form-group"
-            >
-            <label
-              class="sky-control-label"
-              [for]="input3.id"
-            >
-              Label
-            </label>
-            <input
-              class="sky-form-control"
-              type="text"
-              skyId
-              #input3="skyId"
-            >
-          </div>
+          </sky-input-box>
         </sky-column>
       </sky-row>
     </sky-fluid-grid>
@@ -80,7 +59,7 @@
         headingStyle="success"
       >
         <p>
-          Use the ID directive when one HTML element must be associated with another HTML element by its <sky-code>id</sky-code> attribute, such as the <sky-code>label</sky-code> element's <sky-code>for</sky-code> attribute. Use the ID directive to ensure unique IDs do not conflict with other elements on the page.
+          Use the ID directive when one HTML element must be associated with another HTML element by its <sky-code>id</sky-code> attribute. For example, <sky-code>input</sky-code> and <sky-code>label</sky-code> elements must be associated by a unique ID so that clicking on the label sets focus to the input. Associating a label to its input also enables assistive technologies to describe the input to the user using the label text.
         </p>
       </sky-docs-design-guideline>
 
@@ -89,10 +68,10 @@
         headingStyle="danger"
       >
         <p>
-          Don't use the ID directive when you don't need to associate HTML elements.
+          Don't use the ID directive when an element does not need to be referenced by its ID attribute because doing so adds unnecessary overhead to an application.
         </p>
         <p>
-          Don't use the ID directive in combination with hard-coded IDs because this can cause collisions. We recommend only using the ID directive.
+          Don't assign a hard-coded ID to an element because it can lead to ID collisions.
         </p>
       </sky-docs-design-guideline>
 
@@ -100,7 +79,11 @@
 
   </sky-docs-design-guidelines>
 
-  <sky-docs-code-examples>
+  <sky-docs-code-examples
+    [packageDependencies]="{
+      '@skyux/forms': '*'
+    }"
+  >
     <sky-docs-code-example
       sourceCodePath="src/app/public/plugin-resources/code-examples/id"
     >
