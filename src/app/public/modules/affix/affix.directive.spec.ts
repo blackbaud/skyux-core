@@ -253,6 +253,24 @@ describe('Affix directive', () => {
     expect(affixedOffset.left).toEqual(expectedOffsets.rightTop.left);
 
     componentInstance.placement = 'right';
+    componentInstance.verticalAlignment = 'middle';
+    fixture.detectChanges();
+
+    affixedOffset = getAffixedOffset();
+
+    expect(affixedOffset.top).toEqual(expectedOffsets.rightMiddle.top);
+    expect(affixedOffset.left).toEqual(expectedOffsets.rightMiddle.left);
+
+    componentInstance.placement = 'right';
+    componentInstance.verticalAlignment = undefined;
+    fixture.detectChanges();
+
+    affixedOffset = getAffixedOffset();
+
+    expect(affixedOffset.top).toEqual(expectedOffsets.rightMiddle.top);
+    expect(affixedOffset.left).toEqual(expectedOffsets.rightMiddle.left);
+
+    componentInstance.placement = 'right';
     componentInstance.verticalAlignment = 'bottom';
     fixture.detectChanges();
 
@@ -269,6 +287,24 @@ describe('Affix directive', () => {
 
     expect(affixedOffset.top).toEqual(expectedOffsets.leftTop.top);
     expect(affixedOffset.left).toEqual(expectedOffsets.leftTop.left);
+
+    componentInstance.placement = 'left';
+    componentInstance.verticalAlignment = 'middle';
+    fixture.detectChanges();
+
+    affixedOffset = getAffixedOffset();
+
+    expect(affixedOffset.top).toEqual(expectedOffsets.leftMiddle.top);
+    expect(affixedOffset.left).toEqual(expectedOffsets.leftMiddle.left);
+
+    componentInstance.placement = 'left';
+    componentInstance.verticalAlignment = undefined;
+    fixture.detectChanges();
+
+    affixedOffset = getAffixedOffset();
+
+    expect(affixedOffset.top).toEqual(expectedOffsets.leftMiddle.top);
+    expect(affixedOffset.left).toEqual(expectedOffsets.leftMiddle.left);
 
     componentInstance.placement = 'left';
     componentInstance.verticalAlignment = 'bottom';
