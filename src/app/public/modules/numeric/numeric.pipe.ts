@@ -26,8 +26,12 @@ import {
 
 /**
  * Shortens numbers to 1K, 1M, 1B, 1T and can format for currency.
- * Note: Be sure you have a space between the curly bracket surrounding the options object
+ * **Note**: Be sure you have a space between the curly bracket surrounding the options object
  * and the two curly brackets closing the pipe or it will not work.
+ * Usage:
+ * ```
+ * {{ value | skyNumeric(config) }}
+ * ```
  */
 @Pipe({
   name: 'skyNumeric'
