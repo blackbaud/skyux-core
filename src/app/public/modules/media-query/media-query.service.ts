@@ -94,7 +94,8 @@ export class SkyMediaQueryService implements OnDestroy {
   }
 
   /**
-   * Suscribes to screen size changes. The `listener` function is called when breakpoints change.
+   * Suscribes to screen size changes.
+   * @param listener Specifies a function that is called when breakpoints change.
    * It is called with a `SkyMediaBreakpoints` argument, which is an enum that represents
    * the new breakpoint.
    */
