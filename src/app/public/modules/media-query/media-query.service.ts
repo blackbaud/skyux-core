@@ -21,27 +21,27 @@ import {
 export class SkyMediaQueryService implements OnDestroy {
 
   /**
-   * @internal
+   * The size for the `xs` breakpoint.
    */
   public static xs = '(max-width: 767px)';
 
   /**
-   * @internal
+   * The size for the `sm` breakpoint.
    */
   public static sm = '(min-width: 768px) and (max-width: 991px)';
 
   /**
-   * @internal
+   * The size for the `md` breakpoint.
    */
   public static md = '(min-width: 992px) and (max-width: 1199px)';
 
   /**
-   * @internal
+   * The size for the `lg` breakpoint.
    */
   public static lg = '(min-width: 1200px)';
 
   /**
-   * @internal
+   * Returns the current breakpoint.
    */
   public get current(): SkyMediaBreakpoints {
     return this._current;
@@ -84,10 +84,6 @@ export class SkyMediaQueryService implements OnDestroy {
     this.addListeners();
   }
 
-  /**
-   * Angular's ngOnDestroy lifecycle hook.
-   * @internal
-   */
   public ngOnDestroy(): void {
     this.removeListeners();
     this.currentSubject.complete();
@@ -96,8 +92,6 @@ export class SkyMediaQueryService implements OnDestroy {
   /**
    * Suscribes to screen size changes.
    * @param listener Specifies a function that is called when breakpoints change.
-   * It is called with a `SkyMediaBreakpoints` argument, which is an enum that represents
-   * the new breakpoint.
    */
   public subscribe(listener: SkyMediaQueryListener): Subscription {
     return this.currentSubject.subscribe({
