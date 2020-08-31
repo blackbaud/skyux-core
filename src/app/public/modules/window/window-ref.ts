@@ -10,7 +10,7 @@ export function getWindow(): any {
 }
 
 /**
- * The application window reference service allows users to reference the global window variable.
+ * The application window reference service references the global window variable.
  * After users inject SkyAppWindowRef into a component, they can use the service to interact with
  * window properties and event handlers by referencing its nativeWindow property.
  */
