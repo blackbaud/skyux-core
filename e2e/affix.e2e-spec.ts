@@ -25,56 +25,128 @@ describe('Affix', function () {
       [
         {
           placement: 'above',
-          alignment: 'right'
+          horizontalAlignment: 'right',
+          verticalAlignment: 'bottom'
         },
         {
           placement: 'above',
-          alignment: 'center'
+          horizontalAlignment: 'center',
+          verticalAlignment: 'bottom'
         },
         {
           placement: 'above',
-          alignment: 'left'
+          horizontalAlignment: 'left',
+          verticalAlignment: 'bottom'
+        },
+        {
+          placement: 'above',
+          horizontalAlignment: 'right',
+          verticalAlignment: 'middle'
+        },
+        {
+          placement: 'above',
+          horizontalAlignment: 'center',
+          verticalAlignment: 'middle'
+        },
+        {
+          placement: 'above',
+          horizontalAlignment: 'left',
+          verticalAlignment: 'middle'
+        },
+        {
+          placement: 'above',
+          horizontalAlignment: 'right',
+          verticalAlignment: 'top'
+        },
+        {
+          placement: 'above',
+          horizontalAlignment: 'center',
+          verticalAlignment: 'top'
+        },
+        {
+          placement: 'above',
+          horizontalAlignment: 'left',
+          verticalAlignment: 'top'
         },
         {
           placement: 'right',
-          alignment: 'bottom'
+          horizontalAlignment: 'left',
+          verticalAlignment: 'bottom'
         },
         {
           placement: 'right',
-          alignment: 'middle'
+          horizontalAlignment: 'left',
+          verticalAlignment: 'middle'
         },
         {
           placement: 'right',
-          alignment: 'top'
+          horizontalAlignment: 'left',
+          verticalAlignment: 'top'
         },
         {
           placement: 'below',
-          alignment: 'left'
+          horizontalAlignment: 'left',
+          verticalAlignment: 'bottom'
         },
         {
           placement: 'below',
-          alignment: 'center'
+          horizontalAlignment: 'center',
+          verticalAlignment: 'bottom'
         },
         {
           placement: 'below',
-          alignment: 'right'
+          horizontalAlignment: 'right',
+          verticalAlignment: 'bottom'
+        },
+        {
+          placement: 'below',
+          horizontalAlignment: 'left',
+          verticalAlignment: 'middle'
+        },
+        {
+          placement: 'below',
+          horizontalAlignment: 'center',
+          verticalAlignment: 'middle'
+        },
+        {
+          placement: 'below',
+          horizontalAlignment: 'right',
+          verticalAlignment: 'middle'
+        },
+        {
+          placement: 'below',
+          horizontalAlignment: 'left',
+          verticalAlignment: 'top'
+        },
+        {
+          placement: 'below',
+          horizontalAlignment: 'center',
+          verticalAlignment: 'top'
+        },
+        {
+          placement: 'below',
+          horizontalAlignment: 'right',
+          verticalAlignment: 'top'
         },
         {
           placement: 'left',
-          alignment: 'top'
+          horizontalAlignment: 'right',
+          verticalAlignment: 'top'
         },
         {
           placement: 'left',
-          alignment: 'middle'
+          horizontalAlignment: 'right',
+          verticalAlignment: 'middle'
         },
         {
           placement: 'left',
-          alignment: 'bottom'
+          horizontalAlignment: 'right',
+          verticalAlignment: 'bottom'
         }
       ].map(o => new Promise(resolve => {
         stepAffixCycle().then(() => {
           expect('#screenshot-affix').toMatchBaselineScreenshot(resolve, {
-            screenshotName: `affix-${parent}-${o.placement}-${o.alignment}`
+            screenshotName: `affix-${parent}-${o.placement}-${o.horizontalAlignment}-${o.verticalAlignment}`
           });
         });
       }))
