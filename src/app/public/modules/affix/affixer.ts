@@ -256,16 +256,16 @@ export class SkyAffixer {
             top = top + (affixedRect.height / 2);
             break;
           case 'bottom':
-            default:
-              break;
+          default:
+            break;
         }
       } else {
         top = baseRect.bottom;
 
         switch (verticalAlignment) {
           case 'top':
-            default:
-              break;
+          default:
+            break;
           case 'middle':
             top = top - (affixedRect.height / 2);
             break;
@@ -281,9 +281,9 @@ export class SkyAffixer {
           break;
 
         case 'center':
-          default:
-            left = baseRect.left + (baseRect.width / 2) - (affixedRect.width / 2);
-            break;
+        default:
+          left = baseRect.left + (baseRect.width / 2) - (affixedRect.width / 2);
+          break;
 
         case 'right':
           left = baseRect.right - affixedRect.width;
