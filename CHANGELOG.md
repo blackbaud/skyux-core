@@ -1,3 +1,7 @@
+# 4.2.2 (2020-08-31)
+
+- Fixed the overlay service to allow for overlays which cover the base element. [#199](https://github.com/blackbaud/skyux-core/pull/199)
+
 # 4.2.1 (2020-08-27)
 
 - Fixed the numeric service to reference `NumericOptions` instead of `any`. [#197](https://github.com/blackbaud/skyux-core/pull/197)
