@@ -16,6 +16,10 @@ import {
 } from '@skyux/forms';
 
 import {
+  SkyAuthHttpClientModule
+} from '@skyux/http';
+
+import {
   SkyFluidGridModule,
   SkyPageModule
 } from '@skyux/layout';
@@ -52,6 +56,7 @@ import {
   exports: [
     SkyAffixModule,
     SkyAppLinkModule,
+    SkyAuthHttpClientModule, // Supports docs pages with `svcid` param.
     SkyCodeModule,
     SkyCoreAdapterModule,
     SkyDockModule,
