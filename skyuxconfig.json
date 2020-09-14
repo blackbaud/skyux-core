@@ -29,7 +29,14 @@
   "app": {
     "styles": [
       "@skyux/docs-tools/css/docs-tools.css"
-    ]
+    ],
+    "theming": {
+      "supportedThemes": [
+        "default",
+        "modern"
+      ],
+      "theme": "default"
+    }
   },
   "host": {
     "url": "https://developer.blackbaud.com",
