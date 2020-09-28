@@ -104,13 +104,7 @@ export class SkyDockComponent implements OnInit {
     this.itemRefs.sort(sortByStackOrder);
 
     // Reassign the correct index for each view.
-    this.itemRefs.forEach((item, i) => {
-      if (this.target.get(i)) {
-        this.target.move(item.componentRef.hostView, i);
-      } else {
-        this.target.insert(item.componentRef.hostView, i);
-      }
-    });
+    this.itemRefs.forEach((item, i) => this.target.move(item.componentRef.hostView, i));
   }
 
   private getHighestStackOrder(): number {
