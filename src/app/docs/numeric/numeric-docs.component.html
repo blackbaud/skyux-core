@@ -11,13 +11,10 @@
     <sky-definition-list
       labelWidth="200px"
     >
-      <sky-definition-list-heading>
-        This is a sample of numeric formatting.
-      </sky-definition-list-heading>
       <sky-definition-list-content>
         <p>
           <sky-definition-list-label>
-            1 with zero digits:
+            1 with 0 digits:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1 | skyNumeric:{digits: 0} }}
@@ -25,7 +22,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1000 with zero digits:
+            1000 with 0 digits:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1000 | skyNumeric:{digits: 0} }}
@@ -33,7 +30,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1000 with one digit:
+            1000 with 1 digit:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1000 | skyNumeric}}
@@ -41,7 +38,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1100 with zero digits:
+            1100 with 0 digits:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1100 | skyNumeric:{digits: 0} }}
@@ -49,7 +46,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1100 with one digit:
+            1100 with 1 digit:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1100 | skyNumeric}}
@@ -57,7 +54,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1500 with zero digits:
+            1500 with 0 digits:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1500 | skyNumeric:{digits: 0} }}
@@ -65,7 +62,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1500 with one digit:
+            1500 with 1 digit:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1500 | skyNumeric}}
@@ -73,7 +70,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1000000 with any digits:
+            1000000 with 0 digits:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1000000 | skyNumeric:{digits: 0} }}
@@ -81,7 +78,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1000000000 with any digits:
+            1000000000 with 0 digits:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1000000000 | skyNumeric:{digits: 0} }}
@@ -89,7 +86,7 @@
         </p>
         <p>
           <sky-definition-list-label>
-            1000000000000 with any digits:
+            1000000000000 with 0 digits:
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1000000000000 | skyNumeric:{digits: 0} }}
@@ -133,14 +130,6 @@
           </sky-definition-list-label>
           <sky-definition-list-value>
             {{1234567 | skyNumeric:{truncate: false} }}
-          </sky-definition-list-value>
-        </p>
-        <p>
-          <sky-definition-list-label>
-            15501 with truncation after 10000 and 1 digit
-          </sky-definition-list-label>
-          <sky-definition-list-value>
-            {{15501 | skyNumeric:{digits: 1, truncateAfter: 10000} }}
           </sky-definition-list-value>
         </p>
         <p>
