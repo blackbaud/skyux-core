@@ -3,15 +3,15 @@ import {
   SkyHostBrowser
 } from '@skyux-sdk/e2e';
 
-describe('Dock', function () {
+describe('Dock', () => {
 
-  beforeEach(function () {
-    SkyHostBrowser.get('demos/dock');
-    SkyHostBrowser.setWindowBreakpoint('md');
-    SkyHostBrowser.scrollTo('.scroll-bottom-label');
+  beforeEach(async () => {
+    await SkyHostBrowser.get('demos/dock');
+    await SkyHostBrowser.setWindowBreakpoint('md');
+    await SkyHostBrowser.scrollTo('.scroll-bottom-label');
   });
 
-  it('should match screenshot', function (done) {
+  it('should match screenshot', async (done) => {
     expect('#screenshot-dock').toMatchBaselineScreenshot(done, {
       screenshotName: 'dock'
     });

@@ -8,19 +8,19 @@ import {
   element
 } from 'protractor';
 
-describe('Affix', function () {
+describe('Affix', () => {
 
-  beforeEach(function () {
-    SkyHostBrowser.get('demos/affix');
-    SkyHostBrowser.setWindowDimensions(2000, 2000);
-    element(by.id('screenshot-affix-button-scroll-to-base-element')).click();
+  beforeEach(async () => {
+    await SkyHostBrowser.get('demos/affix');
+    await SkyHostBrowser.setWindowDimensions(2000, 2000);
+    await element(by.id('screenshot-affix-button-scroll-to-base-element')).click();
   });
 
-  function stepAffixCycle() {
+  async function stepAffixCycle(): Promise<void> {
     return element(by.id('screenshot-affix-button-step-cycle')).click();
   }
 
-  function takeScreenshots(parent: string) {
+  async function takeScreenshots(parent: string): Promise<any[]> {
     return Promise.all(
       [
         {
@@ -143,26 +143,27 @@ describe('Affix', function () {
           horizontalAlignment: 'right',
           verticalAlignment: 'bottom'
         }
-      ].map(o => new Promise(resolve => {
-        stepAffixCycle().then(() => {
-          expect('#screenshot-affix').toMatchBaselineScreenshot(resolve, {
-            screenshotName: `affix-${parent}-${o.placement}-${o.horizontalAlignment}-${o.verticalAlignment}`
+      ]
+        .map(o => stepAffixCycle().then(() => {
+          return new Promise((resolve) => {
+            expect('#screenshot-affix').toMatchBaselineScreenshot(() => {
+              resolve();
+            }, {
+              screenshotName: `affix-${parent}-${o.placement}-${o.horizontalAlignment}-${o.verticalAlignment}`
+            });
           });
-        });
-      }))
+        }))
     );
   }
 
-  it('should match window screenshots', async function (done) {
+  it('should match window screenshots', async () => {
     await takeScreenshots('window');
     await element(by.id('screenshot-affix-button-overflow-parent')).click();
-    done();
-  }, 60000);
+  });
 
-  it('should match scroll parent screenshots', async function (done) {
+  it('should match scroll parent screenshots', async () => {
     await element(by.id('screenshot-affix-button-overflow-parent')).click();
     await takeScreenshots('scroll-parent');
-    done();
-  }, 60000);
+  });
 
 });

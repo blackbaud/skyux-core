@@ -4,9 +4,9 @@ import {
 } from '@skyux-sdk/e2e';
 
 describe('Numeric', () => {
-  it('should match screenshot', (done) => {
-    SkyHostBrowser.get('demos/numeric');
-    SkyHostBrowser.setWindowBreakpoint('xs');
+  it('should match screenshot', async (done) => {
+    await SkyHostBrowser.get('demos/numeric');
+    await SkyHostBrowser.setWindowBreakpoint('xs');
     expect('.sky-numeric-demo').toMatchBaselineScreenshot(done, {
       screenshotName: 'numeric-xs'
     });

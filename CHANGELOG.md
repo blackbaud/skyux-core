@@ -1,4 +1,4 @@
-# 4.3.1 (2020-10-15)
+# 4.3.1 (2020-10-19)
 
 - Adjusted some implementation details to add support for Angular 10. [#204](https://github.com/blackbaud/skyux-core/pull/204)
 
