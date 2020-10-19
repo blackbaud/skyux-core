@@ -16,154 +16,236 @@ describe('Affix', () => {
     await element(by.id('screenshot-affix-button-scroll-to-base-element')).click();
   });
 
-  async function stepAffixCycle(): Promise<void> {
-    return element(by.id('screenshot-affix-button-step-cycle')).click();
+  async function checkScreenshot(
+    parent: string,
+    config: {
+      placement: string;
+      horizontalAlignment: string;
+      verticalAlignment: string;
+    },
+    done: DoneFn
+  ) {
+    await element(by.id('placement-select'))
+      .all(by.css(`option[value="${config.placement}"]`))
+      .click();
+
+    await element(by.id('horizontal-alignment-select'))
+      .all(by.css(`option[value="${config.horizontalAlignment}"]`))
+      .click();
+
+    await element(by.id('vertical-alignment-select'))
+      .all(by.css(`option[value="${config.verticalAlignment}"]`))
+      .click();
+
+    expect('#screenshot-affix').toMatchBaselineScreenshot(done, {
+      screenshotName: `affix-${parent}-${config.placement}-${config.horizontalAlignment}-${config.verticalAlignment}`
+    });
   }
 
-  async function takeScreenshots(parent: string): Promise<any[]> {
-    return Promise.all(
-      [
-        {
-          placement: 'above',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'bottom'
-        },
-        {
-          placement: 'above',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'bottom'
-        },
-        {
-          placement: 'above',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'bottom'
-        },
-        {
-          placement: 'above',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'middle'
-        },
-        {
-          placement: 'above',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'middle'
-        },
-        {
-          placement: 'above',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'middle'
-        },
-        {
-          placement: 'above',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'top'
-        },
-        {
-          placement: 'above',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'top'
-        },
-        {
-          placement: 'above',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'top'
-        },
-        {
-          placement: 'right',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'bottom'
-        },
-        {
-          placement: 'right',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'middle'
-        },
-        {
-          placement: 'right',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'top'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'bottom'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'bottom'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'bottom'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'middle'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'middle'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'middle'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'left',
-          verticalAlignment: 'top'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'center',
-          verticalAlignment: 'top'
-        },
-        {
-          placement: 'below',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'top'
-        },
-        {
-          placement: 'left',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'top'
-        },
-        {
-          placement: 'left',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'middle'
-        },
-        {
-          placement: 'left',
-          horizontalAlignment: 'right',
-          verticalAlignment: 'bottom'
-        }
-      ]
-        .map(o => stepAffixCycle().then(() => {
-          return new Promise((resolve) => {
-            expect('#screenshot-affix').toMatchBaselineScreenshot(() => {
-              resolve();
-            }, {
-              screenshotName: `affix-${parent}-${o.placement}-${o.horizontalAlignment}-${o.verticalAlignment}`
-            });
-          });
-        }))
-    );
+  function checkScreenshots(parent: string) {
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'bottom'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'bottom'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'bottom'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'middle'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'middle'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'middle'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'top'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'top'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'above',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'top'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'right',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'bottom'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'right',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'middle'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'right',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'top'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'bottom'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'bottom'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'bottom'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'middle'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'middle'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'middle'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'left',
+        verticalAlignment: 'top'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'center',
+        verticalAlignment: 'top'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'below',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'top'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'left',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'top'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'left',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'middle'
+      }, done);
+    });
+
+    it('should match screenshot', (done) => {
+      checkScreenshot(parent, {
+        placement: 'left',
+        horizontalAlignment: 'right',
+        verticalAlignment: 'bottom'
+      }, done);
+    });
   }
 
-  it('should match window screenshots', async () => {
-    await takeScreenshots('window');
-    await element(by.id('screenshot-affix-button-overflow-parent')).click();
+  describe('window screenshots', () => {
+    checkScreenshots('window');
   });
 
-  it('should match scroll parent screenshots', async () => {
-    await element(by.id('screenshot-affix-button-overflow-parent')).click();
-    await takeScreenshots('scroll-parent');
+  describe('scroll-parent screenshots', () => {
+    beforeEach(async () => {
+      await element(by.id('screenshot-affix-button-overflow-parent')).click();
+    });
+
+    checkScreenshots('scroll-parent');
   });
 
 });
