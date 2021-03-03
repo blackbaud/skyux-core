@@ -207,10 +207,10 @@ export class SkyCoreAdapterService {
   public resetHeight(elementRef: ElementRef, selector: string): void {
     const children = elementRef.nativeElement.querySelectorAll(selector);
     if (children.length > 0) {
-      children.forEach((item: any) => {
+      for (let i = 0; i < children.length; i++) {
         // tslint:disable-next-line: no-null-keyword
-        item.style.height = null;
-      });
+        children[i].style.height = null;
+      }
     }
   }
 
@@ -223,12 +223,12 @@ export class SkyCoreAdapterService {
     const children = elementRef.nativeElement.querySelectorAll(selector);
     if (children.length > 0) {
       let maxHeight = 0;
-      children.forEach((el: HTMLElement) => {
-        maxHeight = Math.max(maxHeight, el.offsetHeight);
-      });
-      children.forEach((item: any) => {
-        item.style.height = maxHeight + 'px';
-      });
+      for (let i = 0; i < children.length; i++) {
+        maxHeight = Math.max(maxHeight, children[i].offsetHeight);
+      }
+      for (let i = 0; i < children.length; i++) {
+        children[i].style.height = maxHeight + 'px';
+      }
     }
   }
 
