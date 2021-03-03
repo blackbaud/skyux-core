@@ -162,6 +162,13 @@ export class SkyCoreAdapterService {
   }
 
   /**
+   * Returns the clientWidth of the provided elementRef.
+   */
+  public getWidth(elementRef: ElementRef): number {
+    return elementRef.nativeElement.clientWidth;
+  }
+
+  /**
    * Checks if an event target has a higher z-index than a given element.
    * @param target The event target element.
    * @param element The element to test against. A z-index must be explicitly set for this element.
@@ -189,6 +196,35 @@ export class SkyCoreAdapterService {
     }
 
     return false;
+  }
+
+  /**
+   * Synchronizes all children to have the same height as the tallest child element.
+   * @param elementRef - The element to search within.
+   * @param selector - The CSS selector to use to find the children elements.
+   */
+  public syncHeight(elementRef: ElementRef, selector: string): void {
+    const children = elementRef.nativeElement.querySelectorAll(selector);
+    let maxHeight = 0;
+    children.forEach((el: HTMLElement) => {
+      maxHeight = Math.max(maxHeight, el.offsetHeight);
+    });
+    children.forEach((item: any) => {
+      item.style.height = maxHeight + 'px';
+    });
+  }
+
+  /**
+   * Remove inline height styles for direct decendants.
+   * @param elementRef - The element to search within.
+   * @param selector - The CSS selector to use to find the children elements.
+   */
+  public resetChildHeight(elementRef: ElementRef, selector: string): void {
+    const children = elementRef.nativeElement.querySelectorAll(selector);
+    children.forEach((item: any) => {
+      // tslint:disable-next-line: no-null-keyword
+      item.style.height = null;
+    });
   }
 
   private focusFirstElement(list: Array<HTMLElement>): boolean {
