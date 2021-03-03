@@ -163,6 +163,7 @@ export class SkyCoreAdapterService {
 
   /**
    * Returns the clientWidth of the provided elementRef.
+   * @param elementRef - The element to determine width.
    */
   public getWidth(elementRef: ElementRef): number {
     return elementRef.nativeElement.clientWidth;
@@ -199,32 +200,36 @@ export class SkyCoreAdapterService {
   }
 
   /**
-   * Synchronizes all children to have the same height as the tallest child element.
+   * Remove inline height styles from the provided elements.
    * @param elementRef - The element to search within.
-   * @param selector - The CSS selector to use to find the children elements.
+   * @param selector - The CSS selector to use when finding elements for removing height.
    */
-  public syncHeight(elementRef: ElementRef, selector: string): void {
+  public resetHeight(elementRef: ElementRef, selector: string): void {
     const children = elementRef.nativeElement.querySelectorAll(selector);
-    let maxHeight = 0;
-    children.forEach((el: HTMLElement) => {
-      maxHeight = Math.max(maxHeight, el.offsetHeight);
-    });
-    children.forEach((item: any) => {
-      item.style.height = maxHeight + 'px';
-    });
+    if (children.length > 0) {
+      children.forEach((item: any) => {
+        // tslint:disable-next-line: no-null-keyword
+        item.style.height = null;
+      });
+    }
   }
 
   /**
-   * Remove inline height styles for direct decendants.
+   * Sets all element heights to match the height of the tallest element.
    * @param elementRef - The element to search within.
-   * @param selector - The CSS selector to use to find the children elements.
+   * @param selector - The CSS selector to use when finding elements for syncing height.
    */
-  public resetChildHeight(elementRef: ElementRef, selector: string): void {
+  public syncHeight(elementRef: ElementRef, selector: string): void {
     const children = elementRef.nativeElement.querySelectorAll(selector);
-    children.forEach((item: any) => {
-      // tslint:disable-next-line: no-null-keyword
-      item.style.height = null;
-    });
+    if (children.length > 0) {
+      let maxHeight = 0;
+      children.forEach((el: HTMLElement) => {
+        maxHeight = Math.max(maxHeight, el.offsetHeight);
+      });
+      children.forEach((item: any) => {
+        item.style.height = maxHeight + 'px';
+      });
+    }
   }
 
   private focusFirstElement(list: Array<HTMLElement>): boolean {
