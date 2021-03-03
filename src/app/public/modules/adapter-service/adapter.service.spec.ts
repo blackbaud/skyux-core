@@ -211,14 +211,14 @@ describe('Core adapter service', () => {
       fixture.detectChanges();
       const children = document.querySelectorAll('#height-sync-container div');
       childrenArray = Array.prototype.slice.call(children) as Array<HTMLElement>;
-    })
+    });
 
     //#region helpers
     function heightsSynced(children: HTMLElement[]): boolean {
       let height = children[0].clientHeight;
       return children.every(element => {
         return element.clientHeight === height;
-      })
+      });
     }
     //#endregion
 
