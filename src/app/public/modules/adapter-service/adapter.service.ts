@@ -163,7 +163,7 @@ export class SkyCoreAdapterService {
 
   /**
    * Returns the clientWidth of the provided elementRef.
-   * @param elementRef - The element to determine width.
+   * @param elementRef - The element to calculate width from.
    */
   public getWidth(elementRef: ElementRef): number {
     return elementRef.nativeElement.clientWidth;
@@ -208,6 +208,7 @@ export class SkyCoreAdapterService {
     const children = elementRef.nativeElement.querySelectorAll(selector);
     if (children.length > 0) {
       for (let i = 0; i < children.length; i++) {
+        // Setting style attributes with Web API requires null instead of undefined.
         // tslint:disable-next-line: no-null-keyword
         children[i].style.height = null;
       }
@@ -219,7 +220,7 @@ export class SkyCoreAdapterService {
    * @param elementRef - The element to search within.
    * @param selector - The CSS selector to use when finding elements for syncing height.
    */
-  public syncHeight(elementRef: ElementRef, selector: string): void {
+  public syncMaxHeight(elementRef: ElementRef, selector: string): void {
     const children = elementRef.nativeElement.querySelectorAll(selector);
     if (children.length > 0) {
       let maxHeight = 0;

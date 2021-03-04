@@ -77,7 +77,7 @@ export class AdapterServiceFixtureComponent {
   }
 
   public syncHeight(): void {
-    this.adapterService.syncHeight(this.syncHeightContainer, 'div');
+    this.adapterService.syncMaxHeight(this.syncHeightContainer, 'div');
   }
 
   public setParagraphContainerClass(breakpoint: SkyMediaBreakpoints): void {
