@@ -1,6 +1,6 @@
 # 4.4.0 (2021-03-04)
 
-- Added the `getWidth`, `syncMaxHeight` and `resetHeight` methods to the `SkyCoreAdapterService`. [#213](https://github.com/blackbaud/skyux-core/pull/213)
+- Added the `getWidth`, `syncMaxHeight`, and `resetHeight` methods to the `SkyCoreAdapterService`. [#213](https://github.com/blackbaud/skyux-core/pull/213)
 
 # 4.3.3 (2021-02-05)
 
