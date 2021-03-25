@@ -14,11 +14,11 @@ import {
 })
 export class ViewkeeperDemoComponent {
 
+  public el2Visible: boolean;
+
   constructor(
     private themeSvc: SkyThemeService
   ) {}
-
-  public el2Visible: boolean;
 
   public showEl2() {
     this.el2Visible = true;
