@@ -33,7 +33,8 @@ function ensureStyleEl(): void {
 }
 
 .sky-theme-modern .${CLS_VIEWKEEPER_FIXED} {
-  box-shadow: 0px 1px 8px -1px rgba(0, 0, 0, 0.3)
+  box-shadow: 0px 1px 8px -1px rgba(0, 0, 0, 0.3);
+  opacity: initial;
 }
 `
     );
