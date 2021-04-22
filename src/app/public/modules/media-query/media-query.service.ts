@@ -1,25 +1,12 @@
-import {
-  Injectable,
-  NgZone,
-  OnDestroy
-} from '@angular/core';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
 
-import {
-  BehaviorSubject,
-  Subscription
-} from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
-import {
-  SkyMediaBreakpoints
-} from './media-breakpoints';
-
-import {
-  SkyMediaQueryListener
-} from './media-query-listener';
+import { SkyMediaBreakpoints } from './media-breakpoints';
+import { SkyMediaQueryListener } from './media-query-listener';
 
 @Injectable()
 export class SkyMediaQueryService implements OnDestroy {
-
   /**
    * The size for the `xs` breakpoint.
    */
@@ -47,13 +34,15 @@ export class SkyMediaQueryService implements OnDestroy {
     return this._current;
   }
 
-  private currentSubject = new BehaviorSubject<SkyMediaBreakpoints>(this.current);
+  private currentSubject = new BehaviorSubject<SkyMediaBreakpoints>(
+    this.current
+  );
 
   private _current = SkyMediaBreakpoints.md;
 
   private breakpoints: {
-    mediaQueryString: string,
-    name: SkyMediaBreakpoints
+    mediaQueryString: string;
+    name: SkyMediaBreakpoints;
   }[] = [
     {
       mediaQueryString: SkyMediaQueryService.xs,
@@ -74,13 +63,11 @@ export class SkyMediaQueryService implements OnDestroy {
   ];
 
   private mediaQueries: {
-    mediaQueryList: MediaQueryList,
-    listener: ((event: any) => void)
+    mediaQueryList: MediaQueryList;
+    listener: (event: any) => void;
   }[] = [];
 
-  constructor(
-    private zone: NgZone
-  ) {
+  constructor(private zone: NgZone) {
     this.addListeners();
   }
 

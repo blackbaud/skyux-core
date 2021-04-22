@@ -1,30 +1,12 @@
-import {
-  CommonModule
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SkyModalModule } from '@skyux/modals';
 
-import {
-  NgModule
-} from '@angular/core';
+import { SkyOverlayModule } from '../overlay.module';
 
-import {
-  RouterTestingModule
-} from '@angular/router/testing';
-
-import {
-  SkyModalModule
-} from '@skyux/modals';
-
-import {
-  SkyOverlayModule
-} from '../overlay.module';
-
-import {
-  OverlayEntryFixtureComponent
-} from './overlay-entry.component.fixture';
-
-import {
-  OverlayFixtureComponent
-} from './overlay.component.fixture';
+import { OverlayEntryFixtureComponent } from './overlay-entry.component.fixture';
+import { OverlayFixtureComponent } from './overlay.component.fixture';
 
 @NgModule({
   imports: [
@@ -33,16 +15,8 @@ import {
     SkyModalModule,
     SkyOverlayModule
   ],
-  declarations: [
-    OverlayEntryFixtureComponent,
-    OverlayFixtureComponent
-  ],
-  exports: [
-    OverlayEntryFixtureComponent,
-    OverlayFixtureComponent
-  ],
-  entryComponents: [
-    OverlayEntryFixtureComponent
-  ]
+  declarations: [OverlayEntryFixtureComponent, OverlayFixtureComponent],
+  exports: [OverlayEntryFixtureComponent, OverlayFixtureComponent],
+  entryComponents: [OverlayEntryFixtureComponent]
 })
-export class OverlayFixturesModule { }
+export class OverlayFixturesModule {}

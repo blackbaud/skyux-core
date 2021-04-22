@@ -16,34 +16,15 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import { NavigationStart, Router } from '@angular/router';
 
-import {
-  NavigationStart,
-  Router
-} from '@angular/router';
+import { fromEvent, Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import {
-  fromEvent,
-  Observable,
-  Subject,
-  Subscription
-} from 'rxjs';
+import { SkyCoreAdapterService } from '../adapter-service/adapter.service';
 
-import {
-  takeUntil
-} from 'rxjs/operators';
-
-import {
-  SkyCoreAdapterService
-} from '../adapter-service/adapter.service';
-
-import {
-  SkyOverlayConfig
-} from './overlay-config';
-
-import {
-  SkyOverlayContext
-} from './overlay-context';
+import { SkyOverlayConfig } from './overlay-config';
+import { SkyOverlayContext } from './overlay-context';
 
 /**
  * Omnibar is 1000.
@@ -70,7 +51,6 @@ let uniqueZIndex = 5000;
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SkyOverlayComponent implements OnInit, OnDestroy {
-
   public get backdropClick(): Observable<void> {
     return this._backdropClick.asObservable();
   }
@@ -118,7 +98,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     private coreAdapter: SkyCoreAdapterService,
     private context: SkyOverlayContext,
     @Optional() private router?: Router
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
     this.applyConfig(this.context.config);
@@ -143,7 +123,10 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     this._closed.complete();
   }
 
-  public attachComponent<C>(component: Type<C>, providers: StaticProvider[] = []): ComponentRef<C> {
+  public attachComponent<C>(
+    component: Type<C>,
+    providers: StaticProvider[] = []
+  ): ComponentRef<C> {
     this.targetRef.clear();
 
     const factory = this.resolver.resolveComponentFactory(component);
@@ -155,7 +138,10 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     return this.targetRef.createComponent<C>(factory, undefined, injector);
   }
 
-  public attachTemplate<T>(templateRef: TemplateRef<T>, context: T): EmbeddedViewRef<T> {
+  public attachTemplate<T>(
+    templateRef: TemplateRef<T>,
+    context: T
+  ): EmbeddedViewRef<T> {
     this.targetRef.clear();
 
     return this.targetRef.createEmbeddedView(templateRef, context);
@@ -171,7 +157,9 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
     fromEvent(window.document, 'click')
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((event: MouseEvent) => {
-        const isChild = this.overlayContentRef.nativeElement.contains(event.target);
+        const isChild = this.overlayContentRef.nativeElement.contains(
+          event.target
+        );
         const isAbove = this.coreAdapter.isTargetAboveElement(
           event.target,
           this.overlayRef.nativeElement
@@ -190,7 +178,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   private addRouteListener(): void {
     /*istanbul ignore else*/
     if (this.router) {
-      this.routerSubscription = this.router.events.subscribe(event => {
+      this.routerSubscription = this.router.events.subscribe((event) => {
         /* istanbul ignore else */
         if (event instanceof NavigationStart) {
           this._closed.next();

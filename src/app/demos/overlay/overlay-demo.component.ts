@@ -1,6 +1,4 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
   SkyOverlayConfig,
@@ -8,13 +6,8 @@ import {
   SkyOverlayService
 } from '../../public/public_api';
 
-import {
-  OverlayDemoExampleContext
-} from './overlay-demo-example-context';
-
-import {
-  OverlayDemoExampleComponent
-} from './overlay-demo-example.component';
+import { OverlayDemoExampleContext } from './overlay-demo-example-context';
+import { OverlayDemoExampleComponent } from './overlay-demo-example.component';
 
 let uniqueId = 0;
 
@@ -23,12 +16,9 @@ let uniqueId = 0;
   templateUrl: './overlay-demo.component.html'
 })
 export class OverlayDemoComponent {
-
   public overlays: SkyOverlayInstance[] = [];
 
-  constructor(
-    public overlayService: SkyOverlayService
-  ) { }
+  constructor(public overlayService: SkyOverlayService) {}
 
   public onTestClick(): void {
     alert('Clicked! Is that a good thing?');
@@ -57,10 +47,12 @@ export class OverlayDemoComponent {
 
     const componentInstance = overlayInstance.attachComponent(
       OverlayDemoExampleComponent,
-      [{
-        provide: OverlayDemoExampleContext,
-        useValue: new OverlayDemoExampleContext(++uniqueId)
-      }]
+      [
+        {
+          provide: OverlayDemoExampleContext,
+          useValue: new OverlayDemoExampleContext(++uniqueId)
+        }
+      ]
     );
 
     overlayInstance.backdropClick.subscribe(() => {

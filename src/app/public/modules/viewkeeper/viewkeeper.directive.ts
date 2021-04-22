@@ -1,28 +1,14 @@
-import {
-  Directive,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { Directive, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 
-import {
-  MutationObserverService
-} from '../mutation/mutation-observer-service';
+import { MutationObserverService } from '../mutation/mutation-observer-service';
 
-import {
-  SkyViewkeeper
-} from './viewkeeper';
-
-import {
-  SkyViewkeeperService
-} from './viewkeeper.service';
+import { SkyViewkeeper } from './viewkeeper';
+import { SkyViewkeeperService } from './viewkeeper.service';
 
 @Directive({
   selector: '[skyViewkeeper]'
 })
 export class SkyViewkeeperDirective implements OnInit, OnDestroy {
-
   @Input()
   public set skyViewkeeper(value: string[]) {
     this._skyViewkeeper = value;
@@ -46,18 +32,17 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
     private el: ElementRef,
     private mutationObserverSvc: MutationObserverService,
     private viewkeeperSvc: SkyViewkeeperService
-  ) { }
+  ) {}
 
   public ngOnInit(): void {
-    this.observer = this.mutationObserverSvc.create(() => this.detectElements());
-
-    this.observer.observe(
-      this.el.nativeElement,
-      {
-        childList: true,
-        subtree: true
-      }
+    this.observer = this.mutationObserverSvc.create(() =>
+      this.detectElements()
     );
+
+    this.observer.observe(this.el.nativeElement, {
+      childList: true,
+      subtree: true
+    });
   }
 
   public ngOnDestroy(): void {
@@ -122,14 +107,12 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
 
       for (const viewkeeperEl of viewkeeperEls) {
         this.viewkeepers.push(
-          this.viewkeeperSvc.create(
-            {
-              boundaryEl: this.el.nativeElement,
-              el: viewkeeperEl,
-              setWidth: true,
-              verticalOffsetEl: previousViewkeeperEl
-            }
-          )
+          this.viewkeeperSvc.create({
+            boundaryEl: this.el.nativeElement,
+            el: viewkeeperEl,
+            setWidth: true,
+            verticalOffsetEl: previousViewkeeperEl
+          })
         );
 
         previousViewkeeperEl = viewkeeperEl;

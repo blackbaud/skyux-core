@@ -1,10 +1,6 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {
-  SkyPercentPipe
-} from '../percent.pipe';
+import { SkyPercentPipe } from '../percent.pipe';
 
 @Component({
   selector: 'percent-pipe-test',
@@ -15,9 +11,7 @@ export class PercentPipeTestComponent {
   public format: string;
   public locale: string;
 
-  constructor(
-    private percentPipe: SkyPercentPipe
-  ) { }
+  constructor(private percentPipe: SkyPercentPipe) {}
 
   public getDatePipeResult(
     value: string,

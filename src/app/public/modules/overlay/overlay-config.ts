@@ -1,5 +1,4 @@
 export interface SkyOverlayConfig {
-
   /**
    * Specifies if the overlay should be closed after a navigation change.
    */
@@ -24,5 +23,4 @@ export interface SkyOverlayConfig {
    * Specifies if the overlay's backdrop should be visible.
    */
   showBackdrop?: boolean;
-
 }

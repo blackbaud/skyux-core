@@ -1,6 +1,4 @@
-import {
-  Injectable
-} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 /**
  * @internal
@@ -16,7 +14,6 @@ export function getWindow(): any {
  */
 @Injectable()
 export class SkyAppWindowRef {
-
   /**
    * References the global `window` variable.
    */

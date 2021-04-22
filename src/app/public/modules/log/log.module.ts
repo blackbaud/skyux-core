@@ -1,21 +1,10 @@
-import {
-  NgModule
-} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import {
-  CommonModule
-} from '@angular/common';
-
-import {
-  SkyLogService
-} from './log.service';
+import { SkyLogService } from './log.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  providers: [
-    SkyLogService
-  ]
+  imports: [CommonModule],
+  providers: [SkyLogService]
 })
-export class SkyLogModule { }
+export class SkyLogModule {}

@@ -1,7 +1,4 @@
-import {
-  NgZone
-} from '@angular/core';
-
+import { NgZone } from '@angular/core';
 import {
   async,
   ComponentFixture,
@@ -10,58 +7,23 @@ import {
   TestBed,
   tick
 } from '@angular/core/testing';
+import { Router } from '@angular/router';
+import { expect, SkyAppTestUtility } from '@skyux-sdk/testing';
 
-import {
-  Router
-} from '@angular/router';
+import { take } from 'rxjs/operators';
 
-import {
-  expect,
-  SkyAppTestUtility
-} from '@skyux-sdk/testing';
+import { SkyCoreAdapterService } from '../adapter-service/adapter.service';
 
-import {
-  take
-} from 'rxjs/operators';
-
-import {
-  SkyCoreAdapterService
-} from '../adapter-service/adapter.service';
-
-import {
-  OverlayFixtureContext
-} from './fixtures/overlay-context.fixture';
-
-import {
-  OverlayEntryFixtureComponent
-} from './fixtures/overlay-entry.component.fixture';
-
-import {
-  OverlayFixtureComponent
-} from './fixtures/overlay.component.fixture';
-
-import {
-  OverlayFixturesModule
-} from './fixtures/overlay.fixtures.module';
-
-import {
-  SkyOverlayConfig
-} from './overlay-config';
-
-import {
-  SkyOverlayAdapterService
-} from './overlay-adapter.service';
-
-import {
-  SkyOverlayInstance
-} from './overlay-instance';
-
-import {
-  SkyOverlayService
-} from './overlay.service';
+import { OverlayFixtureContext } from './fixtures/overlay-context.fixture';
+import { OverlayEntryFixtureComponent } from './fixtures/overlay-entry.component.fixture';
+import { OverlayFixtureComponent } from './fixtures/overlay.component.fixture';
+import { OverlayFixturesModule } from './fixtures/overlay.fixtures.module';
+import { SkyOverlayAdapterService } from './overlay-adapter.service';
+import { SkyOverlayConfig } from './overlay-config';
+import { SkyOverlayInstance } from './overlay-instance';
+import { SkyOverlayService } from './overlay.service';
 
 describe('Overlay service', () => {
-
   let service: SkyOverlayService;
   let fixture: ComponentFixture<OverlayFixtureComponent>;
 
@@ -88,27 +50,24 @@ describe('Overlay service', () => {
   }
 
   function getStyleElement(): HTMLStyleElement {
-    return document.getElementsByTagName('head')[0].querySelector(
-      '[data-test-selector="sky-overlay-restrict-scroll-styles"]'
-    );
+    return document
+      .getElementsByTagName('head')[0]
+      .querySelector(
+        '[data-test-selector="sky-overlay-restrict-scroll-styles"]'
+      );
   }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        OverlayFixturesModule
-      ]
+      imports: [OverlayFixturesModule]
     });
 
     fixture = TestBed.createComponent(OverlayFixtureComponent);
   });
 
-  beforeEach(inject(
-    [SkyOverlayService],
-    (_service: SkyOverlayService) => {
-      service = _service;
-    }
-  ));
+  beforeEach(inject([SkyOverlayService], (_service: SkyOverlayService) => {
+    service = _service;
+  }));
 
   afterEach(fakeAsync(() => {
     service.closeAll();
@@ -130,9 +89,8 @@ describe('Overlay service', () => {
     verifyOverlayCount(1);
   }));
 
-  it('should optionally prevent body scroll', fakeAsync(inject(
-    [SkyOverlayAdapterService],
-    (adapter: SkyOverlayAdapterService) => {
+  it('should optionally prevent body scroll', fakeAsync(
+    inject([SkyOverlayAdapterService], (adapter: SkyOverlayAdapterService) => {
       fixture.detectChanges();
       tick();
 
@@ -158,8 +116,8 @@ describe('Overlay service', () => {
       expect(adapterSpy).toHaveBeenCalled();
       expect(styleElement.textContent).toContain('body { overflow: hidden }');
       verifyOverlayCount(1);
-    }
-  )));
+    })
+  ));
 
   it('should optionally allow closing overlay when clicking outside', fakeAsync(() => {
     fixture.detectChanges();
@@ -196,7 +154,10 @@ describe('Overlay service', () => {
       enableClose: true
     });
 
-    SkyAppTestUtility.fireDomEvent(document.querySelector('.sky-overlay-content'), 'click');
+    SkyAppTestUtility.fireDomEvent(
+      document.querySelector('.sky-overlay-content'),
+      'click'
+    );
     fixture.detectChanges();
     tick();
 
@@ -248,12 +209,10 @@ describe('Overlay service', () => {
     backdropElement = document.querySelector('.sky-overlay-backdrop');
 
     expect(backdropElement).not.toBeNull();
-
   }));
 
-  it('should close all on navigation change', fakeAsync(inject(
-    [NgZone, Router],
-    (ngZone: NgZone, router: Router) => {
+  it('should close all on navigation change', fakeAsync(
+    inject([NgZone, Router], (ngZone: NgZone, router: Router) => {
       createOverlay();
       createOverlay();
       createOverlay();
@@ -267,12 +226,11 @@ describe('Overlay service', () => {
         tick();
         verifyOverlayCount(0);
       });
-    }
-  )));
+    })
+  ));
 
-  it('should optionally remain open on navigation change', fakeAsync(inject(
-    [NgZone, Router],
-    (ngZone: NgZone, router: Router) => {
+  it('should optionally remain open on navigation change', fakeAsync(
+    inject([NgZone, Router], (ngZone: NgZone, router: Router) => {
       createOverlay({
         closeOnNavigation: false
       });
@@ -286,22 +244,26 @@ describe('Overlay service', () => {
 
         verifyOverlayCount(1);
       });
-    }
-  )));
+    })
+  ));
 
   it('should optionally allow pointer events to pass through the overlay', fakeAsync(() => {
     let instance = createOverlay({
       enablePointerEvents: false // default
     });
 
-    expect(getAllOverlays().item(0)).not.toHaveCssClass('enable-pointer-events-pass-through');
+    expect(getAllOverlays().item(0)).not.toHaveCssClass(
+      'enable-pointer-events-pass-through'
+    );
     destroyOverlay(instance);
 
     instance = createOverlay({
       enablePointerEvents: true
     });
 
-    expect(getAllOverlays().item(0)).toHaveCssClass('enable-pointer-events-pass-through');
+    expect(getAllOverlays().item(0)).toHaveCssClass(
+      'enable-pointer-events-pass-through'
+    );
   }));
 
   it('should attach a component', async(async () => {
@@ -313,22 +275,28 @@ describe('Overlay service', () => {
 
     await fixture.whenStable();
 
-    expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: none');
+    expect(getAllOverlays().item(0).textContent).toContain(
+      'Overlay content ID: none'
+    );
   }));
 
   it('should attach a component with providers', async(async () => {
     const overlay = service.create();
 
-    overlay.attachComponent(OverlayEntryFixtureComponent, [{
-      provide: OverlayFixtureContext,
-      useValue: new OverlayFixtureContext('1')
-    }]);
+    overlay.attachComponent(OverlayEntryFixtureComponent, [
+      {
+        provide: OverlayFixtureContext,
+        useValue: new OverlayFixtureContext('1')
+      }
+    ]);
 
     fixture.detectChanges();
 
     await fixture.whenStable();
 
-    expect(getAllOverlays().item(0).textContent).toContain('Overlay content ID: 1');
+    expect(getAllOverlays().item(0).textContent).toContain(
+      'Overlay content ID: 1'
+    );
   }));
 
   it('should attach a template', async(async () => {
@@ -344,7 +312,9 @@ describe('Overlay service', () => {
 
     await fixture.whenStable();
 
-    expect(getAllOverlays().item(0).textContent).toContain('Templated content ID: 5');
+    expect(getAllOverlays().item(0).textContent).toContain(
+      'Templated content ID: 5'
+    );
   }));
 
   it('should be accessible', async(async (done: DoneFn) => {
@@ -373,7 +343,6 @@ describe('Overlay service', () => {
 
       expect(getAllOverlays().item(0)).toBeAccessible(done);
     });
-
   }));
 
   it('should emit when overlay is closed by the service', fakeAsync(() => {
@@ -387,11 +356,9 @@ describe('Overlay service', () => {
     const instance = createOverlay();
 
     let backdropClickCalled = false;
-    instance.backdropClick
-      .pipe(take(1))
-      .subscribe(() => {
-        backdropClickCalled = true;
-      });
+    instance.backdropClick.pipe(take(1)).subscribe(() => {
+      backdropClickCalled = true;
+    });
 
     SkyAppTestUtility.fireDomEvent(document.body, 'click');
     fixture.detectChanges();
@@ -421,9 +388,8 @@ describe('Overlay service', () => {
     expect(zIndex2 > zIndex1).toEqual(true);
   }));
 
-  it('should appear above modals', fakeAsync(inject(
-    [SkyCoreAdapterService],
-    (adapter: SkyCoreAdapterService) => {
+  it('should appear above modals', fakeAsync(
+    inject([SkyCoreAdapterService], (adapter: SkyCoreAdapterService) => {
       createOverlay();
 
       const modal = fixture.componentInstance.createModal();
@@ -431,13 +397,14 @@ describe('Overlay service', () => {
       fixture.detectChanges();
       tick();
 
-      expect(adapter.isTargetAboveElement(
-        getAllOverlays().item(0),
-        document.querySelector('.sky-modal-host-backdrop')
-      )).toEqual(true);
+      expect(
+        adapter.isTargetAboveElement(
+          getAllOverlays().item(0),
+          document.querySelector('.sky-modal-host-backdrop')
+        )
+      ).toEqual(true);
 
       modal.close();
-    }
-  )));
-
+    })
+  ));
 });

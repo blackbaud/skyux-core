@@ -1,9 +1,6 @@
-import {
-  SkyUIConfigService
-} from './ui-config.service';
+import { SkyUIConfigService } from './ui-config.service';
 
 describe('UI config service', () => {
-
   it('should return the default config that was passed to it', (done) => {
     const uiConfigSvc = new SkyUIConfigService();
 
@@ -11,10 +8,9 @@ describe('UI config service', () => {
       foo: 'bar'
     };
 
-    uiConfigSvc.getConfig('test-key', defaultConfig)
-      .subscribe((config) => {
-        expect(config).toBe(defaultConfig);
-        done();
-      });
+    uiConfigSvc.getConfig('test-key', defaultConfig).subscribe((config) => {
+      expect(config).toBe(defaultConfig);
+      done();
+    });
   });
 });

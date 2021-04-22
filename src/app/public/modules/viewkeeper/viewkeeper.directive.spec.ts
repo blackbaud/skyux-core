@@ -1,31 +1,12 @@
-import {
-  ComponentFixture,
-  TestBed
-} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 
-import {
-  By
-} from '@angular/platform-browser';
+import { MutationObserverService } from '../mutation/mutation-observer-service';
 
-import {
-  MutationObserverService
-} from '../mutation/mutation-observer-service';
-
-import {
-  SkyViewkeeperModule
-} from './viewkeeper.module';
-
-import {
- SkyViewkeeperService
-} from './viewkeeper.service';
-
-import {
-  ViewkeeperTestComponent
-} from './fixtures/viewkeeper-test.component';
-
-import {
-  ViewkeeperEmptyTestComponent
-} from './fixtures/viewkeeper-empty-test.component';
+import { ViewkeeperEmptyTestComponent } from './fixtures/viewkeeper-empty-test.component';
+import { ViewkeeperTestComponent } from './fixtures/viewkeeper-test.component';
+import { SkyViewkeeperModule } from './viewkeeper.module';
+import { SkyViewkeeperService } from './viewkeeper.service';
 
 describe('Viewkeeper directive', () => {
   let mockViewkeeperSvc: any;
@@ -33,11 +14,15 @@ describe('Viewkeeper directive', () => {
   let mutationCallbacks: any[];
   let mockMutationObserver: any;
 
-  function getBoundaryEl(fixture: ComponentFixture<ViewkeeperTestComponent>): void {
+  function getBoundaryEl(
+    fixture: ComponentFixture<ViewkeeperTestComponent>
+  ): void {
     return fixture.debugElement.query(By.css('.boundary-el')).nativeElement;
   }
 
-  function validateViewkeepersCreated(fixture: ComponentFixture<ViewkeeperTestComponent>): void {
+  function validateViewkeepersCreated(
+    fixture: ComponentFixture<ViewkeeperTestComponent>
+  ): void {
     const boundaryEl = getBoundaryEl(fixture);
 
     let expectedCallCount = 2;
@@ -81,9 +66,7 @@ describe('Viewkeeper directive', () => {
         el: document.querySelector('.el4'),
         setWidth: true,
         verticalOffsetEl: document.querySelector(
-          fixture.componentInstance.showEl3 ?
-          '.el3' :
-          '.el2'
+          fixture.componentInstance.showEl3 ? '.el3' : '.el2'
         )
       });
     }
@@ -116,13 +99,8 @@ describe('Viewkeeper directive', () => {
     };
 
     TestBed.configureTestingModule({
-      declarations: [
-        ViewkeeperTestComponent,
-        ViewkeeperEmptyTestComponent
-      ],
-      imports: [
-        SkyViewkeeperModule
-      ],
+      declarations: [ViewkeeperTestComponent, ViewkeeperEmptyTestComponent],
+      imports: [SkyViewkeeperModule],
       providers: [
         {
           provide: SkyViewkeeperService,
@@ -228,5 +206,4 @@ describe('Viewkeeper directive', () => {
 
     expect(mockViewkeeperSvc.create).not.toHaveBeenCalled();
   });
-
 });

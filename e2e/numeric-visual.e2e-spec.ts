@@ -1,7 +1,4 @@
-import {
-  expect,
-  SkyHostBrowser
-} from '@skyux-sdk/e2e';
+import { expect, SkyHostBrowser } from '@skyux-sdk/e2e';
 
 describe('Numeric', () => {
   it('should match screenshot', async (done) => {

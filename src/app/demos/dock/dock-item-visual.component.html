@@ -1,14 +1,11 @@
-
 <div
   class="dock-item"
   [ngStyle]="{
     'background-color': context?.backgroundColor,
-    'height': height
+    height: height
   }"
 >
-  <div
-    class="dock-item-stack-order"
-  >
+  <div class="dock-item-stack-order">
     {{ stackOrderForDisplay }}
   </div>
 
@@ -28,10 +25,7 @@
     Close
   </button>
 
-  <strong>
-    Unique ID: {{ uniqueId }}
-  </strong>
+  <strong> Unique ID: {{ uniqueId }} </strong>
 
-  <ng-content>
-  </ng-content>
+  <ng-content> </ng-content>
 </div>

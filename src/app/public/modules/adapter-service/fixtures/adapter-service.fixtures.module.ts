@@ -1,25 +1,13 @@
-import {
-  NgModule
-} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {
-  SkyCoreAdapterService
-} from '../adapter.service';
+import { SkyCoreAdapterService } from '../adapter.service';
 
-import {
-  AdapterServiceFixtureComponent
-} from './adapter-service.fixture';
+import { AdapterServiceFixtureComponent } from './adapter-service.fixture';
 
 @NgModule({
-  declarations: [
-    AdapterServiceFixtureComponent
-  ],
+  declarations: [AdapterServiceFixtureComponent],
   imports: [],
-  providers: [
-    SkyCoreAdapterService
-  ],
-  exports: [
-    AdapterServiceFixtureComponent
-  ]
+  providers: [SkyCoreAdapterService],
+  exports: [AdapterServiceFixtureComponent]
 })
-export class SkyAdapterServiceFixturesModule { }
+export class SkyAdapterServiceFixturesModule {}

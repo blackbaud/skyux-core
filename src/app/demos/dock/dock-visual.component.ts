@@ -1,18 +1,9 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
-import {
-  SkyDockService
-} from '../../public/public_api';
+import { SkyDockService } from '../../public/public_api';
 
-import {
-  DockItemVisualContext
-} from './dock-item-context';
-
-import {
-  DockItemVisualComponent
-} from './dock-item-visual.component';
+import { DockItemVisualContext } from './dock-item-context';
+import { DockItemVisualComponent } from './dock-item-visual.component';
 
 @Component({
   selector: 'dock-visual',
@@ -20,7 +11,6 @@ import {
   styleUrls: ['./dock-visual.component.scss']
 })
 export class DockVisualComponent {
-
   public stackOrder: number;
 
   private configs: any[] = [
@@ -46,9 +36,7 @@ export class DockVisualComponent {
     }
   ];
 
-  constructor(
-    private dockService: SkyDockService
-  ) {
+  constructor(private dockService: SkyDockService) {
     this.configs.forEach((config) => {
       this.addToDock(config);
     });

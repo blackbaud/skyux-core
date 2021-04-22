@@ -1,21 +1,10 @@
-import {
-  NgModule
-} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import {
-  CommonModule
-} from '@angular/common';
-
-import {
-  SkyMediaQueryService
-} from './media-query.service';
+import { SkyMediaQueryService } from './media-query.service';
 
 @NgModule({
-  providers: [
-    SkyMediaQueryService
-  ],
-  imports: [
-    CommonModule
-  ]
+  providers: [SkyMediaQueryService],
+  imports: [CommonModule]
 })
-export class SkyMediaQueryModule { }
+export class SkyMediaQueryModule {}

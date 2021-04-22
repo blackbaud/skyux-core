@@ -1,31 +1,13 @@
-import {
-  CommonModule
-} from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import {
-  NgModule
-} from '@angular/core';
-
-import {
-  SkyAffixDirective
-} from './affix.directive';
-
-import {
-  SkyAffixService
-} from './affix.service';
+import { SkyAffixDirective } from './affix.directive';
+import { SkyAffixService } from './affix.service';
 
 @NgModule({
-  imports: [
-    CommonModule
-  ],
-  exports: [
-    SkyAffixDirective
-  ],
-  declarations: [
-    SkyAffixDirective
-  ],
-  providers: [
-    SkyAffixService
-  ]
+  imports: [CommonModule],
+  exports: [SkyAffixDirective],
+  declarations: [SkyAffixDirective],
+  providers: [SkyAffixService]
 })
-export class SkyAffixModule { }
+export class SkyAffixModule {}

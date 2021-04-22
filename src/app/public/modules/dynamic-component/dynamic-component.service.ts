@@ -10,17 +10,10 @@ import {
   Type
 } from '@angular/core';
 
-import {
-  SkyAppWindowRef
-} from '../window/window-ref';
+import { SkyAppWindowRef } from '../window/window-ref';
 
-import {
-  SkyDynamicComponentLocation
-} from './dynamic-component-location';
-
-import {
-  SkyDynamicComponentOptions
-} from './dynamic-component-options';
+import { SkyDynamicComponentLocation } from './dynamic-component-location';
+import { SkyDynamicComponentOptions } from './dynamic-component-options';
 
 /**
  * Angular service for creating and rendering a dynamic component.
@@ -96,5 +89,4 @@ export class SkyDynamicComponentService {
     // https://malcoded.com/posts/angular-dynamic-components
     return (componentRef.hostView as EmbeddedViewRef<T>).rootNodes[0];
   }
-
 }

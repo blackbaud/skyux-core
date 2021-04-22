@@ -7,25 +7,11 @@ import {
   Injector
 } from '@angular/core';
 
-import {
-  SkyOverlayAdapterService
-} from './overlay-adapter.service';
-
-import {
-  SkyOverlayConfig
-} from './overlay-config';
-
-import {
-  SkyOverlayContext
-} from './overlay-context';
-
-import {
-  SkyOverlayInstance
-} from './overlay-instance';
-
-import {
-  SkyOverlayComponent
-} from './overlay.component';
+import { SkyOverlayAdapterService } from './overlay-adapter.service';
+import { SkyOverlayConfig } from './overlay-config';
+import { SkyOverlayContext } from './overlay-context';
+import { SkyOverlayInstance } from './overlay-instance';
+import { SkyOverlayComponent } from './overlay.component';
 
 /**
  * This service is used to create new overlays.
@@ -33,7 +19,6 @@ import {
  */
 @Injectable()
 export class SkyOverlayService {
-
   private static overlays: SkyOverlayInstance[] = [];
 
   constructor(
@@ -41,7 +26,7 @@ export class SkyOverlayService {
     private componentFactoryResolver: ComponentFactoryResolver,
     private injector: Injector,
     private adapter: SkyOverlayAdapterService
-  ) { }
+  ) {}
 
   /**
    * Creates an empty overlay. Use the returned `SkyOverlayInstance` to append content.
@@ -55,10 +40,7 @@ export class SkyOverlayService {
     }
 
     const componentRef = this.createOverlay(settings);
-    const instance = new SkyOverlayInstance(
-      settings,
-      componentRef
-    );
+    const instance = new SkyOverlayInstance(settings, componentRef);
 
     instance.closed.subscribe(() => {
       // Only execute the service's close method if the instance still exists.
@@ -106,13 +88,17 @@ export class SkyOverlayService {
     }
   }
 
-  private createOverlay(config?: SkyOverlayConfig): ComponentRef<SkyOverlayComponent> {
+  private createOverlay(
+    config?: SkyOverlayConfig
+  ): ComponentRef<SkyOverlayComponent> {
     const injector = Injector.create({
       parent: this.injector,
-      providers: [{
-        provide: SkyOverlayContext,
-        useValue: new SkyOverlayContext(config)
-      }]
+      providers: [
+        {
+          provide: SkyOverlayContext,
+          useValue: new SkyOverlayContext(config)
+        }
+      ]
     });
 
     const componentRef = this.componentFactoryResolver
@@ -138,19 +124,23 @@ export class SkyOverlayService {
       showBackdrop: false
     };
 
-    return {...defaults, ...config};
+    return { ...defaults, ...config };
   }
 
   private destroyOverlay(instance: SkyOverlayInstance): void {
-    SkyOverlayService.overlays.splice(SkyOverlayService.overlays.indexOf(instance), 1);
+    SkyOverlayService.overlays.splice(
+      SkyOverlayService.overlays.indexOf(instance),
+      1
+    );
 
     if (instance.config.enableScroll === false) {
       // Only release the body scroll if no other overlay wishes it to be disabled.
-      const anotherOverlayDisablesScroll = SkyOverlayService.overlays.some(o => !o.config.enableScroll);
+      const anotherOverlayDisablesScroll = SkyOverlayService.overlays.some(
+        (o) => !o.config.enableScroll
+      );
       if (!anotherOverlayDisablesScroll) {
         this.adapter.releaseBodyScroll();
       }
     }
   }
-
 }

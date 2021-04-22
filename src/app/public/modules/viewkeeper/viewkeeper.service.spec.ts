@@ -1,9 +1,6 @@
-import {
-  SkyViewkeeperService
-} from './viewkeeper.service';
+import { SkyViewkeeperService } from './viewkeeper.service';
 
 describe('Viewkeeper service', () => {
-
   it('should create and destroy viewkeeper instances', () => {
     const testEl = document.createElement('div');
     const testBoundaryEl = document.createElement('div');
@@ -55,5 +52,4 @@ describe('Viewkeeper service', () => {
 
     svc.destroy(viewkeeper);
   });
-
 });

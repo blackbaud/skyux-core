@@ -1,46 +1,18 @@
-import {
-  NgModule
-} from '@angular/core';
-
-import {
-  SkyCodeModule
-} from '@blackbaud/skyux-lib-code-block';
-
-import {
-  SkyDocsToolsModule,
-  SkyDocsToolsOptions
-} from '@skyux/docs-tools';
-
-import {
-  SkyInputBoxModule
-} from '@skyux/forms';
-
-import {
-  SkyAlertModule
-} from '@skyux/indicators';
-
+import { NgModule } from '@angular/core';
+import { SkyCodeModule } from '@blackbaud/skyux-lib-code-block';
+import { SkyDocsToolsModule, SkyDocsToolsOptions } from '@skyux/docs-tools';
+import { SkyInputBoxModule } from '@skyux/forms';
+import { SkyAlertModule } from '@skyux/indicators';
 import {
   SkyDefinitionListModule,
   SkyFluidGridModule,
   SkyPageModule
 } from '@skyux/layout';
+import { SkyAppLinkModule } from '@skyux/router';
 
-import {
-  SkyAppLinkModule
-} from '@skyux/router';
-
-import {
-  DockItemVisualComponent
-} from './demos/dock/dock-item-visual.component';
-
-import {
-  DynamicComponentDemoExampleComponent
-} from './demos/dynamic-component/dynamic-component-example.component';
-
-import {
-  OverlayDemoExampleComponent
-} from './demos/overlay/overlay-demo-example.component';
-
+import { DockItemVisualComponent } from './demos/dock/dock-item-visual.component';
+import { DynamicComponentDemoExampleComponent } from './demos/dynamic-component/dynamic-component-example.component';
+import { OverlayDemoExampleComponent } from './demos/overlay/overlay-demo-example.component';
 import {
   SkyAffixModule,
   SkyCoreAdapterModule,
@@ -88,4 +60,4 @@ import {
     }
   ]
 })
-export class AppExtrasModule { }
+export class AppExtrasModule {}

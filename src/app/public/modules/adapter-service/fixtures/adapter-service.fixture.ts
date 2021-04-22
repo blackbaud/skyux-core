@@ -1,27 +1,14 @@
-import {
-  Component,
-  ElementRef,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
-import {
-  SkyMediaBreakpoints
-} from '../../media-query/media-breakpoints';
-
-import {
-  SkyCoreAdapterService
-} from '../adapter.service';
-
-import {
-  SkyFocusableChildrenOptions
-} from '../focusable-children-options';
+import { SkyMediaBreakpoints } from '../../media-query/media-breakpoints';
+import { SkyCoreAdapterService } from '../adapter.service';
+import { SkyFocusableChildrenOptions } from '../focusable-children-options';
 
 @Component({
   selector: 'adapter-service-fixture',
   templateUrl: './adapter-service.fixture.html'
 })
 export class AdapterServiceFixtureComponent {
-
   @ViewChild('getWidthContainer', {
     read: ElementRef,
     static: false
@@ -40,9 +27,7 @@ export class AdapterServiceFixtureComponent {
   })
   public syncHeightContainer: ElementRef;
 
-  constructor(
-    private adapterService: SkyCoreAdapterService
-  ) {}
+  constructor(private adapterService: SkyCoreAdapterService) {}
 
   public applyAutoFocus(elementRef: ElementRef): boolean {
     return this.adapterService.applyAutoFocus(elementRef);
@@ -64,7 +49,10 @@ export class AdapterServiceFixtureComponent {
     );
   }
 
-  public getFocusableChildren(element: HTMLElement, options?: SkyFocusableChildrenOptions): any[] {
+  public getFocusableChildren(
+    element: HTMLElement,
+    options?: SkyFocusableChildrenOptions
+  ): any[] {
     return this.adapterService.getFocusableChildren(element, options);
   }
 
@@ -81,7 +69,9 @@ export class AdapterServiceFixtureComponent {
   }
 
   public setParagraphContainerClass(breakpoint: SkyMediaBreakpoints): void {
-    this.adapterService.setResponsiveContainerClass(this.paragraphContainer, breakpoint);
+    this.adapterService.setResponsiveContainerClass(
+      this.paragraphContainer,
+      breakpoint
+    );
   }
-
 }

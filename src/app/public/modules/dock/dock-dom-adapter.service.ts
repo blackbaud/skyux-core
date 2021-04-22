@@ -6,26 +6,16 @@ import {
   RendererFactory2
 } from '@angular/core';
 
-import {
-  MutationObserverService
-} from '../mutation/mutation-observer-service';
+import { fromEvent as observableFromEvent, Subject } from 'rxjs';
+import { debounceTime, takeUntil } from 'rxjs/operators';
 
-import {
-  fromEvent as observableFromEvent,
-  Subject
-} from 'rxjs';
-
-import {
-  debounceTime,
-  takeUntil
-} from 'rxjs/operators';
+import { MutationObserverService } from '../mutation/mutation-observer-service';
 
 /**
  * @internal
  */
 @Injectable()
 export class SkyDockDomAdapterService implements OnDestroy {
-
   private currentDockHeight: number;
 
   private ngUnsubscribe = new Subject<void>();
@@ -51,10 +41,7 @@ export class SkyDockDomAdapterService implements OnDestroy {
       this.destroyStyleElement();
     }
 
-    this.currentDockHeight =
-    this.ngUnsubscribe =
-    this.observer =
-    this.styleElement = undefined;
+    this.currentDockHeight = this.ngUnsubscribe = this.observer = this.styleElement = undefined;
   }
 
   public watchDomChanges(elementRef: ElementRef): void {
@@ -70,10 +57,7 @@ export class SkyDockDomAdapterService implements OnDestroy {
     });
 
     observableFromEvent(window, 'resize')
-      .pipe(
-        debounceTime(250),
-        takeUntil(this.ngUnsubscribe)
-      )
+      .pipe(debounceTime(250), takeUntil(this.ngUnsubscribe))
       .subscribe(() => this.adjustBodyStyles(elementRef));
   }
 
@@ -85,7 +69,9 @@ export class SkyDockDomAdapterService implements OnDestroy {
 
     // Create a style element to avoid overwriting any existing inline body styles.
     const styleElement = this.renderer.createElement('style');
-    const textNode = this.renderer.createText(`body { margin-bottom: ${dockHeight}px; }`);
+    const textNode = this.renderer.createText(
+      `body { margin-bottom: ${dockHeight}px; }`
+    );
 
     // Apply a `data-` attribute to make unit testing easier.
     this.renderer.setAttribute(
@@ -108,5 +94,4 @@ export class SkyDockDomAdapterService implements OnDestroy {
   private destroyStyleElement(): void {
     this.renderer.removeChild(document.head, this.styleElement);
   }
-
 }

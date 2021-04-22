@@ -1,6 +1,4 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-viewkeeper-test',
@@ -8,7 +6,6 @@ import {
   styleUrls: ['./viewkeeper-test.component.scss']
 })
 export class ViewkeeperTestComponent {
-
   public showEl1 = true;
 
   public showEl2 = true;
@@ -16,5 +13,4 @@ export class ViewkeeperTestComponent {
   public showEl3 = false;
 
   public showEl4 = false;
-
 }

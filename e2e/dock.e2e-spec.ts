@@ -1,10 +1,6 @@
-import {
-  expect,
-  SkyHostBrowser
-} from '@skyux-sdk/e2e';
+import { expect, SkyHostBrowser } from '@skyux-sdk/e2e';
 
 describe('Dock', () => {
-
   beforeEach(async () => {
     await SkyHostBrowser.get('demos/dock');
     await SkyHostBrowser.setWindowBreakpoint('md');
@@ -16,5 +12,4 @@ describe('Dock', () => {
       screenshotName: 'dock'
     });
   });
-
 });

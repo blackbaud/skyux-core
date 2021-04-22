@@ -1,14 +1,9 @@
 /* tslint:disable:no-null-keyword */
-
 // This file is mostly ported from the Angular 4.x NumberPipe in order to maintain the old
 // behavior of using the `Intl` API for formatting numbers rather than having to register every
 // supported locale.
 // https://github.com/angular/angular/blob/4.4.x/packages/common/src/pipes/number_pipe.ts
-
-import {
-  SkyIntlNumberFormatStyle,
-  SkyIntlNumberFormatter
-} from '@skyux/i18n';
+import { SkyIntlNumberFormatStyle, SkyIntlNumberFormatter } from '@skyux/i18n';
 
 function isNumeric(value: any): boolean {
   return !isNaN(value - parseFloat(value));
@@ -32,7 +27,7 @@ export class SkyNumberFormatUtility {
   private static _NUMBER_FORMAT_REGEXP: RegExp = /^(\d+)?\.((\d+)(-(\d+))?)?$/;
 
   /* istanbul ignore next */
-  constructor() { }
+  constructor() {}
 
   public static formatNumber(
     locale: string,
@@ -42,7 +37,6 @@ export class SkyNumberFormatUtility {
     currency: string | null = null,
     currencyAsSymbol: boolean = false
   ): string | null {
-
     if (value == null) {
       return null;
     }
@@ -53,9 +47,9 @@ export class SkyNumberFormatUtility {
       throw Error(`SkyInvalidPipeArgument: '${value}'`);
     }
 
-    let minInt: number|undefined = undefined;
-    let minFraction: number|undefined = undefined;
-    let maxFraction: number|undefined = undefined;
+    let minInt: number | undefined = undefined;
+    let minFraction: number | undefined = undefined;
+    let maxFraction: number | undefined = undefined;
     if (style !== SkyIntlNumberFormatStyle.Currency) {
       // rely on Intl default for currency
       minInt = 1;
@@ -71,17 +65,20 @@ export class SkyNumberFormatUtility {
       }
 
       /* istanbul ignore else */
-      if (parts[1] != null) {  // min integer digits
+      if (parts[1] != null) {
+        // min integer digits
         minInt = parseIntAutoRadix(parts[1]);
       }
 
       /* istanbul ignore else */
-      if (parts[3] != null) {  // min fraction digits
+      if (parts[3] != null) {
+        // min fraction digits
         minFraction = parseIntAutoRadix(parts[3]);
       }
 
       /* istanbul ignore else */
-      if (parts[5] != null) {  // max fraction digits
+      if (parts[5] != null) {
+        // max fraction digits
         maxFraction = parseIntAutoRadix(parts[5]);
       }
     }

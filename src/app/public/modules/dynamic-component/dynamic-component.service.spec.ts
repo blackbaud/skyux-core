@@ -1,37 +1,12 @@
-import {
-  ApplicationRef,
-  ComponentRef,
-  EmbeddedViewRef
-} from '@angular/core';
+import { ApplicationRef, ComponentRef, EmbeddedViewRef } from '@angular/core';
+import { inject, TestBed } from '@angular/core/testing';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { expect } from '@skyux-sdk/testing';
 
-import {
-  inject,
-  TestBed
-} from '@angular/core/testing';
-
-import {
-  BrowserDynamicTestingModule
-} from '@angular/platform-browser-dynamic/testing';
-
-import {
-  expect
-} from '@skyux-sdk/testing';
-
-import {
-  DynamicComponentTestComponent
-} from './fixtures/dynamic-component-test.component.fixture';
-
-import {
-  SkyDynamicComponentModule
-} from './dynamic-component.module';
-
-import {
-  SkyDynamicComponentService
-} from './dynamic-component.service';
-
-import {
-  SkyDynamicComponentLocation
-} from './dynamic-component-location';
+import { SkyDynamicComponentLocation } from './dynamic-component-location';
+import { SkyDynamicComponentModule } from './dynamic-component.module';
+import { SkyDynamicComponentService } from './dynamic-component.service';
+import { DynamicComponentTestComponent } from './fixtures/dynamic-component-test.component.fixture';
 
 describe('Dynamic component service', () => {
   let cmpRef: ComponentRef<DynamicComponentTestComponent>;
@@ -40,7 +15,9 @@ describe('Dynamic component service', () => {
   function createTestComponent(
     location?: SkyDynamicComponentLocation
   ): ComponentRef<DynamicComponentTestComponent> {
-    const svc: SkyDynamicComponentService = TestBed.get(SkyDynamicComponentService);
+    const svc: SkyDynamicComponentService = TestBed.get(
+      SkyDynamicComponentService
+    );
 
     cmpRef = svc.createComponent(
       DynamicComponentTestComponent,
@@ -58,7 +35,9 @@ describe('Dynamic component service', () => {
   function removeTestComponent(
     refToRemove: ComponentRef<any>
   ): ComponentRef<DynamicComponentTestComponent> {
-    const svc: SkyDynamicComponentService = TestBed.get(SkyDynamicComponentService);
+    const svc: SkyDynamicComponentService = TestBed.get(
+      SkyDynamicComponentService
+    );
 
     svc.removeComponent(refToRemove);
 
@@ -73,35 +52,20 @@ describe('Dynamic component service', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SkyDynamicComponentModule
-      ],
-      declarations: [
-        DynamicComponentTestComponent
-      ]
+      imports: [SkyDynamicComponentModule],
+      declarations: [DynamicComponentTestComponent]
     });
 
     TestBed.overrideModule(BrowserDynamicTestingModule, {
       set: {
-        entryComponents: [
-          DynamicComponentTestComponent
-        ]
+        entryComponents: [DynamicComponentTestComponent]
       }
     });
   });
 
-  beforeEach(
-    inject(
-      [
-        ApplicationRef
-      ],
-      (
-        _applicationRef: ApplicationRef
-      ) => {
-        applicationRef = _applicationRef;
-      }
-    )
-  );
+  beforeEach(inject([ApplicationRef], (_applicationRef: ApplicationRef) => {
+    applicationRef = _applicationRef;
+  }));
 
   afterEach(() => {
     if (cmpRef) {

@@ -1,14 +1,8 @@
-import {
-  NgModule
-} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {
-  SkyCoreAdapterService
-} from './adapter.service';
+import { SkyCoreAdapterService } from './adapter.service';
 
 @NgModule({
-  providers: [
-    SkyCoreAdapterService
-  ]
+  providers: [SkyCoreAdapterService]
 })
-export class SkyCoreAdapterModule { }
+export class SkyCoreAdapterModule {}

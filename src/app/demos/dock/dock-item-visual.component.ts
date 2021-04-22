@@ -1,15 +1,8 @@
-import {
-  Component,
-  Optional
-} from '@angular/core';
+import { Component, Optional } from '@angular/core';
 
-import {
-  Subject
-} from 'rxjs';
+import { Subject } from 'rxjs';
 
-import {
-  DockItemVisualContext
-} from './dock-item-context';
+import { DockItemVisualContext } from './dock-item-context';
 
 let uniqueId = 0;
 
@@ -19,7 +12,6 @@ let uniqueId = 0;
   templateUrl: './dock-item-visual.component.html'
 })
 export class DockItemVisualComponent {
-
   public closeClicked = new Subject<void>();
 
   public height = 'auto';
@@ -28,9 +20,7 @@ export class DockItemVisualComponent {
 
   public uniqueId: number;
 
-  constructor(
-    @Optional() public context: DockItemVisualContext
-  ) {
+  constructor(@Optional() public context: DockItemVisualContext) {
     this.uniqueId = ++uniqueId;
     this.stackOrderForDisplay = context.stackOrder;
   }

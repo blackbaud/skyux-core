@@ -1,26 +1,22 @@
 <sky-page>
-  <div
-    class="canvas"
-  >
+  <div class="canvas">
     <div
       class="parent-overflow"
       id="screenshot-affix"
       [ngClass]="{
-        'overflow': enableOverflowParent,
-        'smaller': enableSmallerParent
+        overflow: enableOverflowParent,
+        smaller: enableSmallerParent
       }"
       #parentOverflowRef
     >
-      <div
-        class="parent-overflow-canvas"
-      >
+      <div class="parent-overflow-canvas">
         <div
           class="base"
           [ngClass]="{
             'base-lg': enableLargeBaseElement
           }"
           [ngStyle]="{
-            'width': (enableFullWidthBaseElement) ? overflowParentWidth : null
+            width: enableFullWidthBaseElement ? overflowParentWidth : null
           }"
           #baseRef
         ></div>
@@ -36,24 +32,19 @@
       [affixIsSticky]="isSticky"
       [affixPlacement]="model.placement"
       [affixVerticalAlignment]="model.verticalAlignment"
-      [ngClass]="{ 'hidden': !isVisible }"
+      [ngClass]="{ hidden: !isVisible }"
       [skyAffixTo]="baseRef"
       (affixPlacementChange)="onAffixPlacementChange($event)"
     ></div>
   </div>
-  <div
-    class="toolbar"
-    #toolbarRef
-  >
+  <div class="toolbar" #toolbarRef>
     <select
       class="sky-margin-inline-compact"
       id="placement-select"
       [(ngModel)]="model.placement"
     >
       <option>Select placement...</option>
-      <option *ngFor="let placement of placements"
-        [value]="placement"
-      >
+      <option *ngFor="let placement of placements" [value]="placement">
         {{ placement }}
       </option>
     </select>
@@ -63,7 +54,8 @@
       [(ngModel)]="model.horizontalAlignment"
     >
       <option>Select horizontal alignment...</option>
-      <option *ngFor="let alignment of horizontalAlignments"
+      <option
+        *ngFor="let alignment of horizontalAlignments"
         [value]="alignment"
       >
         {{ alignment }}
@@ -75,9 +67,7 @@
       [(ngModel)]="model.verticalAlignment"
     >
       <option>Select vertical alignment...</option>
-      <option *ngFor="let alignment of verticalAlignments"
-        [value]="alignment"
-      >
+      <option *ngFor="let alignment of verticalAlignments" [value]="alignment">
         {{ alignment }}
       </option>
     </select>
@@ -86,27 +76,19 @@
       [(ngModel)]="model.autoFitContext"
     >
       <option>Select auto-fit context...</option>
-      <option *ngFor="let context of autoFitContexts"
-        [value]="context"
-      >
+      <option *ngFor="let context of autoFitContexts" [value]="context">
         {{ getAutoFitContextForDisplay(context) }}
       </option>
     </select>
-    <table
-      style="text-align:left;margin-bottom:10px;"
-    >
+    <table style="text-align: left; margin-bottom: 10px">
       <tr>
-        <td>
-          Sticky:
-        </td>
+        <td>Sticky:</td>
         <td>
           {{ isSticky }}
         </td>
       </tr>
       <tr>
-        <td>
-          Auto-fit:
-        </td>
+        <td>Auto-fit:</td>
         <td>
           {{ enableAutoFit }}
         </td>
@@ -187,7 +169,8 @@
     >
       Toggle overflow parent
     </button>
-    <button *ngIf="enableOverflowParent"
+    <button
+      *ngIf="enableOverflowParent"
       class="sky-btn sky-btn-default"
       type="button"
       [disabled]="disabled"
@@ -198,13 +181,9 @@
   </div>
 </sky-page>
 
-<div
-  class="mock-omnibar"
->
+<div class="mock-omnibar">
   <span class="sky-margin-inline-default">Mock Omnibar</span>
-  <div *ngIf="autoFitOverflowOffset"
-    class="alert"
-  >
+  <div *ngIf="autoFitOverflowOffset" class="alert">
     Overflow offset is active!
   </div>
 </div>

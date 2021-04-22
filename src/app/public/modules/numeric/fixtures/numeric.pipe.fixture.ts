@@ -1,14 +1,7 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
+import { SkyAppLocaleProvider } from '@skyux/i18n';
 
-import {
-  SkyAppLocaleProvider
-} from '@skyux/i18n';
-
-import {
-  of
-} from 'rxjs';
+import { of } from 'rxjs';
 
 class MockLocaleProvider extends SkyAppLocaleProvider {
   public getLocaleInfo() {
@@ -21,12 +14,8 @@ class MockLocaleProvider extends SkyAppLocaleProvider {
 @Component({
   selector: 'numeric-pipe-fixture',
   templateUrl: './numeric.pipe.fixture.html',
-  providers: [
-    { provide: SkyAppLocaleProvider, useClass: MockLocaleProvider }
-  ]
+  providers: [{ provide: SkyAppLocaleProvider, useClass: MockLocaleProvider }]
 })
 export class NumericPipeFixtureComponent {
-
   public locale: string;
-
 }

@@ -1,9 +1,7 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-numeric-docs',
   templateUrl: './numeric-docs.component.html'
 })
-export class NumericDocsComponent { }
+export class NumericDocsComponent {}

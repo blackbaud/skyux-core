@@ -22,7 +22,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AffixDemoComponent {
-
   public get overflowParentWidth(): string {
     if (this.enableOverflowParent) {
       return `${this.parentOverflowRef.nativeElement.scrollWidth}px`;
@@ -72,12 +71,7 @@ export class AffixDemoComponent {
     verticalAlignment: 'middle'
   };
 
-  public placements: SkyAffixPlacement[] = [
-    'above',
-    'right',
-    'below',
-    'left'
-  ];
+  public placements: SkyAffixPlacement[] = ['above', 'right', 'below', 'left'];
 
   public verticalAlignments: SkyAffixVerticalAlignment[] = [
     'bottom',
@@ -111,12 +105,10 @@ export class AffixDemoComponent {
 
   private verticalAlignmentIndex = 0;
 
-  constructor(
-    private changeDetector: ChangeDetectorRef
-  ) { }
+  constructor(private changeDetector: ChangeDetectorRef) {}
 
   public onAffixPlacementChange(change: SkyAffixPlacementChange): void {
-    this.isVisible = (change.placement !== null);
+    this.isVisible = change.placement !== null;
     this.changeDetector.detectChanges();
   }
 
@@ -126,24 +118,27 @@ export class AffixDemoComponent {
     const left = baseElement.offsetLeft;
 
     if (this.enableOverflowParent) {
-      const overflowParent: HTMLDivElement = this.parentOverflowRef.nativeElement;
-      overflowParent.scrollTop = top -
+      const overflowParent: HTMLDivElement = this.parentOverflowRef
+        .nativeElement;
+      overflowParent.scrollTop =
+        top -
         overflowParent.offsetTop -
-        (overflowParent.clientHeight / 2) +
-        (baseElement.clientHeight / 2);
-      overflowParent.scrollLeft = left -
+        overflowParent.clientHeight / 2 +
+        baseElement.clientHeight / 2;
+      overflowParent.scrollLeft =
+        left -
         overflowParent.offsetLeft -
-        (overflowParent.clientWidth / 2) +
-        (baseElement.clientWidth / 2);
+        overflowParent.clientWidth / 2 +
+        baseElement.clientWidth / 2;
     } else {
       window.scroll(
         left -
-          (document.documentElement.clientWidth / 2) +
-          (baseElement.clientWidth / 2),
+          document.documentElement.clientWidth / 2 +
+          baseElement.clientWidth / 2,
         top -
-          (document.documentElement.clientHeight / 2) +
-          (baseElement.clientHeight / 2) +
-          (this.toolbarRef.nativeElement.clientHeight / 2)
+          document.documentElement.clientHeight / 2 +
+          baseElement.clientHeight / 2 +
+          this.toolbarRef.nativeElement.clientHeight / 2
       );
     }
   }
@@ -202,7 +197,7 @@ export class AffixDemoComponent {
   }
 
   public getAutoFitContextForDisplay(context: SkyAffixAutoFitContext): string {
-    return (context === SkyAffixAutoFitContext.OverflowParent)
+    return context === SkyAffixAutoFitContext.OverflowParent
       ? 'OverflowParent'
       : 'Viewport';
   }
@@ -217,8 +212,12 @@ export class AffixDemoComponent {
     this.changeDetector.markForCheck();
 
     if (placement === 'above' || placement === 'below') {
-      this.model.verticalAlignment = this.verticalAlignments[this.verticalAlignmentIndex];
-      this.model.horizontalAlignment = this.horizontalAlignments[this.horizontalAlignmentIndex];
+      this.model.verticalAlignment = this.verticalAlignments[
+        this.verticalAlignmentIndex
+      ];
+      this.model.horizontalAlignment = this.horizontalAlignments[
+        this.horizontalAlignmentIndex
+      ];
       this.horizontalAlignmentIndex++;
       if (this.horizontalAlignmentIndex === this.horizontalAlignments.length) {
         this.verticalAlignmentIndex++;
@@ -230,7 +229,9 @@ export class AffixDemoComponent {
         this.horizontalAlignmentIndex = 0;
       }
     } else {
-      this.model.verticalAlignment = this.verticalAlignments[this.verticalAlignmentIndex];
+      this.model.verticalAlignment = this.verticalAlignments[
+        this.verticalAlignmentIndex
+      ];
       this.verticalAlignmentIndex++;
       if (this.verticalAlignmentIndex === this.verticalAlignments.length) {
         this.placementIndex++;
@@ -241,5 +242,4 @@ export class AffixDemoComponent {
 
     this.changeDetector.markForCheck();
   }
-
 }

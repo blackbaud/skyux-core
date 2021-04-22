@@ -1,27 +1,10 @@
-import {
-  TestBed,
-  ComponentFixture
-} from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 
-import {
-  NumericPipeFixtureComponent
-} from './fixtures/numeric.pipe.fixture';
-
-import {
-  SkyNumericModule
-} from './numeric.module';
-
-import {
-  NumericOptions
-} from './numeric.options';
-
-import {
-  SkyNumericPipe
-} from './numeric.pipe';
-
-import {
-  SkyNumericService
-} from './numeric.service';
+import { NumericPipeFixtureComponent } from './fixtures/numeric.pipe.fixture';
+import { SkyNumericModule } from './numeric.module';
+import { NumericOptions } from './numeric.options';
+import { SkyNumericPipe } from './numeric.pipe';
+import { SkyNumericService } from './numeric.service';
 
 describe('Numeric pipe', () => {
   let pipe: any;
@@ -35,12 +18,8 @@ describe('Numeric pipe', () => {
     expectedConfig.iso = 'USD';
 
     TestBed.configureTestingModule({
-      declarations: [
-        NumericPipeFixtureComponent
-      ],
-      imports: [
-        SkyNumericModule
-      ]
+      declarations: [NumericPipeFixtureComponent],
+      imports: [SkyNumericModule]
     });
 
     numericService = TestBed.get(SkyNumericService);

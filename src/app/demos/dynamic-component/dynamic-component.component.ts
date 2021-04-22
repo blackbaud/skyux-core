@@ -1,16 +1,11 @@
-import {
-  Component,
-  ComponentRef
-} from '@angular/core';
+import { Component, ComponentRef } from '@angular/core';
 
 import {
   SkyDynamicComponentLocation,
   SkyDynamicComponentService
 } from '../../public/public_api';
 
-import {
-  DynamicComponentDemoExampleComponent
-} from './dynamic-component-example.component';
+import { DynamicComponentDemoExampleComponent } from './dynamic-component-example.component';
 
 @Component({
   selector: 'sky-dynamic-component-demo',
@@ -19,9 +14,7 @@ import {
 export class DynamicComponentDemoComponent {
   private componentRef: ComponentRef<DynamicComponentDemoExampleComponent>;
 
-  constructor(
-    private dynamicComponentService: SkyDynamicComponentService
-  ) { }
+  constructor(private dynamicComponentService: SkyDynamicComponentService) {}
 
   public createComponent(): void {
     if (this.componentRef) {

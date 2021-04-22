@@ -1,16 +1,8 @@
-import {
-  Component,
-  Optional,
-  Output
-} from '@angular/core';
+import { Component, Optional, Output } from '@angular/core';
 
-import {
-  Subject
-} from 'rxjs';
+import { Subject } from 'rxjs';
 
-import {
-  OverlayDemoExampleContext
-} from './overlay-demo-example-context';
+import { OverlayDemoExampleContext } from './overlay-demo-example-context';
 
 @Component({
   selector: 'app-overlay-demo-example',
@@ -18,13 +10,10 @@ import {
   styleUrls: ['./overlay-demo-example.component.scss']
 })
 export class OverlayDemoExampleComponent {
-
   @Output()
   public closeClicked = new Subject<void>();
 
-  constructor(
-    @Optional() public context: OverlayDemoExampleContext
-  ) { }
+  constructor(@Optional() public context: OverlayDemoExampleContext) {}
 
   public close(): void {
     this.closeClicked.next();

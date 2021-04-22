@@ -1,27 +1,15 @@
-import {
-  Injectable,
-  Optional
-} from '@angular/core';
+import { Injectable, Optional } from '@angular/core';
 
-import {
-  SkyViewkeeper
-} from './viewkeeper';
-
-import {
-  SkyViewkeeperHostOptions
-} from './viewkeeper-host-options';
-
-import {
-  SkyViewkeeperOptions
-} from './viewkeeper-options';
+import { SkyViewkeeper } from './viewkeeper';
+import { SkyViewkeeperHostOptions } from './viewkeeper-host-options';
+import { SkyViewkeeperOptions } from './viewkeeper-options';
 
 /**
  * Provides methods for creating and destroying viewkeeper instances.
  */
 @Injectable()
 export class SkyViewkeeperService {
-
-  constructor(@Optional() private hostOptions?: SkyViewkeeperHostOptions) { }
+  constructor(@Optional() private hostOptions?: SkyViewkeeperHostOptions) {}
 
   /**
    *
@@ -40,5 +28,4 @@ export class SkyViewkeeperService {
   public destroy(vk: SkyViewkeeper): void {
     vk.destroy();
   }
-
 }

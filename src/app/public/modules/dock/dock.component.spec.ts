@@ -1,43 +1,23 @@
+import { StaticProvider } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
   TestBed,
   tick
 } from '@angular/core/testing';
+import { expect, SkyAppTestUtility } from '@skyux-sdk/testing';
 
-import {
-  StaticProvider
-} from '@angular/core';
+import { MutationObserverService } from '../mutation/mutation-observer-service';
 
-import {
-  expect,
-  SkyAppTestUtility
-} from '@skyux-sdk/testing';
+import { SkyDockInsertComponentConfig } from './dock-insert-component-config';
+import { DockItemFixtureContext } from './fixtures/dock-item-context.fixture';
+import { DockFixtureComponent } from './fixtures/dock.component.fixture';
+import { DockFixturesModule } from './fixtures/dock.module.fixture';
 
-import {
-  MutationObserverService
-} from '../mutation/mutation-observer-service';
-
-import {
-  DockFixtureComponent
-} from './fixtures/dock.component.fixture';
-
-import {
-  DockFixturesModule
-} from './fixtures/dock.module.fixture';
-
-import {
-  DockItemFixtureContext
-} from './fixtures/dock-item-context.fixture';
-
-import {
-  SkyDockInsertComponentConfig
-} from './dock-insert-component-config';
-
-const STYLE_ELEMENT_SELECTOR = '[data-test-selector="sky-layout-dock-bottom-styles"]';
+const STYLE_ELEMENT_SELECTOR =
+  '[data-test-selector="sky-layout-dock-bottom-styles"]';
 
 describe('Dock component', () => {
-
   let fixture: ComponentFixture<DockFixtureComponent>;
   let mutationCallbacks: Function[];
 
@@ -53,7 +33,9 @@ describe('Dock component', () => {
    * Takes an array of sorted stack orders and checks them against the dock's items.
    */
   function verifyStackOrder(expected: number[]): void {
-    const currentStackOrder = fixture.componentInstance.dockService.items.map(i => i.stackOrder);
+    const currentStackOrder = fixture.componentInstance.dockService.items.map(
+      (i) => i.stackOrder
+    );
     currentStackOrder.forEach((actual, i) => {
       expect(actual).toEqual(expected[i]);
     });
@@ -80,7 +62,9 @@ describe('Dock component', () => {
   }
 
   function getStyleElement(): HTMLStyleElement {
-    return document.getElementsByTagName('head')[0].querySelector(STYLE_ELEMENT_SELECTOR);
+    return document
+      .getElementsByTagName('head')[0]
+      .querySelector(STYLE_ELEMENT_SELECTOR);
   }
 
   function getProviders(args: any): StaticProvider[] {
@@ -94,21 +78,21 @@ describe('Dock component', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        DockFixturesModule
-      ],
-      providers: [{
-        provide: MutationObserverService,
-        useValue: {
-          create: function (callback: Function): any {
-            mutationCallbacks.push(callback);
-            return {
-              observe() {},
-              disconnect() {}
-            };
+      imports: [DockFixturesModule],
+      providers: [
+        {
+          provide: MutationObserverService,
+          useValue: {
+            create: function (callback: Function): any {
+              mutationCallbacks.push(callback);
+              return {
+                observe() {},
+                disconnect() {}
+              };
+            }
           }
         }
-      }]
+      ]
     });
 
     mutationCallbacks = [];
@@ -264,5 +248,4 @@ describe('Dock component', () => {
 
     expect(originalStyleElement).not.toEqual(newStyleElement);
   }));
-
 });

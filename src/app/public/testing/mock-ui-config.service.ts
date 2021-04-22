@@ -1,27 +1,16 @@
-import {
-  Injectable
-} from '@angular/core';
+import { Injectable } from '@angular/core';
+import { SkyUIConfigService } from '@skyux/core';
 
-import {
-  SkyUIConfigService
-} from '@skyux/core';
-
-import {
-  of as observableOf
-} from 'rxjs';
+import { of as observableOf } from 'rxjs';
 
 @Injectable()
 export class MockSkyUIConfigService extends SkyUIConfigService {
-
-  public getConfig(
-    key: string,
-    defaultConfig?: any
-  ): any {
+  public getConfig(key: string, defaultConfig?: any): any {
     switch (key) {
       case 'defaultSettings':
         return observableOf(defaultConfig);
       case 'badData':
-        return observableOf({invalidProperty: 'invalidData'});
+        return observableOf({ invalidProperty: 'invalidData' });
       default: {
         return observableOf({
           settings: {
@@ -57,10 +46,7 @@ export class MockSkyUIConfigService extends SkyUIConfigService {
                 }
               ]
             },
-            defaultSettings: [
-              'tile-1',
-              'tile-2'
-            ]
+            defaultSettings: ['tile-1', 'tile-2']
           }
         });
       }

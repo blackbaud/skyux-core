@@ -1,11 +1,7 @@
 /* tslint:disable:no-null-keyword */
-import {
-  SkyIntlNumberFormatStyle
-} from '@skyux/i18n';
+import { SkyIntlNumberFormatStyle } from '@skyux/i18n';
 
-import {
-  SkyNumberFormatUtility
-} from './number-format-utility';
+import { SkyNumberFormatUtility } from './number-format-utility';
 
 function formatCurrency(value: any, digits: string): string {
   return SkyNumberFormatUtility.formatNumber(
@@ -19,7 +15,6 @@ function formatCurrency(value: any, digits: string): string {
 }
 
 describe('Number format utility', function () {
-
   it('should format currency from number strings', function () {
     const result = formatCurrency('50.00', '');
 
@@ -31,7 +26,7 @@ describe('Number format utility', function () {
       formatCurrency({}, '');
       fail('It should fail!');
     } catch (err) {
-      expect(err.message).toEqual('SkyInvalidPipeArgument: \'[object Object]\'');
+      expect(err.message).toEqual("SkyInvalidPipeArgument: '[object Object]'");
     }
   });
 
@@ -48,7 +43,9 @@ describe('Number format utility', function () {
       formatCurrency(50, digits);
       fail('It should fail!');
     } catch (err) {
-      expect(err.message).toEqual(`${digits} is not a valid digit info for number pipes`);
+      expect(err.message).toEqual(
+        `${digits} is not a valid digit info for number pipes`
+      );
     }
   });
 
