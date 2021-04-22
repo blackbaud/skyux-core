@@ -1,5 +1,9 @@
 import {
-  Subject
+  EventEmitter
+} from '@angular/core';
+
+import {
+  Observable
 } from 'rxjs';
 
 import {
@@ -9,7 +13,8 @@ import {
 export interface SkyModalProvider {
 
   type: string;
-  open: Function;
-  closeCallback: Subject<SkyModalProviderCloseArgs>;
+  closeCallback: Observable<SkyModalProviderCloseArgs>;
+  events?: { [key: string]: EventEmitter<any> };
+  open(paramObject?: any): any;
 
 }
