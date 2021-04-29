@@ -32,7 +32,7 @@ describe('Modal provider service', () => {
           useValue: {
             type: 'lookup',
             open: () => { return 'foo'; },
-            closeCallback: callback,
+            closed: callback,
             events: { 'testEvent': event }
           },
           multi: true
@@ -45,7 +45,7 @@ describe('Modal provider service', () => {
     const returnedProvider = modalProviderService.getModalForType('lookup');
     expect(returnedProvider.type).toBe('lookup');
     expect(returnedProvider.open()).toBe('foo');
-    expect(returnedProvider.closeCallback).toBe(callback);
+    expect(returnedProvider.closed).toBe(callback);
     expect(returnedProvider.events['testEvent']).toBe(event);
   });
 
@@ -63,7 +63,7 @@ describe('Modal provider service', () => {
           useValue: {
             type: 'lookup',
             open: () => { return 'foo'; },
-            closeCallback: callback1,
+            closed: callback1,
             events: { 'testEvent': event1 }
           },
           multi: true
@@ -73,7 +73,7 @@ describe('Modal provider service', () => {
           useValue: {
             type: 'select-field',
             open: () => { return 'bar'; },
-            closeCallback: callback2,
+            closed: callback2,
             events: { 'testEvent': event2 }
           },
           multi: true
@@ -86,7 +86,7 @@ describe('Modal provider service', () => {
     const returnedProvider = modalProviderService.getModalForType('select-field');
     expect(returnedProvider.type).toBe('select-field');
     expect(returnedProvider.open()).toBe('bar');
-    expect(returnedProvider.closeCallback).toBe(callback2);
+    expect(returnedProvider.closed).toBe(callback2);
     expect(returnedProvider.events['testEvent']).toBe(event2);
   });
 
