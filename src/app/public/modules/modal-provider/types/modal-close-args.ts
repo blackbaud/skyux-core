@@ -1,7 +1,7 @@
 /**
  * Information for what happened when the modal was closed.
  */
-export interface SkyModalProviderCloseArgs {
+export interface SkyCoreModalCloseArgs {
   /**
    * The data passed from users on close or save.
    */

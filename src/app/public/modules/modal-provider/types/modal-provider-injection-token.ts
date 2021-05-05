@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 import {
-  SkyModalProvider
+  SkyCoreModalProvider
 } from './modal-provider';
 
-export const SKY_MODAL_PROVIDER = new InjectionToken<SkyModalProvider>('SKY_MODAL_PROVIDER');
+export const SKY_CORE_MODAL_PROVIDER = new InjectionToken<SkyCoreModalProvider>('SKY_CORE_MODAL_PROVIDER');

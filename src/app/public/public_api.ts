@@ -38,9 +38,11 @@ export * from './modules/media-query/media-query.module';
 export * from './modules/media-query/media-query.service';
 
 export * from './modules/modal-provider/modal-provider.service';
-export * from './modules/modal-provider/modal-provider.module';
+export * from './modules/modal-provider/types/modal-before-close-handler';
+export * from './modules/modal-provider/types/modal-instance';
 export * from './modules/modal-provider/types/modal-provider';
-export * from './modules/modal-provider/types/modal-provider-close-args';
+export * from './modules/modal-provider/types/modal-provider-open-args';
+export * from './modules/modal-provider/types/modal-close-args';
 export * from './modules/modal-provider/types/modal-provider-injection-token';
 
 export * from './modules/mutation/mutation-observer-service';

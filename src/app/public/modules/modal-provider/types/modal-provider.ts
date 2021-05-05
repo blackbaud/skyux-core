@@ -1,15 +1,15 @@
 import {
-  Observable
-} from 'rxjs';
+  SkyCoreModalInstance
+} from './modal-instance';
 
 import {
-  SkyModalProviderCloseArgs
-} from './modal-provider-close-args';
+  SkyCoreModalProviderOpenArgs
+} from './modal-provider-open-args';
 
 /**
  * A provider for a modal instance.
  */
-export interface SkyModalProvider {
+export interface SkyCoreModalProvider {
 
   /**
    * The type of provider.
@@ -17,19 +17,9 @@ export interface SkyModalProvider {
   type: string;
 
   /**
-   * An event that the modal instance emits when it closes.
-   */
-  closed: Observable<SkyModalProviderCloseArgs>;
-
-  /**
-   * Events which are triggered from inside the modal which are then listened to by the consumer.
-   */
-  events?: { [key: string]: Observable<any> };
-
-  /**
    * Opens the modal using the specified parameters.
    * @param paramObject An object of the parameters needed to open the modal.
    */
-  open(paramObject?: any): any;
+  open(paramObject?: SkyCoreModalProviderOpenArgs): SkyCoreModalInstance;
 
 }
