@@ -14,17 +14,12 @@ import {
   SkyNumericPipe
 } from './numeric.pipe';
 
-import {
-  SkyNumericService
-} from './numeric.service';
-
 @NgModule({
   declarations: [
     SkyNumericPipe
   ],
   providers: [
-    SkyNumericPipe,
-    SkyNumericService
+    SkyNumericPipe
   ],
   imports: [
     SkyI18nModule,

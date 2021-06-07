@@ -11,16 +11,8 @@ import {
 } from '../dynamic-component/dynamic-component.module';
 
 import {
-  MutationObserverService
-} from '../mutation/mutation-observer-service';
-
-import {
   SkyDockComponent
 } from './dock.component';
-
-import {
-  SkyDockService
-} from './dock.service';
 
 @NgModule({
   imports: [
@@ -32,10 +24,6 @@ import {
   ],
   entryComponents: [
     SkyDockComponent
-  ],
-  providers: [
-    MutationObserverService,
-    SkyDockService
   ]
 })
 export class SkyDockModule { }

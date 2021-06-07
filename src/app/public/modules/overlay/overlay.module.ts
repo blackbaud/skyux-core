@@ -15,20 +15,8 @@ import {
 } from '../adapter-service/adapter.module';
 
 import {
-  SkyAppWindowRef
-} from '../window/window-ref';
-
-import {
-  SkyOverlayAdapterService
-} from './overlay-adapter.service';
-
-import {
   SkyOverlayComponent
 } from './overlay.component';
-
-import {
-  SkyOverlayService
-} from './overlay.service';
 
 @NgModule({
   imports: [
@@ -41,11 +29,6 @@ import {
   ],
   entryComponents: [
     SkyOverlayComponent
-  ],
-  providers: [
-    SkyAppWindowRef,
-    SkyOverlayAdapterService,
-    SkyOverlayService
   ]
 })
 export class SkyOverlayModule { }

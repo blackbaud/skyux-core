@@ -17,7 +17,9 @@ import {
   SkyMediaQueryListener
 } from './media-query-listener';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyMediaQueryService implements OnDestroy {
 
   /**

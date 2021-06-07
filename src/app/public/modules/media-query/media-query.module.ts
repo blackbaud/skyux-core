@@ -6,14 +6,7 @@ import {
   CommonModule
 } from '@angular/common';
 
-import {
-  SkyMediaQueryService
-} from './media-query.service';
-
 @NgModule({
-  providers: [
-    SkyMediaQueryService
-  ],
   imports: [
     CommonModule
   ]

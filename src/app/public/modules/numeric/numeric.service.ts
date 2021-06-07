@@ -19,7 +19,9 @@ import {
   SkyNumericSymbol
 } from './numeric-symbol';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyNumericService {
 
   /**
