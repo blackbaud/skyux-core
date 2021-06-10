@@ -23,7 +23,7 @@ import {
   ],
   imports: [
     CommonModule,
-    SkyPercentPipeModule
+    SkyPercentPipeModule.forRoot()
   ]
 })
 export class PercentPipeTestModule { }

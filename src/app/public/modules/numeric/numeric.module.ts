@@ -1,37 +1,44 @@
 import {
+  ModuleWithProviders,
   NgModule
 } from '@angular/core';
 
 import {
-  SkyI18nModule
+  SkyI18nModule,
+  SKY_LIB_RESOURCES_PROVIDERS
 } from '@skyux/i18n';
 
 import {
-  SkyCoreResourcesModule
-} from '../shared/core-resources.module';
+  SkyCoreResourcesProvider
+} from '../../plugin-resources/core-resources-provider';
 
 import {
   SkyNumericPipe
 } from './numeric.pipe';
-
-import {
-  SkyNumericService
-} from './numeric.service';
 
 @NgModule({
   declarations: [
     SkyNumericPipe
   ],
   providers: [
-    SkyNumericPipe,
-    SkyNumericService
+    SkyNumericPipe
   ],
   imports: [
-    SkyI18nModule,
-    SkyCoreResourcesModule
+    SkyI18nModule
   ],
   exports: [
     SkyNumericPipe
   ]
 })
-export class SkyNumericModule { }
+export class SkyNumericModule {
+  public static forRoot(): ModuleWithProviders<SkyNumericModule> {
+    return {
+      ngModule: SkyNumericModule,
+      providers: [{
+        provide: SKY_LIB_RESOURCES_PROVIDERS,
+        useClass: SkyCoreResourcesProvider,
+        multi: true
+      }]
+    };
+  }
+}

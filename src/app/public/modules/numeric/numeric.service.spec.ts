@@ -30,7 +30,7 @@ describe('Numeric service', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        SkyNumericModule
+        SkyNumericModule.forRoot()
       ]
     });
   });
