@@ -24,7 +24,9 @@ import {
   sortByStackOrder
 } from './sort-by-stack-order';
 
-import { SkyDockModule } from './dock.module';
+import {
+  SkyDockModule
+} from './dock.module';
 
 /**
  * This service docks components to specific areas on the page.

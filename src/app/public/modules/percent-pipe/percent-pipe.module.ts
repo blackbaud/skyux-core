@@ -3,12 +3,12 @@ import {
 } from '@angular/common';
 
 import {
-  ModuleWithProviders,
   NgModule
 } from '@angular/core';
-import { SKY_LIB_RESOURCES_PROVIDERS } from '@skyux/i18n';
-import { SkyCoreResourcesProvider } from '../../plugin-resources/core-resources-provider';
-import { SkyNumericModule } from '../numeric/numeric.module';
+
+import {
+  SkyCoreResourcesModule
+} from '../shared/core-resources.module';
 
 import {
   SkyPercentPipe
@@ -22,21 +22,11 @@ import {
     SkyPercentPipe
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    SkyCoreResourcesModule
   ],
   exports: [
     SkyPercentPipe
   ]
 })
-export class SkyPercentPipeModule {
-  public static forRoot(): ModuleWithProviders<SkyPercentPipeModule> {
-    return {
-      ngModule: SkyPercentPipeModule,
-      providers: [{
-        provide: SKY_LIB_RESOURCES_PROVIDERS,
-        useClass: SkyCoreResourcesProvider,
-        multi: true
-      }]
-    };
-  }
-}
+export class SkyPercentPipeModule { }
