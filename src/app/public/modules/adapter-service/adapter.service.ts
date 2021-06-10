@@ -27,7 +27,9 @@ const SKY_TABBABLE_SELECTOR = [
   '*[tabindex]'
 ].join(', ');
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyCoreAdapterService {
 
   private renderer: Renderer2;

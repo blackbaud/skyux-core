@@ -2,21 +2,10 @@ import {
   NgModule
 } from '@angular/core';
 
-import {
-  SkyAppWindowRef
-} from '../window/window-ref';
-
-import {
-  SkyDynamicComponentService
-} from './dynamic-component.service';
-
 /**
  * Provides services required to create dynamic components on the page.
+ * @deprecated The `SkyDynamicComponentService` no longer needs the `SkyDynamicComponentModule`.
+ * The `SkyDynamicComponentModule` can be removed from your project.
  */
-@NgModule({
-  providers: [
-    SkyAppWindowRef,
-    SkyDynamicComponentService
-  ]
-})
+@NgModule({})
 export class SkyDynamicComponentModule { }

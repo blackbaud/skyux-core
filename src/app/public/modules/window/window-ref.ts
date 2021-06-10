@@ -14,7 +14,9 @@ export function getWindow(): any {
  * After users inject SkyAppWindowRef into a component, they can use the service to interact with
  * window properties and event handlers by referencing its nativeWindow property.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyAppWindowRef {
 
   /**

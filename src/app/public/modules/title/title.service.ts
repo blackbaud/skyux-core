@@ -13,7 +13,9 @@ import {
 /**
  * Provides a method for setting a formatted title on the current window.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyAppTitleService {
 
   constructor(private title: Title) { }

@@ -31,7 +31,7 @@ import {
     CommonModule,
     RouterTestingModule,
     SkyModalModule,
-    SkyOverlayModule
+    SkyOverlayModule.forRoot()
   ],
   declarations: [
     OverlayEntryFixtureComponent,

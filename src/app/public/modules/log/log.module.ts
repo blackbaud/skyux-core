@@ -2,20 +2,9 @@ import {
   NgModule
 } from '@angular/core';
 
-import {
-  CommonModule
-} from '@angular/common';
-
-import {
-  SkyLogService
-} from './log.service';
-
-@NgModule({
-  imports: [
-    CommonModule
-  ],
-  providers: [
-    SkyLogService
-  ]
-})
+/**
+ * @deprecated The `SkyLogService` no longer needs the `SkyLogModule`.
+ * The `SkyLogModule` can be removed from your project.
+ */
+@NgModule({})
 export class SkyLogModule { }

@@ -2,7 +2,12 @@ import {
   Injectable
 } from '@angular/core';
 
-@Injectable()
+/**
+ * @deprecated The `SkyLogService` will be removed in the next major version of `@skyux/core`.
+ */
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyLogService {
   public warn(
     message?: any,

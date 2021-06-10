@@ -24,10 +24,14 @@ import {
   sortByStackOrder
 } from './sort-by-stack-order';
 
+import { SkyDockModule } from './dock.module';
+
 /**
  * This service docks components to specific areas on the page.
  */
-@Injectable()
+@Injectable({
+  providedIn: SkyDockModule
+})
 export class SkyDockService {
 
   /**
