@@ -31,7 +31,9 @@ import {
  * This service is used to create new overlays.
  * @dynamic
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyOverlayService {
 
   private static overlays: SkyOverlayInstance[] = [];
