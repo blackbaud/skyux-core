@@ -39,7 +39,7 @@ describe('Numeric pipe', () => {
         NumericPipeFixtureComponent
       ],
       imports: [
-        SkyNumericModule.forRoot()
+        SkyNumericModule
       ]
     });
 
