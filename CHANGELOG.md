@@ -1,3 +1,16 @@
+# 5.0.0-alpha.0 (2021-06-11)
+
+### New features
+
+- Added support for `@angular/core@^12`. [#223](https://github.com/blackbaud/skyux-core/pull/223)
+- Updated the following singleton services to use [Angular's preferred method to become tree-shakeable](https://angular.io/guide/singleton-services#using-providedin): `SkyCoreAdapterService`, `SkyAffixService`, `SkyDockService`, `SkyDynamicComponentService`, `SkyAppFormat`, `SkyLogService`, `SkyMediaQueryService`, `MutationObserverService`, `SkyNumericService`, `SkyOverlayAdapterService`, `SkyOverlayService`, `SkyAppTitleService`, `SkyUIConfigService`, `SkyViewkeeperService`, and `SkyAppWindowRef`. [#223](https://github.com/blackbaud/skyux-core/pull/223)
+- Deprecated the `SkyCoreAdapterModule`, `SkyDynamicComponentModule`, `SkyLogModule`, and `SkyMediaQueryModule` modules. [#223](https://github.com/blackbaud/skyux-core/pull/223)
+- Deprecated the `SkyLogService`. [#223](https://github.com/blackbaud/skyux-core/pull/223)
+
+## Bug fixes
+
+- Added `@angular/router` as a peer dependency. [#223](https://github.com/blackbaud/skyux-core/pull/223)
+
 # 4.5.1 (2021-05-24)
 
 - Fixed the overlay component to run change detection after creating the content component. [#220](https://github.com/blackbaud/skyux-core/pull/220)
