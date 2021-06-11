@@ -3,11 +3,11 @@
 ### New features
 
 - Added support for `@angular/core@^12`. [#223](https://github.com/blackbaud/skyux-core/pull/223)
-- Updated the following singleton services to use [Angular's preferred method to become tree-shakeable](https://angular.io/guide/singleton-services#using-providedin): `SkyCoreAdapterService`, `SkyAffixService`, `SkyDockService`, `SkyDynamicComponentService`, `SkyAppFormat`, `SkyLogService`, `SkyMediaQueryService`, `MutationObserverService`, `SkyNumericService`, `SkyOverlayAdapterService`, `SkyOverlayService`, `SkyAppTitleService`, `SkyUIConfigService`, `SkyViewkeeperService`, and `SkyAppWindowRef`.
+- Updated the following singleton services to use [Angular's preferred method to become tree-shakeable](https://angular.io/guide/singleton-services#using-providedin): `SkyCoreAdapterService`, `SkyAffixService`, `SkyDockService`, `SkyDynamicComponentService`, `SkyAppFormat`, `SkyLogService`, `SkyMediaQueryService`, `MutationObserverService`, `SkyNumericService`, `SkyOverlayAdapterService`, `SkyOverlayService`, `SkyAppTitleService`, `SkyUIConfigService`, `SkyViewkeeperService`, and `SkyAppWindowRef`. [#223](https://github.com/blackbaud/skyux-core/pull/223)
 - Deprecated the `SkyCoreAdapterModule`, `SkyDynamicComponentModule`, `SkyLogModule`, and `SkyMediaQueryModule` modules. [#223](https://github.com/blackbaud/skyux-core/pull/223)
 - Deprecated the `SkyLogService`. [#223](https://github.com/blackbaud/skyux-core/pull/223)
 
-### Breaking changes
+## Bug fixes
 
 - Added `@angular/router` as a peer dependency. [#223](https://github.com/blackbaud/skyux-core/pull/223)
 
