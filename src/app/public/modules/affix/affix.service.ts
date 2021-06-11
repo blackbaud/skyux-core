@@ -9,7 +9,9 @@ import {
   SkyAffixer
 } from './affixer';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyAffixService {
 
   private renderer: Renderer2;

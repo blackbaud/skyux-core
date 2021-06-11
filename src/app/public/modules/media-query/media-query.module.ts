@@ -2,20 +2,9 @@ import {
   NgModule
 } from '@angular/core';
 
-import {
-  CommonModule
-} from '@angular/common';
-
-import {
-  SkyMediaQueryService
-} from './media-query.service';
-
-@NgModule({
-  providers: [
-    SkyMediaQueryService
-  ],
-  imports: [
-    CommonModule
-  ]
-})
+/**
+ * @deprecated The `SkyMediaQueryService` no longer needs the `SkyMediaQueryModule`.
+ * The `SkyMediaQueryModule` can be removed from your project.
+ */
+@NgModule({})
 export class SkyMediaQueryModule { }

@@ -18,7 +18,9 @@ import {
 /**
  * Provides methods for creating and destroying viewkeeper instances.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyViewkeeperService {
 
   constructor(@Optional() private hostOptions?: SkyViewkeeperHostOptions) { }

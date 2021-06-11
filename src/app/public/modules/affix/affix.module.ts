@@ -10,10 +10,6 @@ import {
   SkyAffixDirective
 } from './affix.directive';
 
-import {
-  SkyAffixService
-} from './affix.service';
-
 @NgModule({
   imports: [
     CommonModule
@@ -23,9 +19,6 @@ import {
   ],
   declarations: [
     SkyAffixDirective
-  ],
-  providers: [
-    SkyAffixService
   ]
 })
 export class SkyAffixModule { }

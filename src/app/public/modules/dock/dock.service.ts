@@ -27,7 +27,9 @@ import {
 /**
  * This service docks components to specific areas on the page.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyDockService {
 
   /**

@@ -25,7 +25,9 @@ import {
 /**
  * Angular service for creating and rendering a dynamic component.
  */
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SkyDynamicComponentService {
   private renderer: Renderer2;
 
