@@ -28,6 +28,6 @@ export interface SkyOverlayConfig {
   /**
    * Specifies classes to be added to the overlay element.
    */
-  additionalClasses?: string;
+  wrapperClass?: string;
 
 }

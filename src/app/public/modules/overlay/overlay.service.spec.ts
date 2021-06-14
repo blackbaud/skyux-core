@@ -445,7 +445,7 @@ describe('Overlay service', () => {
     tick();
 
     createOverlay({
-      additionalClasses: 'added-class'
+      wrapperClass: 'added-class'
     });
 
     expect(Array.from(getAllOverlays()).shift().classList.contains('added-class')).toBeTrue();
