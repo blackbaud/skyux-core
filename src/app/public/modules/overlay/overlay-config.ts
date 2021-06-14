@@ -26,7 +26,7 @@ export interface SkyOverlayConfig {
   showBackdrop?: boolean;
 
   /**
-   * Specifies classes to be added to the overlay element.
+   * Specifies extra CSS classes to be added to the overlay's wrapper element.
    */
   wrapperClass?: string;
 
