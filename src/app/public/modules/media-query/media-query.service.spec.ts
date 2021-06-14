@@ -1,6 +1,5 @@
 import {
-  inject,
-  TestBed
+  inject
 } from '@angular/core/testing';
 
 import {
@@ -62,12 +61,6 @@ describe('Media query service', () => {
 
   describe('initialization test', () => {
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          SkyMediaQueryService
-        ]
-      });
-
       // Safari doesn't put MediaQueryList on the global window object so we
       // have to pick it off here.
       mediaQueryListPrototype = Object.getPrototypeOf(matchMedia(SkyMediaQueryService.sm));
@@ -125,12 +118,6 @@ describe('Media query service', () => {
 
   describe('query tests', () => {
     beforeEach(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          SkyMediaQueryService
-        ]
-      });
-
       // Safari doesn't put MediaQueryList on the global window object so we
       // have to pick it off here.
       mediaQueryListPrototype = Object.getPrototypeOf(matchMedia(SkyMediaQueryService.sm));

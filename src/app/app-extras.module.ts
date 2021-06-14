@@ -43,11 +43,8 @@ import {
 
 import {
   SkyAffixModule,
-  SkyCoreAdapterModule,
   SkyDockModule,
-  SkyDynamicComponentModule,
   SkyIdModule,
-  SkyMediaQueryModule,
   SkyNumericModule,
   SkyOverlayModule,
   SkyViewkeeperModule
@@ -59,15 +56,12 @@ import {
     SkyAlertModule,
     SkyAppLinkModule,
     SkyCodeModule,
-    SkyCoreAdapterModule,
     SkyDefinitionListModule,
     SkyDockModule,
     SkyDocsToolsModule,
-    SkyDynamicComponentModule,
     SkyFluidGridModule,
     SkyIdModule,
     SkyInputBoxModule,
-    SkyMediaQueryModule,
     SkyNumericModule,
     SkyOverlayModule,
     SkyPageModule,
