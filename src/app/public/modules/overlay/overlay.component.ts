@@ -71,6 +71,8 @@ let uniqueZIndex = 5000;
 })
 export class SkyOverlayComponent implements OnInit, OnDestroy {
 
+  public additionalClasses = '';
+
   public get backdropClick(): Observable<void> {
     return this._backdropClick.asObservable();
   }
@@ -162,6 +164,7 @@ export class SkyOverlayComponent implements OnInit, OnDestroy {
   }
 
   private applyConfig(config: SkyOverlayConfig): void {
+    this.additionalClasses = config.additionalClasses || '';
     this.showBackdrop = config.showBackdrop;
     this.enablePointerEvents = config.enablePointerEvents;
     this.changeDetector.markForCheck();

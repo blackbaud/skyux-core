@@ -25,4 +25,9 @@ export interface SkyOverlayConfig {
    */
   showBackdrop?: boolean;
 
+  /**
+   * Specifies classes to be added to the overlay element.
+   */
+  additionalClasses?: string;
+
 }
