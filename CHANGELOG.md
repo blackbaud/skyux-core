@@ -1,4 +1,4 @@
-# 4.5.2 (2021-06-14)
+# 4.6.0 (2021-06-14)
 
 - Added the option for wrapper class for overlay. [#226](https://github.com/blackbaud/skyux-core/pull/226)
 
