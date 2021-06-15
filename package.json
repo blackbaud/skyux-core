@@ -1,6 +1,6 @@
 {
   "name": "@skyux/core",
-  "version": "5.0.0-alpha.0",
+  "version": "5.0.0-beta.0",
   "description": "SKY UX Core",
   "scripts": {
     "build": "skyux build-public-library --fullTemplateTypeCheck",
@@ -52,7 +52,7 @@
     "@skyux/config": "4.4.0",
     "@skyux/core": "4.5.1",
     "@skyux/docs-tools": "4.9.0",
-    "@skyux/forms": "4.18.0",
+    "@skyux/forms": "4.19.0",
     "@skyux/http": "4.2.0",
     "@skyux/i18n": "4.2.1",
     "@skyux/indicators": "4.10.0",

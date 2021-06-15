@@ -1,3 +1,12 @@
+# 5.0.0-beta.0 (2021-06-15)
+
+- Initial beta release.
+- Updated `5.0.0-next` branch with features from the `master` branch. [#229](https://github.com/blackbaud/skyux-core/pull/229)
+
+# 4.6.0 (2021-06-14)
+
+- Added an optional `wrapperClass` for the overlay component. [#226](https://github.com/blackbaud/skyux-core/pull/226)
+
 # 5.0.0-alpha.0 (2021-06-11)
 
 ### New features
