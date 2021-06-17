@@ -20,7 +20,7 @@ import {
 } from './numeric-symbol';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'any'
 })
 export class SkyNumericService {
 
