@@ -10,6 +10,7 @@
     "test:visual": "skyux e2e --logFormat none"
   },
   "ng-update": {
+    "migrations": "./migrations.json",
     "packageGroup": {
       "@skyux/a11y": "^4 || ^5.0.0-alpha.0",
       "@skyux/action-bars": "^4 || ^5.0.0-alpha.0",
