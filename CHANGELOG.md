@@ -1,3 +1,7 @@
+# 5.0.0-beta.2 (2021-06-22)
+
+- Added a package group to be used by Angular CLI's `ng update` command. [#231](https://github.com/blackbaud/skyux-core/pull/231)
+
 # 5.0.0-beta.1 (2021-06-22)
 
 - Fixed the `SkyNumericService` to work within lazy-loaded feature modules. [#230](https://github.com/blackbaud/skyux-core/pull/230)
