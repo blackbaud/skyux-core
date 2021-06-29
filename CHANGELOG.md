@@ -1,3 +1,7 @@
+# 5.0.0-beta.4 (2021-06-29)
+
+- Fixed the peer dependencies to only reference beta versions for SKY UX packages. [#235](https://github.com/blackbaud/skyux-core/pull/235)
+
 # 5.0.0-beta.3 (2021-06-22)
 
 - Added a "no operation" schematic to test Angular CLI's `ng update` command. [#233](https://github.com/blackbaud/skyux-core/pull/233)
