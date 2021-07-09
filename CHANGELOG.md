@@ -1,4 +1,4 @@
-# 4.6.1 (2021-07-08)
+# 4.6.1 (2021-07-09)
 
 - Fixed the `getFocusableChildren` method with the `SkyCoreAdapterService` to not include elements which have a `tabIndex` but are disabled as focusable children. [#237](https://github.com/blackbaud/skyux-core/pull/237)
 
