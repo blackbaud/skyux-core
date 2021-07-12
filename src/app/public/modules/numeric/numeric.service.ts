@@ -87,7 +87,7 @@ export class SkyNumericService {
         if (Math.abs(roundedNumber) === 1000 && i > 0) {
           // Rounding caused the number to cross into the range of the next symbol.
           symbol = this.symbolIndex[i - 1];
-          roundedNumber = 1;
+          roundedNumber /= 1000;
         }
 
         suffix = symbol.label;
