@@ -1,6 +1,6 @@
 # 5.0.0-beta.7 (2021-07-15)
 
-- Added all features and bug fixes from the `master` branch. []()
+- Added all features and bug fixes from the `master` branch. [#242](https://github.com/blackbaud/skyux-core/pull/242)
 
 # 5.0.0-beta.6 (2021-07-15)
 
