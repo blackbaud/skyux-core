@@ -1,3 +1,7 @@
+# 5.0.0-beta.6 (2021-07-15)
+
+- Removed the `ng update` schematic and package group. To update all SKY UX component packages, run `ng update @skyux/packages` instead. [#241](https://github.com/blackbaud/skyux-core/pull/241)
+
 # 5.0.0-beta.5 (2021-07-08)
 
 - Updated the package group to be used by Angular CLI's `ng update` command. [#236](https://github.com/blackbaud/skyux-core/pull/236)
