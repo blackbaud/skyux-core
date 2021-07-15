@@ -1,6 +1,18 @@
+# 5.0.0-beta.7 (2021-07-15)
+
+- Added all features and bug fixes from the `master` branch. [#242](https://github.com/blackbaud/skyux-core/pull/242)
+
 # 5.0.0-beta.6 (2021-07-15)
 
 - Removed the `ng update` schematic and package group. To update all SKY UX component packages, run `ng update @skyux/packages` instead. [#241](https://github.com/blackbaud/skyux-core/pull/241)
+
+# 4.6.2 (2021-07-13)
+
+- Fixed a bug in `SkyNumericService` that truncated rounded numbers incorrectly in certain boundary conditions, e.g. `999999` as `1,000K` instead of `1M`. [#239](https://github.com/blackbaud/skyux-core/pull/239)
+
+# 4.6.1 (2021-07-09)
+
+- Fixed the `getFocusableChildren` method with the `SkyCoreAdapterService` to not include elements which have a `tabIndex` but are disabled as focusable children. [#237](https://github.com/blackbaud/skyux-core/pull/237)
 
 # 5.0.0-beta.5 (2021-07-08)
 
