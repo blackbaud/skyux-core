@@ -26,6 +26,7 @@ import {
  * Angular service for creating and rendering a dynamic component.
  */
 @Injectable({
+  // Must be 'any' so that the component is created in the context of its local injector.
   providedIn: 'any'
 })
 export class SkyDynamicComponentService {
