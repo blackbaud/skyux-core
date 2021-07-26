@@ -26,7 +26,10 @@ import {
  * Angular service for creating and rendering a dynamic component.
  */
 @Injectable({
-  providedIn: 'root'
+  // Must be 'any' so that the component is created in the context of its module's injector.
+  // If set to 'root', the component's dependency injections would only be derived from the root
+  // injector and may loose context if the component is created within a lazy-loaded module.
+  providedIn: 'any'
 })
 export class SkyDynamicComponentService {
   private renderer: Renderer2;

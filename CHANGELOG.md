@@ -1,3 +1,7 @@
+# 5.0.0-beta.8 (2021-07-26)
+
+- Fixed the `SkyDynamicComponentService` to work within lazy-loaded modules. [#244](https://github.com/blackbaud/skyux-core/pull/244)
+
 # 5.0.0-beta.7 (2021-07-15)
 
 - Added all features and bug fixes from the `master` branch. [#242](https://github.com/blackbaud/skyux-core/pull/242)
