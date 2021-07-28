@@ -1,6 +1,6 @@
 # 4.6.3 (2021-07-28)
 
-- Fixed the `formatNumber` method with the `SkyNumericService` when omitting the format option. [#245](https://github.com/blackbaud/skyux-core/pull/245)
+- Fixed `SkyNumericService`'s `formatNumber` method to allow number formatting to be undefined. [#245](https://github.com/blackbaud/skyux-core/pull/245)
 
 # 4.6.2 (2021-07-13)
 
