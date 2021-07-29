@@ -1,3 +1,11 @@
+# 5.0.0-beta.9 (2021-07-29)
+
+- Merged bug fixes from the 4.x branch into the 5.x branch.
+
+# 4.6.3 (2021-07-28)
+
+- Fixed `SkyNumericService`'s `formatNumber` method to allow number formatting to be undefined. [#245](https://github.com/blackbaud/skyux-core/pull/245)
+
 # 5.0.0-beta.8 (2021-07-26)
 
 - Fixed the `SkyDynamicComponentService` to work within lazy-loaded modules. [#244](https://github.com/blackbaud/skyux-core/pull/244)
