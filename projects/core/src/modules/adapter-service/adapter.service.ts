@@ -208,6 +208,7 @@ export class SkyCoreAdapterService {
    */
   public resetHeight(elementRef: ElementRef, selector: string): void {
     const children = elementRef.nativeElement.querySelectorAll(selector);
+    /* istanbul ignore else */
     if (children.length > 0) {
       for (let i = 0; i < children.length; i++) {
         // Setting style attributes with Web API requires null instead of undefined.
@@ -224,6 +225,7 @@ export class SkyCoreAdapterService {
    */
   public syncMaxHeight(elementRef: ElementRef, selector: string): void {
     const children = elementRef.nativeElement.querySelectorAll(selector);
+    /* istanbul ignore else */
     if (children.length > 0) {
       let maxHeight = 0;
       for (let i = 0; i < children.length; i++) {

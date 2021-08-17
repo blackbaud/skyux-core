@@ -382,6 +382,14 @@ describe('Numeric service', () => {
     expect(skyNumeric.formatNumber(value, options)).toBe('$1,234.50');
   });
 
+  it('should handle undefined format', () => {
+    const value = 100;
+    const options = new NumericOptions();
+    options.format = undefined;
+
+    expect(skyNumeric.formatNumber(value, options)).toBe('100');
+  });
+
   describe('roundNumber', () => {
 
     beforeEach(() => {

@@ -50,6 +50,7 @@ export class SkyOverlayAdapterService {
   }
 
   private destroyStyleElement(): void {
+    /* istanbul ignore else */
     if (this.styleElement.parentElement === document.head) {
       this.renderer.removeChild(document.head, this.styleElement);
     }
