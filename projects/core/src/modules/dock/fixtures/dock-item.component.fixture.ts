@@ -8,7 +8,7 @@ import {
 } from './dock-item-context.fixture';
 
 @Component({
-  selector: 'dock-item-test',
+  selector: 'sky-dock-item-test',
   templateUrl: './dock-item.component.fixture.html'
 })
 export class DockItemFixtureComponent {

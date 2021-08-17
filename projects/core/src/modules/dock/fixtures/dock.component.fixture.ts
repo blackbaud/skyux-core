@@ -19,7 +19,7 @@ import {
 } from './dock-item.component.fixture';
 
 @Component({
-  selector: 'dock-test',
+  selector: 'sky-dock-test',
   template: ''
 })
 export class DockFixtureComponent {

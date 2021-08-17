@@ -33,7 +33,7 @@ import {
 } from '../affix.directive';
 
 @Component({
-  selector: 'affix-test',
+  selector: 'sky-affix-test',
   templateUrl: './affix.component.fixture.html',
   styleUrls: ['./affix.component.fixture.scss']
 })

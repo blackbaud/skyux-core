@@ -1,5 +1,6 @@
 import {
-  Component
+  Component,
+  Injectable
 } from '@angular/core';
 
 import {
@@ -10,6 +11,7 @@ import {
   of
 } from 'rxjs';
 
+@Injectable()
 class MockLocaleProvider extends SkyAppLocaleProvider {
   public getLocaleInfo() {
     return of({
@@ -19,7 +21,7 @@ class MockLocaleProvider extends SkyAppLocaleProvider {
 }
 
 @Component({
-  selector: 'numeric-pipe-fixture',
+  selector: 'sky-numeric-pipe-fixture',
   templateUrl: './numeric.pipe.fixture.html',
   providers: [
     { provide: SkyAppLocaleProvider, useClass: MockLocaleProvider }

@@ -18,7 +18,7 @@ import {
 } from './overlay-entry.component.fixture';
 
 @Component({
-  selector: 'app-overlay-test',
+  selector: 'sky-overlay-test',
   templateUrl: './overlay.component.fixture.html'
 })
 export class OverlayFixtureComponent {

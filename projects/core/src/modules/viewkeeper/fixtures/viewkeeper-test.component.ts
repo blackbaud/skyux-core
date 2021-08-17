@@ -3,7 +3,7 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-viewkeeper-test',
+  selector: 'sky-viewkeeper-test',
   templateUrl: './viewkeeper-test.component.html',
   styleUrls: ['./viewkeeper-test.component.scss']
 })

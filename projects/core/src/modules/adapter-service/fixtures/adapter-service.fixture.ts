@@ -17,7 +17,7 @@ import {
 } from '../focusable-children-options';
 
 @Component({
-  selector: 'adapter-service-fixture',
+  selector: 'sky-adapter-service-fixture',
   templateUrl: './adapter-service.fixture.html'
 })
 export class AdapterServiceFixtureComponent {

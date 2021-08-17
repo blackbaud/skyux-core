@@ -7,7 +7,7 @@ import {
 } from '../percent.pipe';
 
 @Component({
-  selector: 'percent-pipe-test',
+  selector: 'sky-percent-pipe-test',
   templateUrl: './percent-pipe.component.fixture.html'
 })
 export class PercentPipeTestComponent {
