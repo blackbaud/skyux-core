@@ -22,9 +22,9 @@ exports.config = {
         '--headless',
         '--ignore-certificate-errors',
         '--no-sandbox',
-        '--window-size=1000,800',
-      ]
-    }
+        '--start-maximized'
+      ],
+    },
   },
   directConnect: true,
   SELENIUM_PROMISE_MANAGER: false,
