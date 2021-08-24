@@ -37,198 +37,198 @@ describe('Affix', () => {
       .all(by.css(`option[value="${config.verticalAlignment}"]`))
       .click();
 
-    expect('#screenshot-affix').toMatchBaselineScreenshot(done, {
+    await expect('#screenshot-affix').toMatchBaselineScreenshot(done, {
       screenshotName: `affix-${parent}-${config.placement}-${config.horizontalAlignment}-${config.verticalAlignment}`
     });
   }
 
   function checkScreenshots(parent: string) {
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'right',
         verticalAlignment: 'bottom'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'center',
         verticalAlignment: 'bottom'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'left',
         verticalAlignment: 'bottom'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'right',
         verticalAlignment: 'middle'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'center',
         verticalAlignment: 'middle'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'left',
         verticalAlignment: 'middle'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'right',
         verticalAlignment: 'top'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'center',
         verticalAlignment: 'top'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'above',
         horizontalAlignment: 'left',
         verticalAlignment: 'top'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'right',
         horizontalAlignment: 'left',
         verticalAlignment: 'bottom'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'right',
         horizontalAlignment: 'left',
         verticalAlignment: 'middle'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'right',
         horizontalAlignment: 'left',
         verticalAlignment: 'top'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'left',
         verticalAlignment: 'bottom'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'center',
         verticalAlignment: 'bottom'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'right',
         verticalAlignment: 'bottom'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'left',
         verticalAlignment: 'middle'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'center',
         verticalAlignment: 'middle'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'right',
         verticalAlignment: 'middle'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'left',
         verticalAlignment: 'top'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'center',
         verticalAlignment: 'top'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'below',
         horizontalAlignment: 'right',
         verticalAlignment: 'top'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'left',
         horizontalAlignment: 'right',
         verticalAlignment: 'top'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'left',
         horizontalAlignment: 'right',
         verticalAlignment: 'middle'
       }, done);
     });
 
-    it('should match screenshot', (done) => {
-      checkScreenshot(parent, {
+    it('should match screenshot', async (done) => {
+      await checkScreenshot(parent, {
         placement: 'left',
         horizontalAlignment: 'right',
         verticalAlignment: 'bottom'

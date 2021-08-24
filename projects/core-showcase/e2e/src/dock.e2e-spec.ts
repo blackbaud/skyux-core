@@ -12,7 +12,7 @@ describe('Dock', () => {
   });
 
   it('should match screenshot', async (done) => {
-    expect('#screenshot-dock').toMatchBaselineScreenshot(done, {
+    await expect('#screenshot-dock').toMatchBaselineScreenshot(done, {
       screenshotName: 'dock'
     });
   });
