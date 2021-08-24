@@ -4,7 +4,7 @@ import { SkyThemeService } from '@skyux/theme';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { DemosModule } from './demos/demos.module';
+import { VisualModule } from './visual/visual.module';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { DemosModule } from './demos/demos.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    DemosModule
+    VisualModule
   ],
   providers: [
     SkyThemeService

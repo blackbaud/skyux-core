@@ -6,7 +6,7 @@ import {
 describe('Dock', () => {
 
   beforeEach(async () => {
-    await SkyHostBrowser.get('demos/dock');
+    await SkyHostBrowser.get('visual/dock');
     await SkyHostBrowser.setWindowBreakpoint('md');
     await SkyHostBrowser.scrollTo('.scroll-bottom-label');
   });

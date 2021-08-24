@@ -128,24 +128,6 @@
             "browserTarget": "core-showcase:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/core-showcase/src/test.ts",
-            "polyfills": "projects/core-showcase/src/polyfills.ts",
-            "tsConfig": "projects/core-showcase/tsconfig.spec.json",
-            "karmaConfig": "projects/core-showcase/karma.conf.js",
-            "inlineStyleLanguage": "scss",
-            "assets": [
-              "projects/core-showcase/src/favicon.ico",
-              "projects/core-showcase/src/assets"
-            ],
-            "styles": [
-              "projects/core-showcase/src/styles.scss"
-            ],
-            "scripts": []
-          }
-        },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {

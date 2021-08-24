@@ -1,6 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { SkyAffixModule, SkyIdModule, SkyNumericModule, SkyViewkeeperModule } from 'projects/core/src/public-api';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+
+import {
+  SkyDocsToolsModule
+} from '@skyux/docs-tools';
+
+import { SkyPageModule } from '@skyux/layout';
+
+import {
+  SkyAffixModule, SkyIdModule, SkyNumericModule, SkyViewkeeperModule
+} from 'projects/core/src/public-api';
+
 import { AffixDemoComponent } from './affix/affix-demo.component';
 import { DockItemVisualComponent } from './dock/dock-item-visual.component';
 import { DockVisualComponent } from './dock/dock-visual.component';
@@ -11,20 +23,13 @@ import { SkyNumericDemoComponent } from './numeric/numeric-demo.component';
 import { OverlayDemoComponent } from './overlay/overlay-demo.component';
 import { ViewkeeperDemoComponent } from './viewkeeper/viewkeeper-demo.component';
 
-import {
-  SkyDocsToolsModule
-} from '@skyux/docs-tools';
-
-import { FormsModule } from '@angular/forms';
-import { SkyPageModule } from '@skyux/layout';
 import { OverlayDemoTemplateExampleComponent } from './overlay/overlay-demo-template-example.component';
-import { DemosComponent } from './demos.component';
-import { RouterModule } from '@angular/router';
+import { VisualComponent } from './visual.component';
 
 @NgModule({
   declarations: [
     AffixDemoComponent,
-    DemosComponent,
+    VisualComponent,
     DockItemVisualComponent,
     DockVisualComponent,
     DynamicComponentDemoComponent,
@@ -40,11 +45,11 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     RouterModule,
     SkyAffixModule,
+    SkyDocsToolsModule,
     SkyIdModule,
     SkyNumericModule,
     SkyPageModule,
-    SkyViewkeeperModule,
-    SkyDocsToolsModule
+    SkyViewkeeperModule
   ],
 })
-export class DemosModule {}
+export class VisualModule {}

@@ -5,7 +5,7 @@ import {
 
 describe('Numeric', () => {
   it('should match screenshot', async (done) => {
-    await SkyHostBrowser.get('demos/numeric');
+    await SkyHostBrowser.get('visual/numeric');
     await SkyHostBrowser.setWindowBreakpoint('xs');
     expect('.sky-numeric-demo').toMatchBaselineScreenshot(done, {
       screenshotName: 'numeric-xs'

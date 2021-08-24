@@ -1,51 +1,51 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AffixDemoComponent } from './demos/affix/affix-demo.component';
-import { DemosComponent } from './demos/demos.component';
-import { DockVisualComponent } from './demos/dock/dock-visual.component';
-import { DynamicComponentDemoComponent } from './demos/dynamic-component/dynamic-component.component';
-import { SkyIdDemoComponent } from './demos/id/id-demo.component';
-import { SkyMediaQueryDemoComponent } from './demos/media-query/media-query-demo.component';
-import { SkyNumericDemoComponent } from './demos/numeric/numeric-demo.component';
-import { OverlayDemoComponent } from './demos/overlay/overlay-demo.component';
-import { ViewkeeperDemoComponent } from './demos/viewkeeper/viewkeeper-demo.component';
+import { AffixDemoComponent } from './visual/affix/affix-demo.component';
+import { VisualComponent } from './visual/visual.component';
+import { DockVisualComponent } from './visual/dock/dock-visual.component';
+import { DynamicComponentDemoComponent } from './visual/dynamic-component/dynamic-component.component';
+import { SkyIdDemoComponent } from './visual/id/id-demo.component';
+import { SkyMediaQueryDemoComponent } from './visual/media-query/media-query-demo.component';
+import { SkyNumericDemoComponent } from './visual/numeric/numeric-demo.component';
+import { OverlayDemoComponent } from './visual/overlay/overlay-demo.component';
+import { ViewkeeperDemoComponent } from './visual/viewkeeper/viewkeeper-demo.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: DemosComponent
+    component: VisualComponent
   },
   {
-    path: 'demos/affix',
+    path: 'visual/affix',
     component: AffixDemoComponent
   },
   {
-    path: 'demos/dock',
+    path: 'visual/dock',
     component: DockVisualComponent
   },
   {
-    path: 'demos/dynamic-component',
+    path: 'visual/dynamic-component',
     component: DynamicComponentDemoComponent
   },
   {
-    path: 'demos/id',
+    path: 'visual/id',
     component: SkyIdDemoComponent
   },
   {
-    path: 'demos/media-query',
+    path: 'visual/media-query',
     component: SkyMediaQueryDemoComponent
   },
   {
-    path: 'demos/numeric',
+    path: 'visual/numeric',
     component: SkyNumericDemoComponent
   },
   {
-    path: 'demos/overlay',
+    path: 'visual/overlay',
     component: OverlayDemoComponent
   },
   {
-    path: 'demos/viewkeeper',
+    path: 'visual/viewkeeper',
     component: ViewkeeperDemoComponent
   }
 ];

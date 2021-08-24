@@ -11,7 +11,7 @@ import {
 describe('Affix', () => {
 
   beforeEach(async () => {
-    await SkyHostBrowser.get('demos/affix');
+    await SkyHostBrowser.get('visual/affix');
     await SkyHostBrowser.setWindowDimensions(2000, 2000);
     await element(by.id('screenshot-affix-button-scroll-to-base-element')).click();
   });
