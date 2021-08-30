@@ -1,6 +1,7 @@
 import {
   AfterViewInit,
-  Component
+  Component,
+  Host
 } from '@angular/core';
 
 import {
@@ -16,11 +17,12 @@ import {
 } from './dock-item-visual.component';
 
 @Component({
-  selector: 'dock-visual',
-  templateUrl: './dock-visual.component.html',
-  styleUrls: ['./dock-visual.component.scss']
+  selector: 'dock-visual-inner',
+  templateUrl: './dock-visual-inner.component.html',
+  styleUrls: ['./dock-visual.component.scss'],
+  providers: [SkyDockService]
 })
-export class DockVisualComponent implements AfterViewInit {
+export class DockVisualInnerComponent implements AfterViewInit {
 
   public stackOrder: number;
 
@@ -48,10 +50,11 @@ export class DockVisualComponent implements AfterViewInit {
   ];
 
   constructor(
-    private dockService: SkyDockService
+    @Host() private dockService: SkyDockService
   ) {}
 
   public ngAfterViewInit(): void {
+    this.dockService.setDockRefernceLocation(document.querySelector('#stuff'));
     this.configs.forEach((config) => {
       this.addToDock(config);
     });

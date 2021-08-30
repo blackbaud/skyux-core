@@ -1,0 +1,22 @@
+<div
+  id="dock-visual-inner"
+  style="height: 500px; width: 500px; margin-bottom: 10px; background-color: aqua;"
+>
+  <div
+    class="dock-form-group sky-form-group"
+  >
+    <input
+      class="sky-form-control sky-margin-inline-default"
+      placeholder="Stack order"
+      type="number"
+      [(ngModel)]="stackOrder"
+    />
+    <button
+      class="sky-btn sky-btn-primary"
+      type="button"
+      (click)="onAddItemClick()"
+    >
+      Add item
+    </button>
+  </div>
+</div>
