@@ -47,11 +47,11 @@ export class SkyNumericService {
   ];
 
   private _locale: string;
-​
+
   constructor(
     private resourcesService: SkyLibResourcesService
   ) { }
-​
+
   /**
    * Shortens with or without symbol (K/M/B/T) depending on value of number.
    * @param value The number to format.
@@ -67,24 +67,36 @@ export class SkyNumericService {
     }
 
     const decimalPlaceRegExp = /\.0+$|(\.[0-9]*[1-9])0+$/;
-    const symbol: SkyNumericSymbol = this.symbolIndex.find((si) => {
-      // Checks both positive and negative of value to ensure
-      // negative numbers are shortened.
-      return options.truncate &&
-        (
-          (value >= options.truncateAfter && value >= si.value) ||
-          (-value >= options.truncateAfter && -value >= si.value)
-        );
-    });
 
-    let output: string;
-    if (symbol) {
-      const roundedNumber: number = this.roundNumber((value / symbol.value), options.digits);
-      output = roundedNumber.toString().replace(decimalPlaceRegExp, '$1') + symbol.label;
-    } else {
-      const roundedNumber: number = this.roundNumber(value, options.digits);
-      output = roundedNumber.toString().replace(decimalPlaceRegExp, '$1');
+    // Get the symbol for the number after rounding, since rounding could push the number
+    // into a different symbol range.
+    let roundedNumber = this.roundNumber(value, options.digits);
+    let roundedNumberAbs = Math.abs(roundedNumber);
+
+    let suffix = '';
+
+    for (let i = 0; i < this.symbolIndex.length; i++) {
+      let symbol = this.symbolIndex[i];
+
+      if (
+        options.truncate &&
+          roundedNumberAbs >= options.truncateAfter && roundedNumberAbs >= symbol.value
+      ) {
+        roundedNumber = this.roundNumber((value / symbol.value), options.digits);
+
+        if (Math.abs(roundedNumber) === 1000 && i > 0) {
+          // Rounding caused the number to cross into the range of the next symbol.
+          symbol = this.symbolIndex[i - 1];
+          roundedNumber /= 1000;
+        }
+
+        suffix = symbol.label;
+
+        break;
+      }
     }
+
+    let output = roundedNumber.toString().replace(decimalPlaceRegExp, '$1') + suffix;
 
     this.storeShortenSymbol(output);
 
@@ -92,7 +104,7 @@ export class SkyNumericService {
 
     let digits: string;
     // Checks the string entered for format. Using toLowerCase to ignore case.
-    switch (options.format.toLowerCase()) {
+    switch (options.format?.toLowerCase()) {
 
       // In a case where a decimal value was not shortened and
       // the digit input is 2 or higher, it forces 2 digits.
@@ -171,14 +183,14 @@ export class SkyNumericService {
     if (precision < 0) {
       throw new Error('SkyInvalidArgument: precision must be >= 0');
     }
-​
+
     /* tslint:disable-next-line:no-null-keyword */
     /* Sanity check - ignoring coverage but should not ignore if we make this method public */
     /* istanbul ignore next */
     if (isNaN(value) || value === null) {
       return 0;
     }
-​
+
     const scaledValue: number = this.scaleNumberByPowerOfTen(value, precision, true);
     const scaledRoundedValue: number = Math.round(scaledValue);
     const unscaledRoundedValue: number = this.scaleNumberByPowerOfTen(
@@ -186,10 +198,10 @@ export class SkyNumericService {
       precision,
       false
     );
-​
+
     return unscaledRoundedValue;
   }
-​
+
   /**
    * Scales a given number by a power of 10
    * @param value - value to scale
@@ -203,7 +215,7 @@ export class SkyNumericService {
   ): number {
     const valueStr: string = value.toString().toLowerCase();
     const isExponentFormat: boolean = valueStr.includes('e');
-​
+
     if (isExponentFormat) {
       const [base, exp] = valueStr.split('e');
       const newExp = scaleUp ? (Number(exp) + scalar) : (Number(exp) - scalar);
@@ -213,7 +225,7 @@ export class SkyNumericService {
       return Number(`${value}${e}${scalar}`);
     }
   }
-​
+
   /**
    * Stores the symbol added from shortening to reapply later.
    * @param value The string to derive the shorten symbol from.
