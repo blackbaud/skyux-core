@@ -70,11 +70,6 @@ export class SkyDockComponent  {
     component: Type<T>,
     config: SkyDockInsertComponentConfig = {}
   ): SkyDockItemReference<T> {
-
-    if (this.itemRefs.length === 0) {
-      this.domAdapter.watchDomChanges(this.options?.referenceEl ? this.options.referenceEl : document.body, this.elementRef);
-    }
-
     const factory = this.resolver.resolveComponentFactory(component);
     const injector = Injector.create({
       providers: config.providers || [],
@@ -113,7 +108,7 @@ export class SkyDockComponent  {
     this.options = options;
 
     if (this.options?.location === SkyDockLocation.BeforeElement) {
-      this.domAdapter.unbindFromBottom(this.elementRef);
+      this.domAdapter.unbindDock(this.elementRef);
     }
 
     if (this.options?.zIndex) {

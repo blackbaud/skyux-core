@@ -120,10 +120,7 @@ export class SkyDockService {
     }
 
     this.dockRef = this.dynamicComponentService.createComponent(SkyDockComponent, dockOptions);
-
-    setTimeout(() => {
-      this.dockRef.instance.setOptions(this.options);
-    });
+    this.dockRef.instance.setOptions(this.options);
   }
 
   private destroyDock(): void {
