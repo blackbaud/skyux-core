@@ -211,7 +211,8 @@ describe('Dock component', () => {
     fixture.detectChanges();
     tick();
 
-    expect(getDockStyle().zIndex).toBe('5');
+    /// The `toString` is needed for IE
+    expect((<any> getDockStyle().zIndex).toString()).toBe('5');
   }));
 
 });
