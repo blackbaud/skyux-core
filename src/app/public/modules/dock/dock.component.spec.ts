@@ -25,6 +25,8 @@ import {
   SkyDockLocation
 } from './dock-location';
 
+const isIE = window.navigator.userAgent.indexOf('rv:11.0') >= 0;
+
 describe('Dock component', () => {
 
   let fixture: ComponentFixture<DockFixtureComponent>;
@@ -121,74 +123,79 @@ describe('Dock component', () => {
     verifyStackOrder([0]);
   }));
 
-  it('should apply the correct positioning styles to a dock which is bound to the body bottom', fakeAsync(() => {
-    resetDockItems([
-      {
-        stackOrder: 0
-      }
-    ]);
+  // Disabling these tests in IE 11 due to IE not supporting sticky positioning.
+  if (!isIE) {
 
-    fixture.detectChanges();
-    tick();
+    it('should apply the correct positioning styles to a dock which is bound to the body bottom', fakeAsync(() => {
+      resetDockItems([
+        {
+          stackOrder: 0
+        }
+      ]);
 
-    const dockStyle = getDockStyle();
+      fixture.detectChanges();
+      tick();
 
-    expect(document.body.lastChild).toBe(document.querySelector('sky-dock'));
-    expect(dockStyle.position).toBe('sticky');
-    expect(dockStyle.right).toBe('0px');
-    expect(dockStyle.left).toBe('0px');
-    expect(dockStyle.bottom).toBe('0px');
-  }));
+      const dockStyle = getDockStyle();
 
-  it('should apply the correct positioning styles to a dock which is bound to an element bottom', fakeAsync(() => {
-    const innerDiv: HTMLElement = document.querySelector('#innerDiv');
-    fixture.componentInstance.setOptions({
-      location: SkyDockLocation.ElementBottom,
-      referenceEl: innerDiv
-    });
+      expect(document.body.lastChild).toBe(document.querySelector('sky-dock'));
+      expect(dockStyle.position).toBe('sticky');
+      expect(dockStyle.right).toBe('0px');
+      expect(dockStyle.left).toBe('0px');
+      expect(dockStyle.bottom).toBe('0px');
+    }));
 
-    resetDockItems([
-      {
-        stackOrder: 0
-      }
-    ]);
+    it('should apply the correct positioning styles to a dock which is bound to an element bottom', fakeAsync(() => {
+      const innerDiv: HTMLElement = document.querySelector('#innerDiv');
+      fixture.componentInstance.setOptions({
+        location: SkyDockLocation.ElementBottom,
+        referenceEl: innerDiv
+      });
 
-    fixture.detectChanges();
-    tick();
+      resetDockItems([
+        {
+          stackOrder: 0
+        }
+      ]);
 
-    const dockStyle = getDockStyle();
+      fixture.detectChanges();
+      tick();
 
-    expect(innerDiv.lastChild).toBe(document.querySelector('sky-dock'));
-    expect(dockStyle.position).toBe('sticky');
-    expect(dockStyle.right).toBe('0px');
-    expect(dockStyle.left).toBe('0px');
-    expect(dockStyle.bottom).toBe('0px');
-  }));
+      const dockStyle = getDockStyle();
 
-  it('should apply the correct positioning styles to a dock which is bound before an element', fakeAsync(() => {
-    const innerDiv: HTMLElement = document.querySelector('#innerDiv');
-    fixture.componentInstance.setOptions({
-      location: SkyDockLocation.BeforeElement,
-      referenceEl: innerDiv
-    });
+      expect(innerDiv.lastChild).toBe(document.querySelector('sky-dock'));
+      expect(dockStyle.position).toBe('sticky');
+      expect(dockStyle.right).toBe('0px');
+      expect(dockStyle.left).toBe('0px');
+      expect(dockStyle.bottom).toBe('0px');
+    }));
 
-    resetDockItems([
-      {
-        stackOrder: 0
-      }
-    ]);
+    it('should apply the correct positioning styles to a dock which is bound before an element', fakeAsync(() => {
+      const innerDiv: HTMLElement = document.querySelector('#innerDiv');
+      fixture.componentInstance.setOptions({
+        location: SkyDockLocation.BeforeElement,
+        referenceEl: innerDiv
+      });
 
-    fixture.detectChanges();
-    tick();
+      resetDockItems([
+        {
+          stackOrder: 0
+        }
+      ]);
 
-    const dockStyle = getDockStyle();
+      fixture.detectChanges();
+      tick();
 
-    expect(innerDiv.previousSibling).toBe(document.querySelector('sky-dock'));
-    expect(dockStyle.position).toBe('static');
-    expect(dockStyle.right).not.toBe('0px');
-    expect(dockStyle.left).not.toBe('0px');
-    expect(dockStyle.bottom).not.toBe('0px');
-  }));
+      const dockStyle = getDockStyle();
+
+      expect(innerDiv.previousSibling).toBe(document.querySelector('sky-dock'));
+      expect(dockStyle.position).toBe('static');
+      expect(dockStyle.right).not.toBe('0px');
+      expect(dockStyle.left).not.toBe('0px');
+      expect(dockStyle.bottom).not.toBe('0px');
+    }));
+
+  }
 
   it('should set the z-index if given via a dock service option', fakeAsync(() => {
     fixture.componentInstance.setOptions({
