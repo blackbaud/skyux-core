@@ -64,3 +64,9 @@ export * from './modules/viewkeeper/viewkeeper.module';
 export * from './modules/viewkeeper/viewkeeper.service';
 
 export * from './modules/window/window-ref';
+
+// Components and directives must be exported to support Angular's "partial" Ivy compiler.
+// Obscure names are used to indicate types are not part of the public API.
+export { SkyAffixDirective as λ1 } from './modules/affix/affix.directive';
+export { SkyIdDirective as λ2 } from './modules/id/id.directive';
+export { SkyViewkeeperDirective as λ3 } from './modules/viewkeeper/viewkeeper.directive';
