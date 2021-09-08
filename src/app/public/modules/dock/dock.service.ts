@@ -92,6 +92,13 @@ export class SkyDockService {
     return item;
   }
 
+  /**
+   * Sets options for the positioning and styling of the dock component. Since the dock service is a
+   * singleton instance, these options will be applied to all components inserted into the dock. In
+   * order to create a seperate dock with different options, consumers should provide a different
+   * instance of the dock service.
+   * @param options The options for positioning and styling
+   */
   public setDockOptions(options: SkyDockOptions): void {
     this.options = options;
   }
