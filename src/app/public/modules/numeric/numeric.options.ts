@@ -16,7 +16,7 @@ export class NumericOptions {
   public format?: string = 'number';
 
   /**
-   * Specifies how to format currency. Options are `standard` or `accounting`.
+   * Specifies the format of the currency`.
    * @default "standard"
    */
   public currencySign?: 'accounting' | 'standard' = 'standard';

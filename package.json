@@ -23,7 +23,7 @@
   "peerDependencies": {
     "@angular/common": "^9.1.7",
     "@angular/core": "^9.1.7",
-    "@skyux/i18n": "^4.0.0"
+    "@skyux/i18n": "^4.3.0"
   },
   "dependencies": {},
   "devDependencies": {
