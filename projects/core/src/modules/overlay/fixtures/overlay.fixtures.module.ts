@@ -11,16 +11,8 @@ import {
 } from '@angular/router/testing';
 
 import {
-  SkyModalModule
-} from '@skyux/modals';
-
-import {
   SkyOverlayModule
 } from '../overlay.module';
-
-import {
-  OverlayEntryFixtureComponent
-} from './overlay-entry.component.fixture';
 
 import {
   OverlayFixtureComponent
@@ -30,19 +22,13 @@ import {
   imports: [
     CommonModule,
     RouterTestingModule,
-    SkyModalModule,
     SkyOverlayModule
   ],
   declarations: [
-    OverlayEntryFixtureComponent,
     OverlayFixtureComponent
   ],
   exports: [
-    OverlayEntryFixtureComponent,
     OverlayFixtureComponent
-  ],
-  entryComponents: [
-    OverlayEntryFixtureComponent
   ]
 })
 export class OverlayFixturesModule { }

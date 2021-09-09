@@ -1,7 +1,6 @@
 import {
   Component
 } from '@angular/core';
-import { SkyModalInstance, SkyModalService } from '@skyux/modals';
 
 import {
   SkyOverlayConfig,
@@ -16,7 +15,6 @@ import {
 import {
   OverlayDemoExampleComponent
 } from './overlay-demo-example.component';
-import { OverlayModalComponent } from './overlay-demo-modal.component';
 
 let uniqueId = 0;
 
@@ -29,13 +27,8 @@ export class OverlayDemoComponent {
   public overlays: SkyOverlayInstance[] = [];
 
   constructor(
-    private modalService: SkyModalService,
     public overlayService: SkyOverlayService
   ) { }
-
-  public createModal(): SkyModalInstance {
-    return this.modalService.open(OverlayModalComponent);
-  }
 
   public onTestClick(): void {
     alert('Clicked! Is that a good thing?');

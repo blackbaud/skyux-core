@@ -9,13 +9,7 @@ import {
 
 @Component({
   selector: 'sky-overlay-entry-test',
-  template: `
-    <sky-modal>
-      <sky-modal-header>
-        Overlay content ID: {{ contentId }}
-      </sky-modal-header>
-    </sky-modal>
-  `
+  template: `Overlay content ID: {{ contentId }}`
 })
 export class OverlayEntryFixtureComponent {
 

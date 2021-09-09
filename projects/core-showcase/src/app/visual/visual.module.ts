@@ -23,8 +23,6 @@ import { ViewkeeperDemoComponent } from './viewkeeper/viewkeeper-demo.component'
 import { OverlayDemoTemplateExampleComponent } from './overlay/overlay-demo-template-example.component';
 import { VisualComponent } from './visual.component';
 import { SkyE2eThemeSelectorModule } from '@skyux/e2e-client';
-import { SkyModalModule } from '@skyux/modals';
-import { OverlayModalComponent } from './overlay/overlay-demo-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,8 +36,7 @@ import { OverlayModalComponent } from './overlay/overlay-demo-modal.component';
     SkyNumericDemoComponent,
     OverlayDemoComponent,
     ViewkeeperDemoComponent,
-    OverlayDemoTemplateExampleComponent,
-    OverlayModalComponent
+    OverlayDemoTemplateExampleComponent
   ],
   imports: [
     CommonModule,
@@ -48,12 +45,8 @@ import { OverlayModalComponent } from './overlay/overlay-demo-modal.component';
     SkyAffixModule,
     SkyE2eThemeSelectorModule,
     SkyIdModule,
-    SkyModalModule,
     SkyNumericModule,
     SkyViewkeeperModule
-  ],
-  entryComponents: [
-    OverlayModalComponent
   ]
 })
 export class VisualModule {}

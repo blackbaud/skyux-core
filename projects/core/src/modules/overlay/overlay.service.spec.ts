@@ -421,25 +421,6 @@ describe('Overlay service', () => {
     expect(zIndex2 > zIndex1).toEqual(true);
   }));
 
-  it('should appear above modals', fakeAsync(inject(
-    [SkyCoreAdapterService],
-    (adapter: SkyCoreAdapterService) => {
-      createOverlay();
-
-      const modal = fixture.componentInstance.createModal();
-
-      fixture.detectChanges();
-      tick();
-
-      expect(adapter.isTargetAboveElement(
-        getAllOverlays().item(0),
-        document.querySelector('.sky-modal-host-backdrop')
-      )).toEqual(true);
-
-      modal.close();
-    }
-  )));
-
   it('should add additional classes from the configuration', fakeAsync(() => {
     fixture.detectChanges();
     tick();
