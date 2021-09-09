@@ -1,6 +1,6 @@
 # 5.0.0-beta.10 (2021-09-09)
 
-- Added support for Angular CLI. [#248](https://github.com/blackbaud/skyux-core/pull/248)
+- Migrated to Angular CLI. [#248](https://github.com/blackbaud/skyux-core/pull/248)
 
 # 5.0.0-beta.9 (2021-07-29)
 
