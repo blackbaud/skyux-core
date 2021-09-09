@@ -10,8 +10,7 @@
       ],
       "parserOptions": {
         "project": [
-          "projects/core-showcase/tsconfig.app.json",
-          "projects/core-showcase/tsconfig.spec.json"
+          "projects/core-showcase/tsconfig.app.json"
         ],
         "createDefaultProgram": true
       },

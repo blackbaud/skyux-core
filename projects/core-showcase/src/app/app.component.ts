@@ -1,26 +1,17 @@
-import {
-  Component,
-  Renderer2
-} from '@angular/core';
-
-import {
-  SkyTheme,
-  SkyThemeMode,
-  SkyThemeService,
-  SkyThemeSettings
-} from '@skyux/theme';
+import { Component, Renderer2 } from '@angular/core';
+import { SkyAppStyleLoader, SkyTheme, SkyThemeMode, SkyThemeService, SkyThemeSettings } from '@skyux/theme';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  templateUrl: './app.component.html'
 })
 export class AppComponent {
-  public title = 'core-showcase';
+  public isLoaded = false;
 
   constructor(
     renderer: Renderer2,
-    themeService: SkyThemeService
+    themeService: SkyThemeService,
+    styleLoader: SkyAppStyleLoader
   ) {
     themeService.init(
       document.body,
@@ -30,5 +21,9 @@ export class AppComponent {
         SkyThemeMode.presets.light
       )
     );
+
+    styleLoader.loadStyles().then(() => {
+      this.isLoaded = true;
+    });
   }
 }
