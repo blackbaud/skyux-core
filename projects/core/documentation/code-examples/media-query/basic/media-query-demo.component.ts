@@ -6,7 +6,7 @@ import {
 import {
   SkyMediaBreakpoints,
   SkyMediaQueryService
-} from '@skyux/core';
+} from 'projects/core/src/public-api';
 
 import {
   Subscription

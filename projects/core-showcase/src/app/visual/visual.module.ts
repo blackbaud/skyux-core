@@ -4,13 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import {
-  SkyDocsToolsModule
-} from '@skyux/docs-tools';
-
-import { SkyPageModule } from '@skyux/layout';
-
-import {
-  SkyAffixModule, SkyIdModule, SkyNumericModule, SkyViewkeeperModule
+  SkyAffixModule,
+  SkyIdModule,
+  SkyNumericModule,
+  SkyViewkeeperModule
 } from 'projects/core/src/public-api';
 
 import { AffixDemoComponent } from './affix/affix-demo.component';
@@ -25,6 +22,9 @@ import { ViewkeeperDemoComponent } from './viewkeeper/viewkeeper-demo.component'
 
 import { OverlayDemoTemplateExampleComponent } from './overlay/overlay-demo-template-example.component';
 import { VisualComponent } from './visual.component';
+import { SkyE2eThemeSelectorModule } from '@skyux/e2e-client';
+import { SkyModalModule } from '@skyux/modals';
+import { OverlayModalComponent } from './overlay/overlay-demo-modal.component';
 
 @NgModule({
   declarations: [
@@ -38,18 +38,22 @@ import { VisualComponent } from './visual.component';
     SkyNumericDemoComponent,
     OverlayDemoComponent,
     ViewkeeperDemoComponent,
-    OverlayDemoTemplateExampleComponent
+    OverlayDemoTemplateExampleComponent,
+    OverlayModalComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     RouterModule,
     SkyAffixModule,
-    SkyDocsToolsModule,
+    SkyE2eThemeSelectorModule,
     SkyIdModule,
+    SkyModalModule,
     SkyNumericModule,
-    SkyPageModule,
     SkyViewkeeperModule
   ],
+  entryComponents: [
+    OverlayModalComponent
+  ]
 })
 export class VisualModule {}
