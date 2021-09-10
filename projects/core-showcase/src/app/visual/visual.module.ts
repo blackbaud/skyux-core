@@ -23,13 +23,17 @@ import { ViewkeeperDemoComponent } from './viewkeeper/viewkeeper-demo.component'
 import { OverlayDemoTemplateExampleComponent } from './overlay/overlay-demo-template-example.component';
 import { VisualComponent } from './visual.component';
 import { SkyE2eThemeSelectorModule } from '@skyux/e2e-client';
+import { DockVisualBetweenComponent } from './dock/dock-visual-between.component';
+import { DockVisualInnerComponent } from './dock/dock-visual-inner.component';
 
 @NgModule({
   declarations: [
     AffixDemoComponent,
     VisualComponent,
     DockItemVisualComponent,
+    DockVisualBetweenComponent,
     DockVisualComponent,
+    DockVisualInnerComponent,
     DynamicComponentDemoComponent,
     SkyIdDemoComponent,
     SkyMediaQueryDemoComponent,
