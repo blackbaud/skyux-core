@@ -136,7 +136,8 @@ export class SkyNumericService {
           SkyIntlNumberFormatStyle.Currency,
           digits,
           options.iso,
-          symbolDisplay
+          symbolDisplay,
+          options.currencySign
         );
         break;
 
