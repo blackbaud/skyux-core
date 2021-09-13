@@ -432,4 +432,15 @@ describe('Overlay service', () => {
     expect(Array.from(getAllOverlays()).shift().classList.contains('added-class')).toBeTrue();
   }));
 
+  it('should add additional classes from the configuration', fakeAsync(() => {
+    fixture.detectChanges();
+    tick();
+
+    createOverlay({
+      wrapperClass: 'added-class'
+    });
+
+    expect(Array.from(getAllOverlays()).shift().classList.contains('added-class')).toBeTrue();
+  }));
+
 });

@@ -7,6 +7,10 @@ import {
 } from '@angular/core';
 
 import {
+  MutationObserverService
+} from '../mutation/mutation-observer-service';
+
+import {
   SkyDockComponent
 } from './dock.component';
 
@@ -19,6 +23,9 @@ import {
   ],
   entryComponents: [
     SkyDockComponent
+  ],
+  providers: [
+    MutationObserverService
   ]
 })
 export class SkyDockModule { }

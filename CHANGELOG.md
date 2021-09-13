@@ -1,6 +1,15 @@
+# 4.8.0 (2021-09-10)
+
+- Updated the `SkyNumericPipe` to format currency values using the ["accounting" currency sign](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#parameters). [#251](https://github.com/blackbaud/skyux-core/pull/251) (Thanks [@Blackbaud-TomMaszk](https://github.com/Blackbaud-TomMaszk)!)
+
 # 5.0.0-beta.10 (2021-09-09)
 
 - Migrated to Angular CLI. [#248](https://github.com/blackbaud/skyux-core/pull/248)
+
+
+# 4.7.0 (2021-09-08)
+
+- Added the ability to place an element at the bottom of another element or before another element when using the dock service and the dynamic component service. [#250](https://github.com/blackbaud/skyux-core/pull/250)
 
 # 5.0.0-beta.9 (2021-07-29)
 
