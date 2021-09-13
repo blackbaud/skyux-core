@@ -1,3 +1,7 @@
+# 5.0.0-beta.11 (2021-09-13)
+
+- Added all features and bug fixes from the `master` branch. [#255](https://github.com/blackbaud/skyux-core/pull/255)
+
 # 4.8.0 (2021-09-10)
 
 - Updated the `SkyNumericPipe` to format currency values using the ["accounting" currency sign](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat#parameters). [#251](https://github.com/blackbaud/skyux-core/pull/251) (Thanks [@Blackbaud-TomMaszk](https://github.com/Blackbaud-TomMaszk)!)
