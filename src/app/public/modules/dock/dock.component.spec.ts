@@ -189,10 +189,10 @@ describe('Dock component', () => {
       const dockStyle = getDockStyle();
 
       expect(innerDiv.previousSibling).toBe(document.querySelector('sky-dock'));
-      expect(dockStyle.position).toBe('static');
-      expect(dockStyle.right).not.toBe('0px');
-      expect(dockStyle.left).not.toBe('0px');
-      expect(dockStyle.bottom).not.toBe('0px');
+      expect(dockStyle.position).toBe('fixed');
+      expect(dockStyle.right).toBe('0px');
+      expect(dockStyle.left).toBe('0px');
+      expect(dockStyle.bottom).toBe('0px');
     }));
 
   }
