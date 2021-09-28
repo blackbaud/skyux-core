@@ -7,10 +7,6 @@ import {
 } from '@angular/core';
 
 import {
-  MutationObserverService
-} from '@skyux/core';
-
-import {
   fromEvent as observableFromEvent,
   Subject
 } from 'rxjs';
@@ -19,6 +15,10 @@ import {
   debounceTime,
   takeUntil
 } from 'rxjs/operators';
+
+import {
+  MutationObserverService
+} from '../mutation/mutation-observer-service';
 
 /**
  * @internal

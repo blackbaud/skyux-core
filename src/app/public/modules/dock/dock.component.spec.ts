@@ -1,4 +1,8 @@
 import {
+  StaticProvider
+} from '@angular/core';
+
+import {
   ComponentFixture,
   fakeAsync,
   TestBed,
@@ -29,8 +33,10 @@ import {
 import {
   SkyDockLocation
 } from './dock-location';
-import { MutationObserverService } from '@skyux/core';
-import { StaticProvider } from '@angular/core';
+
+import {
+  MutationObserverService
+} from '../mutation/mutation-observer-service';
 
 const STYLE_ELEMENT_SELECTOR = '[data-test-selector="sky-layout-dock-bottom-styles"]';
 
