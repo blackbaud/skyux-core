@@ -1,3 +1,11 @@
+# 5.0.0-beta.12 (2021-09-29)
+
+- Added all features and bug fixes from the `master` branch. [#260](https://github.com/blackbaud/skyux-core/pull/260)
+
+# 4.8.1 (2021-09-29)
+
+- Fixed the dock component to properly position elements when docked to the bottom of the screen and the `body` element does not fill the entire height of the viewport. [#258](https://github.com/blackbaud/skyux-core/pull/258)
+
 # 5.0.0-beta.11 (2021-09-13)
 
 - Added all features and bug fixes from the `master` branch. [#255](https://github.com/blackbaud/skyux-core/pull/255)
