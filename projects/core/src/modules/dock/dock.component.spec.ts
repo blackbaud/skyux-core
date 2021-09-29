@@ -188,6 +188,10 @@ describe('Dock component', () => {
 
   describe('positioning: BodyBottom', () => {
     it('should apply margin to the `body` to accommodate item height', fakeAsync(() => {
+      fixture.componentInstance.setOptions({
+        location: SkyDockLocation.BodyBottom,
+      });
+
       resetDockItems([
         {
           providers: getProviders({ height: 10 })
