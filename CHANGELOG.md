@@ -1,6 +1,6 @@
 # 4.8.1 (2021-09-29)
 
-- Fixed the dock component to properly position elements when docked to the bottom of the screen and the `body` element does not fill the enitre height of the viewport. [#258](https://github.com/blackbaud/skyux-core/pull/258)
+- Fixed the dock component to properly position elements when docked to the bottom of the screen and the `body` element does not fill the entire height of the viewport. [#258](https://github.com/blackbaud/skyux-core/pull/258)
 
 # 4.8.0 (2021-09-10)
 
