@@ -7,7 +7,7 @@ import {
 import {
   SkyDockLocation,
   SkyDockService
-} from 'projects/core/src/public-api';
+} from '../../public/public_api';
 
 import {
   DockItemVisualContext
@@ -18,7 +18,7 @@ import {
 } from './dock-item-visual.component';
 
 @Component({
-  selector: 'app-dock-visual-between',
+  selector: 'dock-visual-between',
   templateUrl: './dock-visual-between.component.html',
   styleUrls: ['./dock-visual.component.scss', './dock-visual-between.component.scss'],
   providers: [SkyDockService]
