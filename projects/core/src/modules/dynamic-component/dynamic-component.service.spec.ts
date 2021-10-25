@@ -1,33 +1,11 @@
-import {
-  ApplicationRef,
-  ComponentRef,
-  EmbeddedViewRef
-} from '@angular/core';
+import { ApplicationRef, ComponentRef, EmbeddedViewRef } from '@angular/core';
+import { inject, TestBed } from '@angular/core/testing';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { expect } from '@skyux-sdk/testing';
 
-import {
-  inject,
-  TestBed
-} from '@angular/core/testing';
-
-import {
-  BrowserDynamicTestingModule
-} from '@angular/platform-browser-dynamic/testing';
-
-import {
-  expect
-} from '@skyux-sdk/testing';
-
-import {
-  DynamicComponentTestComponent
-} from './fixtures/dynamic-component-test.component.fixture';
-
-import {
-  SkyDynamicComponentService
-} from './dynamic-component.service';
-
-import {
-  SkyDynamicComponentLocation
-} from './dynamic-component-location';
+import { SkyDynamicComponentLocation } from './dynamic-component-location';
+import { SkyDynamicComponentService } from './dynamic-component.service';
+import { DynamicComponentTestComponent } from './fixtures/dynamic-component-test.component.fixture';
 
 describe('Dynamic component service', () => {
   let cmpRefs: ComponentRef<DynamicComponentTestComponent>[] = [];
@@ -37,15 +15,15 @@ describe('Dynamic component service', () => {
     location?: SkyDynamicComponentLocation,
     reference?: HTMLElement
   ): ComponentRef<DynamicComponentTestComponent> {
-    const svc: SkyDynamicComponentService = TestBed.inject(SkyDynamicComponentService);
-
-    let cmpRef: ComponentRef<DynamicComponentTestComponent> = svc.createComponent(
-      DynamicComponentTestComponent,
-      {
-        location: location,
-        referenceEl: reference
-      }
+    const svc: SkyDynamicComponentService = TestBed.inject(
+      SkyDynamicComponentService
     );
+
+    let cmpRef: ComponentRef<DynamicComponentTestComponent> =
+      svc.createComponent(DynamicComponentTestComponent, {
+        location: location,
+        referenceEl: reference,
+      });
 
     cmpRef.changeDetectorRef.detectChanges();
     applicationRef.tick();
@@ -57,13 +35,15 @@ describe('Dynamic component service', () => {
   function removeTestComponent(
     refToRemove: ComponentRef<any>
   ): ComponentRef<DynamicComponentTestComponent> {
-    const svc: SkyDynamicComponentService = TestBed.inject(SkyDynamicComponentService);
+    const svc: SkyDynamicComponentService = TestBed.inject(
+      SkyDynamicComponentService
+    );
 
     svc.removeComponent(refToRemove);
 
     applicationRef.tick();
 
-    cmpRefs = cmpRefs.filter(cmpRef => cmpRef !== refToRemove);
+    cmpRefs = cmpRefs.filter((cmpRef) => cmpRef !== refToRemove);
 
     return refToRemove;
   }
@@ -75,32 +55,19 @@ describe('Dynamic component service', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      declarations: [
-        DynamicComponentTestComponent
-      ]
+      declarations: [DynamicComponentTestComponent],
     });
 
     TestBed.overrideModule(BrowserDynamicTestingModule, {
       set: {
-        entryComponents: [
-          DynamicComponentTestComponent
-        ]
-      }
+        entryComponents: [DynamicComponentTestComponent],
+      },
     });
   });
 
-  beforeEach(
-    inject(
-      [
-        ApplicationRef
-      ],
-      (
-        _applicationRef: ApplicationRef
-      ) => {
-        applicationRef = _applicationRef;
-      }
-    )
-  );
+  beforeEach(inject([ApplicationRef], (_applicationRef: ApplicationRef) => {
+    applicationRef = _applicationRef;
+  }));
 
   afterEach(() => {
     if (cmpRefs.length) {
@@ -126,7 +93,9 @@ describe('Dynamic component service', () => {
   });
 
   it('should allow components to be created in the bottom of another element', () => {
-    const referenceRef = createTestComponent(SkyDynamicComponentLocation.BodyTop);
+    const referenceRef = createTestComponent(
+      SkyDynamicComponentLocation.BodyTop
+    );
     const referenceEl = referenceRef.location.nativeElement;
 
     createTestComponent(SkyDynamicComponentLocation.ElementBottom, referenceEl);
@@ -135,7 +104,9 @@ describe('Dynamic component service', () => {
   });
 
   it('should allow components to be created in the top of another element', () => {
-    const referenceRef = createTestComponent(SkyDynamicComponentLocation.BodyTop);
+    const referenceRef = createTestComponent(
+      SkyDynamicComponentLocation.BodyTop
+    );
     const referenceEl = referenceRef.location.nativeElement;
 
     createTestComponent(SkyDynamicComponentLocation.ElementTop, referenceEl);
@@ -144,7 +115,9 @@ describe('Dynamic component service', () => {
   });
 
   it('should allow components to be created in the top of another element', () => {
-    const referenceRef = createTestComponent(SkyDynamicComponentLocation.BodyTop);
+    const referenceRef = createTestComponent(
+      SkyDynamicComponentLocation.BodyTop
+    );
     const referenceEl = referenceRef.location.nativeElement;
 
     createTestComponent(SkyDynamicComponentLocation.BeforeElement, referenceEl);

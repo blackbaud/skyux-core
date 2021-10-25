@@ -1,63 +1,51 @@
-import {
-  AfterViewInit,
-  Component,
-  Host
-} from '@angular/core';
+import { AfterViewInit, Component, Host } from '@angular/core';
 
-import {
-  SkyDockLocation,
-  SkyDockService
-} from 'projects/core/src/public-api';
+import { SkyDockLocation, SkyDockService } from 'projects/core/src/public-api';
 
-import {
-  DockItemVisualContext
-} from './dock-item-context';
-
-import {
-  DockItemVisualComponent
-} from './dock-item-visual.component';
+import { DockItemVisualContext } from './dock-item-context';
+import { DockItemVisualComponent } from './dock-item-visual.component';
 
 @Component({
   selector: 'app-dock-visual-inner',
   templateUrl: './dock-visual-inner.component.html',
-  styleUrls: ['./dock-visual.component.scss', './dock-visual-inner.component.scss'],
-  providers: [SkyDockService]
+  styleUrls: [
+    './dock-visual.component.scss',
+    './dock-visual-inner.component.scss',
+  ],
+  providers: [SkyDockService],
 })
 export class DockVisualInnerComponent implements AfterViewInit {
-
   public stackOrder: number;
 
   private configs: any[] = [
     {
       stackOrder: 0,
-      backgroundColor: 'darkred'
+      backgroundColor: 'darkred',
     },
     {
       stackOrder: 100,
-      backgroundColor: 'darkmagenta'
+      backgroundColor: 'darkmagenta',
     },
     {
       stackOrder: 10,
-      backgroundColor: 'darkcyan'
+      backgroundColor: 'darkcyan',
     },
     {
       stackOrder: -1000,
-      backgroundColor: 'darkblue'
+      backgroundColor: 'darkblue',
     },
     {
       stackOrder: 1,
-      backgroundColor: 'darkgreen'
-    }
+      backgroundColor: 'darkgreen',
+    },
   ];
 
-  constructor(
-    @Host() private dockService: SkyDockService
-  ) {}
+  constructor(@Host() private dockService: SkyDockService) {}
 
   public ngAfterViewInit(): void {
     this.dockService.setDockOptions({
       location: SkyDockLocation.ElementBottom,
-      referenceEl: document.querySelector('#dock-visual-inner')
+      referenceEl: document.querySelector('#dock-visual-inner'),
     });
     this.configs.forEach((config) => {
       this.addToDock(config);
@@ -67,7 +55,7 @@ export class DockVisualInnerComponent implements AfterViewInit {
   public onAddItemClick(): void {
     this.addToDock({
       backgroundColor: 'tan',
-      stackOrder: this.stackOrder
+      stackOrder: this.stackOrder,
     });
   }
 
@@ -80,9 +68,9 @@ export class DockVisualInnerComponent implements AfterViewInit {
           useValue: new DockItemVisualContext(
             config.backgroundColor,
             config.stackOrder
-          )
-        }
-      ]
+          ),
+        },
+      ],
     });
 
     item.componentInstance.stackOrderForDisplay = item.stackOrder;

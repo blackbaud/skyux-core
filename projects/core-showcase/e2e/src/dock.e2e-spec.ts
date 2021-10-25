@@ -1,10 +1,6 @@
-import {
-  expect,
-  SkyHostBrowser
-} from '@skyux-sdk/e2e';
+import { expect, SkyHostBrowser } from '@skyux-sdk/e2e';
 
 describe('Dock', () => {
-
   beforeEach(async () => {
     await SkyHostBrowser.get('visual/dock');
     await SkyHostBrowser.setWindowBreakpoint('md');
@@ -13,8 +9,7 @@ describe('Dock', () => {
 
   it('should match screenshot', async (done) => {
     await expect('#screenshot-dock').toMatchBaselineScreenshot(done, {
-      screenshotName: 'dock'
+      screenshotName: 'dock',
     });
   });
-
 });

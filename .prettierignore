@@ -1,0 +1,9 @@
+# Ignore artifacts:
+.nyc_output
+coverage
+dist
+node_modules
+package-lock.json
+
+# Don't format the following since the order of its import statements is deliberate.
+test.ts

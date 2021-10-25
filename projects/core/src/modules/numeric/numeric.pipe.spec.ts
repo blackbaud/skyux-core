@@ -1,27 +1,10 @@
-import {
-  TestBed,
-  ComponentFixture
-} from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 
-import {
-  NumericPipeFixtureComponent
-} from './fixtures/numeric.pipe.fixture';
-
-import {
-  SkyNumericModule
-} from './numeric.module';
-
-import {
-  NumericOptions
-} from './numeric.options';
-
-import {
-  SkyNumericPipe
-} from './numeric.pipe';
-
-import {
-  SkyNumericService
-} from './numeric.service';
+import { NumericPipeFixtureComponent } from './fixtures/numeric.pipe.fixture';
+import { SkyNumericModule } from './numeric.module';
+import { NumericOptions } from './numeric.options';
+import { SkyNumericPipe } from './numeric.pipe';
+import { SkyNumericService } from './numeric.service';
 
 describe('Numeric pipe', () => {
   let pipe: any;
@@ -35,12 +18,8 @@ describe('Numeric pipe', () => {
     expectedConfig.iso = 'USD';
 
     TestBed.configureTestingModule({
-      declarations: [
-        NumericPipeFixtureComponent
-      ],
-      imports: [
-        SkyNumericModule
-      ]
+      declarations: [NumericPipeFixtureComponent],
+      imports: [SkyNumericModule],
     });
 
     numericService = TestBed.get(SkyNumericService);
@@ -65,14 +44,14 @@ describe('Numeric pipe', () => {
 
   it('should default digits to zero if truncate set to false', () => {
     const options: any = {
-      truncate: false
+      truncate: false,
     };
     expect(pipe.transform(42.87, options)).toBe('43');
   });
 
   it('should default digits to minDigits if minDigits is given but digits is not', () => {
     const options: any = {
-      minDigits: 3
+      minDigits: 3,
     };
     expect(pipe.transform(42.87549, options)).toBe('42.875');
   });
@@ -80,7 +59,7 @@ describe('Numeric pipe', () => {
   it('should throw an error is minDigits is greater than the given digits', () => {
     const options: any = {
       minDigits: 3,
-      digits: 2
+      digits: 2,
     };
     expect(() => {
       pipe.transform(42.87549, options);
@@ -105,7 +84,7 @@ describe('Numeric pipe', () => {
 
       const expected = [
         '1.234.567,89 $', // IE11 doesn't render 'US'.
-        '1.234.567,89 US$'
+        '1.234.567,89 US$',
       ];
 
       // Expect spanish default format of ###.###.###,## CUR[SYMBOL].

@@ -4,7 +4,6 @@
  * the 'ng generate @skyux/i18n:lib-resources-module modules/shared/sky-core' schematic.
  * To update this file, simply rerun the command.
  */
-
 import { NgModule } from '@angular/core';
 import {
   getLibStringForLocale,
@@ -12,11 +11,16 @@ import {
   SkyI18nModule,
   SkyLibResources,
   SkyLibResourcesProvider,
-  SKY_LIB_RESOURCES_PROVIDERS
+  SKY_LIB_RESOURCES_PROVIDERS,
 } from '@skyux/i18n';
 
 const RESOURCES: { [locale: string]: SkyLibResources } = {
-  'EN-US': {"skyux_numeric_billions_symbol":{"message":"B"},"skyux_numeric_millions_symbol":{"message":"M"},"skyux_numeric_thousands_symbol":{"message":"K"},"skyux_numeric_trillions_symbol":{"message":"T"}},
+  'EN-US': {
+    skyux_numeric_billions_symbol: { message: 'B' },
+    skyux_numeric_millions_symbol: { message: 'M' },
+    skyux_numeric_thousands_symbol: { message: 'K' },
+    skyux_numeric_trillions_symbol: { message: 'T' },
+  },
 };
 
 export class SkyCoreResourcesProvider implements SkyLibResourcesProvider {
@@ -30,10 +34,12 @@ export class SkyCoreResourcesProvider implements SkyLibResourcesProvider {
  */
 @NgModule({
   exports: [SkyI18nModule],
-  providers: [{
-    provide: SKY_LIB_RESOURCES_PROVIDERS,
-    useClass: SkyCoreResourcesProvider,
-    multi: true
-  }]
+  providers: [
+    {
+      provide: SKY_LIB_RESOURCES_PROVIDERS,
+      useClass: SkyCoreResourcesProvider,
+      multi: true,
+    },
+  ],
 })
-export class SkyCoreResourcesModule { }
+export class SkyCoreResourcesModule {}
