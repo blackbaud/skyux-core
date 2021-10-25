@@ -559,7 +559,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('9.1');
+      ).toBe('9.10');
       expect(
         skyNumeric.formatNumber(1234.5678, {
           digits: 2,
@@ -567,7 +567,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('1234.57');
+      ).toBe('1,234.57');
       expect(
         skyNumeric.formatNumber(1.5383, {
           digits: 1,
@@ -631,7 +631,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('-0.75');
+      ).toBe('-0.750');
       expect(
         skyNumeric.formatNumber(1.5e3, {
           digits: 2,
@@ -639,7 +639,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('1500');
+      ).toBe('1,500.00');
       expect(
         skyNumeric.formatNumber(-1.5e3, {
           digits: 2,
@@ -647,7 +647,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('-1500');
+      ).toBe('-1,500.00');
     });
 
     it('rounds really small numbers', () => {
@@ -693,7 +693,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('700000000000000000000.32');
+      ).toBe('700,000,000,000,000,000,000.00');
       expect(
         skyNumeric.formatNumber(700000000000000000000.324, {
           digits: 3,
@@ -701,7 +701,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('700000000000000000000.324');
+      ).toBe('700,000,000,000,000,000,000.000');
       expect(
         skyNumeric.formatNumber(3518437208882.663, {
           digits: 2,
@@ -709,7 +709,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('3518437208882.66');
+      ).toBe('3,518,437,208,882.66');
       expect(
         skyNumeric.formatNumber(2.5368e15, {
           digits: 1,
@@ -717,7 +717,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('2536800000000000');
+      ).toBe('2,536,800,000,000,000.0');
       expect(
         skyNumeric.formatNumber(2536800000000000.119, {
           digits: 2,
@@ -725,7 +725,7 @@ describe('Numeric service', () => {
           format: 'number',
           iso: undefined,
         })
-      ).toBe('2536800000000000.12');
+      ).toBe('2,536,800,000,000,000.00');
     });
   });
 });
