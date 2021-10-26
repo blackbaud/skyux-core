@@ -9,6 +9,8 @@ import {
 })
 export class ViewkeeperTestComponent {
 
+  public scrollableParent = false;
+
   public showEl1 = true;
 
   public showEl2 = true;

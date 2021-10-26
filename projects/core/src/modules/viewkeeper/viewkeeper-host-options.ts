@@ -12,6 +12,8 @@ export class SkyViewkeeperHostOptions implements SkyViewkeeperOptions {
 
   public el?: HTMLElement;
 
+  public scrollableParent?: HTMLElement;
+
   public setWidth?: boolean;
 
   public verticalOffset?: number;
