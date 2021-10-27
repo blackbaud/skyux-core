@@ -1,11 +1,11 @@
 import { Component, ElementRef, ViewChild } from "@angular/core";
 
 @Component({
-  selector: 'sky-scrollable-parent-host-fixture',
-  styleUrls: ['./scrollable-parent-host.component.fixture.scss'],
-  templateUrl: './scrollable-parent-host.component.fixture.html'
+  selector: 'sky-scrollable-host-fixture',
+  styleUrls: ['./scrollable-host.component.fixture.scss'],
+  templateUrl: './scrollable-host.component.fixture.html'
 })
-export class ScrollableParentHostFixtureComponent {
+export class ScrollableHostFixtureComponent {
 
   public isParentScrollable: boolean = true;
 

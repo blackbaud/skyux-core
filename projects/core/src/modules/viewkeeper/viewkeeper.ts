@@ -51,9 +51,9 @@ function nextId(): string {
   return 'viewkeeper-' + nextIdIndex;
 }
 
-function getOffset(el: HTMLElement, scrollableParent?: HTMLElement): SkyViewkeeperOffset {
+function getOffset(el: HTMLElement, scrollableHost?: HTMLElement): SkyViewkeeperOffset {
   const rect = el.getBoundingClientRect();
-  const parent = scrollableParent ? scrollableParent : document.documentElement;
+  const parent = scrollableHost ? scrollableHost : document.documentElement;
 
   return {
     top: rect.top + parent.scrollTop,
@@ -132,7 +132,7 @@ export class SkyViewkeeper {
 
   private currentElFixedWidth: number;
 
-  private scrollableParent: HTMLElement;
+  private scrollableHost: HTMLElement;
 
   private syncElPositionHandler: () => void;
 
@@ -143,7 +143,7 @@ export class SkyViewkeeper {
     this.id = nextId();
     this.el = options.el;
     this.boundaryEl = options.boundaryEl;
-    this.scrollableParent = options.scrollableParent;
+    this.scrollableHost = options.scrollableHost;
     this.verticalOffset = options.verticalOffset || 0;
     this.verticalOffsetEl = options.verticalOffsetEl;
     this.viewportMarginTop = options.viewportMarginTop || 0;
@@ -249,8 +249,8 @@ export class SkyViewkeeper {
       const verticalOffsetElTop = parseInt(verticalOffsetElTopStyle, 10) || 0;
 
       offset += (this.verticalOffsetEl.offsetHeight + verticalOffsetElTop);
-    } else if (this.scrollableParent) {
-      offset += this.scrollableParent.getBoundingClientRect().top;
+    } else if (this.scrollableHost) {
+      offset += this.scrollableHost.getBoundingClientRect().top;
     }
 
     return offset;
@@ -261,9 +261,9 @@ export class SkyViewkeeper {
     let doFixEl: boolean;
 
     if (boundaryInfo.spacerEl) {
-      anchorTop = getOffset(boundaryInfo.spacerEl, this.scrollableParent).top;
+      anchorTop = getOffset(boundaryInfo.spacerEl, this.scrollableHost).top;
     } else {
-      anchorTop = getOffset(this.el, this.scrollableParent).top;
+      anchorTop = getOffset(this.el, this.scrollableHost).top;
     }
 
     doFixEl = boundaryInfo.scrollTop + verticalOffset + this.viewportMarginTop > anchorTop;
@@ -364,12 +364,12 @@ export class SkyViewkeeper {
 
     const boundaryEl = this.boundaryEl;
 
-    const boundaryOffset = getOffset(boundaryEl, this.scrollableParent);
+    const boundaryOffset = getOffset(boundaryEl, this.scrollableHost);
     const boundaryTop = boundaryOffset.top;
     const boundaryBottom = boundaryTop + boundaryEl.getBoundingClientRect().height;
 
-    const scrollLeft = this.scrollableParent ? this.scrollableParent.scrollLeft : document.documentElement.scrollLeft;
-    const scrollTop = this.scrollableParent ? this.scrollableParent.scrollTop : document.documentElement.scrollTop;
+    const scrollLeft = this.scrollableHost ? this.scrollableHost.scrollLeft : document.documentElement.scrollLeft;
+    const scrollTop = this.scrollableHost ? this.scrollableHost.scrollTop : document.documentElement.scrollTop;
 
     const elHeight = getHeightWithMargin(this.el);
 

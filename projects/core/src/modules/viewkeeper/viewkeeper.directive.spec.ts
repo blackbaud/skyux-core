@@ -37,13 +37,13 @@ describe('Viewkeeper directive', () => {
     return fixture.debugElement.query(By.css('.boundary-el')).nativeElement;
   }
 
-  function getScrollableParentEl(fixture: ComponentFixture<ViewkeeperTestComponent>): void {
-    return fixture.debugElement.query(By.css('.scrollable-parent'))?.nativeElement;
+  function getScrollableHostEl(fixture: ComponentFixture<ViewkeeperTestComponent>): void {
+    return fixture.debugElement.query(By.css('.scrollable-host'))?.nativeElement;
   }
 
   function validateViewkeepersCreated(fixture: ComponentFixture<ViewkeeperTestComponent>): void {
     const boundaryEl = getBoundaryEl(fixture);
-    const scrollabeParent = getScrollableParentEl(fixture);
+    const scrollabeHost = getScrollableHostEl(fixture);
 
     let expectedCallCount = 2;
 
@@ -61,7 +61,7 @@ describe('Viewkeeper directive', () => {
       boundaryEl,
       el: document.querySelector('.el1'),
       setWidth: true,
-      scrollableParent: scrollabeParent !== undefined ? scrollabeParent : undefined,
+      scrollableHost: scrollabeHost !== undefined ? scrollabeHost : undefined,
       verticalOffsetEl: undefined
     });
 
@@ -69,7 +69,7 @@ describe('Viewkeeper directive', () => {
       boundaryEl,
       el: document.querySelector('.el2'),
       setWidth: true,
-      scrollableParent: scrollabeParent !== undefined ? scrollabeParent : undefined,
+      scrollableHost: scrollabeHost !== undefined ? scrollabeHost : undefined,
       verticalOffsetEl: document.querySelector('.el1')
     });
 
@@ -78,7 +78,7 @@ describe('Viewkeeper directive', () => {
         boundaryEl,
         el: document.querySelector('.el3'),
         setWidth: true,
-        scrollableParent: scrollabeParent !== undefined ? scrollabeParent : undefined,
+        scrollableHost: scrollabeHost !== undefined ? scrollabeHost : undefined,
         verticalOffsetEl: document.querySelector('.el2')
       });
     }
@@ -88,7 +88,7 @@ describe('Viewkeeper directive', () => {
         boundaryEl,
         el: document.querySelector('.el4'),
         setWidth: true,
-        scrollableParent: scrollabeParent !== undefined ? scrollabeParent : undefined,
+        scrollableHost: scrollabeHost !== undefined ? scrollabeHost : undefined,
         verticalOffsetEl: document.querySelector(
           fixture.componentInstance.showEl3 ?
             '.el3' :
@@ -241,7 +241,7 @@ describe('Viewkeeper directive', () => {
 
   it('should create viewkeeper objects for each matching element when inside a scrollable parent', () => {
     const fixture = TestBed.createComponent(ViewkeeperTestComponent);
-    fixture.componentInstance.scrollableParent = true;
+    fixture.componentInstance.scrollableHost = true;
 
     fixture.detectChanges();
     triggerMutationChange();

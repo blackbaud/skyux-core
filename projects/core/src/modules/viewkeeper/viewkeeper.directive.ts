@@ -12,7 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 import {
   MutationObserverService
 } from '../mutation/mutation-observer-service';
-import { SkyScrollableParentHostService } from '../scrollable-parent/scrollable-parent-host.service';
+import { SkyScrollableHostService } from '../scrollable-host/scrollable-host.service';
 
 import {
   SkyViewkeeper
@@ -46,13 +46,13 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
 
   private currentViewkeeperEls: HTMLElement[];
 
-  private scrollableParentWatchUnsubscribe: Subject<void> | undefined = undefined;
+  private scrollableHostWatchUnsubscribe: Subject<void> | undefined = undefined;
 
   constructor(
     private el: ElementRef,
     private mutationObserverSvc: MutationObserverService,
     private viewkeeperSvc: SkyViewkeeperService,
-    @Optional() private scrollabeParentHost: SkyScrollableParentHostService
+    @Optional() private scrollableHostService: SkyScrollableHostService
   ) { }
 
   public ngOnInit(): void {
@@ -124,16 +124,16 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
 
     if (this.viewkeeperElsChanged(viewkeeperEls)) {
 
-      if (this.scrollableParentWatchUnsubscribe) {
-        this.scrollableParentWatchUnsubscribe.next();
-        this.scrollableParentWatchUnsubscribe = new Subject();
+      if (this.scrollableHostWatchUnsubscribe) {
+        this.scrollableHostWatchUnsubscribe.next();
+        this.scrollableHostWatchUnsubscribe = new Subject();
       } else {
-        this.scrollableParentWatchUnsubscribe = new Subject();
+        this.scrollableHostWatchUnsubscribe = new Subject();
       }
 
-      this.scrollabeParentHost.watchScrollableParent(this.el, this.scrollableParentWatchUnsubscribe)
-        .pipe(takeUntil(this.scrollableParentWatchUnsubscribe))
-        .subscribe(scrollableParent => {
+      this.scrollableHostService.watchScrollableHost(this.el, this.scrollableHostWatchUnsubscribe)
+        .pipe(takeUntil(this.scrollableHostWatchUnsubscribe))
+        .subscribe(scrollableHost => {
           this.destroyViewkeepers();
 
           let previousViewkeeperEl: HTMLElement;
@@ -143,7 +143,7 @@ export class SkyViewkeeperDirective implements OnInit, OnDestroy {
               this.viewkeeperSvc.create(
                 {
                   boundaryEl: this.el.nativeElement,
-                  scrollableParent: scrollableParent instanceof HTMLElement ? scrollableParent : undefined,
+                  scrollableHost: scrollableHost instanceof HTMLElement ? scrollableHost : undefined,
                   el: viewkeeperEl,
                   setWidth: true,
                   verticalOffsetEl: previousViewkeeperEl

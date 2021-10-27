@@ -1,9 +1,9 @@
 <sky-e2e-theme-selector></sky-e2e-theme-selector>
-<button class="sky-btn sky-btn-primary" tyoe="button" (click)="toggleScrollableParent()">Toggle scrollable parent</button>
+<button class="sky-btn sky-btn-primary" tyoe="button" (click)="toggleScrollableHost()">Toggle scrollable parent</button>
 <button class="sky-btn sky-btn-primary" type="button" (click)="toggleEl2()">Toggle second element</button>
 
 <div style="height: 300px;"></div>
-<div class="wrapper" [ngClass]="{ 'scrollable-parent': scrollableParent }">
+<div class="wrapper" [ngClass]="{ 'scrollable-host': scrollableHost }">
   <div  #wrapper [skyViewkeeper]="['.el1', '.el2']">
     <div class="el1"></div>
 

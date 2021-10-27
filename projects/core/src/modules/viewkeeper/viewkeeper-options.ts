@@ -18,7 +18,7 @@ export interface SkyViewkeeperOptions {
    * Specifies a scrollable parent which the viewkeeper resides in and should listen to and be
    * positioned within.
    */
-  scrollableParent?: HTMLElement;
+  scrollableHost?: HTMLElement;
 
   /**
    * Specifies whether to set the width of the viewkeeper element to the width of its

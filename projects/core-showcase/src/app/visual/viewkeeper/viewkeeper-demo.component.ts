@@ -11,13 +11,13 @@ export class ViewkeeperDemoComponent {
 
   public el2Visible: boolean = false;
 
-  public scrollableParent: boolean = false;
+  public scrollableHost: boolean = false;
 
   public toggleEl2(): void {
     this.el2Visible = !this.el2Visible;
   }
 
-  public toggleScrollableParent(): void {
-    this.scrollableParent = !this.scrollableParent;
+  public toggleScrollableHost(): void {
+    this.scrollableHost = !this.scrollableHost;
   }
 }

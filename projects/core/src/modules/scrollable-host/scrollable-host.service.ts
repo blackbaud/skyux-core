@@ -7,31 +7,31 @@ import { SkyAppWindowRef } from "../window/window-ref";
 @Injectable({
   providedIn: 'root'
 })
-export class SkyScrollableParentHostService {
+export class SkyScrollableHostService {
 
   constructor(
     private mutationObserverSvc: MutationObserverService,
     private windowRef: SkyAppWindowRef
   ) { }
 
-  public getScrollabeParent(elementRef: ElementRef): HTMLElement | Window {
-    return this.findScrollableParent(elementRef.nativeElement);
+  public getScrollabeHost(elementRef: ElementRef): HTMLElement | Window {
+    return this.findScrollableHost(elementRef.nativeElement);
   }
 
-  public watchScrollableParent(elementRef: ElementRef, completionObservable: Observable<void>): Observable<HTMLElement | Window> {
-    let scrollableParent = this.findScrollableParent(elementRef.nativeElement);
-    let behaviorSubject = new BehaviorSubject(scrollableParent);
+  public watchScrollableHost(elementRef: ElementRef, completionObservable: Observable<void>): Observable<HTMLElement | Window> {
+    let scrollableHost = this.findScrollableHost(elementRef.nativeElement);
+    let behaviorSubject = new BehaviorSubject(scrollableHost);
 
     const mutationObserver = this.mutationObserverSvc.create(() => {
-      let newScrollableParent = this.findScrollableParent(elementRef.nativeElement);
+      let newScrollableHost = this.findScrollableHost(elementRef.nativeElement);
 
-      if (newScrollableParent !== scrollableParent) {
-        scrollableParent = newScrollableParent;
-        this.observeForScrollableParentChanges(scrollableParent, mutationObserver);
-        behaviorSubject.next(scrollableParent);
+      if (newScrollableHost !== scrollableHost) {
+        scrollableHost = newScrollableHost;
+        this.observeForScrollableHostChanges(scrollableHost, mutationObserver);
+        behaviorSubject.next(scrollableHost);
       }
     });
-    this.observeForScrollableParentChanges(scrollableParent, mutationObserver);
+    this.observeForScrollableHostChanges(scrollableHost, mutationObserver);
 
     completionObservable.pipe(take(1)).subscribe(() => {
       mutationObserver.disconnect();
@@ -40,7 +40,7 @@ export class SkyScrollableParentHostService {
     return behaviorSubject;
   }
 
-  private findScrollableParent(element: any): HTMLElement | Window {
+  private findScrollableHost(element: any): HTMLElement | Window {
     const regex = /(auto|scroll)/;
     const windowObj = this.windowRef.nativeWindow;
     const bodyObj = windowObj.document.body;
@@ -64,7 +64,7 @@ export class SkyScrollableParentHostService {
     return parent;
   }
 
-  private observeForScrollableParentChanges(element: HTMLElement | Window, mutationObserver: MutationObserver) {
+  private observeForScrollableHostChanges(element: HTMLElement | Window, mutationObserver: MutationObserver) {
     mutationObserver.disconnect();
     if (element instanceof HTMLElement) {
       mutationObserver.observe(element, {

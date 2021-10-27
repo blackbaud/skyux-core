@@ -9,7 +9,7 @@ import {
 describe('Viewkeeper', () => {
   let boundaryEl: HTMLElement;
   let el: HTMLElement;
-  let scrollableParentEl: HTMLElement;
+  let scrollableHostEl: HTMLElement;
   let vks: SkyViewkeeper[];
 
   function scrollWindowTo(x: number, y: number) {
@@ -17,9 +17,9 @@ describe('Viewkeeper', () => {
     SkyAppTestUtility.fireDomEvent(window, 'scroll');
   }
 
-  function scrollScrollableParent(x: number, y: number) {
-    scrollableParentEl.scrollTo(x, y);
-    SkyAppTestUtility.fireDomEvent(scrollableParentEl, 'scroll');
+  function scrollScrollableHost(x: number, y: number) {
+    scrollableHostEl.scrollTo(x, y);
+    SkyAppTestUtility.fireDomEvent(scrollableHostEl, 'scroll');
   }
 
   function validateElStyle(
@@ -208,11 +208,11 @@ describe('Viewkeeper', () => {
       el.style.height = '30px';
       el.style.backgroundColor = 'red';
 
-      scrollableParentEl = document.createElement('div');
-      scrollableParentEl.style.overflowY = 'scroll';
-      scrollableParentEl.style.marginTop = '10px';
-      scrollableParentEl.style.width = '500px';
-      scrollableParentEl.style.height = (window.innerHeight + 50) + 'px';
+      scrollableHostEl = document.createElement('div');
+      scrollableHostEl.style.overflowY = 'scroll';
+      scrollableHostEl.style.marginTop = '10px';
+      scrollableHostEl.style.width = '500px';
+      scrollableHostEl.style.height = (window.innerHeight + 50) + 'px';
 
 
       boundaryEl = document.createElement('div');
@@ -220,10 +220,10 @@ describe('Viewkeeper', () => {
       boundaryEl.style.width = '500px';
       boundaryEl.style.height = (window.innerHeight + 100) + 'px';
 
-      scrollableParentEl.appendChild(boundaryEl);
+      scrollableHostEl.appendChild(boundaryEl);
       boundaryEl.appendChild(el);
 
-      document.body.insertBefore(scrollableParentEl, document.body.firstChild);
+      document.body.insertBefore(scrollableHostEl, document.body.firstChild);
     });
 
     afterEach(() => {
@@ -241,12 +241,12 @@ describe('Viewkeeper', () => {
         new SkyViewkeeper({
           el,
           boundaryEl,
-          scrollableParent: scrollableParentEl,
+          scrollableHost: scrollableHostEl,
           viewportMarginTop: 5
         })
       );
 
-      scrollScrollableParent(0, 20);
+      scrollScrollableHost(0, 20);
 
       validatePinned(el, true, 10, 5);
 
@@ -259,7 +259,7 @@ describe('Viewkeeper', () => {
 
       validatePinned(el, true, 10, 5);
 
-      scrollScrollableParent(0, 0);
+      scrollScrollableHost(0, 0);
 
       validatePinned(el, false);
     });
@@ -270,12 +270,12 @@ describe('Viewkeeper', () => {
           el,
           boundaryEl,
           setWidth: true,
-          scrollableParent: scrollableParentEl,
+          scrollableHost: scrollableHostEl,
           viewportMarginTop: 5
         })
       );
 
-      scrollScrollableParent(0, 20);
+      scrollScrollableHost(0, 20);
 
       validatePinned(el, true, 10, 5);
 
@@ -287,13 +287,13 @@ describe('Viewkeeper', () => {
         new SkyViewkeeper({
           el,
           boundaryEl,
-          scrollableParent: scrollableParentEl
+          scrollableHost: scrollableHostEl
         })
       );
 
       el.style.display = 'none';
 
-      scrollScrollableParent(0, 20);
+      scrollScrollableHost(0, 20);
 
       validatePinned(el, false);
     });
@@ -309,7 +309,7 @@ describe('Viewkeeper', () => {
         new SkyViewkeeper({
           el: verticalOffsetEl,
           boundaryEl,
-          scrollableParent: scrollableParentEl
+          scrollableHost: scrollableHostEl
         })
       );
 
@@ -318,16 +318,16 @@ describe('Viewkeeper', () => {
           el,
           boundaryEl,
           verticalOffsetEl,
-          scrollableParent: scrollableParentEl
+          scrollableHost: scrollableHostEl
         })
       );
 
-      scrollScrollableParent(0, 100);
+      scrollScrollableHost(0, 100);
 
       validatePinned(verticalOffsetEl, true, 10);
       validatePinned(el, true, 60);
 
-      scrollScrollableParent(0, 0);
+      scrollScrollableHost(0, 0);
 
       validatePinned(verticalOffsetEl, false);
       validatePinned(el, false);
@@ -337,7 +337,7 @@ describe('Viewkeeper', () => {
       const vk = new SkyViewkeeper({
         el,
         boundaryEl,
-        scrollableParent: scrollableParentEl,
+        scrollableHost: scrollableHostEl,
         viewportMarginTop: 5
       });
 
