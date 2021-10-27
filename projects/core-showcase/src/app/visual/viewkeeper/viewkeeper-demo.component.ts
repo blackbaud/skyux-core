@@ -9,9 +9,15 @@ import {
 })
 export class ViewkeeperDemoComponent {
 
-  public el2Visible: boolean;
+  public el2Visible: boolean = false;
 
-  public showEl2() {
-    this.el2Visible = true;
+  public scrollableHost: boolean = false;
+
+  public toggleEl2(): void {
+    this.el2Visible = !this.el2Visible;
+  }
+
+  public toggleScrollableHost(): void {
+    this.scrollableHost = !this.scrollableHost;
   }
 }
