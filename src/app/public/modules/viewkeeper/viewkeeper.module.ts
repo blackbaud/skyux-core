@@ -13,10 +13,14 @@ import {
 import {
   MutationObserverService
 } from '../mutation/mutation-observer-service';
+import { SkyScrollableHostModule } from '../scrollable-host/scrollable-host.module';
 
 @NgModule({
   declarations: [
     SkyViewkeeperDirective
+  ],
+  imports: [
+    SkyScrollableHostModule
   ],
   exports: [
     SkyViewkeeperDirective

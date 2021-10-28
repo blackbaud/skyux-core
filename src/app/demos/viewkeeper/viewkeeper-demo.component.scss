@@ -2,6 +2,11 @@
   border: solid 1px black;
 }
 
+.scrollable-host {
+  overflow-y: scroll;
+  height: 750px;
+}
+
 .el1 {
   background-color: blue;
   height: 30px;
