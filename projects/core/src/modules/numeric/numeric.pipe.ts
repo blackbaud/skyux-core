@@ -51,13 +51,15 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
 
   constructor(
     private localeProvider: SkyAppLocaleProvider,
-    private readonly numericService: SkyNumericService
+    private readonly numericService: SkyNumericService,
+    private changeDetector: ChangeDetectorRef
   ) {
     this.localeProvider.getLocaleInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((localeInfo) => {
         this.providerLocale = localeInfo.locale;
         numericService.currentLocale = this.providerLocale;
+        this.changeDetector.markForCheck();
       });
   }
 
