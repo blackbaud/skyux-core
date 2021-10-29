@@ -58,7 +58,7 @@ export class SkyScrollableHostService {
 
       /* Sanity check for if this function is called for an element which has been removed from the DOM */
       if (!(parent instanceof HTMLElement)) {
-        return windowObj
+        return windowObj;
       }
 
       style = windowObj.getComputedStyle(parent);

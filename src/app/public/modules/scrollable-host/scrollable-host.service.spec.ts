@@ -61,7 +61,6 @@ describe('Scrollable host service', () => {
     expect(scrollableHostService.getScrollabeHost(cmp.target)).toBe(window);
   });
 
-
   it('should return an observable with the initial value of the current scrollable parent', async () => {
     const completionObservable = new Subject<void>();
     const scrollableHostService = TestBed.inject(SkyScrollableHostService);
