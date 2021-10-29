@@ -1,7 +1,8 @@
 import {
   Pipe,
   PipeTransform,
-  OnDestroy
+  OnDestroy,
+  ChangeDetectorRef
 } from '@angular/core';
 
 import {
@@ -35,9 +36,16 @@ import {
  * ```
  */
 @Pipe({
-  name: 'skyNumeric'
+  name: 'skyNumeric',
+  pure: false
 })
 export class SkyNumericPipe implements PipeTransform, OnDestroy {
+
+  private formattedValue: string;
+  private lastConfig: NumericOptions;
+  private lastTransformLocale: string;
+  private rawValue: number;
+  private providerLocale: string;
 
   private ngUnsubscribe = new Subject<void>();
 
@@ -48,7 +56,8 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
     this.localeProvider.getLocaleInfo()
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((localeInfo) => {
-        numericService.currentLocale = localeInfo.locale;
+        this.providerLocale = localeInfo.locale;
+        numericService.currentLocale = this.providerLocale;
       });
   }
 
@@ -58,6 +67,16 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
   }
 
   public transform(value: number, config?: NumericOptions): string {
+
+    /* If the value and locale are the same as the last transform then return the previous value
+    instead of reformatting. */
+    if (this.formattedValue &&
+      value === this.rawValue &&
+      this.areConfigsEqual(this.lastConfig, config) &&
+      (config?.locale || this.providerLocale === this.lastTransformLocale)) {
+      return this.formattedValue;
+    }
+
     const options = new NumericOptions();
 
     // The default number of digits is `1`. When truncate is disabled, set digits
@@ -92,6 +111,29 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
 
     Object.assign(options, config);
 
-    return this.numericService.formatNumber(value, options);
+    // Assign properties for proper result caching.
+    this.rawValue = value;
+    // Create clone to ensure no issues if consumer uses same object twice with different values.
+    this.lastConfig = Object.assign({}, config);
+    if (config?.locale) {
+      this.lastTransformLocale = config.locale
+    } else {
+      this.lastTransformLocale = this.providerLocale;
+    }
+
+    this.formattedValue = this.numericService.formatNumber(value, options);
+    return this.formattedValue;
+  }
+
+  // NOTE: This function works because none of our options are nested. We would need to reevaluate
+  // if we ever nest any objects in the options.
+  private areConfigsEqual(oldConfig: NumericOptions, newConfig: NumericOptions): boolean {
+    for (let key of Object.keys(oldConfig)) {
+      if (oldConfig[key] !== newConfig[key]) {
+        return false;
+      }
+    }
+
+    return true;
   }
 }
