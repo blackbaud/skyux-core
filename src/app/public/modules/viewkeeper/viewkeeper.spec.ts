@@ -17,8 +17,8 @@ describe('Viewkeeper', () => {
     SkyAppTestUtility.fireDomEvent(window, 'scroll');
   }
 
-  function scrollScrollableHost(x: number, y: number) {
-    scrollableHostEl.scrollTo(x, y);
+  function scrollScrollableHost(y: number) {
+    scrollableHostEl.scrollTop = y;
     SkyAppTestUtility.fireDomEvent(scrollableHostEl, 'scroll');
   }
 
@@ -245,7 +245,7 @@ describe('Viewkeeper', () => {
         })
       );
 
-      scrollScrollableHost(0, 20);
+      scrollScrollableHost(20);
 
       validatePinned(el, true, 10, 5);
 
@@ -258,7 +258,7 @@ describe('Viewkeeper', () => {
 
       validatePinned(el, true, 10, 5);
 
-      scrollScrollableHost(0, 0);
+      scrollScrollableHost(0);
 
       validatePinned(el, false);
     });
@@ -274,7 +274,7 @@ describe('Viewkeeper', () => {
         })
       );
 
-      scrollScrollableHost(0, 20);
+      scrollScrollableHost(20);
 
       validatePinned(el, true, 10, 5);
 
@@ -292,7 +292,7 @@ describe('Viewkeeper', () => {
 
       el.style.display = 'none';
 
-      scrollScrollableHost(0, 20);
+      scrollScrollableHost(20);
 
       validatePinned(el, false);
     });
@@ -321,12 +321,12 @@ describe('Viewkeeper', () => {
         })
       );
 
-      scrollScrollableHost(0, 100);
+      scrollScrollableHost(100);
 
       validatePinned(verticalOffsetEl, true, 10);
       validatePinned(el, true, 60);
 
-      scrollScrollableHost(0, 0);
+      scrollScrollableHost(0);
 
       validatePinned(verticalOffsetEl, false);
       validatePinned(el, false);
