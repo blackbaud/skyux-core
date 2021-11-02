@@ -8,7 +8,7 @@ describe('Dock', () => {
   beforeEach(async () => {
     await SkyHostBrowser.get('visual/dock');
     await SkyHostBrowser.setWindowBreakpoint('md');
-    await SkyHostBrowser.scrollTo('#screenshot-dock');
+    await SkyHostBrowser.scrollTo('.scroll-bottom-label');
   });
 
   it('should match screenshot', async (done) => {
