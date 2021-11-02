@@ -1,3 +1,8 @@
+# 4.9.0 (2021-11-02)
+
+- Added the `SkyScrollableHostService` to be able to get and watch for an element's scrollable host. [#269](https://github.com/blackbaud/skyux-core/pull/269)
+- Updated the viewkeeper directive to watch for scrollable hosts when positioning elements. [#269](https://github.com/blackbaud/skyux-core/pull/269)
+
 # 4.8.1 (2021-09-29)
 
 - Fixed the dock component to properly position elements when docked to the bottom of the screen and the `body` element does not fill the entire height of the viewport. [#258](https://github.com/blackbaud/skyux-core/pull/258)

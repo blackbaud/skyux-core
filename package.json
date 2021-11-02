@@ -1,6 +1,6 @@
 {
   "name": "@skyux/core",
-  "version": "4.8.1",
+  "version": "4.9.0",
   "description": "SKY UX Core",
   "scripts": {
     "build": "skyux build-public-library --fullTemplateTypeCheck",
