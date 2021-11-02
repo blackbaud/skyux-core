@@ -41,8 +41,8 @@ import {
 })
 export class SkyNumericPipe implements PipeTransform, OnDestroy {
 
+  private configCache: string;
   private formattedValue: string;
-  private lastConfig: NumericOptions;
   private lastTransformLocale: string;
   private rawValue: number;
   private providerLocale: string;
@@ -70,11 +70,13 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
 
   public transform(value: number, config?: NumericOptions): string {
 
+    let newConfigCache = config ? JSON.stringify(config, Object.keys(config).sort()) : '';
+
     /* If the value and locale are the same as the last transform then return the previous value
     instead of reformatting. */
     if (this.formattedValue &&
       value === this.rawValue &&
-      this.areConfigsEqual(this.lastConfig, config) &&
+      this.configCache === newConfigCache &&
       (config?.locale || this.providerLocale === this.lastTransformLocale)) {
       return this.formattedValue;
     }
@@ -88,7 +90,7 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
       config.truncate === false &&
       config.digits === undefined
     ) {
-      config.digits = 0;
+      options.digits = 0;
     }
 
     // If the minimum digits is less than the set maximum digits then throw an error
@@ -108,7 +110,7 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
       config.minDigits &&
       !config.digits
     ) {
-      config.digits = config.minDigits;
+      options.digits = config.minDigits;
     }
 
     Object.assign(options, config);
@@ -122,20 +124,9 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
     } else {
       this.lastTransformLocale = this.providerLocale;
     }
+    this.configCache = newConfigCache;
 
     this.formattedValue = this.numericService.formatNumber(value, options);
     return this.formattedValue;
-  }
-
-  // NOTE: This function works because none of our options are nested. We would need to reevaluate
-  // if we ever nest any objects in the options.
-  private areConfigsEqual(oldConfig: NumericOptions, newConfig: NumericOptions): boolean {
-    for (let key of Object.keys(oldConfig)) {
-      if (oldConfig[key] !== newConfig[key]) {
-        return false;
-      }
-    }
-
-    return true;
   }
 }
