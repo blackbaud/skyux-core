@@ -14,14 +14,20 @@ import {
 })
 export class ViewkeeperDemoComponent {
 
-  public el2Visible: boolean;
+  public el2Visible: boolean = false;
+
+  public scrollableHost: boolean = false;
 
   constructor(
     private themeSvc: SkyThemeService
   ) {}
 
-  public showEl2() {
-    this.el2Visible = true;
+  public toggleEl2(): void {
+    this.el2Visible = !this.el2Visible;
+  }
+
+  public toggleScrollableHost(): void {
+    this.scrollableHost = !this.scrollableHost;
   }
 
   public themeSettingsChange(themeSettings: SkyThemeSettings): void {
