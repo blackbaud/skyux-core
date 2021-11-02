@@ -118,7 +118,6 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
     // Assign properties for proper result caching.
     this.rawValue = value;
     // Create clone to ensure no issues if consumer uses same object twice with different values.
-    this.lastConfig = Object.assign({}, config);
     if (config?.locale) {
       this.lastTransformLocale = config.locale
     } else {
