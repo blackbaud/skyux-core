@@ -1,6 +1,6 @@
 # 5.1.2 (2021-11-08)
 
-- Fixed the numeric pipe to properly update when the locale provided by the `SkyAppLocaleProvider`. [#267](https://github.com/blackbaud/skyux-core/pull/267)
+- Fixed the numeric pipe to properly update when the locale provided by the `SkyAppLocaleProvider` is updated. [#267](https://github.com/blackbaud/skyux-core/pull/267)
 
 # 5.1.1 (2021-10-29)
 
