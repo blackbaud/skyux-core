@@ -41,7 +41,7 @@ import {
 })
 export class SkyNumericPipe implements PipeTransform, OnDestroy {
 
-  private configCache: string;
+  private cacheKey: string;
   private formattedValue: string;
   private lastTransformLocale: string;
   private rawValue: number;
@@ -70,14 +70,11 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
 
   public transform(value: number, config?: NumericOptions): string {
 
-    let newConfigCache = config ? JSON.stringify(config, Object.keys(config).sort()) : '';
+    let newCacheKey = (config ? JSON.stringify(config, Object.keys(config).sort()) : '') + `${value}_${config?.locale || this.providerLocale}`;
 
     /* If the value and locale are the same as the last transform then return the previous value
     instead of reformatting. */
-    if (this.formattedValue &&
-      value === this.rawValue &&
-      this.configCache === newConfigCache &&
-      (config?.locale || this.providerLocale === this.lastTransformLocale)) {
+    if (this.formattedValue && this.cacheKey === newCacheKey) {
       return this.formattedValue;
     }
 
@@ -117,13 +114,8 @@ export class SkyNumericPipe implements PipeTransform, OnDestroy {
 
     // Assign properties for proper result caching.
     this.rawValue = value;
-    // Create clone to ensure no issues if consumer uses same object twice with different values.
-    if (config?.locale) {
-      this.lastTransformLocale = config.locale
-    } else {
-      this.lastTransformLocale = this.providerLocale;
-    }
-    this.configCache = newConfigCache;
+    this.lastTransformLocale = config?.locale ?? this.providerLocale;
+    this.cacheKey = newCacheKey;
 
     this.formattedValue = this.numericService.formatNumber(value, options);
     return this.formattedValue;
