@@ -28,12 +28,12 @@ export class ScrollableHostFixtureComponent {
     return this.scrollableHostService.getScrollableHost(alernative || this.target);
   }
 
-  public watchScrollableHost(completionObservable: Observable<void>, alternative?: ElementRef): Observable<HTMLElement | Window> {
-    return this.scrollableHostService.watchScrollableHost(alternative || this.target, completionObservable);
+  public watchScrollableHost(alternative?: ElementRef): Observable<HTMLElement | Window> {
+    return this.scrollableHostService.watchScrollableHost(alternative || this.target);
   }
 
-  public watchScrollableHostScrollEvents(completionObservable: Observable<void>, alternative?: ElementRef): Observable<void> {
-    return this.scrollableHostService.watchScrollableHostScrollEvents(alternative || this.target, completionObservable);
+  public watchScrollableHostScrollEvents(alternative?: ElementRef): Observable<void> {
+    return this.scrollableHostService.watchScrollableHostScrollEvents(alternative || this.target);
   }
 
 }

@@ -1,8 +1,10 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
+import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ScrollableHostFixtureComponent } from "./fixtures/scrollable-host.component.fixture";
-import { take } from "rxjs/operators";
-import { Subject } from "rxjs";
+import { delay, take } from "rxjs/operators";
 import { SkyAppTestUtility } from "@skyux-sdk/testing";
+import { MutationObserverService } from "../mutation/mutation-observer-service";
+import { BehaviorSubject, Subscription } from "rxjs";
+import { SkyScrollableHostService } from "./scrollable-host.service";
 
 describe('Scrollable host service', () => {
 
@@ -52,13 +54,10 @@ describe('Scrollable host service', () => {
 
 
   it('should return an observable with the initial value of the current scrollable parent', async () => {
-    const completionObservable = new Subject<void>();
-
-    const scrollableHostObservable = cmp.watchScrollableHost(completionObservable);
+    const scrollableHostObservable = cmp.watchScrollableHost();
 
     scrollableHostObservable.pipe(take(1)).subscribe((scrollableHost) => {
       expect(scrollableHost).toBe(cmp.parent.nativeElement);
-      completionObservable.next();
     });
   });
 
@@ -66,9 +65,8 @@ describe('Scrollable host service', () => {
   // which causes issues with finding the parent correctly.
   it('should update observable with new scrollable parent when it changes', (done) => {
     let obserableCount = 0;
-    const completionObservable = new Subject<void>();
 
-    const scrollableHostObservable = cmp.watchScrollableHost(completionObservable);
+    const scrollableHostObservable = cmp.watchScrollableHost();
 
     scrollableHostObservable.pipe(take(2)).subscribe((scrollableHost) => {
       if (obserableCount === 0) {
@@ -78,79 +76,276 @@ describe('Scrollable host service', () => {
         fixture.detectChanges();
       } else {
         expect(scrollableHost).toBe(window);
-        completionObservable.next();
         done();
       }
     });
   });
 
-  it('should return all scroll events from the current scrollable host when they are subscribed to', () => {
-    const completionObservable = new Subject<void>();
+  it('should only setup the mutation observer once for multiple observations of the scrollable host', (done) => {
+    let observable1Count: number = 0;
+    let observable2Count: number = 0;
 
-    const scrollObservable = cmp.watchScrollableHostScrollEvents(completionObservable);
+    const scrollableHostObservable = cmp.watchScrollableHost();
 
-    spyOn(scrollObservable as Subject<void>, 'next');
+    const mutationObserverSvc = TestBed.inject(MutationObserverService);
+
+    spyOn(mutationObserverSvc, 'create').and.callThrough();
+
+    scrollableHostObservable.pipe(take(2)).subscribe((scrollableHost) => {
+      if (observable1Count === 0) {
+        expect(scrollableHost).toBe(cmp.parent.nativeElement);
+
+        if (observable2Count === 1) {
+          cmp.isParentScrollable = false;
+        }
+
+        fixture.detectChanges();
+        observable1Count++;
+      } else {
+        expect(scrollableHost).toBe(window);
+        observable1Count++;
+
+        if (observable1Count === 2 && observable2Count === 2) {
+          done();
+        }
+      }
+    });
+
+    scrollableHostObservable.pipe(take(2)).subscribe((scrollableHost) => {
+      if (observable2Count === 0) {
+        expect(scrollableHost).toBe(cmp.parent.nativeElement);
+
+        if (observable1Count === 1) {
+          cmp.isParentScrollable = false;
+        }
+
+        fixture.detectChanges();
+        observable2Count++;
+      } else {
+        expect(scrollableHost).toBe(window);
+        observable2Count++;
+
+        if (observable1Count === 2 && observable2Count === 2) {
+          done();
+        }
+      }
+    });
+
+    expect(mutationObserverSvc.create).toHaveBeenCalledTimes(1);
+  });
+
+  it('should unsubscribe from watching the scrollable host correctly', (done) => {
+    let observable1Count: number = 0;
+    let observable2Count: number = 0;
+    let subscription1: Subscription;
+    let subscription2: Subscription;
+
+    const scrollableHostObservable = cmp.watchScrollableHost();
+
+    spyOn(MutationObserver.prototype, 'disconnect').and.callThrough();
+
+    subscription1 = scrollableHostObservable.pipe(take(2), delay(10)).subscribe((scrollableHost) => {
+      if (observable1Count === 0) {
+        expect(scrollableHost).toBe(cmp.parent.nativeElement);
+
+        if (observable2Count === 1) {
+          subscription1.unsubscribe();
+          subscription2.unsubscribe();
+
+          cmp.isParentScrollable = false;
+          fixture.detectChanges();
+
+          expect(MutationObserver.prototype.disconnect).toHaveBeenCalledTimes(1);
+          done();
+        }
+
+        fixture.detectChanges();
+        observable1Count++;
+      } else {
+        fail('each subscription should only be hit once');
+      }
+    });
+
+    // Disconnect is called via the setup as we use a shared method any time we set up the observer.
+    expect(MutationObserver.prototype.disconnect).toHaveBeenCalledTimes(1);
+
+    subscription2 = scrollableHostObservable.pipe(take(2), delay(10)).subscribe((scrollableHost) => {
+      if (observable2Count === 0) {
+        expect(scrollableHost).toBe(cmp.parent.nativeElement);
+
+        if (observable1Count === 1) {
+          subscription1.unsubscribe();
+          subscription2.unsubscribe();
+
+          cmp.isParentScrollable = false;
+          fixture.detectChanges();
+
+          expect(MutationObserver.prototype.disconnect).toHaveBeenCalledTimes(2);
+          done();
+        }
+
+        fixture.detectChanges();
+        observable2Count++;
+      } else {
+        fail('each subscription should only be hit once');
+      }
+    });
+  });
+
+  it('should return all scroll events from the current scrollable host when they are subscribed to', (done) => {
+    let obserableCount = 0;
+    const scrollObservable = cmp.watchScrollableHostScrollEvents();
+
+    scrollObservable.pipe(take(2)).subscribe(() => {
+      if (obserableCount === 0) {
+        obserableCount++;
+        fixture.detectChanges();
+
+        SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', { bubbles: false });
+      } else {
+        done();
+      }
+    });
 
     SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', { bubbles: false });
-
-    fixture.detectChanges();
-
-    expect((<Subject<void>>scrollObservable).next).toHaveBeenCalledTimes(1);
-    completionObservable.next();
   });
 
   it('should return all scroll events from a new scrollable host it changes', (done) => {
-    const completionObservable = new Subject<void>();
     let observableCount = 0;
     cmp.isGrandparentScrollable = true;
 
-    const scrollObservable = cmp.watchScrollableHostScrollEvents(completionObservable);
+    const scrollObservable = cmp.watchScrollableHostScrollEvents();
 
-    scrollObservable.pipe(take(4)).subscribe(async () => {
+    scrollObservable.pipe(take(3)).subscribe(async () => {
       if (observableCount === 0) {
         observableCount++;
         cmp.isParentScrollable = false;
         fixture.detectChanges();
-      } else if (observableCount === 1) {
-        observableCount++;
-        // We have to detect changes and await here again to ensure that the scroll listener is fully setup.
-        fixture.detectChanges();
         await fixture.whenStable();
-        SkyAppTestUtility.fireDomEvent(cmp.grandparent.nativeElement, 'scroll', { bubbles: false });
-        fixture.detectChanges();
-      } else if (observableCount === 2) {
+        setTimeout(() => {
+          fixture.detectChanges();
+          SkyAppTestUtility.fireDomEvent(cmp.grandparent.nativeElement, 'scroll', { bubbles: false });
+          fixture.detectChanges();
+        }, 10);
+      } else if (observableCount === 1) {
         observableCount++;
         SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', { bubbles: false });
         fixture.detectChanges();
         done();
       } else {
-        fail('observable should only be hit 3 times - second parent scroll should not fire observable');
+        fail('observable should only be hit 2 times - second parent scroll should not fire observable');
       }
     });
 
     SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll');
   });
 
-  it('should stop watching for scroll events when the completeionObservable emits', () => {
-    const completionObservable = new Subject<void>();
+  it('should only setup the scrollable host observer once for multiple observations of the scroll events', (done) => {
+    let observable1Count: number = 0;
+    let observable2Count: number = 0;
 
-    const scrollObservable = cmp.watchScrollableHostScrollEvents(completionObservable);
+    const scrollObservable = cmp.watchScrollableHostScrollEvents();
 
-    spyOn(scrollObservable as Subject<void>, 'next');
+    const scrollableHostSvc = TestBed.inject(SkyScrollableHostService);
 
-    SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', { bubbles: false });
+    spyOn(scrollableHostSvc, 'watchScrollableHost').and.callThrough();
 
-    fixture.detectChanges();
+    scrollObservable.pipe(take(2)).subscribe(() => {
+      if (observable1Count === 0) {
+        observable1Count++;
+        if (observable2Count === 1) {
+          SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', { bubbles: false });
+        }
+      } else {
+        observable1Count++;
 
-    expect((<Subject<void>>scrollObservable).next).toHaveBeenCalledTimes(1);
-    completionObservable.next();
+        if (observable1Count === 2 && observable2Count === 2) {
+          done();
+        }
+      }
+    });
 
-    fixture.detectChanges();
+    scrollObservable.pipe(take(2)).subscribe(() => {
+      if (observable2Count === 0) {
+        observable2Count++;
+        if (observable1Count === 1) {
+          SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', { bubbles: false });
+        }
+      } else {
+        observable2Count++;
 
-    SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', { bubbles: false });
+        if (observable1Count === 2 && observable2Count === 2) {
+          done();
+        }
+      }
+    });
 
-    fixture.detectChanges();
+    SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll');
+    expect(scrollableHostSvc.watchScrollableHost).toHaveBeenCalledTimes(1);
+  });
 
-    expect((<Subject<void>>scrollObservable).next).toHaveBeenCalledTimes(1);
+  it('should unsubscribe from watching the scrollable host correctly', (done) => {
+    let observable1Count: number = 0;
+    let observable2Count: number = 0;
+    let subscription1: Subscription;
+    let subscription2: Subscription;
+
+    const scrollObservable = cmp.watchScrollableHostScrollEvents();
+
+    subscription1 = scrollObservable.pipe(take(2), delay(10)).subscribe(() => {
+      if (observable1Count === 0) {
+        if (observable2Count === 1) {
+          subscription1.unsubscribe();
+          subscription2.unsubscribe();
+
+          SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll');
+
+          fixture.detectChanges();
+
+          cmp.isGrandparentScrollable = true;
+          cmp.isParentScrollable = false;
+
+          fixture.detectChanges();
+
+          SkyAppTestUtility.fireDomEvent(cmp.grandparent.nativeElement, 'scroll');
+
+          done();
+        }
+
+        fixture.detectChanges();
+        observable1Count++;
+      } else {
+        fail('each subscription should only be hit once');
+      }
+    });
+
+    subscription2 = scrollObservable.pipe(take(2), delay(10)).subscribe(() => {
+      if (observable2Count === 0) {
+        if (observable1Count === 1) {
+          subscription1.unsubscribe();
+          subscription2.unsubscribe();
+
+          SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll');
+
+          fixture.detectChanges();
+
+          cmp.isGrandparentScrollable = true;
+          cmp.isParentScrollable = false;
+
+          fixture.detectChanges();
+
+          SkyAppTestUtility.fireDomEvent(cmp.grandparent.nativeElement, 'scroll');
+
+          done();
+        }
+
+        fixture.detectChanges();
+        observable2Count++;
+      } else {
+        fail('each subscription should only be hit once');
+      }
+    });
+
+    SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll');
   });
 });
