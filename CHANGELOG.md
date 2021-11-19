@@ -1,6 +1,6 @@
 # 5.1.3 (2021-11-19)
 
-- Updated the builder to support StackBlitz. []()
+- Updated the builder to support StackBlitz. [#274](https://github.com/blackbaud/skyux-core/pull/274)
 
 # 5.1.2 (2021-11-19)
 
