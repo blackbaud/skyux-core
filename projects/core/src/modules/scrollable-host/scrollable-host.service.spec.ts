@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { ScrollableHostFixtureComponent } from "./fixtures/scrollable-host.component.fixture";
-import { delay, take } from "rxjs/operators";
+import { delay, take, takeUntil } from "rxjs/operators";
 import { SkyAppTestUtility } from "@skyux-sdk/testing";
 import { MutationObserverService } from "../mutation/mutation-observer-service";
-import { BehaviorSubject, Subscription } from "rxjs";
+import { BehaviorSubject, Subject, Subscription } from "rxjs";
 import { SkyScrollableHostService } from "./scrollable-host.service";
 
 describe('Scrollable host service', () => {
@@ -84,6 +84,7 @@ describe('Scrollable host service', () => {
   it('should only setup the mutation observer once for multiple observations of the scrollable host', (done) => {
     let observable1Count: number = 0;
     let observable2Count: number = 0;
+    let testUnsubscribe: Subject<void> = new Subject();
 
     const scrollableHostObservable = cmp.watchScrollableHost();
 
@@ -91,7 +92,7 @@ describe('Scrollable host service', () => {
 
     spyOn(mutationObserverSvc, 'create').and.callThrough();
 
-    scrollableHostObservable.pipe(take(2)).subscribe((scrollableHost) => {
+    scrollableHostObservable.pipe(takeUntil(testUnsubscribe)).subscribe((scrollableHost) => {
       if (observable1Count === 0) {
         expect(scrollableHost).toBe(cmp.parent.nativeElement);
 
@@ -106,12 +107,13 @@ describe('Scrollable host service', () => {
         observable1Count++;
 
         if (observable1Count === 2 && observable2Count === 2) {
+          testUnsubscribe.next();
           done();
         }
       }
     });
 
-    scrollableHostObservable.pipe(take(2)).subscribe((scrollableHost) => {
+    scrollableHostObservable.pipe(takeUntil(testUnsubscribe)).subscribe((scrollableHost) => {
       if (observable2Count === 0) {
         expect(scrollableHost).toBe(cmp.parent.nativeElement);
 
@@ -126,6 +128,7 @@ describe('Scrollable host service', () => {
         observable2Count++;
 
         if (observable1Count === 2 && observable2Count === 2) {
+          testUnsubscribe.next();
           done();
         }
       }
@@ -243,6 +246,7 @@ describe('Scrollable host service', () => {
   it('should only setup the scrollable host observer once for multiple observations of the scroll events', (done) => {
     let observable1Count: number = 0;
     let observable2Count: number = 0;
+    let testUnsubscribe: Subject<void> = new Subject();
 
     const scrollObservable = cmp.watchScrollableHostScrollEvents();
 
@@ -250,7 +254,7 @@ describe('Scrollable host service', () => {
 
     spyOn(scrollableHostSvc, 'watchScrollableHost').and.callThrough();
 
-    scrollObservable.pipe(take(2)).subscribe(() => {
+    scrollObservable.pipe(takeUntil(testUnsubscribe)).subscribe(() => {
       if (observable1Count === 0) {
         observable1Count++;
         if (observable2Count === 1) {
@@ -260,12 +264,13 @@ describe('Scrollable host service', () => {
         observable1Count++;
 
         if (observable1Count === 2 && observable2Count === 2) {
+          testUnsubscribe.next();
           done();
         }
       }
     });
 
-    scrollObservable.pipe(take(2)).subscribe(() => {
+    scrollObservable.pipe(takeUntil(testUnsubscribe)).subscribe(() => {
       if (observable2Count === 0) {
         observable2Count++;
         if (observable1Count === 1) {
@@ -275,6 +280,7 @@ describe('Scrollable host service', () => {
         observable2Count++;
 
         if (observable1Count === 2 && observable2Count === 2) {
+          testUnsubscribe.next();
           done();
         }
       }

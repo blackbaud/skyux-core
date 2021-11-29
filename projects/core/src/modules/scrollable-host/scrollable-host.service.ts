@@ -4,6 +4,12 @@ import { takeUntil } from "rxjs/operators";
 import { MutationObserverService } from "../mutation/mutation-observer-service";
 import { SkyAppWindowRef } from "../window/window-ref";
 
+function notifySubscribers(subscribers: Subscriber<unknown>[], item?: unknown) {
+  for (const subscriber of subscribers) {
+    subscriber.next(item);
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -31,15 +37,14 @@ export class SkyScrollableHostService {
    * @internal
    */
   public watchScrollableHost(elementRef: ElementRef): Observable<HTMLElement | Window> {
-    let subCount = 0;
     let subscribers: Subscriber<HTMLElement | Window>[] = [];
     let mutationObserver: MutationObserver;
 
-    return new Observable((newSubscriber) => {
-      subCount++;
+    return new Observable((subscriber) => {
+      subscribers.push(subscriber);
 
       let scrollableHost = this.findScrollableHost(elementRef.nativeElement);
-      if (subCount === 1) {
+      if (subscribers.length === 1) {
 
         mutationObserver = this.mutationObserverSvc.create(() => {
           let newScrollableHost = this.findScrollableHost(elementRef.nativeElement);
@@ -48,22 +53,23 @@ export class SkyScrollableHostService {
             scrollableHost = newScrollableHost;
             this.observeForScrollableHostChanges(scrollableHost, mutationObserver);
 
-            for (let subscriber of subscribers) {
-              subscriber.next(scrollableHost);
-            }
+            notifySubscribers(subscribers, scrollableHost);
           }
         });
         this.observeForScrollableHostChanges(scrollableHost, mutationObserver);
       }
-      newSubscriber.next(scrollableHost);
-      subscribers.push(newSubscriber);
+      subscriber.next(scrollableHost);
 
-      newSubscriber.add(() => {
-        subCount--;
+      subscriber.add(() => {
+        const subIndex = subscribers.indexOf(subscriber);
 
-        subscribers.filter((subscriber) => { return subscriber !== newSubscriber });
+        /* sanity check */
+        /* istanbul ignore else */
+        if (subIndex >= 0) {
+          subscribers.splice(subIndex, 1);
+        }
 
-        if (subCount === 0) {
+        if (subscribers.length === 0) {
           mutationObserver.disconnect();
         }
       })
@@ -77,16 +83,15 @@ export class SkyScrollableHostService {
    * @returns An observable which emits the scroll events from the given element's scrollable host
    */
   public watchScrollableHostScrollEvents(elementRef: ElementRef): Observable<void> {
-    let subCount = 0;
     let subscribers: Subscriber<void>[] = [];
 
     let newScrollableHostObservable = new Subject();
     let scrollableHostSubscription: Subscription;
     let scrollEventSubscription: Subscription;
-    return new Observable((newSubscriber) => {
-      subCount++;
+    return new Observable((subscriber) => {
+      subscribers.push(subscriber);
 
-      if (subCount === 1) {
+      if (subscribers.length === 1) {
         scrollableHostSubscription = this.watchScrollableHost(elementRef)
           .subscribe((scrollableHost) => {
             newScrollableHostObservable.next();
@@ -97,20 +102,21 @@ export class SkyScrollableHostService {
                 takeUntil(newScrollableHostObservable)
               )
               .subscribe(() => {
-                for (let subscriber of subscribers) {
-                  subscriber.next();
-                }
+                notifySubscribers(subscribers);
               });
           });
       }
-      subscribers.push(newSubscriber);
 
-      newSubscriber.add(() => {
-        subCount--;
+      subscriber.add(() => {
+        const subIndex = subscribers.indexOf(subscriber);
 
-        subscribers.filter((subscriber) => { return subscriber !== newSubscriber });
+        /* sanity check */
+        /* istanbul ignore else */
+        if (subIndex >= 0) {
+          subscribers.splice(subIndex, 1);
+        }
 
-        if (subCount === 0) {
+        if (subscribers.length === 0) {
           scrollableHostSubscription.unsubscribe();
           scrollEventSubscription.unsubscribe();
           newScrollableHostObservable.complete();
