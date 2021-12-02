@@ -1,23 +1,16 @@
-import {
-  Component,
-  ComponentRef,
-  ElementRef,
-  ViewChild
-} from '@angular/core';
+import { Component, ComponentRef, ElementRef, ViewChild } from '@angular/core';
 
 import {
   SkyDynamicComponentLocation,
-  SkyDynamicComponentService
+  SkyDynamicComponentService,
 } from 'projects/core/src/public-api';
 
-import {
-  DynamicComponentDemoExampleComponent
-} from './dynamic-component-example.component';
+import { DynamicComponentDemoExampleComponent } from './dynamic-component-example.component';
 
 @Component({
-  selector: 'sky-dynamic-component-demo',
+  selector: 'app-dynamic-component-demo',
   templateUrl: './dynamic-component.component.html',
-  styleUrls: ['./dynamic-component.component.scss']
+  styleUrls: ['./dynamic-component.component.scss'],
 })
 export class DynamicComponentDemoComponent {
   private componentRefBodyBottom: ComponentRef<DynamicComponentDemoExampleComponent>;
@@ -28,9 +21,7 @@ export class DynamicComponentDemoComponent {
   @ViewChild('contentRef', { read: ElementRef })
   private contentRef: ElementRef;
 
-  constructor(
-    private dynamicComponentService: SkyDynamicComponentService
-  ) { }
+  constructor(private dynamicComponentService: SkyDynamicComponentService) {}
 
   public createComponentBottom(): void {
     if (this.componentRefBodyBottom) {
@@ -40,7 +31,7 @@ export class DynamicComponentDemoComponent {
     this.componentRefBodyBottom = this.dynamicComponentService.createComponent(
       DynamicComponentDemoExampleComponent,
       {
-        location: SkyDynamicComponentLocation.BodyBottom
+        location: SkyDynamicComponentLocation.BodyBottom,
       }
     );
 
@@ -60,7 +51,7 @@ export class DynamicComponentDemoComponent {
     this.componentRefBodyTop = this.dynamicComponentService.createComponent(
       DynamicComponentDemoExampleComponent,
       {
-        location: SkyDynamicComponentLocation.BodyTop
+        location: SkyDynamicComponentLocation.BodyTop,
       }
     );
 
@@ -77,19 +68,22 @@ export class DynamicComponentDemoComponent {
       return;
     }
 
-    this.componentRefElementBottom = this.dynamicComponentService.createComponent(
-      DynamicComponentDemoExampleComponent,
-      {
-        location: SkyDynamicComponentLocation.ElementBottom,
-        referenceEl: this.contentRef.nativeElement
-      }
-    );
+    this.componentRefElementBottom =
+      this.dynamicComponentService.createComponent(
+        DynamicComponentDemoExampleComponent,
+        {
+          location: SkyDynamicComponentLocation.ElementBottom,
+          referenceEl: this.contentRef.nativeElement,
+        }
+      );
 
     this.componentRefElementBottom.instance.sayHello();
   }
 
   public removeComponentElementBottom(): void {
-    this.dynamicComponentService.removeComponent(this.componentRefElementBottom);
+    this.dynamicComponentService.removeComponent(
+      this.componentRefElementBottom
+    );
     this.componentRefElementBottom = undefined;
   }
 
@@ -102,7 +96,7 @@ export class DynamicComponentDemoComponent {
       DynamicComponentDemoExampleComponent,
       {
         location: SkyDynamicComponentLocation.ElementTop,
-        referenceEl: this.contentRef.nativeElement
+        referenceEl: this.contentRef.nativeElement,
       }
     );
 

@@ -3,7 +3,7 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 
 import {
@@ -12,17 +12,16 @@ import {
   SkyAffixOffset,
   SkyAffixPlacement,
   SkyAffixPlacementChange,
-  SkyAffixVerticalAlignment
+  SkyAffixVerticalAlignment,
 } from 'projects/core/src/public-api';
 
 @Component({
   selector: 'app-affix-demo',
   templateUrl: './affix-demo.component.html',
   styleUrls: ['./affix-demo.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AffixDemoComponent {
-
   public get overflowParentWidth(): string {
     if (this.enableOverflowParent) {
       return `${this.parentOverflowRef.nativeElement.scrollWidth}px`;
@@ -33,7 +32,7 @@ export class AffixDemoComponent {
 
   public autoFitContexts: SkyAffixAutoFitContext[] = [
     SkyAffixAutoFitContext.OverflowParent,
-    SkyAffixAutoFitContext.Viewport
+    SkyAffixAutoFitContext.Viewport,
   ];
 
   public autoFitOverflowOffset: SkyAffixOffset;
@@ -53,7 +52,7 @@ export class AffixDemoComponent {
   public horizontalAlignments: SkyAffixHorizontalAlignment[] = [
     'right',
     'center',
-    'left'
+    'left',
   ];
 
   public isSticky: boolean = true;
@@ -69,37 +68,32 @@ export class AffixDemoComponent {
     autoFitContext: SkyAffixAutoFitContext.OverflowParent,
     placement: 'above',
     horizontalAlignment: 'center',
-    verticalAlignment: 'middle'
+    verticalAlignment: 'middle',
   };
 
-  public placements: SkyAffixPlacement[] = [
-    'above',
-    'right',
-    'below',
-    'left'
-  ];
+  public placements: SkyAffixPlacement[] = ['above', 'right', 'below', 'left'];
 
   public verticalAlignments: SkyAffixVerticalAlignment[] = [
     'bottom',
     'middle',
-    'top'
+    'top',
   ];
 
   @ViewChild('baseRef', {
     read: ElementRef,
-    static: true
+    static: true,
   })
   private baseRef: ElementRef;
 
   @ViewChild('parentOverflowRef', {
     read: ElementRef,
-    static: true
+    static: true,
   })
   private parentOverflowRef: ElementRef;
 
   @ViewChild('toolbarRef', {
     read: ElementRef,
-    static: true
+    static: true,
   })
   private toolbarRef: ElementRef;
 
@@ -111,12 +105,10 @@ export class AffixDemoComponent {
 
   private verticalAlignmentIndex = 0;
 
-  constructor(
-    private changeDetector: ChangeDetectorRef
-  ) { }
+  constructor(private changeDetector: ChangeDetectorRef) {}
 
   public onAffixPlacementChange(change: SkyAffixPlacementChange): void {
-    this.isVisible = (change.placement !== null);
+    this.isVisible = change.placement !== null;
     this.changeDetector.detectChanges();
   }
 
@@ -126,24 +118,27 @@ export class AffixDemoComponent {
     const left = baseElement.offsetLeft;
 
     if (this.enableOverflowParent) {
-      const overflowParent: HTMLDivElement = this.parentOverflowRef.nativeElement;
-      overflowParent.scrollTop = top -
+      const overflowParent: HTMLDivElement =
+        this.parentOverflowRef.nativeElement;
+      overflowParent.scrollTop =
+        top -
         overflowParent.offsetTop -
-        (overflowParent.clientHeight / 2) +
-        (baseElement.clientHeight / 2);
-      overflowParent.scrollLeft = left -
+        overflowParent.clientHeight / 2 +
+        baseElement.clientHeight / 2;
+      overflowParent.scrollLeft =
+        left -
         overflowParent.offsetLeft -
-        (overflowParent.clientWidth / 2) +
-        (baseElement.clientWidth / 2);
+        overflowParent.clientWidth / 2 +
+        baseElement.clientWidth / 2;
     } else {
       window.scroll(
         left -
-          (document.documentElement.clientWidth / 2) +
-          (baseElement.clientWidth / 2),
+          document.documentElement.clientWidth / 2 +
+          baseElement.clientWidth / 2,
         top -
-          (document.documentElement.clientHeight / 2) +
-          (baseElement.clientHeight / 2) +
-          (this.toolbarRef.nativeElement.clientHeight / 2)
+          document.documentElement.clientHeight / 2 +
+          baseElement.clientHeight / 2 +
+          this.toolbarRef.nativeElement.clientHeight / 2
       );
     }
   }
@@ -195,14 +190,14 @@ export class AffixDemoComponent {
     } else {
       this.autoFitOverflowOffset = {
         top: 50, // Omnibar
-        bottom: this.toolbarRef.nativeElement.getBoundingClientRect().height
+        bottom: this.toolbarRef.nativeElement.getBoundingClientRect().height,
       };
     }
     this.changeDetector.markForCheck();
   }
 
   public getAutoFitContextForDisplay(context: SkyAffixAutoFitContext): string {
-    return (context === SkyAffixAutoFitContext.OverflowParent)
+    return context === SkyAffixAutoFitContext.OverflowParent
       ? 'OverflowParent'
       : 'Viewport';
   }
@@ -217,8 +212,10 @@ export class AffixDemoComponent {
     this.changeDetector.markForCheck();
 
     if (placement === 'above' || placement === 'below') {
-      this.model.verticalAlignment = this.verticalAlignments[this.verticalAlignmentIndex];
-      this.model.horizontalAlignment = this.horizontalAlignments[this.horizontalAlignmentIndex];
+      this.model.verticalAlignment =
+        this.verticalAlignments[this.verticalAlignmentIndex];
+      this.model.horizontalAlignment =
+        this.horizontalAlignments[this.horizontalAlignmentIndex];
       this.horizontalAlignmentIndex++;
       if (this.horizontalAlignmentIndex === this.horizontalAlignments.length) {
         this.verticalAlignmentIndex++;
@@ -230,7 +227,8 @@ export class AffixDemoComponent {
         this.horizontalAlignmentIndex = 0;
       }
     } else {
-      this.model.verticalAlignment = this.verticalAlignments[this.verticalAlignmentIndex];
+      this.model.verticalAlignment =
+        this.verticalAlignments[this.verticalAlignmentIndex];
       this.verticalAlignmentIndex++;
       if (this.verticalAlignmentIndex === this.verticalAlignments.length) {
         this.placementIndex++;
@@ -241,5 +239,4 @@ export class AffixDemoComponent {
 
     this.changeDetector.markForCheck();
   }
-
 }

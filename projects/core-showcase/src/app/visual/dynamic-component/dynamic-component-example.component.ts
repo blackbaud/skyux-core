@@ -1,10 +1,8 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dynamic-component-demo-example',
-  template: '(Injected component content.)'
+  template: '(Injected component content.)',
 })
 export class DynamicComponentDemoExampleComponent {
   public sayHello(): void {

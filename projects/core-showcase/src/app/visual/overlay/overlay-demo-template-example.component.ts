@@ -1,31 +1,24 @@
-import {
-  Component,
-  TemplateRef,
-  ViewChild
-} from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 
 import {
   SkyOverlayInstance,
-  SkyOverlayService
+  SkyOverlayService,
 } from 'projects/core/src/public-api';
 
 @Component({
   selector: 'app-overlay-demo-template-example',
-  templateUrl: './overlay-demo-template-example.component.html'
+  templateUrl: './overlay-demo-template-example.component.html',
 })
 export class OverlayDemoTemplateExampleComponent {
-
   @ViewChild('content', {
     read: TemplateRef,
-    static: false
+    static: false,
   })
   private contentTemplateRef: TemplateRef<any>;
 
   private overlay: SkyOverlayInstance;
 
-  constructor(
-    private overlayService: SkyOverlayService
-  ) { }
+  constructor(private overlayService: SkyOverlayService) {}
 
   public onOpenClick(): void {
     this.launchOverlay();
@@ -40,14 +33,13 @@ export class OverlayDemoTemplateExampleComponent {
       closeOnNavigation: false,
       enableClose: true,
       enableScroll: false,
-      showBackdrop: true
+      showBackdrop: true,
     });
 
-    overlay.attachTemplate(
-      this.contentTemplateRef, {
+    overlay.attachTemplate(this.contentTemplateRef, {
       $implicit: {
-        foo: 'bar'
-      }
+        foo: 'bar',
+      },
     });
 
     this.overlay = overlay;
@@ -57,5 +49,4 @@ export class OverlayDemoTemplateExampleComponent {
     this.overlayService.close(this.overlay);
     this.overlay = undefined;
   }
-
 }
