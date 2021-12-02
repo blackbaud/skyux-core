@@ -1,5 +1,3 @@
 export class OverlayDemoExampleContext {
-  constructor(
-    public id: number
-  ) { }
+  constructor(public id: number) {}
 }

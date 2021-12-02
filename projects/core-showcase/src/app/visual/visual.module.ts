@@ -7,7 +7,7 @@ import {
   SkyAffixModule,
   SkyIdModule,
   SkyNumericModule,
-  SkyViewkeeperModule
+  SkyViewkeeperModule,
 } from 'projects/core/src/public-api';
 
 import { AffixDemoComponent } from './affix/affix-demo.component';
@@ -40,7 +40,7 @@ import { DockVisualInnerComponent } from './dock/dock-visual-inner.component';
     SkyNumericDemoComponent,
     OverlayDemoComponent,
     ViewkeeperDemoComponent,
-    OverlayDemoTemplateExampleComponent
+    OverlayDemoTemplateExampleComponent,
   ],
   imports: [
     CommonModule,
@@ -50,7 +50,7 @@ import { DockVisualInnerComponent } from './dock/dock-visual-inner.component';
     SkyE2eThemeSelectorModule,
     SkyIdModule,
     SkyNumericModule,
-    SkyViewkeeperModule
-  ]
+    SkyViewkeeperModule,
+  ],
 })
 export class VisualModule {}

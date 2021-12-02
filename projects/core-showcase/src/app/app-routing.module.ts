@@ -14,44 +14,44 @@ import { ViewkeeperDemoComponent } from './visual/viewkeeper/viewkeeper-demo.com
 const routes: Routes = [
   {
     path: '',
-    component: VisualComponent
+    component: VisualComponent,
   },
   {
     path: 'visual/affix',
-    component: AffixDemoComponent
+    component: AffixDemoComponent,
   },
   {
     path: 'visual/dock',
-    component: DockVisualComponent
+    component: DockVisualComponent,
   },
   {
     path: 'visual/dynamic-component',
-    component: DynamicComponentDemoComponent
+    component: DynamicComponentDemoComponent,
   },
   {
     path: 'visual/id',
-    component: SkyIdDemoComponent
+    component: SkyIdDemoComponent,
   },
   {
     path: 'visual/media-query',
-    component: SkyMediaQueryDemoComponent
+    component: SkyMediaQueryDemoComponent,
   },
   {
     path: 'visual/numeric',
-    component: SkyNumericDemoComponent
+    component: SkyNumericDemoComponent,
   },
   {
     path: 'visual/overlay',
-    component: OverlayDemoComponent
+    component: OverlayDemoComponent,
   },
   {
     path: 'visual/viewkeeper',
-    component: ViewkeeperDemoComponent
-  }
+    component: ViewkeeperDemoComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

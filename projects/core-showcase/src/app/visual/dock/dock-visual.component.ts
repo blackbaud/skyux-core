@@ -1,55 +1,43 @@
-import {
-  AfterViewInit,
-  Component
-} from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 
-import {
-  SkyDockService
-} from 'projects/core/src/public-api';
+import { SkyDockService } from 'projects/core/src/public-api';
 
-import {
-  DockItemVisualContext
-} from './dock-item-context';
+import { DockItemVisualContext } from './dock-item-context';
 
-import {
-  DockItemVisualComponent
-} from './dock-item-visual.component';
+import { DockItemVisualComponent } from './dock-item-visual.component';
 
 @Component({
   selector: 'app-dock-visual',
   templateUrl: './dock-visual.component.html',
-  styleUrls: ['./dock-visual.component.scss']
+  styleUrls: ['./dock-visual.component.scss'],
 })
 export class DockVisualComponent implements AfterViewInit {
-
   public stackOrder: number;
 
   private configs: any[] = [
     {
       stackOrder: 0,
-      backgroundColor: 'darkred'
+      backgroundColor: 'darkred',
     },
     {
       stackOrder: 100,
-      backgroundColor: 'darkmagenta'
+      backgroundColor: 'darkmagenta',
     },
     {
       stackOrder: 10,
-      backgroundColor: 'darkcyan'
+      backgroundColor: 'darkcyan',
     },
     {
       stackOrder: -1000,
-      backgroundColor: 'darkblue'
+      backgroundColor: 'darkblue',
     },
     {
       stackOrder: 1,
-      backgroundColor: 'darkgreen'
-    }
+      backgroundColor: 'darkgreen',
+    },
   ];
 
-  constructor(
-    private dockService: SkyDockService
-  ) {}
+  constructor(private dockService: SkyDockService) {}
 
   public ngAfterViewInit(): void {
     this.configs.forEach((config) => {
@@ -60,7 +48,7 @@ export class DockVisualComponent implements AfterViewInit {
   public onAddItemClick(): void {
     this.addToDock({
       backgroundColor: 'tan',
-      stackOrder: this.stackOrder
+      stackOrder: this.stackOrder,
     });
   }
 
@@ -73,9 +61,9 @@ export class DockVisualComponent implements AfterViewInit {
           useValue: new DockItemVisualContext(
             config.backgroundColor,
             config.stackOrder
-          )
-        }
-      ]
+          ),
+        },
+      ],
     });
 
     item.componentInstance.stackOrderForDisplay = item.stackOrder;
