@@ -1,4 +1,4 @@
-# 4.9.1 (2021-12-03)
+# 4.9.1 (2021-12-06)
 
 - Fixed the viewkeeper direct to ignore the viewport margin when attaching to a scrollable host. [#279](https://github.com/blackbaud/skyux-core/pull/279)
 
