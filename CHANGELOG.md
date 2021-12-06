@@ -1,3 +1,7 @@
+# 4.9.1 (2021-12-06)
+
+- Fixed the viewkeeper directive to ignore the viewport margin when attaching to a scrollable host. [#279](https://github.com/blackbaud/skyux-core/pull/279)
+
 # 4.9.0 (2021-11-02)
 
 - Added the `SkyScrollableHostService` to be able to get and watch for an element's scrollable host. [#269](https://github.com/blackbaud/skyux-core/pull/269)

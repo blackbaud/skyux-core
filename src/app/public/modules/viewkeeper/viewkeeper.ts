@@ -122,7 +122,17 @@ export class SkyViewkeeper {
 
   private verticalOffsetEl: HTMLElement;
 
-  private viewportMarginTop: number;
+  private set viewportMarginTop(margin: number) {
+    this._viewportMarginTop = margin;
+  }
+
+  private get viewportMarginTop(): number {
+    if (this.scrollableHost) {
+      return 0;
+    } else {
+      return this._viewportMarginTop;
+    }
+  }
 
   private isDestroyed: boolean;
 
@@ -135,6 +145,8 @@ export class SkyViewkeeper {
   private scrollableHost: HTMLElement;
 
   private syncElPositionHandler: () => void;
+
+  private _viewportMarginTop: number;
 
   constructor(options: SkyViewkeeperOptions) {
     options = options || /* istanbul ignore next */ {};

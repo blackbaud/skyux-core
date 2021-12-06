@@ -247,16 +247,18 @@ describe('Viewkeeper', () => {
 
       scrollScrollableHost(20);
 
-      validatePinned(el, true, 10, 5);
+      // NOTE: All margin tops should be 0 as we ignore the viewport margin when working with
+      // a scrollable host.
+      validatePinned(el, true, 10, 0);
 
       // Validate that window scroll moves the pinned viewkeeper once it is pinned
       scrollWindowTo(0, 10);
 
-      validatePinned(el, true, 0, 5);
+      validatePinned(el, true, 0, 0);
 
       scrollWindowTo(0, 0);
 
-      validatePinned(el, true, 10, 5);
+      validatePinned(el, true, 10, 0);
 
       scrollScrollableHost(0);
 
@@ -276,7 +278,7 @@ describe('Viewkeeper', () => {
 
       scrollScrollableHost(20);
 
-      validatePinned(el, true, 10, 5);
+      validatePinned(el, true, 10, 0);
 
       expect(getComputedStyle(el).width).toBe(getComputedStyle(boundaryEl).width);
     });
