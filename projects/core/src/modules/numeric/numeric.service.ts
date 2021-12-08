@@ -8,9 +8,7 @@ import { NumericOptions } from './numeric.options';
 
 import { SkyNumericSymbol } from './numeric-symbol';
 
-@Injectable({
-  providedIn: 'any',
-})
+@Injectable()
 export class SkyNumericService {
   /**
    * The browser's current locale.
