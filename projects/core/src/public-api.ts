@@ -27,6 +27,9 @@ export * from './modules/dynamic-component/dynamic-component-options';
 export * from './modules/dynamic-component/dynamic-component.module';
 export * from './modules/dynamic-component/dynamic-component.service';
 
+export * from './modules/focus-trap/focus-trap.directive';
+export * from './modules/focus-trap/focus-trap.module';
+
 export * from './modules/format/app-format';
 
 export * from './modules/id/id.module';
