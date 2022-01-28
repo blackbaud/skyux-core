@@ -3,7 +3,7 @@ import { ScrollableHostFixtureComponent } from './fixtures/scrollable-host.compo
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { SkyAppTestUtility } from '@skyux-sdk/testing';
 import { MutationObserverService } from '../mutation/mutation-observer-service';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { SkyScrollableHostService } from './scrollable-host.service';
 
 describe('Scrollable host service', () => {
@@ -219,6 +219,49 @@ describe('Scrollable host service', () => {
         SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', {
           bubbles: false,
         });
+      } else {
+        done();
+      }
+    });
+
+    SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', {
+      bubbles: false,
+    });
+  });
+
+  it('should notifify a subscriber when the scrollable parent changes via style changes when watching for scroll events', (done) => {
+    let obserableCount = 0;
+    const scrollObservable = cmp.watchScrollableHostScrollEvents();
+
+    scrollObservable.pipe(take(2)).subscribe(() => {
+      if (obserableCount === 0) {
+        obserableCount++;
+        fixture.detectChanges();
+
+        cmp.isParentScrollable = false;
+        cmp.isGrandparentScrollable = true;
+        fixture.detectChanges();
+      } else {
+        done();
+      }
+    });
+
+    SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', {
+      bubbles: false,
+    });
+  });
+
+  it('should notifify a subscriber when the scrollable parent changes via content being moved when watching for scroll events', (done) => {
+    let obserableCount = 0;
+    const scrollObservable = cmp.watchScrollableHostScrollEvents();
+
+    scrollObservable.pipe(take(2)).subscribe(() => {
+      if (obserableCount === 0) {
+        obserableCount++;
+        fixture.detectChanges();
+
+        cmp.moveTarget();
+        fixture.detectChanges();
       } else {
         done();
       }
