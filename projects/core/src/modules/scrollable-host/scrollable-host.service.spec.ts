@@ -272,28 +272,30 @@ describe('Scrollable host service', () => {
     });
   });
 
-  it('should return all scroll events from a new scrollable host it changes', (done) => {
+  it('should return all scroll events from a new scrollable host if it changes', (done) => {
     let observableCount = 0;
     cmp.isGrandparentScrollable = true;
 
     const scrollObservable = cmp.watchScrollableHostScrollEvents();
 
-    scrollObservable.pipe(take(3)).subscribe(async () => {
+    scrollObservable.pipe(take(4)).subscribe(async () => {
       if (observableCount === 0) {
         observableCount++;
         cmp.isParentScrollable = false;
         fixture.detectChanges();
         await fixture.whenStable();
-        setTimeout(() => {
-          fixture.detectChanges();
-          SkyAppTestUtility.fireDomEvent(
-            cmp.grandparent.nativeElement,
-            'scroll',
-            { bubbles: false }
-          );
-          fixture.detectChanges();
-        }, 10);
       } else if (observableCount === 1) {
+        observableCount++;
+        fixture.detectChanges();
+        await fixture.whenStable();
+        SkyAppTestUtility.fireDomEvent(
+          cmp.grandparent.nativeElement,
+          'scroll',
+          { bubbles: false }
+        );
+        fixture.detectChanges();
+        await fixture.whenStable();
+      } else if (observableCount === 2) {
         observableCount++;
         SkyAppTestUtility.fireDomEvent(cmp.parent.nativeElement, 'scroll', {
           bubbles: false,
@@ -302,7 +304,7 @@ describe('Scrollable host service', () => {
         done();
       } else {
         fail(
-          'observable should only be hit 2 times - second parent scroll should not fire observable'
+          'observable should only be hit 3 times - second parent scroll should not fire observable'
         );
       }
     });
