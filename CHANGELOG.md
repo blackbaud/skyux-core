@@ -1,4 +1,8 @@
-# 5.2.3 (2021-02-03)
+# 5.2.4 (2022-02-14)
+
+ - Fixed the default value punctuation. [#286](https://github.com/blackbaud/skyux-core/pull/286)
+
+# 5.2.3 (2022-02-03)
 
 - Fixed the scrollable host service to properly watch for structural changes when observing scrollable host updates. [#284](https://github.com/blackbaud/skyux-core/pull/284)
 
