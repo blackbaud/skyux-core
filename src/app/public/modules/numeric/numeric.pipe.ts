@@ -25,7 +25,7 @@ import {
 } from './numeric.options';
 
 /**
- * Shorten numbers to rounded numbers and abbreviation characters such as K for thousands,
+ * Shortens numbers to rounded numbers and abbreviation characters such as K for thousands,
  * M for millions, B for billions, and T for trillion. The pipe also formats for currency.
  * Be sure you have a space after the two curly brackets opening the pipe and
  * a space before the two curly brackets closing the pipe or it will not work.
